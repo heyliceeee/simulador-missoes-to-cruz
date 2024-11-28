@@ -1,12 +1,13 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IUnorderedListADT;
+import org.example.collections.interfaces.UnorderedListADT;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class DoubleLinkedIUnorderedList<T> extends DoublyLinkedList<T> implements IUnorderedListADT<T> {
-    public DoubleLinkedIUnorderedList() {
+public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements UnorderedListADT<T> {
+    public DoubleLinkedUnorderedList() {
         super();
     }
 

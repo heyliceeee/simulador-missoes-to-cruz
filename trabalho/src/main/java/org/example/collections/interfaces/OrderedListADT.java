@@ -1,6 +1,6 @@
 package org.example.collections.interfaces;
 
-public interface IOrderedListADT<T> extends IListADT<T>
+public interface OrderedListADT<T> extends ListADT<T>
 {
     /**
      * adiciona um elemento especifico na lista

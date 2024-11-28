@@ -2,7 +2,7 @@ package org.example.collections.interfaces;
 
 import java.util.Iterator;
 
-public interface IBinaryTreeADT<T>
+public interface BinaryTreeADT<T>
 {
     /**
      * retorna uma referencia do elemento root

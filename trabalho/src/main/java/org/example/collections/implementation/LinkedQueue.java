@@ -1,9 +1,9 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IQueueADT;
+import org.example.collections.interfaces.QueueADT;
 
-public class LinkedIQueue<T> implements IQueueADT<T>
+public class LinkedQueue<T> implements QueueADT<T>
 {
     /**
      * node que representa o elemento front da queue
@@ -24,7 +24,7 @@ public class LinkedIQueue<T> implements IQueueADT<T>
     /**
      * cria uma queue vazia e nula
      */
-    public LinkedIQueue()
+    public LinkedQueue()
     {
         this.front = this.rear = null;
         this.size = 0;
@@ -33,7 +33,7 @@ public class LinkedIQueue<T> implements IQueueADT<T>
     /**
      * cria uma queue
      */
-    public LinkedIQueue(LinkedListNode<T> front, LinkedListNode<T> rear, int size)
+    public LinkedQueue(LinkedListNode<T> front, LinkedListNode<T> rear, int size)
     {
         this.front = front;
         this.rear = rear;

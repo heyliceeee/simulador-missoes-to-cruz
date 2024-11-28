@@ -1,6 +1,6 @@
 package org.example.collections.implementation;
 
-public class PriorityQueue<T> extends ArrayIHeap<PriorityQueueNode<T>>
+public class PriorityQueue<T> extends ArrayHeap<PriorityQueueNode<T>>
 {
 
     /**

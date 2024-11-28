@@ -2,14 +2,14 @@ package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
 import org.example.collections.exceptions.UnknownPathException;
-import org.example.collections.interfaces.INetworkADT;
-import org.example.collections.interfaces.IUnorderedListADT;
+import org.example.collections.interfaces.NetworkADT;
+import org.example.collections.interfaces.UnorderedListADT;
 
 /**
  * classe que implementa o contrato da rede
  * @param <T>
  */
-public class INetwork<T> extends IGraph<T> implements INetworkADT<T>
+public class Network<T> extends Graph<T> implements NetworkADT<T>
 {
     /**
      * capacidade default da rede
@@ -25,7 +25,7 @@ public class INetwork<T> extends IGraph<T> implements INetworkADT<T>
     /**
      * constructor
      */
-    public INetwork()
+    public Network()
     {
         super();
         this.adjMatrix = new double[this.DEFAULT_CAPACITY][this.DEFAULT_CAPACITY];
@@ -88,11 +88,11 @@ public class INetwork<T> extends IGraph<T> implements INetworkADT<T>
      * @return
      */
     @Override
-    public ArrayIUnorderedList<T> shortestPathWeight(T vertex1, T vertex2) throws EmptyCollectionException, UnknownPathException
+    public ArrayUnorderedList<T> shortestPathWeight(T vertex1, T vertex2) throws EmptyCollectionException, UnknownPathException
     {
         PriorityQueue<Pair<T>> priorityQueue = new PriorityQueue<>();
-        IUnorderedListADT<T> verticesFromPossiblePath = new ArrayIUnorderedList<>();
-        ArrayIUnorderedList<T> result = new ArrayIUnorderedList<>();
+        UnorderedListADT<T> verticesFromPossiblePath = new ArrayUnorderedList<>();
+        ArrayUnorderedList<T> result = new ArrayUnorderedList<>();
         Pair<T> startPair = new Pair<>(null, vertex1, 0.0);
 
         priorityQueue.addElement(startPair, (int) startPair.cost);

@@ -2,9 +2,9 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IStackADT;
+import org.example.collections.interfaces.StackADT;
 
-public class LinkedStack<T> implements IStackADT<T> {
+public class LinkedStack<T> implements StackADT<T> {
 
     /**
      * node que representa o elemento top da stack

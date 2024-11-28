@@ -1,29 +1,29 @@
 package org.example.collections.implementation;
 
 
-import org.example.collections.interfaces.IQueueADT;
+import org.example.collections.interfaces.QueueADT;
 
-public class OrderedIQueue<T extends Comparable<T>> implements IQueueADT<T>
+public class OrderedQueue<T extends Comparable<T>> implements QueueADT<T>
 {
     /**
      * queue que representa a queue
      */
-    private IQueueADT<T> queue;
+    private QueueADT<T> queue;
 
 
     /**
      * cria uma queue
      */
-    public OrderedIQueue()
+    public OrderedQueue()
     {
-        this.queue = new LinkedIQueue<T>();
+        this.queue = new LinkedQueue<T>();
     }
 
 
     @Override
     public void enqueue(T element)
     {
-        IQueueADT<T> tempQueue = new LinkedIQueue<T>();
+        QueueADT<T> tempQueue = new LinkedQueue<T>();
 
         while (!isEmpty() && element.compareTo(first()) > 0) //enquanto não estiver vazia && novo elemento > primeiro elemento
         {
@@ -73,9 +73,9 @@ public class OrderedIQueue<T extends Comparable<T>> implements IQueueADT<T>
     }
 
 
-    public IQueueADT<T> merge(IQueueADT<T> queue1, IQueueADT<T> queue2)
+    public QueueADT<T> merge(QueueADT<T> queue1, QueueADT<T> queue2)
     {
-        IQueueADT<T> mergeQueue = new LinkedIQueue<T>();
+        QueueADT<T> mergeQueue = new LinkedQueue<T>();
 
         while (!queue1.isEmpty() && !queue2.isEmpty()) //enquanto as queues não estiverem vazias
         {

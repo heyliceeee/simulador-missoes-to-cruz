@@ -2,12 +2,12 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IQueueADT;
+import org.example.collections.interfaces.QueueADT;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class CircularArrayIQueue<T> implements IQueueADT<T>
+public class CircularArrayQueue<T> implements QueueADT<T>
 {
     /**
      * constante para representar a capacidade default do array
@@ -43,7 +43,7 @@ public class CircularArrayIQueue<T> implements IQueueADT<T>
     /**
      * cria um array vazia e nula
      */
-    public CircularArrayIQueue()
+    public CircularArrayQueue()
     {
         this.size = this.front = this.rear = 0;
         this.queue = (T[]) (new Object[this.DEFAULT_CAPACITY]);
@@ -52,7 +52,7 @@ public class CircularArrayIQueue<T> implements IQueueADT<T>
     /**
      * cria um array
      */
-    public CircularArrayIQueue(int initialCapacity)
+    public CircularArrayQueue(int initialCapacity)
     {
         this.size = this.front = this.rear = 0;
         this.queue = (T[]) (new Object[initialCapacity]);

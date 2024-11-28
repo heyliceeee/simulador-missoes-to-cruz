@@ -1,12 +1,12 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IGraphADT;
+import org.example.collections.interfaces.GraphADT;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class IGraph<T> implements IGraphADT<T>
+public class Graph<T> implements GraphADT<T>
 {
     protected final int DEFAULT_CAPACITY = 100;
     protected int numVertices; //numero de vertices no grafo
@@ -17,7 +17,7 @@ public class IGraph<T> implements IGraphADT<T>
     /**
      * cria um grafo vazio
      */
-    public IGraph()
+    public Graph()
     {
         this.numVertices = 0;
         this.adjMatrix = new double[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
@@ -240,8 +240,8 @@ public class IGraph<T> implements IGraphADT<T>
     public Iterator<T> iteratorBFS(int startIndex)
     {
         Integer x;
-        LinkedIQueue<Integer> traversalQueue = new LinkedIQueue<>();
-        ArrayIUnorderedList<T> resultList = new ArrayIUnorderedList<>();
+        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
+        ArrayUnorderedList<T> resultList = new ArrayUnorderedList<>();
 
         if (!indexIsValid(startIndex))
         {
@@ -309,7 +309,7 @@ public class IGraph<T> implements IGraphADT<T>
         Integer x;
         boolean found;
         LinkedStack<Integer> traversalStack = new LinkedStack<>();
-        ArrayIUnorderedList<T> resultList = new ArrayIUnorderedList<>();
+        ArrayUnorderedList<T> resultList = new ArrayUnorderedList<>();
 
         boolean[] visited = new boolean[numVertices];
 
@@ -367,7 +367,7 @@ public class IGraph<T> implements IGraphADT<T>
      */
     public Iterator<T> iteratorShortestPath(int startIndex, int targetIndex)
     {
-        ArrayIUnorderedList<T> resultList = new ArrayIUnorderedList<>();
+        ArrayUnorderedList<T> resultList = new ArrayUnorderedList<>();
 
         if (!indexIsValid(startIndex) || !indexIsValid(targetIndex))
         {
@@ -406,8 +406,8 @@ public class IGraph<T> implements IGraphADT<T>
         int index = startIndex;
         int[] pathLength = new int[numVertices];
         int[] predecessor = new int[numVertices];
-        LinkedIQueue<Integer> traversalQueue = new LinkedIQueue<>();
-        ArrayIUnorderedList<Integer> resultList = new ArrayIUnorderedList<>();
+        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
+        ArrayUnorderedList<Integer> resultList = new ArrayUnorderedList<>();
 
         if (!indexIsValid(startIndex) || !indexIsValid(targetIndex) || (startIndex == targetIndex))
         {

@@ -1,9 +1,9 @@
 package org.example.collections.interfaces;
 
 import org.example.collections.exceptions.UnknownPathException;
-import org.example.collections.implementation.ArrayIUnorderedList;
+import org.example.collections.implementation.ArrayUnorderedList;
 
-public interface INetworkADT<T> extends IGraphADT<T>
+public interface NetworkADT<T> extends GraphADT<T>
 {
     /**
      * adiciona uma aresta entre 2 vertices do grafo
@@ -21,5 +21,5 @@ public interface INetworkADT<T> extends IGraphADT<T>
      * @param vertex2 segunda aresta
      * @return o peso/custo do caminho mais curto da rede
      */
-    public ArrayIUnorderedList<T> shortestPathWeight(T vertex1, T vertex2) throws UnknownPathException;
+    public ArrayUnorderedList<T> shortestPathWeight(T vertex1, T vertex2) throws UnknownPathException;
 }

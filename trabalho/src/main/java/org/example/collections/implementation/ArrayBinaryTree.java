@@ -1,11 +1,11 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IBinaryTreeADT;
+import org.example.collections.interfaces.BinaryTreeADT;
 
 import java.util.Iterator;
 
-public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
+public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
 {
     protected int count;
     protected T[] tree;
@@ -15,7 +15,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
     /**
      * cria uma árvore binaria vazia
      */
-    public ArrayIBinaryTree()
+    public ArrayBinaryTree()
     {
         count = 0;
 
@@ -27,7 +27,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
      * cria uma árvore binária com o elemento especifico como root
      * @param element o elemento que vai ser o root
      */
-    public ArrayIBinaryTree(T element)
+    public ArrayBinaryTree(T element)
     {
         count = 1;
 
@@ -103,7 +103,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorInOrder()
     {
-        ArrayIUnorderedList<T> tmpList = new ArrayIUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia inorder
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia inorder
         inorder(0, tmpList); //inicia a travessia inorder a partir do node root (índice 0)
 
         return tmpList.iterator(); //retorna um iterador para a lista temporária
@@ -115,7 +115,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
      * @param node o node que vai ser utilizado na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void inorder(int node, ArrayIUnorderedList<T> tmpList)
+    protected void inorder(int node, ArrayUnorderedList<T> tmpList)
     {
         if(node < tree.length) //se o índice do node está dentro dos limites do array da árvore.
         {
@@ -132,7 +132,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorPreOrder()
     {
-        ArrayIUnorderedList<T> tmpList = new ArrayIUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia preorder
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia preorder
         preorder(0, tmpList); //inicia a travessia preorder a partir do node root (índice 0)
 
         return tmpList.iterator(); //retorna um iterador para a lista temporária
@@ -144,7 +144,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
      * @param node o node que vai ser utilizado na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void preorder(int node, ArrayIUnorderedList<T> tmpList)
+    protected void preorder(int node, ArrayUnorderedList<T> tmpList)
     {
         if(node < tree.length) //se o índice do node está dentro dos limites do array
         {
@@ -161,7 +161,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorPostOrder()
     {
-        ArrayIUnorderedList<T> tmpList = new ArrayIUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia postorder
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia postorder
         postorder(0, tmpList); //inicia a travessia postorder a partir do node root (índice 0)
 
         return tmpList.iterator(); //retorna um iterador para a lista temporária
@@ -173,7 +173,7 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
      * @param node o node que vai ser utilizado na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void postorder(int node, ArrayIUnorderedList<T> tmpList)
+    protected void postorder(int node, ArrayUnorderedList<T> tmpList)
     {
         if (node < tree.length) //se o índice do node está dentro dos limites do array
         {
@@ -190,8 +190,8 @@ public class ArrayIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorLevelOrder()
     {
-        LinkedIQueue<Integer> nodes = new LinkedIQueue<>(); //cria uma fila para armazenar os índices dos nodes na ordem de nivelamento
-        ArrayIUnorderedList<T> results = new ArrayIUnorderedList<>(); //cria uma lista temporária para armazenar os elementos na ordem de nivelamento
+        LinkedQueue<Integer> nodes = new LinkedQueue<>(); //cria uma fila para armazenar os índices dos nodes na ordem de nivelamento
+        ArrayUnorderedList<T> results = new ArrayUnorderedList<>(); //cria uma lista temporária para armazenar os elementos na ordem de nivelamento
 
         if (!isEmpty()) //se a árvore não está vazia antes de iniciar a travessia em largura
         {

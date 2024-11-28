@@ -29,7 +29,7 @@ public interface IExporter
      * @throws EmptyCollectionException
      * @throws InterruptedException
      */
-    <T> void exportGraph(IGraphADT<T> graph, String fileName) throws EmptyCollectionException, InterruptedException;
+    <T> void exportGraph(GraphADT<T> graph, String fileName) throws EmptyCollectionException, InterruptedException;
 
     /**
      * Exporta um grafo e uma route em .dot e em .png
@@ -40,7 +40,7 @@ public interface IExporter
      * @throws InterruptedException
      * @throws EmptyCollectionException
      */
-    <T> void exportRouteGraph(IGraphADT<T> graph, Iterator<T> routeIterator, String fileName) throws InterruptedException, EmptyCollectionException;
+    <T> void exportRouteGraph(GraphADT<T> graph, Iterator<T> routeIterator, String fileName) throws InterruptedException, EmptyCollectionException;
 
     /**
      * Exporta uma route descrita em um iterador em .dot e em .png

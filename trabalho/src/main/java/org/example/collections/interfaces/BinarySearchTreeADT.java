@@ -1,6 +1,6 @@
 package org.example.collections.interfaces;
 
-public interface IIBinarySearchTreeADT<T> extends IBinaryTreeADT<T>
+public interface BinarySearchTreeADT<T> extends BinaryTreeADT<T>
 {
     /**
      * adiciona o elemento específico no local adequado na árvore.

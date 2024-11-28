@@ -2,13 +2,13 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IUnorderedListADT;
+import org.example.collections.interfaces.UnorderedListADT;
 
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
-public class ArrayIUnorderedList<T> implements IUnorderedListADT<T>
+public class ArrayUnorderedList<T> implements UnorderedListADT<T>
 {
     /**
      * constante para representar a capacidade default do array
@@ -42,13 +42,13 @@ public class ArrayIUnorderedList<T> implements IUnorderedListADT<T>
 
 
 
-    public ArrayIUnorderedList()
+    public ArrayUnorderedList()
     {
         this.size = this.rear = this.front = 0;
         this.list =  (T[])(new Object[DEFAULT_CAPACITY]);
     }
 
-    public ArrayIUnorderedList(int initialCapacity)
+    public ArrayUnorderedList(int initialCapacity)
     {
         this.size = this.rear = this.front = 0;
         this.list =  (T[])(new Object[DEFAULT_CAPACITY]);
@@ -296,10 +296,10 @@ public class ArrayIUnorderedList<T> implements IUnorderedListADT<T>
 
         public BasicIterator()
         {
-            this.items = (T[]) ArrayIUnorderedList.this.list;
-            this.size = ArrayIUnorderedList.this.rear;
+            this.items = (T[]) ArrayUnorderedList.this.list;
+            this.size = ArrayUnorderedList.this.rear;
             this.current = 0;
-            this.expectedSize = ArrayIUnorderedList.this.size;
+            this.expectedSize = ArrayUnorderedList.this.size;
         }
 
 

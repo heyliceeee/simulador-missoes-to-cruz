@@ -1,6 +1,8 @@
 package org.example.collections.implementation;
 
-public class LinkedList<T>
+import java.util.Iterator;
+
+public class LinkedList<T> implements Iterable<T>
 {
     private LinkedListNode<T> head;
     private LinkedListNode<T> tail;
@@ -79,6 +81,34 @@ public class LinkedList<T>
         return false; //elemento não encontrado, ou seja, não removido
     }
 
+    /**
+     * Obtém o elemento na posição especificada.
+     *
+     * @param index O índice do elemento desejado.
+     * @return O elemento na posição especificada.
+     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
+     */
+    public T getElementAt(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("indice fora dos limites: " + index);
+        }
+
+        LinkedListNode<T> current = head; // Começa pelo primeiro elemento
+        int currentIndex = 0;
+
+        while (current != null) {
+            if (currentIndex == index) {
+                return current.getElement();
+            }
+            current = current.getNext(); // Avança para o próximo nó
+            currentIndex++;
+        }
+
+        // Esta linha não deve ser alcançada devido à verificação do índice acima
+        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
+    }
+
+
     public T remove(T element) {
 
         if(head == null || size == 0){ //lista vazia
@@ -115,6 +145,57 @@ public class LinkedList<T>
         }
 
         return null; //elemento não encontrado, ou seja, não removido
+    }
+
+    /**
+     * Verifica se a lista contém o elemento especificado.
+     *
+     * @param element O elemento a ser procurado.
+     * @return true se o elemento estiver presente, false caso contrário.
+     */
+    public boolean contains(T element) {
+        if (head == null) { // Verifica se a lista está vazia
+            return false;
+        }
+
+        LinkedListNode<T> current = head; // Inicia no primeiro nó
+        while (current != null) {
+            if (current.getElement().equals(element)) { // Compara o elemento atual com o procurado
+                return true;
+            }
+            current = current.getNext(); // Avança para o próximo nó
+        }
+
+        return false; // Elemento não encontrado
+    }
+
+    /**
+     * Remove todos os elementos da lista.
+     */
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private LinkedListNode<T> current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public T next() {
+                T element = current.getElement();
+                current = current.getNext();
+                return element;
+            }
+        };
     }
 
     /**

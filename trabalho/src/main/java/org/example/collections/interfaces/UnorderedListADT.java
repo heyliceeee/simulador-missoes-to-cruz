@@ -1,6 +1,6 @@
 package org.example.collections.interfaces;
 
-public interface IUnorderedListADT<T> extends IListADT<T>
+public interface UnorderedListADT<T> extends ListADT<T>
 {
     /**
      * adiciona um elemento específico na head da lista

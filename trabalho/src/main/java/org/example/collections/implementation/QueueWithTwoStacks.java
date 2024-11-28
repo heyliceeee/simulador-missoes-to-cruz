@@ -1,26 +1,26 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IQueueADT;
-import org.example.collections.interfaces.IStackADT;
+import org.example.collections.interfaces.QueueADT;
+import org.example.collections.interfaces.StackADT;
 
-public class IQueueWithTwoStacks<T> implements IQueueADT<T>
+public class QueueWithTwoStacks<T> implements QueueADT<T>
 {
     /**
      * enqueue da stack
      */
-    private IStackADT<T> stack1;
+    private StackADT<T> stack1;
 
     /**
      * dequeue da stack
      */
-    private IStackADT<T> stack2;
+    private StackADT<T> stack2;
 
 
-    public IQueueWithTwoStacks()
+    public QueueWithTwoStacks()
     {
-        stack1 = (IStackADT<T>) new Stack<T>();
-        stack2 = (IStackADT<T>) new Stack<T>();
+        stack1 = (StackADT<T>) new Stack<T>();
+        stack2 = (StackADT<T>) new Stack<T>();
     }
 
 

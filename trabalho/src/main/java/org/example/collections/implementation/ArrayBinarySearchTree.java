@@ -3,12 +3,12 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IIBinarySearchTreeADT;
+import org.example.collections.interfaces.BinarySearchTreeADT;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class ArrayIIBinarySearchTree<T> extends ArrayIBinaryTree<T> implements IIBinarySearchTreeADT<T>
+public class ArrayBinarySearchTree<T> extends ArrayBinaryTree<T> implements BinarySearchTreeADT<T>
 {
     protected int height;
     protected int maxIndex;
@@ -17,7 +17,7 @@ public class ArrayIIBinarySearchTree<T> extends ArrayIBinaryTree<T> implements I
     /**
      * cria uma árvore de pesquisa binaria vazia
      */
-    public ArrayIIBinarySearchTree()
+    public ArrayBinarySearchTree()
     {
         super();
         height = 0;
@@ -29,7 +29,7 @@ public class ArrayIIBinarySearchTree<T> extends ArrayIBinaryTree<T> implements I
      * cria uma árvore de pesquisa com o elemento especifico como root
      * @param element o elemento que ira ser o root da nova arvore
      */
-    public ArrayIIBinarySearchTree(T element)
+    public ArrayBinarySearchTree(T element)
     {
         super(element);
         height = 1;
@@ -189,9 +189,9 @@ public class ArrayIIBinarySearchTree<T> extends ArrayIBinaryTree<T> implements I
     protected void replace(int targetIndex)
     {
         int currentIndex, oldIndex, newIndex;
-        ArrayIUnorderedList<Integer> oldList = new ArrayIUnorderedList<>();
-        ArrayIUnorderedList<Integer> newList = new ArrayIUnorderedList<>();
-        ArrayIUnorderedList<Integer> tempList = new ArrayIUnorderedList<>();
+        ArrayUnorderedList<Integer> oldList = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Integer> newList = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Integer> tempList = new ArrayUnorderedList<>();
         Iterator<Integer> oldIt, newIt;
 
         if((targetIndex * 2 + 1 >= tree.length) || (targetIndex * 2 + 2 >= tree.length)) //se o node alvo nao tiver filhos

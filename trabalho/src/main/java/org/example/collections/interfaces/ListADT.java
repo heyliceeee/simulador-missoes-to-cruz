@@ -2,7 +2,7 @@ package org.example.collections.interfaces;
 
 import java.util.Iterator;
 
-public interface IListADT<T> extends Iterable<T>
+public interface ListADT<T> extends Iterable<T>
 {
     /**
      * adicionar no tail da lista

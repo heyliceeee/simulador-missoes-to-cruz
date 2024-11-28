@@ -2,11 +2,11 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IStackADT;
+import org.example.collections.interfaces.StackADT;
 
 import java.util.Arrays;
 
-public class ArrayStack<T> implements IStackADT<T> {
+public class ArrayStack<T> implements StackADT<T> {
 
     /**
      * constante para representar a capacidade default do array

@@ -3,13 +3,13 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IHeapADT;
+import org.example.collections.interfaces.HeapADT;
 
 import java.util.Arrays;
 
-public class ArrayIHeap<T> extends ArrayIBinaryTree<T> implements IHeapADT<T>
+public class ArrayHeap<T> extends ArrayBinaryTree<T> implements HeapADT<T>
 {
-    public ArrayIHeap()
+    public ArrayHeap()
     {
         super();
     }

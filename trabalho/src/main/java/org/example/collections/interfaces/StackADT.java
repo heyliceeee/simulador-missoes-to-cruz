@@ -1,6 +1,6 @@
 package org.example.collections.interfaces;
 
-public interface IStackADT<T> {
+public interface StackADT<T> {
     /**
      * adiciona um elemento ao top da stack
      * @param element elemento a ser colocado na stack

@@ -1,6 +1,6 @@
 package org.example.collections.interfaces;
 
-public interface IQueueADT<T>
+public interface QueueADT<T>
 {
     /**
      * adiciona um elemento ao rear da queue

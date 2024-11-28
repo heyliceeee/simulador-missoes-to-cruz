@@ -1,12 +1,12 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IOrderedListADT;
+import org.example.collections.interfaces.OrderedListADT;
 import java.util.Iterator;
 
-public class DoubleLinkedIOrderedList<T extends Comparable> extends DoublyLinkedList<T> implements IOrderedListADT<T>
+public class DoubleLinkedOrderedList<T extends Comparable> extends DoublyLinkedList<T> implements OrderedListADT<T>
 {
-    public DoubleLinkedIOrderedList()
+    public DoubleLinkedOrderedList()
     {
         super();
     }

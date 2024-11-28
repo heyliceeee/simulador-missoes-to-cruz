@@ -2,7 +2,7 @@ package org.example.collections.interfaces;
 
 import java.util.Iterator;
 
-public interface IGraphADT<T>
+public interface GraphADT<T>
 {
     /**
      * adiciona um vertice ao grafo, associando o objeto com vertice

@@ -1,11 +1,11 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IBinaryTreeADT;
+import org.example.collections.interfaces.BinaryTreeADT;
 
 import java.util.Iterator;
 
-public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
+public class LinkedBinaryTree<T> implements BinaryTreeADT<T>
 {
     protected int count; //tamanho da árvore
     protected BinaryTreeNode<T> root; //node que é o root da árvore
@@ -14,7 +14,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
     /**
      * cria uma árvore binária vazia
      */
-    public LinkedIBinaryTree()
+    public LinkedBinaryTree()
     {
         count = 0;
         root = null;
@@ -25,7 +25,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
      * cria uma árvore binária com o elemento específico como root
      * @param element o elemento que irá ser como root na nova árvore binária
      */
-    public LinkedIBinaryTree(T element)
+    public LinkedBinaryTree(T element)
     {
         count = 1;
         root = new BinaryTreeNode<T>(element);
@@ -114,7 +114,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorInOrder()
     {
-        ArrayIUnorderedList<T> tmpList = new ArrayIUnorderedList<T>();
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>();
         inorder(root, tmpList);
 
         return tmpList.iterator();
@@ -126,7 +126,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
      * @param node o node que vai ser usado como root para a travessia
      * @param tmpList uma lista temporaria que vai ser usada para a travessia
      */
-    protected void inorder(BinaryTreeNode<T> node, ArrayIUnorderedList<T> tmpList)
+    protected void inorder(BinaryTreeNode<T> node, ArrayUnorderedList<T> tmpList)
     {
         if(node != null)
         {
@@ -140,7 +140,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorPreOrder()
     {
-        ArrayIUnorderedList<T> tmpList = new ArrayIUnorderedList<T>();
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>();
         preorder(root, tmpList);
 
         return tmpList.iterator();
@@ -152,7 +152,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
      * @param node o node que vai ser usado como root na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void preorder(BinaryTreeNode<T> node, ArrayIUnorderedList<T> tmpList)
+    protected void preorder(BinaryTreeNode<T> node, ArrayUnorderedList<T> tmpList)
     {
         if(node != null)
         {
@@ -166,7 +166,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorPostOrder()
     {
-        ArrayIUnorderedList<T> tmpList = new ArrayIUnorderedList<T>();
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>();
         postorder(root, tmpList);
 
         return tmpList.iterator();
@@ -178,7 +178,7 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
      * @param node o node que vai ser usado como root na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void postorder(BinaryTreeNode<T> node, ArrayIUnorderedList<T> tmpList)
+    protected void postorder(BinaryTreeNode<T> node, ArrayUnorderedList<T> tmpList)
     {
         if(node != null)
         {
@@ -191,8 +191,8 @@ public class LinkedIBinaryTree<T> implements IBinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorLevelOrder()
     {
-        LinkedIQueue<BinaryTreeNode<T>> nodes = new LinkedIQueue<>();
-        ArrayIUnorderedList<T> results = new ArrayIUnorderedList<>();
+        LinkedQueue<BinaryTreeNode<T>> nodes = new LinkedQueue<>();
+        ArrayUnorderedList<T> results = new ArrayUnorderedList<>();
 
         nodes.enqueue(root);
 

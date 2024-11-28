@@ -1,14 +1,14 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IHeapADT;
+import org.example.collections.interfaces.HeapADT;
 
-public class LinkedIHeap<T> extends LinkedIBinaryTree<T> implements IHeapADT<T>
+public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
 {
     public HeapNode<T> lastNode;
 
 
-    public LinkedIHeap()
+    public LinkedHeap()
     {
         super();
     }

@@ -1,15 +1,15 @@
 package org.example.collections.implementation;
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IIBinarySearchTreeADT;
+import org.example.collections.interfaces.BinarySearchTreeADT;
 
-public class LinkedIIBinarySearchTree<T> extends LinkedIBinaryTree<T> implements IIBinarySearchTreeADT<T>
+public class LinkedBinarySearchTree<T> extends LinkedBinaryTree<T> implements BinarySearchTreeADT<T>
 {
 
     /**
      * cria uma árvore binária de pesquisa vazia
      */
-    public LinkedIIBinarySearchTree()
+    public LinkedBinarySearchTree()
     {
         super();
     }
@@ -19,7 +19,7 @@ public class LinkedIIBinarySearchTree<T> extends LinkedIBinaryTree<T> implements
      * cria uma árvore binária de pesquisa com o elemento especificado como root
      * @param element o elemento que irá ser a root da nova árvore binária de pesquisa
      */
-    public LinkedIIBinarySearchTree(T element)
+    public LinkedBinarySearchTree(T element)
     {
         super(element);
     }

@@ -1,6 +1,6 @@
 package org.example.collections.interfaces;
 
-public interface IHeapADT<T> extends IBinaryTreeADT<T>
+public interface HeapADT<T> extends BinaryTreeADT<T>
 {
     /**
      * adiciona um objeto especifico ao heap

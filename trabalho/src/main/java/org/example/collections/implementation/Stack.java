@@ -2,9 +2,9 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IStackADT;
+import org.example.collections.interfaces.StackADT;
 
-public class Stack<T> implements IStackADT<T>
+public class Stack<T> implements StackADT<T>
 {
 
     private T[] stackArray;

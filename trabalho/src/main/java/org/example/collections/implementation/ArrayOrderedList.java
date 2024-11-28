@@ -2,7 +2,7 @@ package org.example.collections.implementation;
 
 
 import org.example.collections.exceptions.EmptyCollectionException;
-import org.example.collections.interfaces.IOrderedListADT;
+import org.example.collections.interfaces.OrderedListADT;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public class ArrayIOrderedList<T> implements IOrderedListADT<T>
+public class ArrayOrderedList<T> implements OrderedListADT<T>
 {
     /**
      * constante para representar a capacidade default do array
@@ -46,7 +46,7 @@ public class ArrayIOrderedList<T> implements IOrderedListADT<T>
     /**
      * cria um array vazia e nula
      */
-    public ArrayIOrderedList()
+    public ArrayOrderedList()
     {
         this.size = this.rear = this.front = 0;
         this.list =  (T[])(new Object[DEFAULT_CAPACITY]);
@@ -56,7 +56,7 @@ public class ArrayIOrderedList<T> implements IOrderedListADT<T>
     /**
      * cria um array
      */
-    public ArrayIOrderedList(int initialCapacity)
+    public ArrayOrderedList(int initialCapacity)
     {
         this.size = this.front = this.rear = 0;
         this.list = (T[]) (new Object[initialCapacity]);
@@ -282,10 +282,10 @@ public class ArrayIOrderedList<T> implements IOrderedListADT<T>
 
         public BasicIterator()
         {
-            this.items = (T[]) ArrayIOrderedList.this.list;
-            this.size = ArrayIOrderedList.this.rear;
+            this.items = (T[]) ArrayOrderedList.this.list;
+            this.size = ArrayOrderedList.this.rear;
             this.current = 0;
-            this.expectedSize = ArrayIOrderedList.this.size;
+            this.expectedSize = ArrayOrderedList.this.size;
         }
 
 
