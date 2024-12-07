@@ -1,17 +1,14 @@
 package org.example.api.implementation.models;
 
-
 import org.example.collections.implementation.LinkedList;
 
 /**
  * Representa uma divisão do edifício.
  */
 public class Divisao {
-
     private String nomeDivisao;
     private LinkedList<Inimigo> inimigosPresentes;
     private LinkedList<Item> itensPresentes;
-
 
     /**
      * Construtor da Divisão.
@@ -69,36 +66,82 @@ public class Divisao {
         return nomeDivisao;
     }
 
-
     /**
-     * Define o nome da divisao
-     * @param nomeDivisao o nome da divisao a ser definida
+     * Define o nome da divisão.
+     *
+     * @param nomeDivisao Nome da divisão a ser definida.
      */
     public void setNomeDivisao(String nomeDivisao) {
         this.nomeDivisao = nomeDivisao;
     }
 
     /**
-     * Obtem os inimigos presentes na divisao
-     * @return os inimigos presentes na divisao
+     * Obtém os inimigos presentes na divisão.
+     *
+     * @return Lista de inimigos.
      */
     public LinkedList<Inimigo> getInimigosPresentes() {
         return inimigosPresentes;
     }
 
     /**
-     * Define os inimigos presentes na divisao
-     * @param inimigosPresentes os inimigos presentes
+     * Define os inimigos presentes na divisão.
+     *
+     * @param inimigosPresentes Lista de inimigos.
      */
     public void setInimigosPresentes(LinkedList<Inimigo> inimigosPresentes) {
         this.inimigosPresentes = inimigosPresentes;
     }
 
+    /**
+     * Obtém os itens presentes na divisão.
+     *
+     * @return Lista de itens.
+     */
     public LinkedList<Item> getItensPresentes() {
         return itensPresentes;
     }
 
+    /**
+     * Define os itens presentes na divisão.
+     *
+     * @param itensPresentes Lista de itens.
+     */
     public void setItensPresentes(LinkedList<Item> itensPresentes) {
         this.itensPresentes = itensPresentes;
+    }
+
+    /**
+     * Sobrescreve o método equals para comparar divisões com base no nome.
+     *
+     * @param obj Objeto a ser comparado.
+     * @return true se os nomes forem iguais, false caso contrário.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Divisao divisao = (Divisao) obj;
+        return nomeDivisao.equals(divisao.nomeDivisao);
+    }
+
+    /**
+     * Sobrescreve o método hashCode para gerar hash baseado no nome da divisão.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+        return nomeDivisao.hashCode();
+    }
+
+    /**
+     * Sobrescreve o método toString para representar a divisão pelo seu nome.
+     *
+     * @return Nome da divisão.
+     */
+    @Override
+    public String toString() {
+        return nomeDivisao;
     }
 }

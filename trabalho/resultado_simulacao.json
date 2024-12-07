@@ -1,0 +1,41 @@
+[
+  {
+    "id": "AUTO-001",
+    "divisaoInicial": "Heliporto",
+    "divisaoFinal": "Garagem",
+    "status": "SUCESSO",
+    "vidaRestante": 95,
+    "trajeto": {
+      "head": {
+        "element": "Heliporto",
+        "next": {
+          "element": "Garagem"
+        }
+      },
+      "tail": {
+        "element": "Garagem"
+      },
+      "sentinel": {},
+      "size": 2
+    },
+    "entradasSaidas": {
+      "head": {
+        "element": "Escada de Emergência",
+        "next": {
+          "element": "Garagem",
+          "next": {
+            "element": "Heliporto",
+            "next": {
+              "element": "Porteiro"
+            }
+          }
+        }
+      },
+      "tail": {
+        "element": "Porteiro"
+      },
+      "sentinel": {},
+      "size": 4
+    }
+  }
+]

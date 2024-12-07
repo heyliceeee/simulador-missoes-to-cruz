@@ -16,6 +16,17 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation 'com.google.code.gson:gson:2.11.0'
 
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+// SLF4J API
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    
+    // Logback Classic (implementação do SLF4J)
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    
+    // Dependência opcional: SLF4J Simple (se não quiser usar Logback)
+    // implementation 'org.slf4j:slf4j-simple:2.0.9'
+
 }
 
 test {

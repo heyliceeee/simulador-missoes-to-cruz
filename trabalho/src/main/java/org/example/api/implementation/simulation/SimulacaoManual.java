@@ -1,6 +1,7 @@
 package org.example.api.implementation.simulation;
 
 import org.example.api.implementation.models.*;
+import org.example.api.implementation.services.CombateService;
 import org.example.collections.implementation.LinkedList;
 
 import java.util.Scanner;
@@ -13,7 +14,7 @@ public class SimulacaoManual {
     private Mapa mapa;
     private ToCruz toCruz;
     private Scanner scanner;
-    private  SimulacaoAutomatica simulacaoAutomatica;
+    private CombateService combateService;
 
     /**
      * Construtor da Simulação Manual.
@@ -25,6 +26,7 @@ public class SimulacaoManual {
         this.mapa = mapa;
         this.toCruz = toCruz;
         this.scanner = new Scanner(System.in);
+        this.combateService = new CombateService();
     }
 
     /**
@@ -54,6 +56,18 @@ public class SimulacaoManual {
             }
         }
         System.out.println("Tó Cruz foi derrotado! Simulação encerrada.");
+    }
+
+    public int getVidaRestante() {
+        return toCruz.getVida();
+    }
+
+    public String getStatus() {
+        return toCruz.getVida() > 0 ? "SUCESSO" : "FALHA";
+    }
+
+    public String getDivisaoFinal() {
+        return toCruz.getPosicaoAtual().getNomeDivisao();
     }
 
     /**
@@ -87,10 +101,10 @@ public class SimulacaoManual {
 
         try {
             if (mapa.podeMover(toCruz.getPosicaoAtual().getNomeDivisao(), novaDivisao)) {
-                Divisao proximaDivisao = encontrarDivisaoPorNome(novaDivisao);
+                Divisao proximaDivisao = mapa.getDivisaoPorNome(novaDivisao);
                 toCruz.moverPara(proximaDivisao);
                 verificarItens(proximaDivisao);
-                verificarInimigos(proximaDivisao);
+                combateService.resolverCombate(toCruz, proximaDivisao);
             } else {
                 System.out.println("Movimento inválido! Divisões não conectadas.");
             }
@@ -104,20 +118,7 @@ public class SimulacaoManual {
      */
     private void atacar() {
         Divisao divisaoAtual = toCruz.getPosicaoAtual();
-        if (divisaoAtual.getInimigosPresentes().getSize() == 0) {
-            System.out.println("Não há inimigos para atacar.");
-            return;
-        }
-
-        for (int i = 0; i < divisaoAtual.getInimigosPresentes().getSize(); i++) {
-            Inimigo inimigo = divisaoAtual.getInimigosPresentes().getElementAt(i);
-            inimigo.sofrerDano(10); // Dano arbitrário
-            if (inimigo.getVida() <= 0) {
-                divisaoAtual.removerInimigo(inimigo);
-            } else {
-                toCruz.sofrerDano(inimigo.atacar());
-            }
-        }
+        combateService.resolverCombate(toCruz, divisaoAtual);
     }
 
     /**
@@ -126,62 +127,21 @@ public class SimulacaoManual {
      * @param divisao A divisão atual do Tó Cruz.
      */
     private void verificarItens(Divisao divisao) {
-        if (divisao.getInimigosPresentes().getSize() == 0) {
-            return;
-        }
+        if (divisao.getItensPresentes().getSize() > 0) {
+            System.out.println("Itens encontrados na divisão:");
+            for (Item item : divisao.getItensPresentes()) {
+                System.out.println("- " + item.getTipo());
+            }
 
-        System.out.println("Itens encontrados na divisão:");
-        for (int i = 0; i < divisao.getItensPresentes().getSize(); i++) {
-            Item item = divisao.getItensPresentes().getElementAt(i);
-            System.out.println("- " + item.getTipo());
-        }
-
-        System.out.print("Deseja pegar todos os itens? (sim/não): ");
-        String resposta = scanner.nextLine();
-        if (resposta.equalsIgnoreCase("sim")) {
-            while (divisao.getInimigosPresentes().getSize() != 0) {
-                Item item = divisao.getItensPresentes().getElementAt(0);
-                toCruz.adicionarAoInventario(item);
-                divisao.removerItem(item);
+            System.out.print("Deseja pegar todos os itens? (sim/não): ");
+            String resposta = scanner.nextLine();
+            if (resposta.equalsIgnoreCase("sim")) {
+                while (divisao.getItensPresentes().getSize() > 0) {
+                    Item item = divisao.getItensPresentes().getElementAt(0);
+                    toCruz.adicionarAoInventario(item);
+                    divisao.removerItem(item);
+                }
             }
         }
     }
-
-    /**
-     * Verifica se há inimigos na divisão e avisa o jogador.
-     *
-     * @param divisao A divisão atual do Tó Cruz.
-     */
-    private void verificarInimigos(Divisao divisao) {
-        if (divisao.getInimigosPresentes().getSize() != 0) {
-            System.out.println("Cuidado! Inimigos encontrados na divisão.");
-        }
-    }
-
-    /**
-     * Encontra uma divisão pelo nome.
-     *
-     * @param nome Nome da divisão.
-     * @return A divisão correspondente.
-     */
-    private Divisao encontrarDivisaoPorNome(String nome) {
-        for (int i = 0; i < mapa.getDivisao().getSize(); i++) {
-            Divisao divisao = mapa.getDivisao().getElementAt(i);
-            if (divisao.getNomeDivisao().equals(nome)) {
-                return divisao;
-            }
-        }
-        throw new IllegalArgumentException("Divisão não encontrada.");
-    }
-
-
-    private void mostrarMelhorCaminho() {
-        LinkedList<Divisao> caminho = simulacaoAutomatica.calcularMelhorCaminho(toCruz.getPosicaoAtual(), mapa.getAlvo().getDivisao());
-        System.out.println("Melhor caminho para o alvo:");
-        for (Divisao divisao : caminho) {
-            System.out.print(divisao + " -> ");
-        }
-        System.out.println("Alvo");
-    }
-
 }

@@ -214,6 +214,16 @@ public class LinkedList<T> implements Iterable<T>
         System.out.print("]\n");
     }
 
+
+       /**
+     * Verifica se a lista está vazia.
+     *
+     * @return true se a lista estiver vazia, false caso contrário.
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
     /**
      * mostrar
      */
