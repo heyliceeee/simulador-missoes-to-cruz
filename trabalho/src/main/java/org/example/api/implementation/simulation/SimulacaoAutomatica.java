@@ -47,14 +47,22 @@ public class SimulacaoAutomatica {
             Divisao atual = fila.remove(fila.getElementAt(0));
     
             if (atual.equals(divisaoObjetivo)) {
+                // Reconstruir o caminho até o objetivo
                 reconstruirCaminho(caminho, divisaoObjetivo);
+    
+                // Após alcançar o objetivo, verifica o trajeto de volta
+                if (toCruz.getVida() > 0) {
+                    verificarTrajetoDeVolta();
+                }
                 return;
             }
     
+            // Obtém as conexões da divisão atual
             LinkedList<Divisao> conexoes = mapa.obterConexoes(atual);
             for (int i = 0; i < conexoes.getSize(); i++) {
                 Divisao vizinho = conexoes.getElementAt(i);
     
+                // Verifica se é possível mover para a próxima divisão
                 if (mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao()) && !visitados.contains(vizinho)) {
                     visitados.add(vizinho);
                     fila.add(vizinho);
@@ -65,6 +73,7 @@ public class SimulacaoAutomatica {
     
         System.out.println("Caminho não encontrado para o objetivo.");
     }
+    
     
 
     public LinkedList<Divisao> getCaminhoPercorrido() {
@@ -299,4 +308,25 @@ public class SimulacaoAutomatica {
             return predecessor;
         }
     }
+
+    /**
+ * Verifica se o Tó Cruz pode retornar ao ponto de saída sem perder todos os pontos de vida.
+ */
+public void verificarTrajetoDeVolta() {
+    LinkedList<Divisao> caminhoDeVolta = calcularMelhorCaminho(toCruz.getPosicaoAtual(), mapa.getDivisaoPorNome("Saida"));
+    int vidaRestante = toCruz.getVida();
+
+    for (Divisao divisao : caminhoDeVolta) {
+        // Resolve combates em divisões do trajeto de volta
+        if (divisao.getInimigosPresentes().getSize() > 0) {
+            combateService.resolverCombate(toCruz, divisao);
+        }
+        if (toCruz.getVida() <= 0) {
+            System.out.println("Tó Cruz não conseguiu retornar com sucesso!");
+            return;
+        }
+    }
+    System.out.println("Missão concluída com sucesso! Tó Cruz retornou com o alvo.");
+}
+
 }

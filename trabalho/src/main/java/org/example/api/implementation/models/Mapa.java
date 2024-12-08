@@ -1,6 +1,8 @@
 package org.example.api.implementation.models;
 
 import java.util.Iterator;
+import java.util.Random;
+
 import org.example.collections.implementation.Graph;
 import org.example.collections.implementation.LinkedList;
 
@@ -51,7 +53,7 @@ public class Mapa {
     public void adicionarLigacao(String nomeDivisao1, String nomeDivisao2) {
         Divisao divisao1 = getDivisaoPorNome(nomeDivisao1);
         Divisao divisao2 = getDivisaoPorNome(nomeDivisao2);
-    
+
         if (divisao1 == null) {
             System.err.println("Erro: Divisão de origem não encontrada: " + nomeDivisao1);
             return;
@@ -60,7 +62,7 @@ public class Mapa {
             System.err.println("Erro: Divisão de destino não encontrada: " + nomeDivisao2);
             return;
         }
-    
+
         grafo.addEdge(divisao1, divisao2);
         // Log já está dentro do método addEdge
     }
@@ -172,7 +174,8 @@ public class Mapa {
     }
 
     /**
-     * Obtém todas as conexões (divisões acessíveis) a partir de uma divisão específica.
+     * Obtém todas as conexões (divisões acessíveis) a partir de uma divisão
+     * específica.
      *
      * @param divisao Divisão de origem.
      * @return Lista de divisões conectadas.
@@ -183,7 +186,7 @@ public class Mapa {
         while (iterator.hasNext()) {
             Divisao conexao = iterator.next();
             conexoes.add(conexao);
-            System.out.println("Conexão encontrada: " + conexao.getNomeDivisao());
+            // System.out.println("Conexão encontrada: " + conexao.getNomeDivisao());
         }
         return conexoes;
     }
@@ -225,13 +228,41 @@ public class Mapa {
         Iterator<Divisao> iterator = grafo.iterator(); // Usar o iterador padrão
         return iterator.hasNext() ? iterator.next() : null;
     }
-    
 
     /**
      * Mostra o mapa do edifício (matriz de adjacência e valores dos vértices).
      */
+    /*
+     * public void mostrarMapa() {
+     * System.out.println(grafo.toString());
+     * }
+     */
+
+    /**
+     * Mostra o mapa do edifício, exibindo as divisões (vértices) e suas conexões
+     * (arestas).
+     */
     public void mostrarMapa() {
-        System.out.println(grafo.toString());
+        System.out.println("===== MAPA DO EDIFÍCIO =====");
+
+        for (Divisao divisao : getDivisoes()) {
+            System.out.print("Divisão: " + divisao.getNomeDivisao() + " -> Conectada com: ");
+
+            LinkedList<Divisao> conexoes = obterConexoes(divisao);
+            if (conexoes.isEmpty()) {
+                System.out.print("Nenhuma conexão");
+            } else {
+                for (int i = 0; i < conexoes.getSize(); i++) {
+                    System.out.print(conexoes.getElementAt(i).getNomeDivisao());
+                    if (i < conexoes.getSize() - 1) {
+                        System.out.print(", ");
+                    }
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println("=============================");
     }
 
     /**
@@ -251,4 +282,92 @@ public class Mapa {
     public Alvo getAlvo() {
         return alvo;
     }
+
+    /**
+     * Move os inimigos aleatoriamente para divisões conectadas até duas divisões de
+     * distância.
+     */
+    public void moverInimigos() {
+        for (Divisao divisaoAtual : getDivisoes()) {
+            LinkedList<Inimigo> inimigos = divisaoAtual.getInimigosPresentes();
+            LinkedList<Inimigo> inimigosMovidos = new LinkedList<>();
+
+            // Processa cada inimigo presente na divisão atual
+            for (int i = 0; i < inimigos.getSize(); i++) {
+                Inimigo inimigo = inimigos.getElementAt(i);
+
+                // Obtém divisões conectadas e expande até duas conexões de distância
+                LinkedList<Divisao> possiveisMovimentos = expandirConexoes(divisaoAtual);
+
+                // Escolhe aleatoriamente uma nova divisão
+                if (!possiveisMovimentos.isEmpty()) {
+                    Random random = new Random();
+                    Divisao novaDivisao = possiveisMovimentos
+                            .getElementAt(random.nextInt(possiveisMovimentos.getSize()));
+
+                    // Move o inimigo para a nova divisão
+                    novaDivisao.adicionarInimigo(inimigo);
+                    inimigosMovidos.add(inimigo); // Marca o inimigo para remoção após a iteração
+                    System.out.println("Inimigo " + inimigo.getNome() + " movido para " + novaDivisao.getNomeDivisao());
+                }
+            }
+
+            // Remove os inimigos que foram movidos da divisão atual
+            for (int i = 0; i < inimigosMovidos.getSize(); i++) {
+                divisaoAtual.removerInimigo(inimigosMovidos.getElementAt(i));
+            }
+        }
+    }
+
+    /**
+     * Expande as conexões de uma divisão para incluir divisões conectadas a até
+     * duas conexões de distância.
+     *
+     * @param divisaoAtual A divisão atual de onde partirá a expansão.
+     * @return Uma lista de divisões acessíveis a até duas conexões de distância.
+     */
+    private LinkedList<Divisao> expandirConexoes(Divisao divisaoAtual) {
+        LinkedList<Divisao> conexoesDiretas = obterConexoes(divisaoAtual);
+        LinkedList<Divisao> conexoesExpandida = new LinkedList<>();
+
+        // Adiciona conexões de segunda distância
+        for (int i = 0; i < conexoesDiretas.getSize(); i++) {
+            Divisao conexao = conexoesDiretas.getElementAt(i);
+            LinkedList<Divisao> conexoesSegundaDistancia = obterConexoes(conexao);
+
+            for (int j = 0; j < conexoesSegundaDistancia.getSize(); j++) {
+                Divisao segundaConexao = conexoesSegundaDistancia.getElementAt(j);
+
+                // Adiciona a conexão se ela não estiver na lista inicial e não for a própria
+                // divisão atual
+                if (!conexoesDiretas.contains(segundaConexao) && !conexoesExpandida.contains(segundaConexao)
+                        && !segundaConexao.equals(divisaoAtual)) {
+                    conexoesExpandida.add(segundaConexao);
+                }
+            }
+        }
+
+        // Adiciona conexões diretas à lista expandida
+        for (int i = 0; i < conexoesDiretas.getSize(); i++) {
+            Divisao conexao = conexoesDiretas.getElementAt(i);
+            if (!conexoesExpandida.contains(conexao)) {
+                conexoesExpandida.add(conexao);
+            }
+        }
+
+        return conexoesExpandida;
+    }
+
+    /**
+     * Remove o alvo do mapa.
+     */
+    public void removerAlvo() {
+        if (alvo != null) {
+            System.out.println("Alvo removido do mapa.");
+            this.alvo = null;
+        } else {
+            System.out.println("Nenhum alvo presente no mapa para remover.");
+        }
+    }
+
 }

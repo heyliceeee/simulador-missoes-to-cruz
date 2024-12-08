@@ -2,18 +2,18 @@
   {
     "id": "AUTO-001",
     "divisaoInicial": "Heliporto",
-    "divisaoFinal": "Garagem",
+    "divisaoFinal": "Laboratório",
     "status": "SUCESSO",
     "vidaRestante": 95,
     "trajeto": {
       "head": {
         "element": "Heliporto",
         "next": {
-          "element": "Garagem"
+          "element": "Laboratório"
         }
       },
       "tail": {
-        "element": "Garagem"
+        "element": "Laboratório"
       },
       "sentinel": {},
       "size": 2

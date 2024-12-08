@@ -19,15 +19,29 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Inicialização do Mapa
+        // ============ INICIALIZAÇÃO DO MAPA ============
+        logger.info("Iniciando o carregamento do mapa...");
         Mapa mapa = new Mapa();
         JsonUtils jsonUtils = new JsonUtils(mapa);
-
         String caminhoJson = "mapa.json";
 
         try {
             jsonUtils.carregarMapa(caminhoJson);
             logger.info("Mapa carregado com sucesso e pronto para uso!");
+
+            // Exibir o mapa na consola
+            System.out.println("Mapa do edifício:");
+            mapa.mostrarMapa();
+
+            // Verificar se o alvo foi carregado corretamente
+            Alvo alvo = mapa.getAlvo();
+            if (alvo != null) {
+                logger.info("Alvo carregado do JSON: Divisão - {}, Tipo - {}", alvo.getDivisao().getNomeDivisao(), alvo.getTipo());
+            } else {
+                logger.error("Nenhum alvo definido no JSON ou erro ao carregar.");
+                return;
+            }
+
         } catch (InvalidJsonStructureException e) {
             logger.error("Erro na estrutura do JSON: {}", e.getMessage());
             return;
@@ -43,33 +57,23 @@ public class Main {
             return;
         }
 
-        // Verifique se o mapa foi carregado corretamente antes de prosseguir
         if (mapa.getDivisoes().isEmpty()) {
             logger.error("Mapa não possui divisões carregadas. Encerrando o programa.");
             return;
         }
 
-        // Inicialização do Agente (ToCruz)
+        // ============ INICIALIZAÇÃO DO AGENTE ============
+        logger.info("Inicializando o agente Tó Cruz...");
         ToCruz toCruz = new ToCruz("Tó Cruz", 100); // Nome e vida inicial
-
-        // Definir a posição inicial do agente (assumindo que há pelo menos uma divisão)
-        Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Escolhe a primeira divisão como inicial
+        Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
         toCruz.moverPara(divisaoInicial);
-        logger.info("Agente {} iniciado na divisão: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
+        logger.info("Agente {} posicionado na divisão inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
 
-        // Definir o alvo da missão (assumindo que há pelo menos uma divisão no mapa)
-        Divisao divisaoObjetivo = mapa.getDivisoes().getElementAt(mapa.getDivisoes().getSize() - 1); // Última divisão como objetivo
-        mapa.definirAlvo(divisaoObjetivo.getNomeDivisao(), "ObjetoValioso");
-        logger.info("Alvo definido na divisão: {}", divisaoObjetivo.getNomeDivisao());
-
-       // Executar Simulação Automática
+        // ============ SIMULAÇÃO AUTOMÁTICA ============
+        logger.info("Iniciando a simulação automática...");
         SimulacaoAutomatica simulacaoAuto = new SimulacaoAutomatica(mapa, toCruz);
-        simulacaoAuto.executar(divisaoObjetivo);
+        simulacaoAuto.executar(mapa.getAlvo().getDivisao());
 
-        // Coletar resultados da Simulação Automática
-        LinkedList<ResultadoSimulacao> resultadosSimulacao = new LinkedList<>();
-
-        // Criar ResultadoSimulacao
         ResultadoSimulacao resultadoAuto = new ResultadoSimulacao(
                 "AUTO-001",
                 divisaoInicial.getNomeDivisao(),
@@ -79,37 +83,31 @@ public class Main {
                 coletarTrajeto(simulacaoAuto.getCaminhoPercorrido()),
                 mapa.getEntradasSaidasNomes()
         );
+        logger.info("Resultado da Simulação Automática: {}", resultadoAuto.toString());
 
-        // Adicionar o resultado à lista
-        resultadosSimulacao.add(resultadoAuto);
-
-        // Exportar os resultados para um arquivo JSON
-        ExportarResultados.exportarParaJson(resultadosSimulacao, "resultado_simulacao.json");
-
+        // Exportar resultado para JSON
+        ExportarResultados.exportarParaJson(new LinkedList<ResultadoSimulacao>() {{
+            add(resultadoAuto);
+        }}, "resultado_simulacao.json");
         logger.info("Resultado da Simulação Automática exportado para 'resultado_simulacao.json'.");
-        //logger.info("Resultado da Simulação Automática: {}", resultadoAuto);
 
-        // Executar Simulação Manual
+        // ============ SIMULAÇÃO MANUAL ============
+        logger.info("Iniciando a simulação manual...");
         SimulacaoManual simulacaoManual = new SimulacaoManual(mapa, toCruz);
         simulacaoManual.executar();
 
-        // Coletar resultados da Simulação Manual
-        // Nota: Dependendo da implementação, você pode precisar ajustar como os dados são coletados
-        // Aqui, assumimos que SimulacaoManual também atualiza o caminhoPercorrido ou similar
-        // Por simplicidade, deixamos o trajeto como vazio
         ResultadoSimulacao resultadoManual = new ResultadoSimulacao(
                 "MANUAL-001",
                 divisaoInicial.getNomeDivisao(),
                 toCruz.getPosicaoAtual().getNomeDivisao(),
                 toCruz.getVida() > 0 ? "SUCESSO" : "FALHA",
                 toCruz.getVida(),
-                new LinkedList<>(), // Implementar coleta de trajeto se necessário
+                new LinkedList<>(), // Atualizar com o trajeto percorrido, se disponível
                 mapa.getEntradasSaidasNomes()
         );
-
         logger.info("Resultado da Simulação Manual: {}", resultadoManual.toString());
 
-        // Finalizar o Programa
+        // ============ FINALIZAÇÃO ============
         logger.info("Programa finalizado com sucesso.");
     }
 

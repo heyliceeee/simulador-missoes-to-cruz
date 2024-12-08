@@ -37,7 +37,7 @@ public class SimulacaoManual {
         while (toCruz.getVida() > 0) {
             mostrarEstado();
             String comando = obterComando();
-
+    
             switch (comando.toLowerCase()) {
                 case "mover":
                     mover();
@@ -53,6 +53,15 @@ public class SimulacaoManual {
                     return;
                 default:
                     System.out.println("Comando inválido. Tente novamente.");
+            }
+    
+            // Interação com o alvo ao final de cada turno
+            interagirComAlvo(toCruz.getPosicaoAtual());
+            
+            // Verificar se a missão foi concluída
+            if (toCruz.isAlvoConcluido()) {
+                System.out.println("Missão concluída com sucesso! Tó Cruz capturou o alvo.");
+                return;
             }
         }
         System.out.println("Tó Cruz foi derrotado! Simulação encerrada.");
@@ -144,4 +153,24 @@ public class SimulacaoManual {
             }
         }
     }
+
+    /**
+ * Interage com o alvo se estiver na mesma divisão.
+ * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
+ *
+ * @param divisao A divisão onde o Tó Cruz está.
+ */
+private void interagirComAlvo(Divisao divisao) {
+    Alvo alvo = mapa.getAlvo();
+    if (alvo != null && alvo.getDivisao().equals(divisao)) {
+        if (divisao.getInimigosPresentes().getSize() > 0) {
+            System.out.println("O alvo está nesta sala, mas há inimigos! Elimine-os primeiro.");
+        } else {
+            System.out.println("O alvo foi resgatado com sucesso!");
+            mapa.removerAlvo();
+            toCruz.setAlvoConcluido(true);
+        }
+    }
+}
+
 }
