@@ -4,6 +4,7 @@ import org.example.api.implementation.models.*;
 import org.example.api.implementation.services.CombateService;
 import org.example.collections.implementation.LinkedList;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -36,7 +37,13 @@ public class SimulacaoManual {
         System.out.println("Início da simulação manual!");
         while (toCruz.getVida() > 0) {
             mostrarEstado();
-            String comando = obterComando();
+            String comando = obterComando().trim(); // Remove espaços extras
+
+        // Verifica se o comando é válido
+        if (comando.isEmpty()) {
+            System.out.println("Nenhum comando fornecido. Tente novamente.");
+            continue;
+        }
     
             switch (comando.toLowerCase()) {
                 case "mover":
@@ -96,10 +103,16 @@ public class SimulacaoManual {
      * @return O comando inserido pelo jogador.
      */
     private String obterComando() {
+    try {
         System.out.println("Comandos disponíveis: mover, usar, atacar, sair");
         System.out.print("Digite seu comando: ");
-        return scanner.nextLine();
+        return scanner.nextLine(); // Aguarda a entrada do usuário
+    } catch (NoSuchElementException e) {
+        System.out.println("Erro ao receber comando. Por favor, tente novamente.");
+        return ""; // Retorna string vazia para evitar falha
     }
+}
+
 
     /**
      * Gerencia o movimento do Tó Cruz.

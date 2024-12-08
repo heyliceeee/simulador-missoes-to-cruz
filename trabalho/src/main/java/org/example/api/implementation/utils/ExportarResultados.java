@@ -7,7 +7,6 @@ import org.example.collections.implementation.LinkedList;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Classe utilitária para exportar os resultados das simulações usando Gson.
@@ -22,17 +21,27 @@ public class ExportarResultados {
      */
     public static void exportarParaJson(LinkedList<ResultadoSimulacao> resultados, String caminhoArquivo) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        ArrayList<ResultadoSimulacao> lista = new ArrayList<>();
-
-        for (int i = 0; i < resultados.getSize(); i++) {
-            lista.add(resultados.getElementAt(i));
-        }
+        ResultadoSimulacao[] arrayResultados = convertToArray(resultados);
 
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
-            gson.toJson(lista, writer);
+            gson.toJson(arrayResultados, writer); // Exporta o array diretamente
             System.out.println("Resultados exportados com sucesso para: " + caminhoArquivo);
         } catch (IOException e) {
             System.err.println("Erro ao exportar resultados: " + e.getMessage());
         }
+    }
+
+    /**
+     * Converte um LinkedList em um array.
+     *
+     * @param linkedList O LinkedList a ser convertido.
+     * @return Um array contendo os elementos do LinkedList.
+     */
+    private static ResultadoSimulacao[] convertToArray(LinkedList<ResultadoSimulacao> linkedList) {
+        ResultadoSimulacao[] array = new ResultadoSimulacao[linkedList.getSize()];
+        for (int i = 0; i < linkedList.getSize(); i++) {
+            array[i] = linkedList.getElementAt(i);
+        }
+        return array;
     }
 }
