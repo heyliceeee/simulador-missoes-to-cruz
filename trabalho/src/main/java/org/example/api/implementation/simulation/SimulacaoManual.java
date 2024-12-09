@@ -37,6 +37,7 @@ public class SimulacaoManual {
         System.out.println("Início da simulação manual!");
         while (toCruz.getVida() > 0) {
             mostrarEstado();
+            sugerirMelhorCaminhoEDisponibilidade(); // Sugere o melhor caminho
             String comando = obterComando().trim(); // Remove espaços extras
 
         // Verifica se o comando é válido
@@ -73,6 +74,32 @@ public class SimulacaoManual {
         }
         System.out.println("Tó Cruz foi derrotado! Simulação encerrada.");
     }
+
+
+    /**
+     * Sugerir o melhor caminho e localizar items em cada turno
+     */
+    private void sugerirMelhorCaminhoEDisponibilidade() {
+        Divisao alvo = mapa.getAlvo().getDivisao();
+        LinkedList<Divisao> caminhoParaAlvo = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), alvo);
+
+        System.out.println("Sugestão de trajeto até o alvo:");
+        for (int i = 0; i < caminhoParaAlvo.getSize(); i++) {
+            System.out.print(caminhoParaAlvo.getElementAt(i).getNomeDivisao());
+            if (i < caminhoParaAlvo.getSize() - 1) {
+                System.out.print(" -> ");
+            }
+        }
+        System.out.println();
+
+        Divisao kitMaisProximo = mapa.encontrarKitMaisProximo(toCruz.getPosicaoAtual());
+        if (kitMaisProximo != null) {
+            System.out.println("Kit de recuperação mais próximo: " + kitMaisProximo.getNomeDivisao());
+        } else {
+            System.out.println("Nenhum kit de recuperação disponível.");
+        }
+    }
+
 
     public int getVidaRestante() {
         return toCruz.getVida();

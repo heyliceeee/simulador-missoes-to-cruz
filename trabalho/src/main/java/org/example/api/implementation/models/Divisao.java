@@ -144,4 +144,22 @@ public class Divisao {
     public String toString() {
         return nomeDivisao;
     }
+
+
+    /**
+     * Verifica se ha um kit na divisao.
+     * Um kit pode ser do tipo "kit de vida" ou "colete".
+     *
+     * @return true se há um kit, false caso contrario.
+     */
+    public boolean temKit() {
+        for (int i = 0; i < itensPresentes.getSize(); i++) {
+            Item item = itensPresentes.getElementAt(i);
+            if (item.getTipo().equalsIgnoreCase("kit de vida") ||
+                    item.getTipo().equalsIgnoreCase("colete")) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
