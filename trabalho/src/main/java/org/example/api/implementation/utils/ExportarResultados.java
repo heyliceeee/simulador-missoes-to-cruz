@@ -46,6 +46,11 @@ public class ExportarResultados {
         return array;
     }
 
+    /**
+     * Ordenar de forma descrescente os resultados, com base nos pontos de vida restantes
+     *
+     * @param resultados
+     */
     public static void ordenarResultados(LinkedList<ResultadoSimulacao> resultados) {
         // Ordena a lista com base nos pontos de vida restantes (maior para menor)
         for (int i = 0; i < resultados.getSize() - 1; i++) {

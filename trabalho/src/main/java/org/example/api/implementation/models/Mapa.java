@@ -370,4 +370,62 @@ public class Mapa {
         }
     }
 
+
+    /**
+     * Encontrar o melhor caminho ate o alvo
+     * @param origem divisao atual
+     * @param destino divisao destino
+     * @return o percurso de divisoes
+     */
+    public LinkedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino) {
+        if (origem == null || destino == null) {
+            throw new IllegalArgumentException("Origem ou destino inválido");
+        }
+
+        Iterator<Divisao> caminhoIterator = grafo.iteratorShortestPath(origem, destino);
+        LinkedList<Divisao> caminho = new LinkedList<>();
+
+        while (caminhoIterator.hasNext()) {
+            caminho.add(caminhoIterator.next());
+        }
+
+        return caminho;
+    }
+
+
+    /**
+     * Localizar o kit de vida mais proximo
+     * @param origem divisao atual
+     * @return divisao
+     */
+    public Divisao encontrarKitMaisProximo(Divisao origem) {
+        if (origem == null) {
+            throw new IllegalArgumentException("Origem inválida");
+        }
+
+        LinkedList<Divisao> divisoesVisitadas = new LinkedList<>();
+        LinkedList<Divisao> fila = new LinkedList<>();
+        fila.add(origem);
+
+        while (!fila.isEmpty()) {
+            Divisao atual = fila.getElementAt(0);
+            fila.remove(atual);
+
+            if (atual.temKit()) { // verifica se ha kit na divisao
+                return atual;
+            }
+
+            LinkedList<Divisao> adjacentes = obterConexoes(atual);
+            for (int i = 0; i < adjacentes.getSize(); i++) {
+                Divisao vizinho = adjacentes.getElementAt(i);
+                if (!divisoesVisitadas.contains(vizinho)) {
+                    fila.add(vizinho);
+                    divisoesVisitadas.add(vizinho);
+                }
+            }
+        }
+
+        return null; // Caso nenhum kit seja encontrado
+    }
+
 }
