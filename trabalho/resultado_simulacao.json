@@ -4,7 +4,7 @@
     "divisaoInicial": "Heliporto",
     "divisaoFinal": "Laboratório",
     "status": "SUCESSO",
-    "vidaRestante": 95,
+    "vidaRestante": 85,
     "trajeto": {
       "head": {
         "element": "Heliporto",

@@ -310,23 +310,64 @@ public class SimulacaoAutomatica {
     }
 
     /**
- * Verifica se o Tó Cruz pode retornar ao ponto de saída sem perder todos os pontos de vida.
- */
-public void verificarTrajetoDeVolta() {
-    LinkedList<Divisao> caminhoDeVolta = calcularMelhorCaminho(toCruz.getPosicaoAtual(), mapa.getDivisaoPorNome("Saida"));
-    int vidaRestante = toCruz.getVida();
+     * Verifica se o Tó Cruz pode retornar ao ponto de saída sem perder todos os pontos de vida.
+     */
+    public void verificarTrajetoDeVolta() {
+        LinkedList<Divisao> saidas = mapa.getEntradasSaidas(); // Obtém todas as saídas disponíveis no mapa
 
-    for (Divisao divisao : caminhoDeVolta) {
-        // Resolve combates em divisões do trajeto de volta
-        if (divisao.getInimigosPresentes().getSize() > 0) {
-            combateService.resolverCombate(toCruz, divisao);
-        }
-        if (toCruz.getVida() <= 0) {
-            System.out.println("Tó Cruz não conseguiu retornar com sucesso!");
+        if (saidas.isEmpty()) {
+            System.out.println("Erro: Não foi encontrada uma saída válida no mapa.");
             return;
         }
-    }
-    System.out.println("Missão concluída com sucesso! Tó Cruz retornou com o alvo.");
-}
 
+        // Determinar a melhor saída com base na distância
+        Divisao melhorSaida = null;
+        LinkedList<Divisao> melhorCaminho = null;
+        int menorDistancia = Integer.MAX_VALUE;
+
+        for (int i = 0; i < saidas.getSize(); i++) {
+            Divisao saida = saidas.getElementAt(i);
+            LinkedList<Divisao> caminhoParaSaida = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), saida);
+            if (caminhoParaSaida.getSize() < menorDistancia) {
+                menorDistancia = caminhoParaSaida.getSize();
+                melhorSaida = saida;
+                melhorCaminho = caminhoParaSaida;
+            }
+        }
+
+        if (melhorSaida == null || melhorCaminho == null) {
+            System.out.println("Erro: Não foi possível calcular o trajeto até uma saída válida.");
+            return;
+        }
+
+        System.out.println("Verificando trajeto de volta para a saída: " + melhorSaida.getNomeDivisao());
+        for (Divisao divisao : melhorCaminho) {
+            System.out.println("Movendo para: " + divisao.getNomeDivisao());
+
+            // Resolver combates em divisões do trajeto de volta
+            if (divisao.getInimigosPresentes().getSize() > 0) {
+                combateService.resolverCombate(toCruz, divisao);
+                if (toCruz.getVida() <= 0) {
+                    System.out.println("Tó Cruz foi derrotado durante o trajeto de volta!");
+                    return;
+                }
+            }
+
+            // Recuperar vida com itens disponíveis na divisão
+            while (divisao.getItensPresentes().getSize() > 0) {
+                Item item = divisao.getItensPresentes().getElementAt(0);
+                if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+                    toCruz.recuperarVida(item.getPontos());
+                    divisao.removerItem(item);
+                    System.out.println("Tó Cruz usou um kit de vida e recuperou " + item.getPontos() + " pontos de vida.");
+                } else if (item.getTipo().equalsIgnoreCase("colete")) {
+                    toCruz.adicionarAoInventario(item);
+                    divisao.removerItem(item);
+                    System.out.println("Tó Cruz coletou um colete.");
+                }
+            }
+        }
+
+        System.out.println("Missão concluída com sucesso! Tó Cruz chegou ao ponto de saída.");
+    }
 }
