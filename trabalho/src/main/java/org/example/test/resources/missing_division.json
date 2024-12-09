@@ -1,0 +1,8 @@
+{
+  "edificio": ["Divisao1", "Divisao2"],
+  "ligacoes": [["Divisao1", "Divisao3"]],
+  "entradas-saidas": ["Divisao1"],
+  "alvo": {"divisao": "Divisao2", "tipo": "quimico"},
+  "itens": [{"divisao": "Divisao3", "tipo": "kit de vida", "pontos-recuperados": 20}],
+  "inimigos": [{"nome": "inimigo1", "poder": 10, "divisao": "Divisao3"}]
+}

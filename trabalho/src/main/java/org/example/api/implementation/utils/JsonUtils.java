@@ -38,7 +38,7 @@ public class JsonUtils {
             // Parse JSON
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            logger.info("Arquivo JSON parseado com sucesso.");
+            logger.info("JSON parseado com sucesso.");
 
             // Validar estrutura do JSON
             validarEstrutura(jsonObject);
@@ -46,45 +46,45 @@ public class JsonUtils {
 
             // Ler divisões
             JSONArray edificioArray = (JSONArray) jsonObject.get("edificio");
-            logger.info("Carregando divisões:");
+            logger.info("Carregar divisoes:");
             for (Object element : edificioArray) {
                 String divisaoNome = validarString(element, "edificio");
                 mapa.adicionarDivisao(divisaoNome);
-                logger.debug("Divisão adicionada: {}", divisaoNome);
+                logger.debug("Divisao adicionada: {}", divisaoNome);
             }
 
             // Verificar se as divisões foram carregadas corretamente
-            logger.info("\nDivisões carregadas no grafo:");
+            logger.info("\nDivisoes carregadas no grafo:");
             mapa.getDivisoes().forEach(divisao -> logger.info(divisao.getNomeDivisao()));
 
             // Ler conexões
             JSONArray ligacoesArray = (JSONArray) jsonObject.get("ligacoes");
-            logger.info("\nCarregando ligações:");
+            logger.info("\nCarregando ligacoes:");
             for (Object element : ligacoesArray) {
                 JSONArray ligacao = (JSONArray) element;
                 if (ligacao.size() != 2) {
-                    throw new InvalidJsonStructureException("Cada conexão deve conter exatamente dois valores.");
+                    throw new InvalidJsonStructureException("Cada conexao deve conter exatamente dois valores.");
                 }
                 String origem = validarString(ligacao.get(0), "ligacao[0]");
                 String destino = validarString(ligacao.get(1), "ligacao[1]");
 
                 // Verifique se as divisões existem antes de conectar
                 if (mapa.getDivisaoPorNome(origem) == null) {
-                    throw new DivisionNotFoundException("Divisão de origem não encontrada: " + origem);
+                    throw new DivisionNotFoundException("Divisao de origem nao encontrada: " + origem);
                 }
                 if (mapa.getDivisaoPorNome(destino) == null) {
-                    throw new DivisionNotFoundException("Divisão de destino não encontrada: " + destino);
+                    throw new DivisionNotFoundException("Divisao de destino nao encontrada: " + destino);
                 }
 
                 mapa.adicionarLigacao(origem, destino);
-                logger.debug("Ligação adicionada entre '{}' e '{}'", origem, destino);
+                logger.debug("Ligacao adicionada entre '{}' e '{}'", origem, destino);
             }
 
             logger.info("\nMapa carregado com sucesso!");
 
             // Processar inimigos
             JSONArray inimigosArray = (JSONArray) jsonObject.get("inimigos");
-            logger.info("\nCarregando inimigos:");
+            logger.info("\nCarregar inimigos:");
             for (Object element : inimigosArray) {
                 JSONObject inimigoObj = (JSONObject) element;
                 String nome = validarString(inimigoObj.get("nome"), "inimigo.nome");
@@ -95,15 +95,15 @@ public class JsonUtils {
                 if (divisao != null) {
                     Inimigo inimigo = new Inimigo(nome, poder);
                     mapa.adicionarInimigo(divisaoNome, inimigo);
-                    logger.debug("Inimigo '{}' adicionado à divisão '{}'", nome, divisaoNome);
+                    logger.debug("Inimigo '{}' adicionado a divisao '{}'", nome, divisaoNome);
                 } else {
-                    throw new DivisionNotFoundException("Divisão para inimigo não encontrada: " + divisaoNome);
+                    throw new DivisionNotFoundException("Divisao para inimigo nao encontrada: " + divisaoNome);
                 }
             }
 
             // Processar itens
             JSONArray itensArray = (JSONArray) jsonObject.get("itens");
-            logger.info("\nCarregando itens:");
+            logger.info("\nCarregar itens:");
             for (Object element : itensArray) {
                 JSONObject itemObj = (JSONObject) element;
                 String divisaoNome = validarString(itemObj.get("divisao"), "item.divisao");
@@ -116,24 +116,24 @@ public class JsonUtils {
                     Item item;
                     if (pontosRecuperados > 0) {
                         item = new Item(tipo, pontosRecuperados);
-                        logger.debug("Item '{}' com pontos recuperados '{}' adicionado à divisão '{}'", tipo, pontosRecuperados, divisaoNome);
+                        logger.debug("Item '{}' com pontos recuperados '{}' adicionado a divisao '{}'", tipo, pontosRecuperados, divisaoNome);
                     } else {
                         item = new Item(tipo, pontosExtra);
-                        logger.debug("Item '{}' com pontos extra '{}' adicionado à divisão '{}'", tipo, pontosExtra, divisaoNome);
+                        logger.debug("Item '{}' com pontos extra '{}' adicionado a divisao '{}'", tipo, pontosExtra, divisaoNome);
                     }
                     mapa.adicionarItem(divisaoNome, item);
                 } else {
-                    throw new DivisionNotFoundException("Divisão para item não encontrada: " + divisaoNome);
+                    throw new DivisionNotFoundException("Divisao para item nao encontrada: " + divisaoNome);
                 }
             }
 
             // Processar entradas e saídas
             JSONArray entradasSaidasArray = (JSONArray) jsonObject.get("entradas-saidas");
-            logger.info("\nCarregando entradas e saídas:");
+            logger.info("\nCarregar entradas e saidas:");
             for (Object element : entradasSaidasArray) {
                 String nomeDivisao = validarString(element, "entradas-saidas");
                 mapa.adicionarEntradaSaida(nomeDivisao);
-                logger.debug("Entrada/Saída adicionada: {}", nomeDivisao);
+                logger.debug("Entrada/Saida adicionada: {}", nomeDivisao);
             }
 
             // Processar alvo
@@ -141,14 +141,15 @@ public class JsonUtils {
             String alvoDivisao = validarString(alvoObj.get("divisao"), "alvo.divisao");
             String alvoTipo = validarString(alvoObj.get("tipo"), "alvo.tipo");
             mapa.definirAlvo(alvoDivisao, alvoTipo);
-            logger.debug("Alvo definido: Divisão '{}', Tipo '{}'", alvoDivisao, alvoTipo);
+            logger.debug("Alvo definido: Divisao '{}', Tipo '{}'", alvoDivisao, alvoTipo);
 
         } catch (IOException e) {
-            logger.error("Erro de IO ao ler o arquivo JSON: {}", e.getMessage());
+            logger.error("Erro de IO ao ler o JSON: {}", e.getMessage());
         } catch (ParseException e) {
-            logger.error("Erro ao analisar o arquivo JSON: {}", e.getMessage());
+            logger.error("Erro ao analisar o JSON: {}", e.getMessage());
         } catch (InvalidJsonStructureException | InvalidFieldException | DivisionNotFoundException e) {
             logger.error("Erro ao processar o JSON: {}", e.getMessage());
+            throw e; // Repropague a exceção
         }
     }
 
@@ -162,7 +163,7 @@ public class JsonUtils {
      */
     private String validarString(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof String)) {
-            throw new InvalidFieldException("Campo '" + campo + "' deve ser uma string válida.");
+            throw new InvalidFieldException("Campo '" + campo + "' deve ser uma string valida.");
         }
         return ((String) value).trim(); // Remove espaços extras
     }
@@ -177,10 +178,12 @@ public class JsonUtils {
      */
     private int validarInt(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof Number)) {
-            throw new InvalidFieldException("Campo '" + campo + "' deve ser um número inteiro válido.");
+            logger.error("Campo '{}' invalido: valor atual '{}'", campo, value);
+            throw new InvalidFieldException("Campo '" + campo + "' deve ser um numero inteiro valido.");
         }
         return ((Number) value).intValue();
     }
+
 
     /**
      * Valida se a estrutura básica do JSON está presente.
@@ -190,22 +193,28 @@ public class JsonUtils {
      */
     private void validarEstrutura(JSONObject jsonObject) throws InvalidJsonStructureException {
         if (!jsonObject.containsKey("edificio") || !(jsonObject.get("edificio") instanceof JSONArray)) {
-            throw new InvalidJsonStructureException("Campo 'edificio' é obrigatório e deve ser uma lista.");
+            logger.error("Campo 'edificio' esta ausente ou nao e uma lista.");
+            throw new InvalidJsonStructureException("Campo 'edificio' obrigatorio e deve ser uma lista.");
         }
         if (!jsonObject.containsKey("ligacoes") || !(jsonObject.get("ligacoes") instanceof JSONArray)) {
-            throw new InvalidJsonStructureException("Campo 'ligacoes' é obrigatório e deve ser uma lista.");
+            logger.error("Campo 'ligacoes' esta ausente ou nao e uma lista.");
+            throw new InvalidJsonStructureException("Campo 'ligacoes' obrigatorio e deve ser uma lista.");
         }
         if (!jsonObject.containsKey("entradas-saidas") || !(jsonObject.get("entradas-saidas") instanceof JSONArray)) {
-            throw new InvalidJsonStructureException("Campo 'entradas-saidas' é obrigatório e deve ser uma lista.");
+            logger.error("Campo 'entradas-saidas' esta ausente ou nao e uma lista.");
+            throw new InvalidJsonStructureException("Campo 'entradas-saidas' obrigatorio e deve ser uma lista.");
         }
         if (!jsonObject.containsKey("alvo") || !(jsonObject.get("alvo") instanceof JSONObject)) {
-            throw new InvalidJsonStructureException("Campo 'alvo' é obrigatório e deve ser um objeto.");
+            logger.error("Campo 'alvo' esta ausente ou nao e um objeto.");
+            throw new InvalidJsonStructureException("Campo 'alvo' obrigatorio e deve ser um objeto.");
         }
         if (!jsonObject.containsKey("itens") || !(jsonObject.get("itens") instanceof JSONArray)) {
-            throw new InvalidJsonStructureException("Campo 'itens' é obrigatório e deve ser uma lista.");
+            logger.error("Campo 'itens' esta ausente ou nao e uma lista.");
+            throw new InvalidJsonStructureException("Campo 'itens' obrigatorio e deve ser uma lista.");
         }
         if (!jsonObject.containsKey("inimigos") || !(jsonObject.get("inimigos") instanceof JSONArray)) {
-            throw new InvalidJsonStructureException("Campo 'inimigos' é obrigatório e deve ser uma lista.");
+            logger.error("Campo 'inimigos' esta ausente ou nao e uma lista.");
+            throw new InvalidJsonStructureException("Campo 'inimigos' obrigatorio e deve ser uma lista.");
         }
     }
 }
