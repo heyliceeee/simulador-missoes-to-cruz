@@ -1,6 +1,5 @@
 package org.example.api.implementation.models;
 
-
 import org.example.collections.implementation.ArrayStack;
 
 /**
@@ -19,6 +18,11 @@ public class ToCruz {
     private int vida;
 
     /**
+     * Pontos de vida maxima do agente
+     */
+    private int vidaMaxima = 100;
+
+    /**
      * Posição atual no mapa
      */
     private Divisao posicaoAtual;
@@ -28,7 +32,14 @@ public class ToCruz {
      */
     private ArrayStack<Item> inventario;
 
-
+    /**
+     * Indica se o objetivo principal (alvo) foi concluído ou capturado.
+     * 
+     * Essa variável é usada para rastrear o estado da missão.
+     * - true: O alvo foi capturado com sucesso.
+     * - false: O alvo ainda não foi capturado.
+     */
+    private boolean alvoConcluido;
 
     /**
      * Construtor do Tó Cruz.
@@ -131,9 +142,9 @@ public class ToCruz {
         this.posicaoAtual = posicaoAtual;
     }
 
-
     /**
      * Obtem o nome do agente
+     * 
      * @return o nome
      */
     public String getNome() {
@@ -142,6 +153,7 @@ public class ToCruz {
 
     /**
      * Define o nome do agente
+     * 
      * @param nome o nome do agente
      */
     public void setNome(String nome) {
@@ -150,6 +162,7 @@ public class ToCruz {
 
     /**
      * Obtem o que o agente tem no inventario
+     * 
      * @return o inventario do agente
      */
     public ArrayStack<Item> getInventario() {
@@ -158,9 +171,42 @@ public class ToCruz {
 
     /**
      * Define o que o agente tem no seu inventario
+     * 
      * @param inventario a mochila do agente
      */
     public void setInventario(ArrayStack<Item> inventario) {
         this.inventario = inventario;
     }
+
+    /**
+     * Define se o alvo foi concluído.
+     *
+     * @param concluido true se o alvo foi capturado, false caso contrário.
+     */
+    public void setAlvoConcluido(boolean concluido) {
+        this.alvoConcluido = concluido;
+    }
+
+    /**
+     * Verifica se o alvo foi concluído.
+     *
+     * @return true se o alvo foi capturado, false caso contrário.
+     */
+    public boolean isAlvoConcluido() {
+        return alvoConcluido;
+    }
+
+
+    /**
+     * Atualizar pontos de vida
+     * @param pontos
+     */
+    public void recuperarVida(int pontos) {
+        this.vida += pontos;
+        if (this.vida > this.vidaMaxima) { // Garante que não ultrapassa o máximo
+            this.vida = this.vidaMaxima;
+        }
+        System.out.println("Vida atual do Tó Cruz: " + this.vida);
+    }
+
 }

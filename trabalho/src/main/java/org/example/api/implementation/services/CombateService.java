@@ -21,11 +21,12 @@ public class CombateService {
             return;
         }
 
-        for (Inimigo inimigo : divisaoAtual.getInimigosPresentes()) {
-            while (toCruz.getVida() > 0 && inimigo.getVida() > 0) {
-                inimigo.sofrerDano(10);
-                if (inimigo.getVida() > 0) {
-                    toCruz.sofrerDano(inimigo.atacar());
+        for (int i = 0; i < divisaoAtual.getInimigosPresentes().getSize(); i++) {
+            Inimigo inimigo = divisaoAtual.getInimigosPresentes().getElementAt(i);
+            while (toCruz.getVida() > 0 && inimigo.getPoder() > 0) { // Corrigido para getPoder()
+                inimigo.sofrerDano(10); // Tó Cruz ataca o inimigo com um dano fixo de 10
+                if (inimigo.getPoder() > 0) { // Corrigido para getPoder()
+                    toCruz.sofrerDano(5); // O inimigo ataca com dano fixo de 5
                 }
             }
 

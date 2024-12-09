@@ -1,0 +1,10 @@
+{
+  "cod-missao": "",
+  "versao": "1",
+  "edificio": [""],
+  "ligacoes": [["", ""]],
+  "inimigos": [{"nome": "", "poder": "5", "divisao": ""}],
+  "entradas-saidas": ["", "", "", ""],
+  "alvo": {"divisao": "", "tipo": "quimico"},
+  "itens": [{"divisao": "", "pontos-recuperados": "20", "tipo": "kit de vida"}]
+}

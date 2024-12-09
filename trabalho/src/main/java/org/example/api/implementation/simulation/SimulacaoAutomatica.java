@@ -12,6 +12,7 @@ public class SimulacaoAutomatica {
     private Mapa mapa;
     private ToCruz toCruz;
     private CombateService combateService;
+    private LinkedList<Divisao> caminhoPercorrido;
 
     /**
      * Construtor da Simulação Automática.
@@ -23,6 +24,7 @@ public class SimulacaoAutomatica {
         this.mapa = mapa;
         this.toCruz = toCruz;
         this.combateService = new CombateService();
+        this.caminhoPercorrido = new LinkedList<>();
     }
 
     /**
@@ -32,39 +34,62 @@ public class SimulacaoAutomatica {
      */
     public void executar(Divisao divisaoObjetivo) {
         System.out.println("Início da simulação automática!");
-
-        // Utilizando LinkedList para BFS
+    
         LinkedList<Divisao> fila = new LinkedList<>();
         LinkedList<Divisao> visitados = new LinkedList<>();
-        LinkedList<Predecessor> caminho = new LinkedList<>(); // Predecessores para reconstrução do caminho
-
+        LinkedList<Predecessor> caminho = new LinkedList<>();
+    
         fila.add(toCruz.getPosicaoAtual());
         visitados.add(toCruz.getPosicaoAtual());
         caminho.add(new Predecessor(toCruz.getPosicaoAtual(), null));
-
+    
         while (fila.getSize() > 0) {
             Divisao atual = fila.remove(fila.getElementAt(0));
-
+    
             if (atual.equals(divisaoObjetivo)) {
+                // Reconstruir o caminho até o objetivo
                 reconstruirCaminho(caminho, divisaoObjetivo);
+    
+                // Após alcançar o objetivo, verifica o trajeto de volta
+                if (toCruz.getVida() > 0) {
+                    verificarTrajetoDeVolta();
+                }
                 return;
             }
-
-            for (int i = 0; i < mapa.getDivisao().getSize(); i++) {
-                Divisao vizinho = mapa.getDivisao().getElementAt(i);
+    
+            // Obtém as conexões da divisão atual
+            LinkedList<Divisao> conexoes = mapa.obterConexoes(atual);
+            for (int i = 0; i < conexoes.getSize(); i++) {
+                Divisao vizinho = conexoes.getElementAt(i);
+    
+                // Verifica se é possível mover para a próxima divisão
                 if (mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao()) && !visitados.contains(vizinho)) {
                     visitados.add(vizinho);
-
-                    if (!visitados.contains(vizinho) && !fila.contains(vizinho)) {
-                        fila.add(vizinho);
-                    }
-
+                    fila.add(vizinho);
                     caminho.add(new Predecessor(vizinho, atual));
                 }
             }
         }
-
+    
         System.out.println("Caminho não encontrado para o objetivo.");
+    }
+    
+    
+
+    public LinkedList<Divisao> getCaminhoPercorrido() {
+        return caminhoPercorrido;
+    }
+
+    public int getVidaRestante() {
+        return toCruz.getVida();
+    }
+
+    public String getStatus() {
+        return toCruz.getVida() > 0 ? "SUCESSO" : "FALHA";
+    }
+
+    public Divisao getDivisaoFinal() {
+        return toCruz.getPosicaoAtual();
     }
 
     /**
@@ -76,30 +101,33 @@ public class SimulacaoAutomatica {
     private void reconstruirCaminho(LinkedList<Predecessor> caminho, Divisao objetivo) {
         LinkedList<Divisao> caminhoReverso = new LinkedList<>();
         Divisao atual = objetivo;
-
+    
         while (atual != null) {
             caminhoReverso.add(atual);
             atual = getPredecessor(caminho, atual.getNomeDivisao());
         }
-
+    
         System.out.println("Caminho encontrado:");
         for (int i = caminhoReverso.getSize() - 1; i >= 0; i--) {
             Divisao divisao = caminhoReverso.getElementAt(i);
             System.out.print(divisao.getNomeDivisao() + " -> ");
         }
         System.out.println("Objetivo");
-
-        // Realiza os movimentos automáticos
+    
+        // Armazena o caminho percorrido
         for (int i = caminhoReverso.getSize() - 1; i >= 0; i--) {
-            moverParaDivisao(caminhoReverso.getElementAt(i));
+            Divisao divisao = caminhoReverso.getElementAt(i);
+            caminhoPercorrido.add(divisao);
+            moverParaDivisao(divisao);
             if (toCruz.getVida() <= 0) {
                 System.out.println("Tó Cruz foi derrotado durante a simulação!");
                 return;
             }
         }
-
+    
         System.out.println("Tó Cruz alcançou o objetivo com sucesso!");
     }
+    
 
     /**
      * Move o Tó Cruz para a divisão especificada e resolve eventos.
@@ -123,23 +151,23 @@ public class SimulacaoAutomatica {
     }
 
     public void calcularTrajetoCompleto() {
-        LinkedList<LinkedList<Divisao>> melhoresTrajetos = new LinkedList<>(); // Lista de trajetos
-
-        LinkedList<String> entradas = mapa.getEntradasSaidas();
-        Divisao alvo = mapa.getAlvo().getDivisao(); // Obtem o alvo como uma Divisao
-
+        LinkedList<LinkedList<Divisao>> melhoresTrajetos = new LinkedList<>();
+    
+        LinkedList<String> entradas = mapa.getEntradasSaidasNomes();
+        Divisao alvo = mapa.getAlvo().getDivisao();
+    
         for (int i = 0; i < entradas.getSize(); i++) {
             String nomeEntrada = entradas.getElementAt(i);
-            Divisao entrada = mapa.getDivisaoPorNome(nomeEntrada); // Converte nome para Divisao
+            Divisao entrada = mapa.getDivisaoPorNome(nomeEntrada);
             LinkedList<Divisao> trajeto = calcularMelhorCaminho(entrada, alvo);
-            melhoresTrajetos.add(trajeto); // Adiciona o trajeto completo
+            melhoresTrajetos.add(trajeto);
         }
-
+    
         System.out.println("Melhor trajeto considerando todas as entradas:");
-        LinkedList<Divisao> melhorTrajeto = melhoresTrajetos.getElementAt(0); // Supõe que o primeiro trajeto é o melhor
-
+        LinkedList<Divisao> melhorTrajeto = melhoresTrajetos.getElementAt(0);
+    
         for (int i = 0; i < melhorTrajeto.getSize(); i++) {
-            Divisao divisao = melhorTrajeto.getElementAt(i); // Acessa cada divisão no trajeto
+            Divisao divisao = melhorTrajeto.getElementAt(i);
             System.out.print(divisao.getNomeDivisao() + " -> ");
         }
         System.out.println("Objetivo");
@@ -217,8 +245,26 @@ public class SimulacaoAutomatica {
         return caminhoInvertido;
     }
 
+    private void registrarCaminho(LinkedList<Divisao> caminhoReverso) {
+        for (int i = caminhoReverso.getSize() - 1; i >= 0; i--) {
+            Divisao divisao = caminhoReverso.getElementAt(i);
+            caminhoPercorrido.add(divisao);
+        }
+    }
 
 
+ /**
+     * Obtém o caminho percorrido em nomes de divisões.
+     *
+     * @return Uma lista de nomes das divisões percorridas.
+     */
+    public LinkedList<String> getCaminhoPercorridoNomes() {
+        LinkedList<String> nomes = new LinkedList<>();
+        for (int i = 0; i < caminhoPercorrido.getSize(); i++) {
+            nomes.add(caminhoPercorrido.getElementAt(i).getNomeDivisao());
+        }
+        return nomes;
+    }
 
 
 
@@ -234,14 +280,12 @@ public class SimulacaoAutomatica {
         for (int i = 0; i < predecessores.getSize(); i++) {
             Predecessor p = predecessores.getElementAt(i);
             if (p.getAtual().getNomeDivisao().equals(nomeDivisao)) {
-                return p.getPredecessor(); // Retorna o predecessor correto
+                return p.getPredecessor();
             }
         }
-        return null; // Se não há predecessor, retorna null
+        return null;
     }
-
-
-
+    
 
 
     /**
@@ -263,5 +307,67 @@ public class SimulacaoAutomatica {
         public Divisao getPredecessor() {
             return predecessor;
         }
+    }
+
+    /**
+     * Verifica se o Tó Cruz pode retornar ao ponto de saída sem perder todos os pontos de vida.
+     */
+    public void verificarTrajetoDeVolta() {
+        LinkedList<Divisao> saidas = mapa.getEntradasSaidas(); // Obtém todas as saídas disponíveis no mapa
+
+        if (saidas.isEmpty()) {
+            System.out.println("Erro: Não foi encontrada uma saída válida no mapa.");
+            return;
+        }
+
+        // Determinar a melhor saída com base na distância
+        Divisao melhorSaida = null;
+        LinkedList<Divisao> melhorCaminho = null;
+        int menorDistancia = Integer.MAX_VALUE;
+
+        for (int i = 0; i < saidas.getSize(); i++) {
+            Divisao saida = saidas.getElementAt(i);
+            LinkedList<Divisao> caminhoParaSaida = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), saida);
+            if (caminhoParaSaida.getSize() < menorDistancia) {
+                menorDistancia = caminhoParaSaida.getSize();
+                melhorSaida = saida;
+                melhorCaminho = caminhoParaSaida;
+            }
+        }
+
+        if (melhorSaida == null || melhorCaminho == null) {
+            System.out.println("Erro: Não foi possível calcular o trajeto até uma saída válida.");
+            return;
+        }
+
+        System.out.println("Verificando trajeto de volta para a saída: " + melhorSaida.getNomeDivisao());
+        for (Divisao divisao : melhorCaminho) {
+            System.out.println("Movendo para: " + divisao.getNomeDivisao());
+
+            // Resolver combates em divisões do trajeto de volta
+            if (divisao.getInimigosPresentes().getSize() > 0) {
+                combateService.resolverCombate(toCruz, divisao);
+                if (toCruz.getVida() <= 0) {
+                    System.out.println("Tó Cruz foi derrotado durante o trajeto de volta!");
+                    return;
+                }
+            }
+
+            // Recuperar vida com itens disponíveis na divisão
+            while (divisao.getItensPresentes().getSize() > 0) {
+                Item item = divisao.getItensPresentes().getElementAt(0);
+                if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+                    toCruz.recuperarVida(item.getPontos());
+                    divisao.removerItem(item);
+                    System.out.println("Tó Cruz usou um kit de vida e recuperou " + item.getPontos() + " pontos de vida.");
+                } else if (item.getTipo().equalsIgnoreCase("colete")) {
+                    toCruz.adicionarAoInventario(item);
+                    divisao.removerItem(item);
+                    System.out.println("Tó Cruz coletou um colete.");
+                }
+            }
+        }
+
+        System.out.println("Missão concluída com sucesso! Tó Cruz chegou ao ponto de saída.");
     }
 }

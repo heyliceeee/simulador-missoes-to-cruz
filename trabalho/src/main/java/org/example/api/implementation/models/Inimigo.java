@@ -1,122 +1,76 @@
 package org.example.api.implementation.models;
 
 /**
- * Representa um inimigo no jogo.
+ * Representa um inimigo no mapa.
  */
 public class Inimigo {
-
-    /**
-     * Nome do inimigo
-     */
     private String nome;
-
-    /**
-     *  Pontos de vida do inimigo
-     */
-    private int vida;
-
-    /**
-     * Dano que o inimigo pode causar
-     */
-    private int dano;
-
+    private int poder;
 
     /**
      * Construtor do Inimigo.
      *
-     * @param nome Nome do inimigo.
-     * @param vida Pontos de vida do inimigo.
-     * @param dano Poder de ataque do inimigo.
+     * @param nome  Nome do inimigo.
+     * @param poder Poder do inimigo.
      */
-    public Inimigo(String nome, int vida, int dano) {
+    public Inimigo(String nome, int poder) {
         this.nome = nome;
-        this.vida = vida;
-        this.dano = dano;
+        this.poder = poder;
     }
 
-    /**
-     * Realiza um ataque e retorna o dano causado.
-     *
-     * @return Dano causado pelo inimigo.
-     */
-    public int atacar() {
-        return dano;
-    }
-
-    /**
-     * Reduz a vida do inimigo ao sofrer dano.
-     *
-     * @param dano Dano sofrido.
-     */
-    public void sofrerDano(int dano) {
-        vida -= dano;
-        if (vida <= 0) {
-            System.out.println(nome + " foi derrotado!");
-        } else {
-            System.out.println(nome + " sofreu dano! Vida restante: " + vida);
-        }
-    }
-
-    /**
-     * Obtém o nome do inimigo.
-     *
-     * @return Nome do inimigo.
-     */
+    // Getter para o nome
     public String getNome() {
         return nome;
     }
 
-    /**
-     * Define o nome do inimigo.
-     *
-     * @param nome Novo nome do inimigo.
-     */
+    // Setter para o nome
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /**
-     * Obtém os pontos de vida do inimigo.
-     *
-     * @return Pontos de vida do inimigo.
-     */
-    public int getVida() {
-        return vida;
+    // Getter para o poder (Nota: 'Poder' com P maiúsculo)
+    public int getPoder() {
+        return poder;
+    }
+
+    // Setter para o poder
+    public void setPoder(int poder) {
+        this.poder = poder;
     }
 
     /**
-     * Define os pontos de vida do inimigo.
+     * Método para o inimigo sofrer dano.
      *
-     * @param vida Novo valor dos pontos de vida.
+     * @param dano Quantidade de dano a ser sofrido.
      */
-    public void setVida(int vida) {
-        this.vida = vida;
-    }
-
-    /**
-     * Obtém o dano do inimigo.
-     *
-     * @return dano
-     */
-    public int getDano() {
-        return dano;
-    }
-
-    /**
-     * Define o dano do inimigo.
-     *
-     * @param dano Novo valor do poder de ataque.
-     */
-    public void setDano(int dano) {
-        this.dano = dano;
+    public void sofrerDano(int dano) {
+        this.poder -= dano;
+        if (this.poder < 0) {
+            this.poder = 0; // Evita que o poder seja negativo
+        }
+        System.out.println(this.nome + " sofreu " + dano + " de dano. Poder restante: " + this.poder);
     }
 
     @Override
     public String toString() {
         return "Inimigo{" +
                 "nome='" + nome + '\'' +
-                ", vida=" + vida +
-                ", poderAtaque=" + dano +
+                ", poder=" + poder +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Inimigo inimigo = (Inimigo) o;
+
+        return nome.equals(inimigo.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return nome.hashCode();
     }
 }

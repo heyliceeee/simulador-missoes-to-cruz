@@ -60,6 +60,34 @@ public class LinkedList<T> implements Iterable<T>
     }
 
     /**
+     * Define o valor de um elemento na posição especificada.
+     *
+     * @param index O índice do elemento a ser atualizado.
+     * @param element O novo valor do elemento.
+     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
+     */
+    public void setElementAt(int index, T element) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Índice fora dos limites: " + index);
+        }
+
+        LinkedListNode<T> current = head; // Começa pelo primeiro elemento
+        int currentIndex = 0;
+
+        while (current != null) {
+            if (currentIndex == index) {
+                current.setElement(element); // Atualiza o elemento
+                return;
+            }
+            current = current.getNext(); // Avança para o próximo nó
+            currentIndex++;
+        }
+
+        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
+    }
+
+
+    /**
      * remover node sentinela
      * @param element
      * @return
@@ -212,6 +240,16 @@ public class LinkedList<T> implements Iterable<T>
         }
 
         System.out.print("]\n");
+    }
+
+
+       /**
+     * Verifica se a lista está vazia.
+     *
+     * @return true se a lista estiver vazia, false caso contrário.
+     */
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     /**

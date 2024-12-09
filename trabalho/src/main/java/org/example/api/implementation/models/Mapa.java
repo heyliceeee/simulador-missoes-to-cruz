@@ -1,220 +1,431 @@
 package org.example.api.implementation.models;
 
+import java.util.Iterator;
+import java.util.Random;
 
-import org.example.collections.implementation.ArrayOrderedList;
+import org.example.collections.implementation.Graph;
 import org.example.collections.implementation.LinkedList;
 
 /**
- * Representa o grafo do edificio e a matriz de adjacencia
+ * Representa o mapa do edifício como um grafo.
  */
 public class Mapa {
     /**
-     * Representa o edifício como um grafo não ponderado com uma matriz de adjacência:
-     * <br> - 1 significa que há uma ligação entre duas divisões
-     * <br> - Cada linha/coluna representa uma divisão , 0 significa que não há
+     * Grafo que representa o edifício e suas conexões.
      */
-    private int[][] adjMatrix;
+    private Graph<Divisao> grafo;
 
     /**
-     * Lista de divisões
+     * Lista de divisões que são entradas ou saídas do edifício.
      */
-    private LinkedList<Divisao> divisoes;
+    private LinkedList<Divisao> entradasSaidas;
 
     /**
-     * Lista de divisões de entrada/saída
-     */
-    private LinkedList<String> entradasSaidas;
-
-    /**
-     * Informações do alvo
+     * Informações sobre o alvo da missão.
      */
     private Alvo alvo;
 
-
-
-
     /**
-     * Construtor do Mapa
-     *
-     * @param numDivisoes Número total de divisões no edifício.
+     * Construtor padrão do Mapa.
      */
-    public Mapa(int numDivisoes) {
-        this.adjMatrix = new int[numDivisoes][numDivisoes];
-        this.divisoes = new LinkedList<>();
-    }
-
-
     public Mapa() {
-        this.divisoes = new LinkedList<>();
+        this.grafo = new Graph<>();
         this.entradasSaidas = new LinkedList<>();
-        this.adjMatrix = new int[1][1];
     }
 
     /**
      * Adiciona uma divisão ao mapa.
      *
-     * @param divisao divisão
-     */
-    public void adicionarDivisao(Divisao divisao) {
-        divisoes.add(divisao);
-    }
-
-    /**
-     * Adiciona uma divisão ao mapa.
-     *
-     * @param nomeDivisao divisão
+     * @param nomeDivisao Nome da divisão.
      */
     public void adicionarDivisao(String nomeDivisao) {
         Divisao divisao = new Divisao(nomeDivisao);
-        divisoes.add(divisao);
-
-        // Redimensiona a matriz de adjacência, se necessário
-        if (divisoes.getSize() > adjMatrix.length) {
-            redimensionarMatriz();
-        }
+        grafo.addVertex(divisao);
+        // Log já está dentro do método addVertex através adicionarDivisao
     }
-
-    public LinkedList<Divisao> obterConexoes(Divisao divisao) {
-        LinkedList<Divisao> conexoes = new LinkedList<>();
-        int indice = getIndiceDivisao(divisao.getNomeDivisao());
-
-        for (int i = 0; i < adjMatrix[indice].length; i++) {
-            if (adjMatrix[indice][i] == 1) {
-                Divisao vizinho = divisoes.getElementAt(i);
-
-                // Verifica se o vizinho é válido e não é a própria divisão
-                if (vizinho != null && !vizinho.equals(divisao)) {
-                    conexoes.add(vizinho);
-                }
-            }
-        }
-
-        return conexoes;
-    }
-
 
     /**
-     * Cria uma ligação entre duas divisões.
+     * Adiciona uma ligação entre duas divisões.
      *
-     * @param nomeDivisao1 Nome da divisão de origem.
-     * @param nomeDivisao2 Nome da divisão de destino.
+     * @param nomeDivisao1 Nome da primeira divisão.
+     * @param nomeDivisao2 Nome da segunda divisão.
      */
     public void adicionarLigacao(String nomeDivisao1, String nomeDivisao2) {
-        int indice1 = getIndiceDivisao(nomeDivisao1);
-        int indice2 = getIndiceDivisao(nomeDivisao2);
+        Divisao divisao1 = getDivisaoPorNome(nomeDivisao1);
+        Divisao divisao2 = getDivisaoPorNome(nomeDivisao2);
 
-        if (indice1 != -1 && indice2 != -1) {
-            adjMatrix[indice1][indice2] = 1;
-            adjMatrix[indice2][indice1] = 1; // Ligação bidirecional
+        if (divisao1 == null) {
+            System.err.println("Erro: Divisão de origem não encontrada: " + nomeDivisao1);
+            return;
+        }
+        if (divisao2 == null) {
+            System.err.println("Erro: Divisão de destino não encontrada: " + nomeDivisao2);
+            return;
+        }
+
+        grafo.addEdge(divisao1, divisao2);
+        // Log já está dentro do método addEdge
+    }
+
+    /**
+     * Adiciona uma divisão como entrada ou saída.
+     *
+     * @param nomeDivisao Nome da divisão.
+     */
+    public void adicionarEntradaSaida(String nomeDivisao) {
+        Divisao divisao = getDivisaoPorNome(nomeDivisao);
+        if (divisao != null) {
+            entradasSaidas.add(divisao);
+            System.out.println("Divisão adicionada como entrada/saída: " + nomeDivisao);
         } else {
-            System.out.println("Erro: Uma ou ambas as divisões não foram encontradas.");
+            System.err.println("Erro: Divisão de entrada/saída não encontrada: " + nomeDivisao);
         }
-    }
-
-    private int getIndiceDivisao(String nomeDivisao) {
-        for (int i = 0; i < divisoes.getSize(); i++) {
-            if (divisoes.getElementAt(i).getNomeDivisao().equals(nomeDivisao)) {
-                return i;
-            }
-        }
-        return -1; // Retorna -1 se a divisão não for encontrada
-    }
-
-    private void redimensionarMatriz() {
-        int novoTamanho = adjMatrix.length * 2; // Dobra o tamanho atual
-        int[][] novaAdjMatrix = new int[novoTamanho][novoTamanho];
-
-        // Copia os valores antigos para a nova matriz
-        for (int i = 0; i < adjMatrix.length; i++) {
-            for (int j = 0; j < adjMatrix[i].length; j++) {
-                novaAdjMatrix[i][j] = adjMatrix[i][j];
-            }
-        }
-
-        adjMatrix = novaAdjMatrix; // Substitui pela nova matriz
     }
 
     /**
-     * Verifica se há ligação entre duas divisões.
+     * Adiciona um item a uma divisão.
      *
-     * @param de Nome da divisão de origem.
-     * @param para Nome da divisão de destino.
-     * @return true se há ligação, false caso contrário.
+     * @param nomeDivisao Nome da divisão.
+     * @param item        Item a ser adicionado.
      */
-    public boolean podeMover(String de, String para) {
-        int i = getIndice(de);
-        int j = getIndice(para);
-        return adjMatrix[i][j] == 1;
-    }
-
-    /**
-     * Obtém o indice de uma divisão pelo nome.
-     *
-     * @param nome Nome da divisão.
-     * @return indice da divisão.
-     */
-    private int getIndice(String nome) {
-        for (int i = 0; i < divisoes.getSize(); i++) {
-            if (divisoes.getElementAt(i).getNomeDivisao().equals(nome)) {
-                return i;
-            }
-        }
-        throw new IllegalArgumentException("Divisão não encontrada: " + nome);
-    }
-
-    /**
-     * Mostra o mapa do edifício na consola para debug ou visualização.
-     */
-    public void mostrarMapa() {
-        for (int i = 0; i < adjMatrix.length; i++) {
-            System.out.println(divisoes.getElementAt(i) + ": " + java.util.Arrays.toString(adjMatrix[i]));
-        }
-    }
-
     public void adicionarItem(String nomeDivisao, Item item) {
-        for (int i = 0; i < divisoes.getSize(); i++) {
-            Divisao divisao = divisoes.getElementAt(i);
-            if (divisao.getNomeDivisao().equals(nomeDivisao)) {
-                divisao.adicionarItem(item);
-                return;
-            }
+        Divisao divisao = getDivisaoPorNome(nomeDivisao);
+        if (divisao != null) {
+            divisao.adicionarItem(item);
+            System.out.println("Item adicionado à divisão: " + nomeDivisao);
+        } else {
+            System.err.println("Erro: Divisão para adicionar o item não encontrada: " + nomeDivisao);
         }
-        System.out.println("Divisão não encontrada: " + nomeDivisao);
     }
 
-
-    public LinkedList<Divisao> getDivisao() {
-        return divisoes;
+    /**
+     * Adiciona um inimigo a uma divisão.
+     *
+     * @param nomeDivisao Nome da divisão.
+     * @param inimigo     Inimigo a ser adicionado.
+     */
+    public void adicionarInimigo(String nomeDivisao, Inimigo inimigo) {
+        Divisao divisao = getDivisaoPorNome(nomeDivisao);
+        if (divisao != null) {
+            divisao.adicionarInimigo(inimigo);
+            System.out.println("Inimigo adicionado à divisão: " + nomeDivisao);
+        } else {
+            System.err.println("Erro: Divisão para adicionar o inimigo não encontrada: " + nomeDivisao);
+        }
     }
 
-    public void setDivisao(LinkedList<Divisao> divisoes) {
-        this.divisoes = divisoes;
+    /**
+     * Define o alvo da missão.
+     *
+     * @param nomeDivisao Nome da divisão onde o alvo está localizado.
+     * @param tipo        Tipo do alvo.
+     */
+    public void definirAlvo(String nomeDivisao, String tipo) {
+        Divisao divisao = getDivisaoPorNome(nomeDivisao);
+        if (divisao != null) {
+            this.alvo = new Alvo(divisao, tipo);
+            System.out.println("Alvo definido na divisão: " + nomeDivisao + ", Tipo: " + tipo);
+        } else {
+            System.err.println("Erro: Divisão para definir o alvo não encontrada: " + nomeDivisao);
+        }
     }
 
+    /**
+     * Obtém uma divisão pelo nome.
+     *
+     * @param nomeDivisao Nome da divisão.
+     * @return A divisão encontrada ou null.
+     */
     public Divisao getDivisaoPorNome(String nomeDivisao) {
-        for (int i = 0; i < divisoes.getSize(); i++) {
-            Divisao divisao = divisoes.getElementAt(i);
+        if (grafo.isEmpty()) {
+            return null;
+        }
+
+        Iterator<Divisao> iterator = grafo.iterator(); // Usar o iterador padrão
+        while (iterator.hasNext()) {
+            Divisao divisao = iterator.next();
             if (divisao.getNomeDivisao().equals(nomeDivisao)) {
                 return divisao;
             }
         }
-        throw new IllegalArgumentException("Divisão não encontrada: " + nomeDivisao);
+        return null;
     }
 
-
-    public void adicionarEntradaSaida(String divisao) {
-        entradasSaidas.add(divisao);
+    /**
+     * Verifica se é possível mover de uma divisão para outra.
+     *
+     * @param divisao1 Nome da divisão de origem.
+     * @param divisao2 Nome da divisão de destino.
+     * @return true se for possível mover, false caso contrário.
+     */
+    public boolean podeMover(String divisao1, String divisao2) {
+        Divisao d1 = getDivisaoPorNome(divisao1);
+        Divisao d2 = getDivisaoPorNome(divisao2);
+        if (d1 == null || d2 == null) {
+            return false;
+        }
+        Iterator<Divisao> conexoes = grafo.iteratorBFS(d1);
+        while (conexoes.hasNext()) {
+            if (conexoes.next().equals(d2)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void definirAlvo(Divisao divisao, String tipo) {
-        alvo = new Alvo(divisao, tipo);
+    /**
+     * Obtém todas as conexões (divisões acessíveis) a partir de uma divisão
+     * específica.
+     *
+     * @param divisao Divisão de origem.
+     * @return Lista de divisões conectadas.
+     */
+    public LinkedList<Divisao> obterConexoes(Divisao divisao) {
+        LinkedList<Divisao> conexoes = new LinkedList<>();
+        Iterator<Divisao> iterator = grafo.iteratorBFS(divisao);
+        while (iterator.hasNext()) {
+            Divisao conexao = iterator.next();
+            conexoes.add(conexao);
+            // System.out.println("Conexão encontrada: " + conexao.getNomeDivisao());
+        }
+        return conexoes;
     }
 
+    /**
+     * Obtém todas as divisões presentes no grafo.
+     *
+     * @return Lista de todas as divisões.
+     */
+    public LinkedList<Divisao> getDivisoes() {
+        LinkedList<Divisao> divisoes = new LinkedList<>();
+        Iterator<Divisao> iterator = grafo.iterator(); // Usar o iterador padrão
+        while (iterator.hasNext()) {
+            Divisao divisao = iterator.next();
+            divisoes.add(divisao);
+        }
+        return divisoes;
+    }
+
+    /**
+     * Obtém os nomes das divisões que são entradas ou saídas.
+     *
+     * @return Lista de nomes das entradas e saídas.
+     */
+    public LinkedList<String> getEntradasSaidasNomes() {
+        LinkedList<String> nomesEntradasSaidas = new LinkedList<>();
+        for (int i = 0; i < entradasSaidas.getSize(); i++) {
+            nomesEntradasSaidas.add(entradasSaidas.getElementAt(i).getNomeDivisao());
+        }
+        return nomesEntradasSaidas;
+    }
+
+    /**
+     * Obtém o primeiro vértice (divisão) no grafo.
+     *
+     * @return A primeira divisão ou null se o grafo estiver vazio.
+     */
+    private Divisao getPrimeiroVertice() {
+        Iterator<Divisao> iterator = grafo.iterator(); // Usar o iterador padrão
+        return iterator.hasNext() ? iterator.next() : null;
+    }
+
+    /**
+     * Mostra o mapa do edifício (matriz de adjacência e valores dos vértices).
+     */
+    /*
+     * public void mostrarMapa() {
+     * System.out.println(grafo.toString());
+     * }
+     */
+
+    /**
+     * Mostra o mapa do edifício, exibindo as divisões (vértices) e suas conexões
+     * (arestas).
+     */
+    public void mostrarMapa() {
+        System.out.println("===== MAPA DO EDIFICIO =====");
+
+        for (Divisao divisao : getDivisoes()) {
+            System.out.print("Divisão: " + divisao.getNomeDivisao() + " -> Conectada com: ");
+
+            LinkedList<Divisao> conexoes = obterConexoes(divisao);
+            if (conexoes.isEmpty()) {
+                System.out.print("Nenhuma conexão");
+            } else {
+                for (int i = 0; i < conexoes.getSize(); i++) {
+                    System.out.print(conexoes.getElementAt(i).getNomeDivisao());
+                    if (i < conexoes.getSize() - 1) {
+                        System.out.print(", ");
+                    }
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println("=============================");
+    }
+
+    /**
+     * Obtém a lista de entradas e saídas.
+     *
+     * @return Lista de divisões que são entradas ou saídas.
+     */
+    public LinkedList<Divisao> getEntradasSaidas() {
+        return entradasSaidas;
+    }
+
+    /**
+     * Obtém o alvo da missão.
+     *
+     * @return Alvo da missão.
+     */
     public Alvo getAlvo() {
         return alvo;
     }
 
-    public LinkedList<String> getEntradasSaidas() {
-        return entradasSaidas;
+    /**
+     * Move os inimigos aleatoriamente para divisões conectadas até duas divisões de
+     * distância.
+     */
+    public void moverInimigos() {
+        for (Divisao divisaoAtual : getDivisoes()) {
+            LinkedList<Inimigo> inimigos = divisaoAtual.getInimigosPresentes();
+            LinkedList<Inimigo> inimigosMovidos = new LinkedList<>();
+
+            // Processa cada inimigo presente na divisão atual
+            for (int i = 0; i < inimigos.getSize(); i++) {
+                Inimigo inimigo = inimigos.getElementAt(i);
+
+                // Obtém divisões conectadas e expande até duas conexões de distância
+                LinkedList<Divisao> possiveisMovimentos = expandirConexoes(divisaoAtual);
+
+                // Escolhe aleatoriamente uma nova divisão
+                if (!possiveisMovimentos.isEmpty()) {
+                    Random random = new Random();
+                    Divisao novaDivisao = possiveisMovimentos
+                            .getElementAt(random.nextInt(possiveisMovimentos.getSize()));
+
+                    // Move o inimigo para a nova divisão
+                    novaDivisao.adicionarInimigo(inimigo);
+                    inimigosMovidos.add(inimigo); // Marca o inimigo para remoção após a iteração
+                    System.out.println("Inimigo " + inimigo.getNome() + " movido para " + novaDivisao.getNomeDivisao());
+                }
+            }
+
+            // Remove os inimigos que foram movidos da divisão atual
+            for (int i = 0; i < inimigosMovidos.getSize(); i++) {
+                divisaoAtual.removerInimigo(inimigosMovidos.getElementAt(i));
+            }
+        }
     }
+
+    /**
+     * Expande as conexões de uma divisão para incluir divisões conectadas a até
+     * duas conexões de distância.
+     *
+     * @param divisaoAtual A divisão atual de onde partirá a expansão.
+     * @return Uma lista de divisões acessíveis a até duas conexões de distância.
+     */
+    private LinkedList<Divisao> expandirConexoes(Divisao divisaoAtual) {
+        LinkedList<Divisao> conexoesDiretas = obterConexoes(divisaoAtual);
+        LinkedList<Divisao> conexoesExpandida = new LinkedList<>();
+
+        // Adiciona conexões de segunda distância
+        for (int i = 0; i < conexoesDiretas.getSize(); i++) {
+            Divisao conexao = conexoesDiretas.getElementAt(i);
+            LinkedList<Divisao> conexoesSegundaDistancia = obterConexoes(conexao);
+
+            for (int j = 0; j < conexoesSegundaDistancia.getSize(); j++) {
+                Divisao segundaConexao = conexoesSegundaDistancia.getElementAt(j);
+
+                // Adiciona a conexão se ela não estiver na lista inicial e não for a própria
+                // divisão atual
+                if (!conexoesDiretas.contains(segundaConexao) && !conexoesExpandida.contains(segundaConexao)
+                        && !segundaConexao.equals(divisaoAtual)) {
+                    conexoesExpandida.add(segundaConexao);
+                }
+            }
+        }
+
+        // Adiciona conexões diretas à lista expandida
+        for (int i = 0; i < conexoesDiretas.getSize(); i++) {
+            Divisao conexao = conexoesDiretas.getElementAt(i);
+            if (!conexoesExpandida.contains(conexao)) {
+                conexoesExpandida.add(conexao);
+            }
+        }
+
+        return conexoesExpandida;
+    }
+
+    /**
+     * Remove o alvo do mapa.
+     */
+    public void removerAlvo() {
+        if (alvo != null) {
+            System.out.println("Alvo removido do mapa.");
+            this.alvo = null;
+        } else {
+            System.out.println("Nenhum alvo presente no mapa para remover.");
+        }
+    }
+
+
+    /**
+     * Encontrar o melhor caminho ate o alvo
+     * @param origem divisao atual
+     * @param destino divisao destino
+     * @return o percurso de divisoes
+     */
+    public LinkedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino) {
+        if (origem == null || destino == null) {
+            throw new IllegalArgumentException("Origem ou destino inválido");
+        }
+
+        Iterator<Divisao> caminhoIterator = grafo.iteratorShortestPath(origem, destino);
+        LinkedList<Divisao> caminho = new LinkedList<>();
+
+        while (caminhoIterator.hasNext()) {
+            caminho.add(caminhoIterator.next());
+        }
+
+        return caminho;
+    }
+
+
+    /**
+     * Localizar o kit de vida mais proximo
+     * @param origem divisao atual
+     * @return divisao
+     */
+    public Divisao encontrarKitMaisProximo(Divisao origem) {
+        if (origem == null) {
+            throw new IllegalArgumentException("Origem inválida");
+        }
+
+        LinkedList<Divisao> divisoesVisitadas = new LinkedList<>();
+        LinkedList<Divisao> fila = new LinkedList<>();
+        fila.add(origem);
+
+        while (!fila.isEmpty()) {
+            Divisao atual = fila.getElementAt(0);
+            fila.remove(atual);
+
+            if (atual.temKit()) { // verifica se ha kit na divisao
+                return atual;
+            }
+
+            LinkedList<Divisao> adjacentes = obterConexoes(atual);
+            for (int i = 0; i < adjacentes.getSize(); i++) {
+                Divisao vizinho = adjacentes.getElementAt(i);
+                if (!divisoesVisitadas.contains(vizinho)) {
+                    fila.add(vizinho);
+                    divisoesVisitadas.add(vizinho);
+                }
+            }
+        }
+
+        return null; // Caso nenhum kit seja encontrado
+    }
+
 }

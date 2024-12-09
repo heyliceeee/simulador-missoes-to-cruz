@@ -14,6 +14,7 @@ public class ResultadoSimulacao {
     private LinkedList<String> trajeto;
     private LinkedList<String> entradasSaidas;
 
+    // Construtor completo
     public ResultadoSimulacao(String id, String divisaoInicial, String divisaoFinal, String status, int vidaRestante, LinkedList<String> trajeto, LinkedList<String> entradasSaidas) {
         this.id = id;
         this.divisaoInicial = divisaoInicial;
@@ -24,14 +25,11 @@ public class ResultadoSimulacao {
         this.entradasSaidas = entradasSaidas;
     }
 
-    public LinkedList<String> getEntradasSaidas() {
-        return entradasSaidas;
+    // Construtor padrão (opcional, mas recomendado para desserialização)
+    public ResultadoSimulacao() {
     }
 
-    public void setEntradasSaidas(LinkedList<String> entradasSaidas) {
-        this.entradasSaidas = entradasSaidas;
-    }
-
+    // Getters e Setters
     public String getId() {
         return id;
     }
@@ -54,5 +52,52 @@ public class ResultadoSimulacao {
 
     public LinkedList<String> getTrajeto() {
         return trajeto;
+    }
+
+    public LinkedList<String> getEntradasSaidas() {
+        return entradasSaidas;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setDivisaoInicial(String divisaoInicial) {
+        this.divisaoInicial = divisaoInicial;
+    }
+
+    public void setDivisaoFinal(String divisaoFinal) {
+        this.divisaoFinal = divisaoFinal;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setVidaRestante(int vidaRestante) {
+        this.vidaRestante = vidaRestante;
+    }
+
+    public void setTrajeto(LinkedList<String> trajeto) {
+        this.trajeto = trajeto;
+    }
+
+    public void setEntradasSaidas(LinkedList<String> entradasSaidas) {
+        this.entradasSaidas = entradasSaidas;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ResultadoSimulacao {\n");
+        sb.append("  ID: ").append(id).append(",\n");
+        sb.append("  Divisão Inicial: ").append(divisaoInicial).append(",\n");
+        sb.append("  Divisão Final: ").append(divisaoFinal).append(",\n");
+        sb.append("  Status: ").append(status).append(",\n");
+        sb.append("  Vida Restante: ").append(vidaRestante).append(",\n");
+        sb.append("  Trajeto: ").append(trajeto.toString()).append(",\n");
+        sb.append("  Entradas/Saídas: ").append(entradasSaidas.toString()).append("\n");
+        sb.append("}");
+        return sb.toString();
     }
 }
