@@ -243,7 +243,7 @@ public class Mapa {
      * (arestas).
      */
     public void mostrarMapa() {
-        System.out.println("===== MAPA DO EDIFÍCIO =====");
+        System.out.println("===== MAPA DO EDIFICIO =====");
 
         for (Divisao divisao : getDivisoes()) {
             System.out.print("Divisão: " + divisao.getNomeDivisao() + " -> Conectada com: ");

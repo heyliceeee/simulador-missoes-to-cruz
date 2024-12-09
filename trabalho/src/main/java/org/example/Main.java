@@ -69,7 +69,7 @@ public class Main {
         toCruz.moverPara(divisaoInicial);
         logger.info("Agente {} posicionado na divisão inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
 
-        // ============ SIMULAÇÃO AUTOMÁTICA ============
+        // ============ SIMULAÇÃO AUTOMATICA ============
         logger.info("Iniciando a simulação automática...");
         SimulacaoAutomatica simulacaoAuto = new SimulacaoAutomatica(mapa, toCruz);
         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
