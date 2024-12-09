@@ -18,6 +18,11 @@ public class ToCruz {
     private int vida;
 
     /**
+     * Pontos de vida maxima do agente
+     */
+    private int vidaMaxima = 100;
+
+    /**
      * Posição atual no mapa
      */
     private Divisao posicaoAtual;
@@ -189,6 +194,19 @@ public class ToCruz {
      */
     public boolean isAlvoConcluido() {
         return alvoConcluido;
+    }
+
+
+    /**
+     * Atualizar pontos de vida
+     * @param pontos
+     */
+    public void recuperarVida(int pontos) {
+        this.vida += pontos;
+        if (this.vida > this.vidaMaxima) { // Garante que não ultrapassa o máximo
+            this.vida = this.vidaMaxima;
+        }
+        System.out.println("Vida atual do Tó Cruz: " + this.vida);
     }
 
 }
