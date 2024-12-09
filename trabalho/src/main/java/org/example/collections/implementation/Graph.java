@@ -133,7 +133,7 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
                 adjMatrix[i][numVertices] = 0;
             }
         } else {
-            throw new IllegalArgumentException("Índice do vértice inválido");
+            throw new IllegalArgumentException("Indice do vértice inválido");
         }
     }
 

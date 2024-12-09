@@ -20,6 +20,7 @@ public class ExportarResultados {
      * @param caminhoArquivo O caminho do arquivo para exportar.
      */
     public static void exportarParaJson(LinkedList<ResultadoSimulacao> resultados, String caminhoArquivo) {
+        ordenarResultados(resultados); // Ordena antes de exportar
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         ResultadoSimulacao[] arrayResultados = convertToArray(resultados);
 
@@ -43,5 +44,19 @@ public class ExportarResultados {
             array[i] = linkedList.getElementAt(i);
         }
         return array;
+    }
+
+    public static void ordenarResultados(LinkedList<ResultadoSimulacao> resultados) {
+        // Ordena a lista com base nos pontos de vida restantes (maior para menor)
+        for (int i = 0; i < resultados.getSize() - 1; i++) {
+            for (int j = 0; j < resultados.getSize() - 1 - i; j++) {
+
+                if (resultados.getElementAt(j).getVidaRestante() < resultados.getElementAt(j + 1).getVidaRestante()) {
+                    ResultadoSimulacao temp = resultados.getElementAt(j);
+                    resultados.setElementAt(j, resultados.getElementAt(j + 1));
+                    resultados.setElementAt(j + 1, temp);
+                }
+            }
+        }
     }
 }
