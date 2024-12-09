@@ -2,25 +2,25 @@
   {
     "id": "AUTO-001",
     "divisaoInicial": "Heliporto",
-    "divisaoFinal": "Laboratório",
+    "divisaoFinal": "Laboratorio",
     "status": "SUCESSO",
     "vidaRestante": 85,
     "trajeto": {
       "head": {
         "element": "Heliporto",
         "next": {
-          "element": "Laboratório"
+          "element": "Laboratorio"
         }
       },
       "tail": {
-        "element": "Laboratório"
+        "element": "Laboratorio"
       },
       "sentinel": {},
       "size": 2
     },
     "entradasSaidas": {
       "head": {
-        "element": "Escada de Emergência",
+        "element": "Escada de Emergencia",
         "next": {
           "element": "Garagem",
           "next": {

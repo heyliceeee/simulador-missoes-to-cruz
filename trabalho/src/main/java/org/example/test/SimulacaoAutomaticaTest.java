@@ -18,7 +18,7 @@ public class SimulacaoAutomaticaTest {
     @Before
     public void setUp() {
         mapa = new Mapa();
-        toCruz = new ToCruz("Tó Cruz", 100);
+        toCruz = new ToCruz("To Cruz", 100);
 
         mapa.adicionarDivisao("Heliporto");
         mapa.adicionarDivisao("Laboratório");

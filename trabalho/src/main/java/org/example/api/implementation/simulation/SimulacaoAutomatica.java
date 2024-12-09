@@ -120,12 +120,12 @@ public class SimulacaoAutomatica {
             caminhoPercorrido.add(divisao);
             moverParaDivisao(divisao);
             if (toCruz.getVida() <= 0) {
-                System.out.println("Tó Cruz foi derrotado durante a simulação!");
+                System.out.println("To Cruz foi derrotado durante a simulação!");
                 return;
             }
         }
     
-        System.out.println("Tó Cruz alcançou o objetivo com sucesso!");
+        System.out.println("To Cruz alcançou o objetivo com sucesso!");
     }
     
 
@@ -136,7 +136,7 @@ public class SimulacaoAutomatica {
      */
     private void moverParaDivisao(Divisao divisao) {
         toCruz.moverPara(divisao);
-        System.out.println("Tó Cruz moveu-se para: " + divisao.getNomeDivisao());
+        System.out.println("To Cruz moveu-se para: " + divisao.getNomeDivisao());
 
         // Resolver combates
         combateService.resolverCombate(toCruz, divisao);
@@ -146,7 +146,7 @@ public class SimulacaoAutomatica {
             Item item = divisao.getItensPresentes().getElementAt(0);
             toCruz.adicionarAoInventario(item);
             divisao.removerItem(item);
-            System.out.println("Tó Cruz coletou: " + item.getTipo());
+            System.out.println("To Cruz coletou: " + item.getTipo());
         }
     }
 
@@ -348,7 +348,7 @@ public class SimulacaoAutomatica {
             if (divisao.getInimigosPresentes().getSize() > 0) {
                 combateService.resolverCombate(toCruz, divisao);
                 if (toCruz.getVida() <= 0) {
-                    System.out.println("Tó Cruz foi derrotado durante o trajeto de volta!");
+                    System.out.println("To Cruz foi derrotado durante o trajeto de volta!");
                     return;
                 }
             }
@@ -359,11 +359,11 @@ public class SimulacaoAutomatica {
                 if (item.getTipo().equalsIgnoreCase("kit de vida")) {
                     toCruz.recuperarVida(item.getPontos());
                     divisao.removerItem(item);
-                    System.out.println("Tó Cruz usou um kit de vida e recuperou " + item.getPontos() + " pontos de vida.");
+                    System.out.println("To Cruz usou um kit de vida e recuperou " + item.getPontos() + " pontos de vida.");
                 } else if (item.getTipo().equalsIgnoreCase("colete")) {
                     toCruz.adicionarAoInventario(item);
                     divisao.removerItem(item);
-                    System.out.println("Tó Cruz coletou um colete.");
+                    System.out.println("To Cruz coletou um colete.");
                 }
             }
         }

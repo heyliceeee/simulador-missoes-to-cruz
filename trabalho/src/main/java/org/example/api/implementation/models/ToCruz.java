@@ -60,7 +60,7 @@ public class ToCruz {
      */
     public void moverPara(Divisao novaDivisao) {
         this.posicaoAtual = novaDivisao;
-        System.out.println("Tó Cruz moveu-se para a divisão: " + novaDivisao.getNomeDivisao());
+        System.out.println("To Cruz moveu-se para a divisão: " + novaDivisao.getNomeDivisao());
     }
 
     /**
@@ -100,9 +100,9 @@ public class ToCruz {
     public void sofrerDano(int dano) {
         vida -= dano;
         if (vida <= 0) {
-            System.out.println("Tó Cruz foi derrotado!");
+            System.out.println("To Cruz foi derrotado!");
         } else {
-            System.out.println("Tó Cruz sofreu dano! Vida restante: " + vida);
+            System.out.println("To Cruz sofreu dano! Vida restante: " + vida);
         }
     }
 

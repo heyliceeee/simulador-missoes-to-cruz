@@ -68,7 +68,7 @@ public class LinkedList<T> implements Iterable<T>
      */
     public void setElementAt(int index, T element) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Índice fora dos limites: " + index);
+            throw new IndexOutOfBoundsException("Indice fora dos limites: " + index);
         }
 
         LinkedListNode<T> current = head; // Começa pelo primeiro elemento
@@ -83,7 +83,7 @@ public class LinkedList<T> implements Iterable<T>
             currentIndex++;
         }
 
-        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
+        throw new IllegalStateException("Erro inesperado ao procurar o indice.");
     }
 
 
@@ -133,7 +133,7 @@ public class LinkedList<T> implements Iterable<T>
         }
 
         // Esta linha não deve ser alcançada devido à verificação do índice acima
-        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
+        throw new IllegalStateException("Erro inesperado ao procurar o indice.");
     }
 
 
@@ -277,6 +277,27 @@ public class LinkedList<T> implements Iterable<T>
                 ", sentinel=" + sentinel +
                 ", size=" + size +
                 '}';
+    }
+
+    /**
+     * Retorna o índice da primeira ocorrência de um elemento na lista.
+     *
+     * @param element O elemento a ser procurado.
+     * @return O índice do elemento, ou -1 se o elemento não for encontrado.
+     */
+    public int indexOf(T element) {
+        LinkedListNode<T> current = head; // Inicia no primeiro nó
+        int index = 0;
+
+        while (current != null) { // Percorre todos os nós
+            if (current.getElement().equals(element)) { // Compara o elemento atual com o procurado
+                return index;
+            }
+            current = current.getNext(); // Avança para o próximo nó
+            index++;
+        }
+
+        return -1; // Retorna -1 se o elemento não for encontrado
     }
 }
 

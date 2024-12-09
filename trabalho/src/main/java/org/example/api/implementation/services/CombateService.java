@@ -31,7 +31,7 @@ public class CombateService {
             }
 
             if (toCruz.getVida() <= 0) {
-                System.out.println("Tó Cruz foi derrotado!");
+                System.out.println("To Cruz foi derrotado!");
                 return;
             }
         }

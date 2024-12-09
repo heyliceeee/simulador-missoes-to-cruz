@@ -64,7 +64,7 @@ public class Main {
 
         // ============ INICIALIZAÇÃO DO AGENTE ============
         logger.info("Inicializando o agente Tó Cruz...");
-        ToCruz toCruz = new ToCruz("Tó Cruz", 100); // Nome e vida inicial
+        ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
         Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
         toCruz.moverPara(divisaoInicial);
         logger.info("Agente {} posicionado na divisão inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());

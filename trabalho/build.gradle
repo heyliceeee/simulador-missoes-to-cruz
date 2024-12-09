@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
     // Dependências para testes
     testImplementation platform('org.junit:junit-bom:5.9.1')

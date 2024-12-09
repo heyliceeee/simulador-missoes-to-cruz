@@ -72,7 +72,7 @@ public class SimulacaoManual {
                 return;
             }
         }
-        System.out.println("Tó Cruz foi derrotado! Simulação encerrada.");
+        System.out.println("To Cruz foi derrotado! Simulação encerrada.");
     }
 
 
