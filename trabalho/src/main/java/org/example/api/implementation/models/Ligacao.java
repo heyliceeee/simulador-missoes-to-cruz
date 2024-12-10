@@ -30,10 +30,31 @@ public class Ligacao {
                 (divisao1.equals(ligacao.divisao2) && divisao2.equals(ligacao.divisao1));
     }
 
+    /**
+     * Retorna true se as 2 divisoes tem ligacao, caso contrario false
+     * @param d1 uma divisao
+     * @param d2 outra divisao
+     * @return true se as 2 divisoes tem ligacao
+     */
     public boolean conecta(Divisao d1, Divisao d2) {
         return (divisao1.equals(d1) && divisao2.equals(d2)) ||
                 (divisao1.equals(d2) && divisao2.equals(d1));
     }
+
+    /**
+     * Obter outra divisao ligada
+     * @param divisao
+     * @return
+     */
+    public Divisao getOutraDivisao(Divisao divisao) {
+        if (divisao.equals(divisao1)) {
+            return divisao2;
+        } else if (divisao.equals(divisao2)) {
+            return divisao1;
+        }
+        return null;
+    }
+
 
     @Override
     public String toString() {
