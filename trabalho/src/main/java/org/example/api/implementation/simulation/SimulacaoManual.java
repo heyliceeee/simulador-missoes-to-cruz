@@ -75,7 +75,6 @@ public class SimulacaoManual {
         System.out.println("To Cruz foi derrotado! Simulação encerrada.");
     }
 
-
     /**
      * Sugerir o melhor caminho e localizar items em cada turno
      */
@@ -100,15 +99,36 @@ public class SimulacaoManual {
         }
     }
 
-
+    /**
+     * obter a vida restante do to cruz
+     * @return
+     */
     public int getVidaRestante() {
         return toCruz.getVida();
     }
 
+    /**
+     * saber se passou ou falhou a missao, ou seja, se o to cruz tem vida, salvou o alvo e esta numa divisao de saida
+     * @return sucesso ou falha
+     */
     public String getStatus() {
-        return toCruz.getVida() > 0 ? "SUCESSO" : "FALHA";
+
+        if (toCruz.getVida() > 0 && toCruz.isAlvoConcluido()) {
+
+            for (int i = 0; i < mapa.getEntradasSaidasNomes().getSize(); i++) {
+                if (getDivisaoFinal().equals(mapa.getEntradasSaidasNomes().getElementAt(i))) {
+                    return "SUCESSO";
+                }
+            }
+        }
+
+        return "FALHA";
     }
 
+    /**
+     * nome da divisao atual do to cruz
+     * @return nome da divisao
+     */
     public String getDivisaoFinal() {
         return toCruz.getPosicaoAtual().getNomeDivisao();
     }
@@ -139,7 +159,6 @@ public class SimulacaoManual {
         return ""; // Retorna string vazia para evitar falha
     }
 }
-
 
     /**
      * Gerencia o movimento do Tó Cruz.
@@ -194,23 +213,22 @@ public class SimulacaoManual {
         }
     }
 
-    /**
- * Interage com o alvo se estiver na mesma divisão.
- * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
- *
- * @param divisao A divisão onde o Tó Cruz está.
- */
-private void interagirComAlvo(Divisao divisao) {
-    Alvo alvo = mapa.getAlvo();
-    if (alvo != null && alvo.getDivisao().equals(divisao)) {
-        if (divisao.getInimigosPresentes().getSize() > 0) {
-            System.out.println("O alvo está nesta sala, mas há inimigos! Elimine-os primeiro.");
-        } else {
-            System.out.println("O alvo foi resgatado com sucesso!");
-            mapa.removerAlvo();
-            toCruz.setAlvoConcluido(true);
+        /**
+     * Interage com o alvo se estiver na mesma divisão.
+     * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
+     *
+     * @param divisao A divisão onde o Tó Cruz está.
+     */
+    private void interagirComAlvo(Divisao divisao) {
+        Alvo alvo = mapa.getAlvo();
+        if (alvo != null && alvo.getDivisao().equals(divisao)) {
+            if (divisao.getInimigosPresentes().getSize() > 0) {
+                System.out.println("O alvo está nesta sala, mas há inimigos! Elimine-os primeiro.");
+            } else {
+                System.out.println("O alvo foi resgatado com sucesso!");
+                mapa.removerAlvo();
+                toCruz.setAlvoConcluido(true);
+            }
         }
     }
-}
-
 }

@@ -5,6 +5,7 @@ import org.example.api.exceptions.DivisionNotFoundException;
 import org.example.api.exceptions.InvalidFieldException;
 import org.example.api.exceptions.InvalidJsonStructureException;
 import org.example.api.implementation.models.*;
+import org.example.api.implementation.services.CombateService;
 import org.example.api.implementation.utils.JsonUtils;
 import org.example.collections.implementation.LinkedList;
 import org.slf4j.Logger;
@@ -14,23 +15,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
 
-public class SimulacaoGUI extends JFrame {
+public class SimulacaoManualGUI extends JFrame {
 
     private LinkedList<Divisao> divisoes;
     private LinkedList<Divisao> entradasSaidas;
     private LinkedList<Ligacao> ligacoes;
+    private Mapa mapa;
     private ToCruz toCruz;
     private LinkedList<Point> posicoesDivisoes;
     private Image toCruzImage;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private CombateService combateService;
 
 
-    public SimulacaoGUI(LinkedList<Divisao> divisoes, LinkedList<Divisao> entradasSaidas, LinkedList<Ligacao> ligacoes, ToCruz toCruz) {
+
+    public SimulacaoManualGUI(LinkedList<Divisao> divisoes, LinkedList<Divisao> entradasSaidas, LinkedList<Ligacao> ligacoes, Mapa mapa, ToCruz toCruz) {
         this.divisoes = divisoes;
+        this.mapa = mapa;
         this.ligacoes = ligacoes;
         this.entradasSaidas = entradasSaidas;
         this.toCruz = toCruz;
         this.posicoesDivisoes = new LinkedList<>();
+        this.combateService = new CombateService();
+
 
         setTitle("Simulacao - To Cruz");
         setSize(800, 600);
@@ -41,19 +48,81 @@ public class SimulacaoGUI extends JFrame {
         MapaPanel mapaPanel = new MapaPanel();
         add(mapaPanel, BorderLayout.CENTER);
 
-        // Adicionar controles
+        // Adicionar controlos
         JPanel controlePanel = new JPanel();
-        JButton moverButton = new JButton("Mover");
-        moverButton.addActionListener(e -> moverToCruz(mapaPanel));
-        controlePanel.add(moverButton);
+        inicializarControlos(controlePanel, mapaPanel);
 
         add(controlePanel, BorderLayout.SOUTH);
-
         carregarImagens();
         gerarPosicoesDivisoes();
+        interagirComAlvo(toCruz.getPosicaoAtual());
     }
 
+    /**
+     * Interage com o alvo se estiver na mesma divisão.
+     * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
+     *
+     * @param divisao A divisão onde o Tó Cruz está.
+     */
+    private void interagirComAlvo(Divisao divisao) {
+        if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisao)) {
+            if (divisao.getInimigosPresentes().getSize() > 0) {
+                System.out.println("O alvo está nesta sala, mas há inimigos! Elimine-os primeiro.");
+            } else {
+                System.out.println("O alvo foi resgatado com sucesso!");
+                mapa.removerAlvo();
+                toCruz.setAlvoConcluido(true);
+            }
+        }
+    }
 
+    /**
+     * criar botoes de acao
+     * @param controlePanel
+     * @param mapaPanel mapa do edificio
+     */
+    private void inicializarControlos(JPanel controlePanel, MapaPanel mapaPanel) {
+        JButton moverButton = new JButton("Mover");
+        moverButton.addActionListener(e -> moverToCruz(mapaPanel));
+
+        JButton usarButton = new JButton("Usar");
+        usarButton.addActionListener(e -> {
+            if (!toCruz.getInventario().isEmpty()) {
+                toCruz.usarKitDeVida();
+                mapaPanel.repaint();
+                atualizarEstadoBotoes();
+            } else {
+                JOptionPane.showMessageDialog(this, "Inventario vazio! Nao ha kits para usar.");
+            }
+        });
+
+        JButton atacarButton = new JButton("Atacar");
+        atacarButton.addActionListener(e -> {
+            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+
+            if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().getSize() > 0) {
+                combateService.resolverCombate(toCruz, divisaoAtual);
+                mapaPanel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nenhum inimigo para atacar nesta divisao.");
+            }
+        });
+
+        JButton sairButton = new JButton("Sair");
+        sairButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Simulacao encerrada. Obrigado por jogar!");
+            System.exit(0);
+        });
+
+        controlePanel.add(moverButton);
+        controlePanel.add(usarButton);
+        controlePanel.add(atacarButton);
+        controlePanel.add(sairButton);
+    }
+
+    /**
+     * carregar a foto do to cruz
+     */
     private void carregarImagens() {
         try {
             // Caminho para a imagem do Tó Cruz
@@ -63,7 +132,9 @@ public class SimulacaoGUI extends JFrame {
         }
     }
 
-
+    /**
+     * criar divisoes no mapa
+     */
     private void gerarPosicoesDivisoes() {
         // Gerar posições com maior espaçamento
         int xBase = 100, yBase = 100, offsetX = 150, offsetY = 100;
@@ -91,6 +162,11 @@ public class SimulacaoGUI extends JFrame {
         }
     }
 
+    /**
+     * obter a Divisao pelo o seu nome
+     * @param nome nome da divisao
+     * @return a Divisao
+     */
     private Divisao getDivisaoPorNome(String nome) {
         for (Divisao divisao : divisoes) {
             if (divisao.getNomeDivisao().equals(nome)) {
@@ -159,10 +235,62 @@ public class SimulacaoGUI extends JFrame {
             if (toCruz.getPosicaoAtual() != null && toCruzImage != null) {
                 Point toCruzPos = posicoesDivisoes.getElementAt(divisoes.indexOf(toCruz.getPosicaoAtual()));
                 g2.drawImage(toCruzImage, toCruzPos.x - 15, toCruzPos.y - 5, 30, 30, this);
+
+                // Assinalar inimigos na divisão atual
+                Divisao divisaoAtual = toCruz.getPosicaoAtual();
+                if (divisaoAtual != null) {
+                    LinkedList<Inimigo> inimigos = divisaoAtual.getInimigosPresentes();
+                    int offsetY = 40; // Deslocamento vertical para evitar sobreposição
+                    for (int i = 0; i < inimigos.getSize(); i++) {
+                        Inimigo inimigo = inimigos.getElementAt(i);
+                        g2.setColor(Color.RED);
+                        g2.drawString("Inimigo: " + inimigo.getPoder() + " (poder)", toCruzPos.x - 30, toCruzPos.y + offsetY);
+                        offsetY += 15; // Incrementa para cada inimigo
+                    }
+
+                    // Assinalar itens na divisão atual
+                    LinkedList<Item> itens = divisaoAtual.getItensPresentes();
+                    offsetY += 10; // Espaço entre inimigos e itens
+                    for (int i = 0; i < itens.getSize(); i++) {
+                        Item item = itens.getElementAt(i);
+                        g2.setColor(Color.ORANGE);
+                        g2.drawString("Item: " + item.getTipo() + " " + item.getPontos() + "(pontos)", toCruzPos.x - 30, toCruzPos.y + offsetY);
+                        offsetY += 15; // Incrementa para cada item
+                    }
+
+                    // Assinalar alvos na divisao atual
+                    if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
+                        offsetY += 10; // Espaço entre itens e alvos
+                        g2.setColor(Color.MAGENTA);
+                        g2.drawString("Alvo: " + mapa.getAlvo().getTipo(), toCruzPos.x - 30, toCruzPos.y + offsetY);
+                    }
+                }
             }
 
             // Adicionar legenda
             desenharLegenda(g2);
+
+            // Exibir informações no canto superior esquerdo
+            g2.setColor(Color.BLACK);
+            g2.drawString("vida: " + toCruz.getVida(), 10, 20);
+
+            int qtdKits = 0;
+            int qtdColetes = 0;
+
+            // Itera sobre os elementos da stack
+            for (int i = 0; i < toCruz.getInventario().size(); i++) {
+                Item item = toCruz.getInventario().peek(); // Obtem o item no topo sem remover
+                toCruz.getInventario().pop(); // Remove o item temporariamente
+                if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+                    qtdKits++;
+                } else if (item.getTipo().equalsIgnoreCase("colete")) {
+                    qtdColetes++;
+                }
+                toCruz.getInventario().push(item); // Reinsere o item no inventário
+            }
+
+            g2.drawString("kits: " + qtdKits + "x", 10, 40);
+            g2.drawString("coletes: " + qtdColetes + "x", 10, 60);
         }
 
         /**
@@ -278,7 +406,7 @@ public class SimulacaoGUI extends JFrame {
 
 
         SwingUtilities.invokeLater(() -> {
-            SimulacaoGUI gui = new SimulacaoGUI(mapa.getDivisoes(), mapa.getEntradasSaidas(), mapa.getLigacoes(), toCruz);
+            SimulacaoManualGUI gui = new SimulacaoManualGUI(mapa.getDivisoes(), mapa.getEntradasSaidas(), mapa.getLigacoes(), mapa, toCruz);
             gui.setVisible(true);
         });
     }
