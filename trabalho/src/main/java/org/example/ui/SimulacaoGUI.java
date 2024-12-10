@@ -1,23 +1,30 @@
 package org.example.ui;
 
-import org.example.api.implementation.models.Divisao;
-import org.example.api.implementation.models.Mapa;
-import org.example.api.implementation.models.ToCruz;
+import org.example.Main;
+import org.example.api.exceptions.DivisionNotFoundException;
+import org.example.api.exceptions.InvalidFieldException;
+import org.example.api.exceptions.InvalidJsonStructureException;
+import org.example.api.implementation.models.*;
 import org.example.api.implementation.utils.JsonUtils;
 import org.example.collections.implementation.LinkedList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class SimulacaoGUI extends JFrame {
 
     private LinkedList<Divisao> divisoes;
-    private LinkedList<Conexao> conexoes;
+    private LinkedList<Ligacao> ligacoes;
     private ToCruz toCruz;
     private LinkedList<Point> posicoesDivisoes;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public SimulacaoGUI(LinkedList<Divisao> divisoes, LinkedList<Conexao> conexoes, ToCruz toCruz) {
+
+    public SimulacaoGUI(LinkedList<Divisao> divisoes, LinkedList<Ligacao> ligacoes, ToCruz toCruz) {
         this.divisoes = divisoes;
-        this.conexoes = conexoes;
+        this.ligacoes = ligacoes;
         this.toCruz = toCruz;
         this.posicoesDivisoes = new LinkedList<>();
 
@@ -60,7 +67,7 @@ public class SimulacaoGUI extends JFrame {
             toCruz.moverPara(novaDivisao);
             mapaPanel.repaint(); // Atualizar o desenho
         } else {
-            JOptionPane.showMessageDialog(this, "Movimento invalido!");
+            JOptionPane.showMessageDialog(this, "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
         }
     }
 
@@ -74,8 +81,8 @@ public class SimulacaoGUI extends JFrame {
     }
 
     private boolean podeMover(Divisao origem, Divisao destino) {
-        for (Conexao conexao : conexoes) {
-            if (conexao.conecta(origem, destino)) {
+        for (Ligacao ligacao : ligacoes) {
+            if (ligacao.conecta(origem, destino)) {
                 return true;
             }
         }
@@ -89,9 +96,9 @@ public class SimulacaoGUI extends JFrame {
 
             // Desenhar conexões
             g.setColor(Color.LIGHT_GRAY);
-            for (Conexao conexao : conexoes) {
-                Point pos1 = posicoesDivisoes.getElementAt(divisoes.indexOf(conexao.getDivisao1()));
-                Point pos2 = posicoesDivisoes.getElementAt(divisoes.indexOf(conexao.getDivisao2()));
+            for (Ligacao ligacao : ligacoes) {
+                Point pos1 = posicoesDivisoes.getElementAt(divisoes.indexOf(ligacao.getDivisao1()));
+                Point pos2 = posicoesDivisoes.getElementAt(divisoes.indexOf(ligacao.getDivisao2()));
                 g.drawLine(pos1.x, pos1.y, pos2.x, pos2.y);
             }
 
@@ -115,49 +122,52 @@ public class SimulacaoGUI extends JFrame {
         }
     }
 
-    // Classe Conexao
-    private static class Conexao {
-        private Divisao divisao1;
-        private Divisao divisao2;
-
-        public Conexao(Divisao divisao1, Divisao divisao2) {
-            this.divisao1 = divisao1;
-            this.divisao2 = divisao2;
-        }
-
-        public Divisao getDivisao1() {
-            return divisao1;
-        }
-
-        public Divisao getDivisao2() {
-            return divisao2;
-        }
-
-        public boolean conecta(Divisao d1, Divisao d2) {
-            return (divisao1.equals(d1) && divisao2.equals(d2)) ||
-                    (divisao1.equals(d2) && divisao2.equals(d1));
-        }
-    }
-
     public static void main(String[] args) {
         Mapa mapa = new Mapa();
         JsonUtils jsonUtils = new JsonUtils(mapa);
         String caminhoJson = "mapa.json";
 
-        LinkedList<Divisao> divisoes = new LinkedList<>();
-        divisoes.add(new Divisao("Sala A"));
-        divisoes.add(new Divisao("Sala B"));
-        divisoes.add(new Divisao("Corredor"));
+        // mapa carregado apartir do JSON
+        try {
+            jsonUtils.carregarMapa(caminhoJson);
+            logger.info("Mapa carregado com sucesso e pronto para uso!");
 
-        LinkedList<Conexao> conexoes = new LinkedList<>();
-        conexoes.add(new Conexao(divisoes.getElementAt(0), divisoes.getElementAt(1)));
-        conexoes.add(new Conexao(divisoes.getElementAt(1), divisoes.getElementAt(2)));
+            // Verificar se o alvo foi carregado corretamente
+            Alvo alvo = mapa.getAlvo();
+            if (alvo != null) {
+                logger.info("Alvo carregado do JSON: Divisão - {}, Tipo - {}", alvo.getDivisao().getNomeDivisao(), alvo.getTipo());
+            } else {
+                logger.error("Nenhum alvo definido no JSON ou erro ao carregar.");
+                return;
+            }
+        } catch (InvalidJsonStructureException e) {
+            logger.error("Erro na estrutura do JSON: {}", e.getMessage());
+            return;
+        } catch (InvalidFieldException e) {
+            logger.error("Erro em um campo do JSON: {}", e.getMessage());
+            return;
+        } catch (DivisionNotFoundException e) {
+            logger.error("Erro de referência de divisão: {}", e.getMessage());
+            return;
+        } catch (Exception e) {
+            logger.error("Erro inesperado: {}", e.getMessage());
+            e.printStackTrace();
+            return;
+        }
 
-        ToCruz toCruz = new ToCruz("To Cruz", 100);
-        toCruz.setPosicaoAtual(divisoes.getElementAt(0));
+        if (mapa.getDivisoes().isEmpty()) {
+            logger.error("Mapa não possui divisões carregadas. Encerrando o programa.");
+            return;
+        }
+
+        //criar o to cruz e definir a sua posicao inicial
+        ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
+        Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
+        toCruz.moverPara(divisaoInicial);
+
 
         SwingUtilities.invokeLater(() -> {
-            SimulacaoGUI gui = new SimulacaoGUI(divisoes, conexoes, toCruz);
+            SimulacaoGUI gui = new SimulacaoGUI(mapa.getDivisoes(), mapa.getLigacoes(), toCruz);
             gui.setVisible(true);
         });
     }

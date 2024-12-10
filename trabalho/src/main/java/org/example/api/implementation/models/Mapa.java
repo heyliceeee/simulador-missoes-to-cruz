@@ -41,7 +41,6 @@ public class Mapa {
     public void adicionarDivisao(String nomeDivisao) {
         Divisao divisao = new Divisao(nomeDivisao);
         grafo.addVertex(divisao);
-        // Log já está dentro do método addVertex através adicionarDivisao
     }
 
     /**
@@ -64,7 +63,30 @@ public class Mapa {
         }
 
         grafo.addEdge(divisao1, divisao2);
-        // Log já está dentro do método addEdge
+    }
+
+
+    /**
+     * Obtém todas as conexões (arestas) do grafo.
+     *
+     * @return Uma lista de conexões entre divisões.
+     */
+    public LinkedList<Ligacao> getLigacoes() {
+        LinkedList<Ligacao> ligacoes = new LinkedList<>();
+
+        // Itera por cada divisao no grafo
+        for (Divisao divisao : getDivisoes()) {
+            LinkedList<Divisao> adjacentes = grafo.getAdjacentes(divisao);
+
+            for (Divisao adjacente : adjacentes) {
+                // Adiciona a ligacao se ela ainda nao foi registada
+                Ligacao novaLigacao = new Ligacao(divisao, adjacente);
+                if (!ligacoes.contains(novaLigacao)) {
+                    ligacoes.add(novaLigacao);
+                }
+            }
+        }
+        return ligacoes;
     }
 
     /**
@@ -186,7 +208,6 @@ public class Mapa {
         while (iterator.hasNext()) {
             Divisao conexao = iterator.next();
             conexoes.add(conexao);
-            // System.out.println("Conexão encontrada: " + conexao.getNomeDivisao());
         }
         return conexoes;
     }
@@ -228,15 +249,6 @@ public class Mapa {
         Iterator<Divisao> iterator = grafo.iterator(); // Usar o iterador padrão
         return iterator.hasNext() ? iterator.next() : null;
     }
-
-    /**
-     * Mostra o mapa do edifício (matriz de adjacência e valores dos vértices).
-     */
-    /*
-     * public void mostrarMapa() {
-     * System.out.println(grafo.toString());
-     * }
-     */
 
     /**
      * Mostra o mapa do edifício, exibindo as divisões (vértices) e suas conexões
@@ -427,5 +439,4 @@ public class Mapa {
 
         return null; // Caso nenhum kit seja encontrado
     }
-
 }
