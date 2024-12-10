@@ -1,9 +1,12 @@
 package org.example.api.implementation.models;
 
+import org.example.api.implementation.interfaces.Alvo;
+import org.example.api.implementation.interfaces.Divisao;
+
 /**
- * Representa o alvo da missão.
+ * Implementação do Alvo da missão.
  */
-public class Alvo {
+public class AlvoImpl implements Alvo {
     private Divisao divisao;
     private String tipo;
 
@@ -13,23 +16,27 @@ public class Alvo {
      * @param divisao Divisão onde o alvo está localizado.
      * @param tipo    Tipo do alvo.
      */
-    public Alvo(Divisao divisao, String tipo) {
+    public AlvoImpl(Divisao divisao, String tipo) {
         this.divisao = divisao;
         this.tipo = tipo;
     }
 
+    @Override
     public Divisao getDivisao() {
         return divisao;
     }
 
+    @Override
     public void setDivisao(Divisao divisao) {
         this.divisao = divisao;
     }
 
+    @Override
     public String getTipo() {
         return tipo;
     }
 
+    @Override
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -40,23 +47,5 @@ public class Alvo {
                 "divisao=" + divisao +
                 ", tipo='" + tipo + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Alvo alvo = (Alvo) o;
-
-        if (!divisao.equals(alvo.divisao)) return false;
-        return tipo.equals(alvo.tipo);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = divisao.hashCode();
-        result = 31 * result + tipo.hashCode();
-        return result;
     }
 }

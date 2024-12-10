@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Graph<T> implements GraphADT<T>, Iterable<T> {
-    protected final int DEFAULT_CAPACITY = 100;
+    protected final int DEFAULT_CAPACITY = 10;
     protected int numVertices; // numero de vertices no grafo
     protected double[][] adjMatrix; // matriz de adjacencia
     protected T[] vertices; // valores dos vertices
@@ -487,6 +487,60 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
             }
         }
         return adjacentes;
+    }
+
+    /**
+     * Retorna uma cópia profunda do array de vértices.
+     *
+     * @return Cópia profunda do array de vértices.
+     */
+    public T[] getVertices() {
+        T[] verticesCopy = (T[]) new Object[vertices.length];
+
+        for (int i = 0; i < vertices.length; i++) {
+            if (vertices[i] != null) {
+                verticesCopy[i] = deepCopy(vertices[i]);
+            }
+        }
+
+        return verticesCopy;
+    }
+
+    /**
+     * Realiza uma cópia profunda de um objeto do tipo T.
+     *
+     * @param object Objeto a ser copiado.
+     * @return Cópia profunda do objeto.
+     */
+    private T deepCopy(T object) {
+        try {
+            // Verifica se o objeto implementa Cloneable e invoca o método clone
+            if (object instanceof Cloneable) {
+                return (T) object.getClass().getMethod("clone").invoke(object);
+            }
+            // Se não implementar Cloneable, lança exceção
+            throw new CloneNotSupportedException("Objeto não implementa Cloneable: " + object);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao realizar cópia profunda", e);
+        }
+    }
+
+    /**
+     * Verifica se dois vértices são adjacentes no grafo.
+     * 
+     * @param vertex1 O primeiro vértice.
+     * @param vertex2 O segundo vértice.
+     * @return true se os vértices são adjacentes, false caso contrário.
+     */
+    public boolean isAdjacent(T vertex1, T vertex2) {
+        int index1 = getIndex(vertex1);
+        int index2 = getIndex(vertex2);
+
+        if (!indexIsValid(index1) || !indexIsValid(index2)) {
+            return false;
+        }
+
+        return adjMatrix[index1][index2] != 0;
     }
 
     @Override

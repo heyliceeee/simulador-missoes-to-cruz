@@ -1,40 +1,22 @@
 package org.example.api.implementation.models;
 
+import org.example.api.implementation.interfaces.Agente;
+import org.example.api.implementation.interfaces.Divisao;
+import org.example.api.implementation.interfaces.Item;
+import org.example.collections.exceptions.EmptyCollectionException;
 import org.example.collections.implementation.ArrayStack;
 
 /**
  * Representa o agente Tó Cruz com atributos como vida, posição e inventário.
  */
-public class ToCruz {
+public class ToCruz implements Agente {
 
-    /**
-     * Nome do agente
-     */
     private String nome;
-
-    /**
-     * Pontos de vida do agente
-     */
     private int vida;
-
-    /**
-     * Posição atual no mapa
-     */
     private Divisao posicaoAtual;
-
-    /**
-     * Inventário do Tó Cruz
-     */
     private ArrayStack<Item> inventario;
-
-    /**
-     * Indica se o objetivo principal (alvo) foi concluído ou capturado.
-     * 
-     * Essa variável é usada para rastrear o estado da missão.
-     * - true: O alvo foi capturado com sucesso.
-     * - false: O alvo ainda não foi capturado.
-     */
     private boolean alvoConcluido;
+    private final String icone = "🤠";
 
     /**
      * Construtor do Tó Cruz.
@@ -43,152 +25,139 @@ public class ToCruz {
      * @param vida Vida inicial do agente.
      */
     public ToCruz(String nome, int vida) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome do agente inválido.");
+        }
+        if (vida < 0) {
+            throw new IllegalArgumentException("Vida não pode ser negativa.");
+        }
         this.nome = nome;
         this.vida = vida;
-        this.inventario = new ArrayStack<>(); // Inicializa o inventário
+        this.inventario = new ArrayStack<>();
+        this.alvoConcluido = false;
     }
 
-    /**
-     * Move o Tó Cruz para uma nova divisão.
-     *
-     * @param novaDivisao A nova divisão para onde o Tó Cruz vai se mover.
-     */
+    @Override
     public void moverPara(Divisao novaDivisao) {
+        if (novaDivisao == null) {
+            System.err.println("Erro: Divisão para mover é nula.");
+            return;
+        }
         this.posicaoAtual = novaDivisao;
-        System.out.println("Tó Cruz moveu-se para a divisão: " + novaDivisao.getNomeDivisao());
+        //System.out.println("Tó Cruz moveu-se para a divisão: " + novaDivisao.getNomeDivisao());
     }
 
-    /**
-     * Usa um kit de vida do inventário para recuperar pontos de vida.
-     */
+    @Override
     public void usarKitDeVida() {
         if (inventario.isEmpty()) {
             System.out.println("Inventário vazio! Não há kits de vida para usar.");
             return;
         }
 
-        Item kit = inventario.pop(); // Retira o item do topo da pilha
-        if (kit.getTipo().equals("kit de vida")) {
-            vida += kit.getPontos(); // Recupera pontos de vida
-            System.out.println("Usou um kit de vida! Vida atual: " + vida);
-        } else {
-            System.out.println("O item no topo do inventário não é um kit de vida.");
-            inventario.push(kit); // Recoloca o item no topo da pilha
+        try {
+            Item kit = inventario.pop();
+            if ("kit de vida".equalsIgnoreCase(kit.getTipo())) {
+                vida += kit.getPontos();
+                System.out.println("Usou um kit de vida! Vida atual: " + vida);
+            } else {
+                System.out.println("O item no topo do inventário não é um kit de vida.");
+                inventario.push(kit);
+            }
+        } catch (EmptyCollectionException e) {
+            System.err.println("Erro ao usar kit de vida: " + e.getMessage());
         }
     }
 
-    /**
-     * Adiciona um item ao inventário do Tó Cruz.
-     *
-     * @param item O item a ser adicionado.
-     */
+    @Override
     public void adicionarAoInventario(Item item) {
-        inventario.push(item);
-        System.out.println("Item adicionado ao inventário: " + item.getTipo());
+        if (item == null) {
+            System.err.println("Erro: Item a ser adicionado é nulo.");
+            return;
+        }
+
+        if ("colete".equalsIgnoreCase(item.getTipo())) {
+            vida += item.getPontos();
+            System.out.println("Consumiu um colete! Ganhou " + item.getPontos() + " pontos extras. Vida atual: " + vida);
+        } else {
+            inventario.push(item);
+            System.out.println("Item adicionado ao inventário: " + item.getTipo());
+        }
     }
 
-    /**
-     * Reduz os pontos de vida do Tó Cruz ao sofrer dano.
-     *
-     * @param dano Quantidade de dano recebido.
-     */
+    @Override
     public void sofrerDano(int dano) {
+        if (dano < 0) {
+            System.err.println("Erro: Dano não pode ser negativo.");
+            return;
+        }
         vida -= dano;
         if (vida <= 0) {
+            vida = 0;
             System.out.println("Tó Cruz foi derrotado!");
         } else {
-            System.out.println("Tó Cruz sofreu dano! Vida restante: " + vida);
+            System.out.println("Tó Cruz sofreu " + dano + " de dano! Vida restante: " + vida);
         }
     }
 
-    /**
-     * Obtém a vida atual do Tó Cruz.
-     *
-     * @return Pontos de vida restantes.
-     */
+    @Override
     public int getVida() {
         return vida;
     }
 
-    /**
-     * Define a vida do Tó Cruz.
-     *
-     * @param vida Pontos de vida a serem atribuídos.
-     */
+    @Override
     public void setVida(int vida) {
+        if (vida < 0) {
+            throw new IllegalArgumentException("Vida não pode ser negativa.");
+        }
         this.vida = vida;
     }
 
-    /**
-     * Obtém a posição atual do Tó Cruz.
-     *
-     * @return A divisão atual onde o Tó Cruz está localizado.
-     */
+    @Override
     public Divisao getPosicaoAtual() {
         return posicaoAtual;
     }
 
-    /**
-     * Define a posição atual do Tó Cruz.
-     *
-     * @param posicaoAtual A nova divisão onde o Tó Cruz estará.
-     */
+    @Override
     public void setPosicaoAtual(Divisao posicaoAtual) {
+        if (posicaoAtual == null) {
+            throw new IllegalArgumentException("Posição atual não pode ser nula.");
+        }
         this.posicaoAtual = posicaoAtual;
     }
 
-    /**
-     * Obtem o nome do agente
-     * 
-     * @return o nome
-     */
+    @Override
     public String getNome() {
         return nome;
     }
 
-    /**
-     * Define o nome do agente
-     * 
-     * @param nome o nome do agente
-     */
+    @Override
     public void setNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome do agente inválido.");
+        }
         this.nome = nome;
     }
 
-    /**
-     * Obtem o que o agente tem no inventario
-     * 
-     * @return o inventario do agente
-     */
     public ArrayStack<Item> getInventario() {
         return inventario;
     }
 
-    /**
-     * Define o que o agente tem no seu inventario
-     * 
-     * @param inventario a mochila do agente
-     */
     public void setInventario(ArrayStack<Item> inventario) {
+        if (inventario == null) {
+            throw new IllegalArgumentException("Inventário não pode ser nulo.");
+        }
         this.inventario = inventario;
     }
 
-    /**
-     * Define se o alvo foi concluído.
-     *
-     * @param concluido true se o alvo foi capturado, false caso contrário.
-     */
-    public void setAlvoConcluido(boolean concluido) {
-        this.alvoConcluido = concluido;
-    }
-
-    /**
-     * Verifica se o alvo foi concluído.
-     *
-     * @return true se o alvo foi capturado, false caso contrário.
-     */
     public boolean isAlvoConcluido() {
         return alvoConcluido;
     }
 
+    public void setAlvoConcluido(boolean concluido) {
+        this.alvoConcluido = concluido;
+    }
+
+    public String getIcone() {
+        return icone;
+    }
 }

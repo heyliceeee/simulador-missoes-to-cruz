@@ -1,23 +1,30 @@
 package org.example.collections.interfaces;
 
-public interface UnorderedListADT<T> extends ListADT<T>
-{
+import org.example.api.exceptions.ElementNotFoundException;
+
+public interface UnorderedListADT<T> extends ListADT<T> {
+
     /**
-     * adiciona um elemento específico na head da lista
-     * @param element o elemento a ser adicionado na head
+     * Adds the specified element to the front of this list.
+     *
+     * @param element the element to be added to the front of this list
      */
     public void addToFront(T element);
 
     /**
-     * adiciona um elemento específico na tail da lista
-     * @param element o elemento a ser adicionado na tail
+     * Adds the specified element to the rear of this list.
+     *
+     * @param element the element to be added to the rear of this list
      */
     public void addToRear(T element);
 
     /**
-     * adiciona um elemento específico depois do elemento mencionado
-     * @param element o elemento a ser adicionado na lista
-     * @param target o elemento mencionado, onde o novo elemento será adicionado ao lado direito
+     * Adds the specified element after the specified target.
+     *
+     * @param element the element to be added after the target
+     * @param target the target is the item that the element will be added after
+     * @throws ed_f5.ElementNotFoundException
      */
-    public void addAfter(T element, T target);
+    public void addAfter(T element, T target) throws ElementNotFoundException;
 }
+
