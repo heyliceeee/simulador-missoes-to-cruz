@@ -26,7 +26,12 @@ public class SimulacaoManualGUI extends JFrame {
     private Image toCruzImage;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private CombateService combateService;
-
+    private JButton moverButton;
+    private JButton usarButton;
+    private JButton atacarButton;
+    private JButton resgatarButton;
+    private JButton apanharButton;
+    private JButton sairButton;
 
 
     public SimulacaoManualGUI(LinkedList<Divisao> divisoes, LinkedList<Divisao> entradasSaidas, LinkedList<Ligacao> ligacoes, Mapa mapa, ToCruz toCruz) {
@@ -55,7 +60,23 @@ public class SimulacaoManualGUI extends JFrame {
         add(controlePanel, BorderLayout.SOUTH);
         carregarImagens();
         gerarPosicoesDivisoes();
+        atualizarEstadoBotoes();
         interagirComAlvo(toCruz.getPosicaoAtual());
+    }
+
+    /**
+     * Verifica se uma divisão é do tipo entrada/saída.
+     *
+     * @param divisao A divisão a verificar.
+     * @return true se for entrada/saída, false caso contrário.
+     */
+    public boolean isEntradaSaida(Divisao divisao) {
+        for (Divisao entradaSaida : entradasSaidas) {
+            if (divisao.equals(entradaSaida)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -82,10 +103,10 @@ public class SimulacaoManualGUI extends JFrame {
      * @param mapaPanel mapa do edificio
      */
     private void inicializarControlos(JPanel controlePanel, MapaPanel mapaPanel) {
-        JButton moverButton = new JButton("Mover");
+        moverButton = new JButton("Mover");
         moverButton.addActionListener(e -> moverToCruz(mapaPanel));
 
-        JButton usarButton = new JButton("Usar");
+        usarButton = new JButton("Mochila");
         usarButton.addActionListener(e -> {
             if (!toCruz.getInventario().isEmpty()) {
                 toCruz.usarKitDeVida();
@@ -96,28 +117,103 @@ public class SimulacaoManualGUI extends JFrame {
             }
         });
 
-        JButton atacarButton = new JButton("Atacar");
+        atacarButton = new JButton("Atacar");
         atacarButton.addActionListener(e -> {
             Divisao divisaoAtual = toCruz.getPosicaoAtual();
 
             if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().getSize() > 0) {
                 combateService.resolverCombate(toCruz, divisaoAtual);
                 mapaPanel.repaint();
+                atualizarEstadoBotoes();
             } else {
                 JOptionPane.showMessageDialog(this, "Nenhum inimigo para atacar nesta divisao.");
             }
         });
 
-        JButton sairButton = new JButton("Sair");
+        resgatarButton = new JButton("Resgatar");
+        resgatarButton.addActionListener(e -> {
+            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+            if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
+                JOptionPane.showMessageDialog(this, "Alvo resgatado com sucesso!");
+                mapa.removerAlvo();
+                toCruz.setAlvoConcluido(true);
+                mapaPanel.repaint();
+                atualizarEstadoBotoes();
+            }
+        });
+
+        apanharButton = new JButton("Apanhar");
+        apanharButton.addActionListener(e -> {
+            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+            if (divisaoAtual != null) {
+                LinkedList<Item> itens = divisaoAtual.getItensPresentes();
+                while (itens.getSize() > 0) {
+                    Item item = itens.getElementAt(0);
+                    toCruz.adicionarAoInventario(item);
+                    divisaoAtual.removerItem(item);
+                }
+                JOptionPane.showMessageDialog(this, "Itens apanhados com sucesso!");
+                mapaPanel.repaint();
+                atualizarEstadoBotoes();
+            }
+        });
+
+        sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Simulacao encerrada. Obrigado por jogar!");
-            System.exit(0);
+            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+
+            if(toCruz.getVida() > 0 && isEntradaSaida(divisaoAtual) && toCruz.isAlvoConcluido()){
+                atualizarEstadoBotoes();
+                JOptionPane.showMessageDialog(this, "Simulacao encerrada. Obrigado por jogar!");
+                System.exit(0);
+            }
         });
 
         controlePanel.add(moverButton);
         controlePanel.add(usarButton);
         controlePanel.add(atacarButton);
+        controlePanel.add(resgatarButton);
+        controlePanel.add(apanharButton);
         controlePanel.add(sairButton);
+
+        atualizarEstadoBotoes();
+    }
+
+    /**
+     * ativar ou desativar botao de acordo com um determinado cenario de jogo
+     */
+    private void atualizarEstadoBotoes() {
+        Divisao divisaoAtual = toCruz.getPosicaoAtual();
+
+        if (divisaoAtual != null) {
+            boolean temInimigos = divisaoAtual.getInimigosPresentes().getSize() > 0;
+            boolean temItens = divisaoAtual.getItensPresentes().getSize() > 0;
+            boolean temAlvo = mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual);
+            boolean terminouMissao = isEntradaSaida(divisaoAtual) && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
+
+            // Botão "Mover" é desativado se houver inimigos
+            moverButton.setEnabled(!temInimigos);
+
+            // Botão "Atacar" é desativado se não houver inimigos
+            atacarButton.setEnabled(temInimigos);
+
+            // Botão "Resgatar" é ativado se não houver inimigos e houver alvo
+            resgatarButton.setEnabled(!temInimigos && temAlvo);
+
+            // Botão "Apanhar" é ativado se houver itens na divisão
+            apanharButton.setEnabled(temItens);
+
+            // Botão "Sair" é ativado se to cruz resgastou o alvo e esta numa divisao de saida
+            sairButton.setEnabled(terminouMissao);
+
+        } else {
+            // Caso não haja divisão atual, desativa os botões
+            moverButton.setEnabled(false);
+            atacarButton.setEnabled(false);
+            resgatarButton.setEnabled(false);
+            apanharButton.setEnabled(false);
+            sairButton.setEnabled(false);
+        }
     }
 
     /**
@@ -157,6 +253,7 @@ public class SimulacaoManualGUI extends JFrame {
         if (novaDivisao != null && podeMover(toCruz.getPosicaoAtual(), novaDivisao)) {
             toCruz.moverPara(novaDivisao);
             mapaPanel.repaint(); // Atualizar o desenho
+            atualizarEstadoBotoes(); // Atualizar estado dos botões
         } else {
             JOptionPane.showMessageDialog(this, "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
         }
@@ -291,21 +388,6 @@ public class SimulacaoManualGUI extends JFrame {
 
             g2.drawString("kits: " + qtdKits + "x", 10, 40);
             g2.drawString("coletes: " + qtdColetes + "x", 10, 60);
-        }
-
-        /**
-         * Verifica se uma divisão é do tipo entrada/saída.
-         *
-         * @param divisao A divisão a verificar.
-         * @return true se for entrada/saída, false caso contrário.
-         */
-        private boolean isEntradaSaida(Divisao divisao) {
-            for (Divisao entradaSaida : entradasSaidas) {
-                if (divisao.equals(entradaSaida)) {
-                    return true;
-                }
-            }
-            return false;
         }
 
         /**

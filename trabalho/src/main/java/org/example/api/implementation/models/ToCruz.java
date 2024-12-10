@@ -72,13 +72,26 @@ public class ToCruz {
             return;
         }
 
-        Item kit = inventario.pop(); // Retira o item do topo da pilha
-        if (kit.getTipo().equals("kit de vida")) {
-            vida += kit.getPontos(); // Recupera pontos de vida
-            System.out.println("Usou um kit de vida! Vida atual: " + vida);
+        Item item = inventario.pop(); // Retira o item do topo da pilha
+        if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+            if(vida < vidaMaxima){
+                if(vida + item.getPontos() > vidaMaxima || vida + item.getPontos() == vidaMaxima){
+                    vida = vidaMaxima;
+                    System.out.println("Usou um kit de vida! Vida atual: " + vida);
+                }
+                else if(vida + item.getPontos() < vidaMaxima) {
+                    vida += item.getPontos();
+                    System.out.println("Usou um kit de vida! Vida atual: " + vida);
+                }
+            }
+        }
+
+        if(item.getTipo().equalsIgnoreCase("colete")) {
+            vida += item.getPontos(); // Recupera pontos de vida
+            System.out.println("Usou um colete! Vida atual: " + vida);
+
         } else {
-            System.out.println("O item no topo do inventário não é um kit de vida.");
-            inventario.push(kit); // Recoloca o item no topo da pilha
+            inventario.push(item); // Recoloca o item no topo da pilha
         }
     }
 
