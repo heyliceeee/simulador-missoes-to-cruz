@@ -8,13 +8,13 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     @Override
     public void addToFront(T element) {
         if (element == null) {
-            throw new IllegalArgumentException("O valor não pode ser null.");
+            throw new IllegalArgumentException("O valor nao pode ser null.");
         }
         if (count == list.length) {
             expandCapacity();
         }
 
-        // Desloca todos os elementos uma posição para a direita
+        // Desloca todos os elementos uma posicao para a direita
         for (int i = count; i > 0; i--) {
             list[i] = list[i - 1];
         }
@@ -27,7 +27,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     @Override
     public void addToRear(T element) {
         if (element == null) {
-            throw new IllegalArgumentException("O valor não pode ser null.");
+            throw new IllegalArgumentException("O valor nao pode ser null.");
         }
         if (count == list.length) {
             expandCapacity();
@@ -54,7 +54,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
         }
 
         if (index == -1) {
-            throw new ElementNotFoundException("Elemento alvo não encontrado.");
+            throw new ElementNotFoundException("Elemento alvo nao encontrado.");
         }
 
         if (count == list.length) {
@@ -86,10 +86,10 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     @Override
     public void setElementAt(int index, T element) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("O índice está fora dos limites da lista.");
+            throw new IndexOutOfBoundsException("O indice está fora dos limites da lista.");
         }
         if (element == null) {
-            throw new IllegalArgumentException("O valor não pode ser null.");
+            throw new IllegalArgumentException("O valor nao pode ser null.");
         }
         list[index] = element;
     }
@@ -97,15 +97,15 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     @Override
     public int indexOf(T element) {
         if (element == null) {
-            throw new IllegalArgumentException("O valor não pode ser null.");
+            throw new IllegalArgumentException("O valor nao pode ser null.");
         }
 
         for (int i = 0; i < count; i++) {
             if (list[i].equals(element)) {
-                return i; // Retorna o índice do elemento
+                return i; // Retorna o indice do elemento
             }
         }
 
-        return -1; // Retorna -1 se o elemento não for encontrado
+        return -1; // Retorna -1 se o elemento nao for encontrado
     }
 }

@@ -2,23 +2,23 @@ package org.example.api.implementation.interfaces;
 
 public interface IMissao {
     /**
-     * Obtém o código da missão.
+     * Obtem o código da missao.
      *
-     * @return O código da missão.
+     * @return O código da missao.
      */
     String getCodMissao();
 
     /**
-     * Obtém a versão da missão.
+     * Obtem a versao da missao.
      *
-     * @return A versão da missão.
+     * @return A versao da missao.
      */
     int getVersao();
 
     /**
-     * Obtém o mapa associado à missão.
+     * Obtem o mapa associado à missao.
      *
-     * @return O mapa da missão.
+     * @return O mapa da missao.
      */
     IMapa getMapa();
 }

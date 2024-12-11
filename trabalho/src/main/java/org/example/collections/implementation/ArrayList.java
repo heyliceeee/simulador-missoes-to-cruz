@@ -32,7 +32,7 @@ public abstract class ArrayList<T> implements ListADT<T> {
     @Override
     public T removeFirst() throws ElementNotFoundException {
         if (isEmpty()) {
-            throw new ElementNotFoundException("A lista está vazia.");
+            throw new ElementNotFoundException("A lista esta vazia.");
         }
 
         T result = list[0];
@@ -48,7 +48,7 @@ public abstract class ArrayList<T> implements ListADT<T> {
     @Override
     public T removeLast() throws ElementNotFoundException {
         if (isEmpty()) {
-            throw new ElementNotFoundException("A lista está vazia.");
+            throw new ElementNotFoundException("A lista esta vazia.");
         }
         T result = list[count - 1];
         list[count - 1] = null;
@@ -60,7 +60,7 @@ public abstract class ArrayList<T> implements ListADT<T> {
     @Override
     public T remove(T element) throws ElementNotFoundException {
         if (isEmpty()) {
-            throw new ElementNotFoundException("A lista está vazia.");
+            throw new ElementNotFoundException("A lista esta vazia.");
         }
 
         int index = -1;
@@ -72,7 +72,7 @@ public abstract class ArrayList<T> implements ListADT<T> {
         }
 
         if (index == -1) {
-            throw new ElementNotFoundException("O elemento não encontrado");
+            throw new ElementNotFoundException("O elemento nao encontrado");
         }
 
         T removedElement = list[index];
@@ -134,7 +134,7 @@ public abstract class ArrayList<T> implements ListADT<T> {
 
         private int currentIndex = 0;
         private int expectedModCount = modCount; // captura o modCount atual
-        private boolean canRemove = false; // controle para o método remove
+        private boolean canRemove = false; // controle para o metodo remove
 
         @Override
         public boolean hasNext() {
@@ -156,7 +156,7 @@ public abstract class ArrayList<T> implements ListADT<T> {
         @Override
         public void remove() {
             if (!canRemove) {
-                throw new IllegalStateException("Método next() não foi chamado ou já foi chamado remove().");
+                throw new IllegalStateException("Metodo next() nao foi chamado ou já foi chamado remove().");
             }
             if (expectedModCount != modCount) {
                 throw new ConcurrentModificationException("A lista foi modificada.");
@@ -167,11 +167,11 @@ public abstract class ArrayList<T> implements ListADT<T> {
                 list[i] = list[i + 1];
             }
 
-            list[count - 1] = null; // limpe a última posição
+            list[count - 1] = null; // limpe a última posicao
             count--;
-            modCount++; // incrementa o contador de modificações
+            modCount++; // incrementa o contador de modificacões
             expectedModCount++; // atualiza o esperado
-            canRemove = false; // reseta o controle de remoção
+            canRemove = false; // reseta o controle de remocao
         }
     }
 

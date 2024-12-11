@@ -4,47 +4,47 @@ import org.example.collections.implementation.ArrayUnorderedList;
 
 public interface ISimulacao {
     /**
-     * Executa a simulação.
+     * Executa a simulacao.
      */
     void executar(IDivisao divisaoObjetivo);
 
     /**
-     * Obtém a vida restante de Tó Cruz.
+     * Obtem a vida restante de Tó Cruz.
      *
      * @return A quantidade de vida restante.
      */
     int getVidaRestante();
 
     /**
-     * Retorna o status da simulação (SUCESSO ou FALHA).
+     * Retorna o status da simulacao (SUCESSO ou FALHA).
      *
-     * @return O status da simulação.
+     * @return O status da simulacao.
      */
     String getStatus();
 
     /**
-     * Obtém a divisão final onde Tó Cruz está localizado após a simulação.
+     * Obtem a divisao final onde Tó Cruz está localizado após a simulacao.
      *
-     * @return A divisão final.
+     * @return A divisao final.
      */
     IDivisao getDivisaoFinal();
 
     /**
-     * Obtém o caminho percorrido durante a simulação.
+     * Obtem o caminho percorrido durante a simulacao.
      *
      * @return Uma lista de divisões representando o caminho percorrido.
      */
     ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 
     /**
-     * Obtém os itens coletados durante a simulação.
+     * Obtem os itens coletados durante a simulacao.
      *
      * @return Uma lista de itens coletados.
      */
     ArrayUnorderedList<IItem> getItensColetados();
 
     /**
-     * Obtém os inimigos derrotados durante a simulação.
+     * Obtem os inimigos derrotados durante a simulacao.
      *
      * @return Uma lista de inimigos derrotados.
      */

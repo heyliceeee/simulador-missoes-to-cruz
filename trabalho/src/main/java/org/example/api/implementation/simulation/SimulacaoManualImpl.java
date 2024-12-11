@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Gerencia a simulação manual, onde o jogador toma as decisões.
+ * Gerencia a simulacao manual, onde o jogador toma as decisões.
  */
 public class SimulacaoManualImpl implements ISimulacaoManual {
 
@@ -24,14 +24,14 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     private final ArrayUnorderedList<IDivisao> caminhoPercorrido;
 
     /**
-     * Construtor da Simulação Manual.
+     * Construtor da Simulacao Manual.
      *
-     * @param mapa   O mapa do edifício.
+     * @param mapa   O mapa do edificio.
      * @param toCruz O agente controlado pelo jogador.
      */
     public SimulacaoManualImpl(IMapa mapa, ToCruz toCruz) {
         if (mapa == null || toCruz == null) {
-            throw new IllegalArgumentException("Mapa e Tó Cruz não podem ser nulos.");
+            throw new IllegalArgumentException("Mapa e To Cruz nao podem ser nulos.");
         }
         this.mapa = mapa;
         this.toCruz = toCruz;
@@ -43,7 +43,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     /**
-     * Executa o loop principal da simulação manual.
+     * Executa o loop principal da simulacao manual.
      */
     @Override
     public void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException {
@@ -76,10 +76,10 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                 case "usar" -> toCruz.usarKitDeVida();
                 case "atacar" -> atacar();
                 case "sair" -> {
-                    System.out.println("Simulação terminada.");
+                    System.out.println("Simulacao terminada.");
                     return;
                 }
-                default -> System.out.println("Comando inválido. Tente novamente.");
+                default -> System.out.println("Comando invalido. Tente novamente.");
             }
 
             interagirComAlvo(toCruz.getPosicaoAtual());
@@ -151,7 +151,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
         IDivisao alvo = mapa.getAlvo().getDivisao();
         ArrayUnorderedList<IDivisao> caminhoParaAlvo = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), alvo);
 
-        System.out.println("Sugestão de trajeto até o alvo:");
+        System.out.println("Sugestao de trajeto ate o alvo:");
         for (int i = 0; i < caminhoParaAlvo.size(); i++) {
             System.out.print(caminhoParaAlvo.getElementAt(i).getNomeDivisao());
             if (i < caminhoParaAlvo.size() - 1) {
@@ -162,9 +162,9 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
 
         IDivisao kitMaisProximo = mapa.encontrarKitMaisProximo(toCruz.getPosicaoAtual());
         if (kitMaisProximo != null) {
-            System.out.println("Kit de recuperação mais próximo: " + kitMaisProximo.getNomeDivisao());
+            System.out.println("Kit de recuperacao mais proximo: " + kitMaisProximo.getNomeDivisao());
         } else {
-            System.out.println("Nenhum kit de recuperação disponível.");
+            System.out.println("Nenhum kit de recuperacao disponivel.");
         }
     }
 
@@ -175,20 +175,20 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
         System.out.println("\n--- Estado Atual ---");
         IDivisao posicao = toCruz.getPosicaoAtual();
         String nomeDivisao = (posicao != null) ? posicao.getNomeDivisao() : "Nenhuma";
-        System.out.println("Posição: " + nomeDivisao);
+        System.out.println("Posicao: " + nomeDivisao);
         System.out.println("Vida: " + toCruz.getVida());
-        System.out.println("Inventário: " + toCruz.getInventario().size() + " itens");
+        System.out.println("Inventario: " + toCruz.getInventario().size() + " itens");
         System.out.println("---------------------");
     }
 
     /**
-     * Obtém um comando do jogador.
+     * Obtem um comando do jogador.
      *
      * @return O comando inserido pelo jogador.
      */
     private String obterComando() {
         try {
-            System.out.println("Comandos disponíveis: mover, usar, atacar, sair");
+            System.out.println("Comandos disponiveis: mover, usar, atacar, sair");
             System.out.print("Digite seu comando: ");
             return scanner.nextLine().trim();
         } catch (NoSuchElementException e) {
@@ -201,11 +201,11 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
      * Gerencia o movimento do Tó Cruz.
      */
     private void mover() throws ElementNotFoundException {
-        System.out.print("Digite o nome da divisão para onde deseja mover: ");
+        System.out.print("Digite o nome da divisao para onde deseja mover: ");
         String novaDivisao = scanner.nextLine().trim();
 
         if (novaDivisao.isEmpty()) {
-            System.out.println("Divisão inválida.");
+            System.out.println("Divisao invalida.");
             return;
         }
 
@@ -217,20 +217,20 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                 verificarItens(proximaDivisao);
                 combater(proximaDivisao);
             } else {
-                System.err.println("Erro: Divisão '" + novaDivisao + "' não encontrada.");
+                System.err.println("Erro: Divisao '" + novaDivisao + "' nao encontrada.");
             }
         } else {
-            System.out.println("Movimento inválido! Divisões não conectadas.");
+            System.out.println("Movimento invalido! Divisões nao conectadas.");
         }
     }
 
     /**
-     * Realiza um ataque contra os inimigos na divisão atual.
+     * Realiza um ataque contra os inimigos na divisao atual.
      */
     private void atacar() throws ElementNotFoundException {
         IDivisao divisaoAtual = toCruz.getPosicaoAtual();
         if (divisaoAtual == null) {
-            System.err.println("Erro: Divisão atual é nula.");
+            System.err.println("Erro: Divisao atual e nula.");
             return;
         }
         combater(divisaoAtual);
@@ -243,7 +243,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             try {
                 IInimigo inimigo = inimigos.removeFirst();
                 inimigosDerrotados.addToRear(inimigo);
-                System.out.println("Tó Cruz derrotou: " + inimigo.getNome());
+                System.out.println("To Cruz derrotou: " + inimigo.getNome());
             } catch (EmptyCollectionException e) {
                 System.err.println("Erro ao remover inimigo: " + e.getMessage());
                 break;
@@ -252,14 +252,14 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     /**
-     * Verifica se há itens na divisão e pergunta ao jogador se deseja pegá-los.
+     * Verifica se há itens na divisao e pergunta ao jogador se deseja pegá-los.
      *
-     * @param divisao A divisão atual do Tó Cruz.
+     * @param divisao A divisao atual do Tó Cruz.
      */
     private void verificarItens(IDivisao divisao) throws ElementNotFoundException {
         ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
-            System.out.println("Itens encontrados na divisão:");
+            System.out.println("Itens encontrados na divisao:");
             for (int i = 0; i < itens.size(); i++) {
                 IItem item = itens.getElementAt(i);
                 if (item != null) {
@@ -267,7 +267,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                 }
             }
 
-            System.out.print("Deseja pegar todos os itens? (sim/não): ");
+            System.out.print("Deseja pegar todos os itens? (sim/nao): ");
             String resposta = scanner.nextLine().trim();
             if ("sim".equalsIgnoreCase(resposta)) {
                 while (!itens.isEmpty()) {
@@ -275,7 +275,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                         IItem item = itens.removeFirst();
                         itensColetados.addToRear(item);
                         toCruz.adicionarAoInventario(item);
-                        System.out.println("Tó Cruz coletou: " + item.getTipo());
+                        System.out.println("To Cruz coletou: " + item.getTipo());
                     } catch (EmptyCollectionException e) {
                         System.err.println("Erro ao coletar item: " + e.getMessage());
                         break;
@@ -286,10 +286,10 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     /**
-     * Interage com o alvo se estiver na mesma divisão.
+     * Interage com o alvo se estiver na mesma divisao.
      * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
      *
-     * @param divisao A divisão onde o Tó Cruz está.
+     * @param divisao A divisao onde o Tó Cruz está.
      */
     private void interagirComAlvo(IDivisao divisao) {
         IAlvo alvo = mapa.getAlvo();

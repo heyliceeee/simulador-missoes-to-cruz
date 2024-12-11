@@ -4,7 +4,7 @@ import org.example.api.implementation.interfaces.IResultadoSimulacao;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Representa o resultado de uma simulação.
+ * Representa o resultado de uma simulacao.
  */
 public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
     private String id;
@@ -33,7 +33,7 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
         this.versaoMissao = versaoMissao;
     }
 
-    // Construtor padrão (opcional, mas recomendado para desserialização)
+    // Construtor padrao (opcional, mas recomendado para desserializacao)
     public ResultadoSimulacaoImpl() {
     }
 
@@ -114,15 +114,15 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("ResultadoSimulacao {\n");
-        sb.append("  Código Missão: ").append(codigoMissao).append(",\n");
-        sb.append("  Versão Missão: ").append(versaoMissao).append(",\n");
+        sb.append("  Codigo Missao: ").append(codigoMissao).append(",\n");
+        sb.append("  Versao Missao: ").append(versaoMissao).append(",\n");
         sb.append("  ID: ").append(id).append(",\n");
-        sb.append("  Divisão Inicial: ").append(divisaoInicial).append(",\n");
-        sb.append("  Divisão Final: ").append(divisaoFinal).append(",\n");
+        sb.append("  Divisao Inicial: ").append(divisaoInicial).append(",\n");
+        sb.append("  Divisao Final: ").append(divisaoFinal).append(",\n");
         sb.append("  Status: ").append(status).append(",\n");
         sb.append("  Vida Restante: ").append(vidaRestante).append(",\n");
         sb.append("  Trajeto: ").append(trajeto.toString()).append(",\n");
-        sb.append("  Entradas/Saídas: ").append(entradasSaidas.toString()).append("\n");
+        sb.append("  Entradas/Saidas: ").append(entradasSaidas.toString()).append("\n");
         sb.append("}");
         return sb.toString();
     }

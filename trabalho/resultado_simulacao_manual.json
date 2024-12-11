@@ -3,7 +3,7 @@
     {
       "id": "AUTO-001",
       "divisaoInicial": "Heliporto",
-      "divisaoFinal": "Laboratório",
+      "divisaoFinal": "Laboratorio",
       "status": "SUCESSO",
       "vidaRestante": 50,
       "trajeto": {
@@ -12,8 +12,8 @@
           "Escada 6",
           "Camaratas",
           "Escada 5",
-          "Laboratório",
-          "Laboratório",
+          "Laboratorio",
+          "Laboratorio",
           null,
           null,
           null,
@@ -26,7 +26,7 @@
       "entradasSaidas": {
         "list": [
           "Heliporto",
-          "Laboratório",
+          "Laboratorio",
           "Porteiro",
           "Garagem",
           null,
@@ -46,12 +46,12 @@
     {
       "id": "MANUAL-001",
       "divisaoInicial": "Heliporto",
-      "divisaoFinal": "Laboratório",
+      "divisaoFinal": "Laboratorio",
       "status": "SUCESSO",
       "vidaRestante": 50,
       "trajeto": {
         "list": [
-          "Laboratório",
+          "Laboratorio",
           null,
           null,
           null,
@@ -69,7 +69,7 @@
       "entradasSaidas": {
         "list": [
           "Heliporto",
-          "Laboratório",
+          "Laboratorio",
           "Porteiro",
           "Garagem",
           null,

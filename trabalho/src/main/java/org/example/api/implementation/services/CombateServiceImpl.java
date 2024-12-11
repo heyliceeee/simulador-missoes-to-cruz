@@ -8,7 +8,7 @@ import org.example.api.implementation.models.ToCruz;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Implementação do serviço de combate.
+ * Implementacao do servico de combate.
  */
 public class CombateServiceImpl implements ICombateService {
 
@@ -16,22 +16,22 @@ public class CombateServiceImpl implements ICombateService {
     }
 
     /**
-     * Resolve o combate na divisão atual.
+     * Resolve o combate na divisao atual.
      *
      * @param toCruz       O agente controlado pelo jogador.
-     * @param divisaoAtual A divisão onde o combate ocorre.
-     * @throws ElementNotFoundException Se um inimigo não for encontrado.
+     * @param divisaoAtual A divisao onde o combate ocorre.
+     * @throws ElementNotFoundException Se um inimigo nao for encontrado.
      */
     @Override
     public void resolverCombate(ToCruz toCruz, IDivisao divisaoAtual) throws ElementNotFoundException {
         if (toCruz == null || divisaoAtual == null) {
-            System.err.println("Erro: Agente ou divisao atual é nula.");
+            System.err.println("Erro: Agente ou divisao atual e nula.");
             return;
         }
 
         ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
         if (inimigos == null || inimigos.isEmpty()) {
-            System.out.println("Nenhum inimigo na divisão.");
+            System.out.println("Nenhum inimigo na divisao.");
             return;
         }
 
@@ -50,11 +50,11 @@ public class CombateServiceImpl implements ICombateService {
             if (inimigo.getPoder() <= 0) {
                 System.out.println("Inimigo '" + inimigo.getNome() + "' derrotado.");
                 inimigos.remove(inimigo);
-                i--; // Ajustar índice após remoção
+                i--; // Ajustar indice após remocao
             }
 
             if (toCruz.getVida() <= 0) {
-                System.out.println("Tó Cruz foi derrotado!");
+                System.out.println("To Cruz foi derrotado!");
                 return;
             }
         }

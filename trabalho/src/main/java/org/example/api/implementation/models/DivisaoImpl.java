@@ -8,7 +8,7 @@ import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.collections.implementation.LinkedList;
 
 /**
- * Representa uma divisão do edifício.
+ * Representa uma divisao do edificio.
  */
 public class DivisaoImpl implements IDivisao {
     private String nomeDivisao;
@@ -17,9 +17,9 @@ public class DivisaoImpl implements IDivisao {
     private boolean entradaSaida;
 
     /**
-     * Construtor da Divisão.
+     * Construtor da Divisao.
      *
-     * @param nomeDivisao Nome da divisão.
+     * @param nomeDivisao Nome da divisao.
      */
     public DivisaoImpl(String nomeDivisao) {
         this.nomeDivisao = nomeDivisao;
@@ -28,9 +28,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtém o nome da divisão.
+     * Obtem o nome da divisao.
      *
-     * @return Nome da divisão.
+     * @return Nome da divisao.
      */
     @Override
     public String getNomeDivisao() {
@@ -38,16 +38,16 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Define o nome da divisão.
+     * Define o nome da divisao.
      *
-     * @param nomeDivisao Nome da divisão a ser definida.
+     * @param nomeDivisao Nome da divisao a ser definida.
      */
     public void setNomeDivisao(String nomeDivisao) {
         this.nomeDivisao = nomeDivisao;
     }
 
     /**
-     * Adiciona um inimigo à divisão.
+     * Adiciona um inimigo à divisao.
      *
      * @param inimigo Inimigo a ser adicionado.
      */
@@ -57,7 +57,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Remove um inimigo da divisão.
+     * Remove um inimigo da divisao.
      *
      * @param inimigo Inimigo a ser removido.
      */
@@ -67,7 +67,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Adiciona um item à divisão.
+     * Adiciona um item à divisao.
      *
      * @param item Item a ser adicionado.
      */
@@ -77,7 +77,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Remove um item da divisão.
+     * Remove um item da divisao.
      *
      * @param item Item a ser removido.
      */
@@ -108,7 +108,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtém os inimigos presentes na divisão.
+     * Obtem os inimigos presentes na divisao.
      *
      * @return Lista de inimigos.
      */
@@ -118,7 +118,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Define os inimigos presentes na divisão.
+     * Define os inimigos presentes na divisao.
      *
      * @param inimigosPresentes Lista de inimigos.
      */
@@ -128,7 +128,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtém os itens presentes na divisão.
+     * Obtem os itens presentes na divisao.
      *
      * @return Lista de itens.
      */
@@ -138,7 +138,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Define os itens presentes na divisão.
+     * Define os itens presentes na divisao.
      *
      * @param itensPresentes Lista de itens.
      */
@@ -148,7 +148,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Sobrescreve o método equals para comparar divisões com base no nome.
+     * Sobrescreve o metodo equals para comparar divisões com base no nome.
      *
      * @param obj Objeto a ser comparado.
      * @return true se os nomes forem iguais, false caso contrário.
@@ -164,7 +164,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Sobrescreve o método hashCode para gerar hash baseado no nome da divisão.
+     * Sobrescreve o metodo hashCode para gerar hash baseado no nome da divisao.
      *
      * @return Hash code.
      */
@@ -174,9 +174,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Sobrescreve o método toString para representar a divisão pelo seu nome.
+     * Sobrescreve o metodo toString para representar a divisao pelo seu nome.
      *
-     * @return Nome da divisão.
+     * @return Nome da divisao.
      */
     @Override
     public String toString() {

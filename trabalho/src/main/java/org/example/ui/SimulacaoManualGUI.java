@@ -66,15 +66,15 @@ public class SimulacaoManualGUI extends JFrame {
     }
 
     /**
-     * Interage com o alvo se estiver na mesma divisão.
+     * Interage com o alvo se estiver na mesma divisao.
      * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
      *
-     * @param divisao A divisão onde o Tó Cruz está.
+     * @param divisao A divisao onde o Tó Cruz está.
      */
     private void interagirComAlvo(IDivisao divisao) {
         if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisao)) {
             if (divisao.getInimigosPresentes().size() > 0) {
-                System.out.println("O alvo está nesta sala, mas há inimigos! Elimine-os primeiro.");
+                System.out.println("O alvo esta nesta sala, mas ha inimigos! Elimine-os primeiro.");
             } else {
                 System.out.println("O alvo foi resgatado com sucesso!");
                 mapa.removerAlvo();
@@ -186,24 +186,24 @@ public class SimulacaoManualGUI extends JFrame {
             boolean temAlvo = mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual);
             boolean terminouMissao = divisaoAtual.isEntradaSaida() && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
 
-            // Botão "Mover" é desativado se houver inimigos
+            // Botao "Mover" e desativado se houver inimigos
             moverButton.setEnabled(!temInimigos);
 
-            // Botão "Atacar" é desativado se não houver inimigos
+            // Botao "Atacar" e desativado se nao houver inimigos
             atacarButton.setEnabled(temInimigos);
 
-            // Botão "Resgatar" é ativado se não houver inimigos e houver alvo
+            // Botao "Resgatar" e ativado se nao houver inimigos e houver alvo
             resgatarButton.setEnabled(!temInimigos && temAlvo);
 
-            // Botão "Apanhar" é ativado se houver itens na divisão
+            // Botao "Apanhar" e ativado se houver itens na divisao
             apanharButton.setEnabled(temItens);
 
-            // Botão "Sair" é ativado se to cruz resgastou o alvo e esta numa divisao de
+            // Botao "Sair" e ativado se to cruz resgastou o alvo e esta numa divisao de
             // saida
             sairButton.setEnabled(terminouMissao);
 
         } else {
-            // Caso não haja divisão atual, desativa os botões
+            // Caso nao haja divisao atual, desativa os botões
             moverButton.setEnabled(false);
             atacarButton.setEnabled(false);
             resgatarButton.setEnabled(false);
@@ -220,7 +220,7 @@ public class SimulacaoManualGUI extends JFrame {
             // Caminho para a imagem do Tó Cruz
             toCruzImage = new ImageIcon(getClass().getResource("/images/to_cruz.jpg")).getImage();
         } catch (Exception e) {
-            System.err.println("Erro ao carregar a imagem do Tó Cruz: " + e.getMessage());
+            System.err.println("Erro ao carregar a imagem do To Cruz: " + e.getMessage());
         }
     }
 
@@ -228,12 +228,12 @@ public class SimulacaoManualGUI extends JFrame {
      * criar divisoes no mapa
      */
     private void gerarPosicoesDivisoes() {
-        // Gerar posições com maior espaçamento
+        // Gerar posicões com maior espacamento
         int xBase = 100, yBase = 100, offsetX = 150, offsetY = 100;
 
         for (int i = 0; i < divisoes.size(); i++) {
-            int x = xBase + (i % 5) * offsetX; // Maior espaçamento horizontal
-            int y = yBase + (i / 5) * offsetY; // Maior espaçamento vertical
+            int x = xBase + (i % 5) * offsetX; // Maior espacamento horizontal
+            int y = yBase + (i / 5) * offsetY; // Maior espacamento vertical
             posicoesDivisoes.addToRear(new Point(x, y));
         }
     }
@@ -287,10 +287,10 @@ public class SimulacaoManualGUI extends JFrame {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
 
-            // Configura suavização para melhorar o visual
+            // Configura suavizacao para melhorar o visual
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // Desenhar conexões apenas para a divisão atual
+            // Desenhar conexões apenas para a divisao atual
             g2.setColor(Color.LIGHT_GRAY);
             if (toCruz.getPosicaoAtual() != null && toCruzImage != null) {
                 IDivisao posicaoAtual = toCruz.getPosicaoAtual();
@@ -315,9 +315,9 @@ public class SimulacaoManualGUI extends JFrame {
                 IDivisao divisao = divisoes.getElementAt(i);
                 Point pos = posicoesDivisoes.getElementAt(i);
 
-                // Verificar se a divisão é entrada/saída
+                // Verificar se a divisao e entrada/saida
                 if (divisao.isEntradaSaida()) {
-                    g2.setColor(Color.GREEN); // Entrada/saída: verde
+                    g2.setColor(Color.GREEN); // Entrada/saida: verde
                 } else {
                     g2.setColor(Color.BLUE); // Normal: azul
                 }
@@ -332,11 +332,11 @@ public class SimulacaoManualGUI extends JFrame {
                 Point toCruzPos = posicoesDivisoes.getElementAt(divisoes.indexOf(toCruz.getPosicaoAtual()));
                 g2.drawImage(toCruzImage, toCruzPos.x - 15, toCruzPos.y - 5, 30, 30, this);
 
-                // Assinalar inimigos na divisão atual
+                // Assinalar inimigos na divisao atual
                 IDivisao divisaoAtual = toCruz.getPosicaoAtual();
                 if (divisaoAtual != null) {
                     ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
-                    int offsetY = 40; // Deslocamento vertical para evitar sobreposição
+                    int offsetY = 40; // Deslocamento vertical para evitar sobreposicao
                     for (int i = 0; i < inimigos.size(); i++) {
                         IInimigo inimigo = inimigos.getElementAt(i);
                         g2.setColor(Color.RED);
@@ -345,9 +345,9 @@ public class SimulacaoManualGUI extends JFrame {
                         offsetY += 15; // Incrementa para cada inimigo
                     }
 
-                    // Assinalar itens na divisão atual
+                    // Assinalar itens na divisao atual
                     ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
-                    offsetY += 10; // Espaço entre inimigos e itens
+                    offsetY += 10; // Espaco entre inimigos e itens
                     for (int i = 0; i < itens.size(); i++) {
                         IItem item = itens.getElementAt(i);
                         g2.setColor(Color.ORANGE);
@@ -358,7 +358,7 @@ public class SimulacaoManualGUI extends JFrame {
 
                     // Assinalar alvos na divisao atual
                     if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
-                        offsetY += 10; // Espaço entre itens e alvos
+                        offsetY += 10; // Espaco entre itens e alvos
                         g2.setColor(Color.MAGENTA);
                         g2.drawString("Alvo: " + mapa.getAlvo().getTipo(), toCruzPos.x - 30, toCruzPos.y + offsetY);
                     }
@@ -368,7 +368,7 @@ public class SimulacaoManualGUI extends JFrame {
             // Adicionar legenda
             desenharLegenda(g2);
 
-            // Exibir informações no canto superior esquerdo
+            // Exibir informacões no canto superior esquerdo
             g2.setColor(Color.BLACK);
             g2.drawString("vida: " + toCruz.getVida(), 10, 20);
 
@@ -397,8 +397,8 @@ public class SimulacaoManualGUI extends JFrame {
          * @param g2 Graphics2D para desenhar.
          */
         private void desenharLegenda(Graphics2D g2) {
-            int x = getWidth() - 150; // Posição X da legenda
-            int y = getHeight() - 50; // Posição Y da legenda
+            int x = getWidth() - 150; // Posicao X da legenda
+            int y = getHeight() - 50; // Posicao Y da legenda
 
             g2.setColor(Color.BLUE);
             g2.fillOval(x, y + 20, 10, 10);
@@ -430,7 +430,7 @@ public class SimulacaoManualGUI extends JFrame {
         }
 
         /**
-         * Desenha uma ligação curva entre dois pontos.
+         * Desenha uma ligacao curva entre dois pontos.
          *
          * @param g2   Graphics2D para desenhar.
          * @param pos1 Ponto inicial.
@@ -447,7 +447,7 @@ public class SimulacaoManualGUI extends JFrame {
     public static void main(String[] args) {
         IMapa mapa = new MapaImpl();
         ImportJsonImpl jsonUtils = new ImportJsonImpl(mapa);
-        String caminhoJson = "mapa.json";
+        String caminhoJson = "mapa_v1.json";
 
         // mapa carregado apartir do JSON
         try {
@@ -457,7 +457,7 @@ public class SimulacaoManualGUI extends JFrame {
             // Verificar se o alvo foi carregado corretamente
             IAlvo alvo = mapa.getAlvo();
             if (alvo != null) {
-                logger.info("Alvo carregado do JSON: Divisão - {}, Tipo - {}", alvo.getDivisao().getNomeDivisao(),
+                logger.info("Alvo carregado do JSON: Divisao - {}, Tipo - {}", alvo.getDivisao().getNomeDivisao(),
                         alvo.getTipo());
             } else {
                 logger.error("Nenhum alvo definido no JSON ou erro ao carregar.");
@@ -470,7 +470,7 @@ public class SimulacaoManualGUI extends JFrame {
             logger.error("Erro em um campo do JSON: {}", e.getMessage());
             return;
         } catch (DivisionNotFoundException e) {
-            logger.error("Erro de referência de divisão: {}", e.getMessage());
+            logger.error("Erro de referencia de divisao: {}", e.getMessage());
             return;
         } catch (Exception e) {
             logger.error("Erro inesperado: {}", e.getMessage());
@@ -479,13 +479,13 @@ public class SimulacaoManualGUI extends JFrame {
         }
 
         if (mapa.getDivisoes().isEmpty()) {
-            logger.error("Mapa não possui divisões carregadas. Encerrando o programa.");
+            logger.error("Mapa nao possui divisões carregadas. Encerrando o programa.");
             return;
         }
 
         // criar o to cruz e definir a sua posicao inicial
         ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
-        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
+        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisao
         toCruz.moverPara(divisaoInicial);
 
         SwingUtilities.invokeLater(() -> {

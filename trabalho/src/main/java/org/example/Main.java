@@ -26,7 +26,7 @@ public class Main {
         logger.info("Iniciando o programa...");
         String caminhoJson = "mapa_v6.json";
 
-        // Inicialização do mapa e carregamento da missão
+        // Inicializacao do mapa e carregamento da missao
         IMapa mapa = new MapaImpl();
         IImportJson importJson = new ImportJsonImpl(mapa);
         IMissao missao;
@@ -34,29 +34,29 @@ public class Main {
         try {
             System.out.println("--------------------------------------------------------------------------------");
             missao = importJson.carregarMissao(caminhoJson);
-            logger.info("Missão carregada: {} - Versão {}", missao.getCodMissao(), missao.getVersao());
+            logger.info("Missao carregada: {} - Versao {}", missao.getCodMissao(), missao.getVersao());
         } catch (InvalidJsonStructureException | InvalidFieldException | DivisionNotFoundException e) {
-            logger.error("Erro ao carregar a missão: {}", e.getMessage());
+            logger.error("Erro ao carregar a missao: {}", e.getMessage());
             return;
         }
 
         if (mapa.getDivisoes().isEmpty()) {
-            logger.error("Erro: Nenhuma divisão carregada no mapa. Encerrando o programa.");
+            logger.error("Erro: Nenhuma divisao carregada no mapa. Encerrando o programa.");
             return;
         }
 
         System.out.println("--------------------------------------------------------------------------------");
         mapa.mostrarMapa();
 
-        // Inicialização do agente Tó Cruz
-        logger.info("Inicializando o agente Tó Cruz...");
+        // Inicializacao do agente Tó Cruz
+        logger.info("Inicializando o agente To Cruz...");
         ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
-        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
+        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisao
         toCruz.moverPara(divisaoInicial);
-        logger.info("Agente {} posicionado na divisão inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
+        logger.info("Agente {} posicionado na divisao inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
 
-        // ============ SIMULAÇÃO AUTOMATICA ============
-        logger.info("Iniciando a simulação automática...");
+        // ============ SIMULAcaO AUTOMATICA ============
+        logger.info("Iniciando a simulacao automatica...");
         ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
 
@@ -76,10 +76,10 @@ public class Main {
 
         ExportarResultados exportador = new ExportarResultados();
         exportador.exportarParaJson(resultados, "resultado_simulacao_automatica.json");
-        logger.info("Resultado da Simulação Automática exportado com sucesso.");
+        logger.info("Resultado da Simulacao Automatica exportado com sucesso.");
 
-        // Simulação Manual
-        logger.info("Iniciando a simulação manual...");
+        // Simulacao Manual
+        logger.info("Iniciando a simulacao manual...");
         ISimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
         simulacaoManual.executar(mapa.getAlvo().getDivisao());
 
@@ -97,7 +97,7 @@ public class Main {
 
         resultados.addToRear(resultadoManual);
         exportador.exportarParaJson(resultados, "resultado_simulacao_manual.json");
-        logger.info("Resultado da Simulação Manual exportado com sucesso.");
+        logger.info("Resultado da Simulacao Manual exportado com sucesso.");
 
         logger.info("Programa finalizado com sucesso.");
     }

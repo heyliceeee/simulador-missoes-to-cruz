@@ -9,27 +9,31 @@ import org.example.collections.implementation.LinkedList;
 import java.util.Iterator;
 import java.util.Random;
 
+import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.pin;
+
 /**
- * Representa o mapa do edifício como um grafo.
+ * Representa o mapa do edificio como um grafo.
  */
 public class MapaImpl implements IMapa {
     /**
-     * Grafo que representa o edifício e suas conexões.
+     * Grafo que representa o edificio e suas conexões.
      */
     private Graph<IDivisao> grafo;
 
     /**
-     * Informações sobre o alvo da missão.
+     * Informacões sobre o alvo da missao.
      */
     private IAlvo alvo;
 
     /**
-     * Lista de divisões que são entradas ou saídas do edifício.
+     * Lista de divisões que sao entradas ou saidas do edificio.
      */
     private ArrayUnorderedList<IDivisao> entradasSaidas;
 
+
+
     /**
-     * Construtor padrão do Mapa.
+     * Construtor padrao do Mapa.
      */
     public MapaImpl() {
         this.grafo = new Graph<>();
@@ -37,32 +41,32 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Adiciona uma divisão ao mapa.
+     * Adiciona uma divisao ao mapa.
      *
-     * @param nomeDivisao Nome da divisão.
+     * @param nomeDivisao Nome da divisao.
      */
     @Override
     public void adicionarDivisao(String nomeDivisao) {
         if (nomeDivisao == null || nomeDivisao.trim().isEmpty()) {
-            System.err.println("Erro: Nome da divisão inválido.");
+            System.err.println("Erro: Nome da divisao invalido.");
             return;
         }
         IDivisao divisao = new DivisaoImpl(nomeDivisao);
         grafo.addVertex(divisao);
-        // System.out.println("Divisão adicionada: " + nomeDivisao);
+        // System.out.println("Divisao adicionada: " + nomeDivisao);
     }
 
     /**
-     * Adiciona uma ligação entre duas divisões.
+     * Adiciona uma ligacao entre duas divisões.
      *
-     * @param nomeDivisao1 Nome da primeira divisão.
-     * @param nomeDivisao2 Nome da segunda divisão.
+     * @param nomeDivisao1 Nome da primeira divisao.
+     * @param nomeDivisao2 Nome da segunda divisao.
      */
     @Override
     public void adicionarLigacao(String nomeDivisao1, String nomeDivisao2) {
         if (nomeDivisao1 == null || nomeDivisao2 == null ||
                 nomeDivisao1.trim().isEmpty() || nomeDivisao2.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nomes das divisões não podem ser vazios ou nulos.");
+            throw new IllegalArgumentException("Nomes das divisões nao podem ser vazios ou nulos.");
         }
 
         IDivisao divisao1 = getDivisaoPorNome(nomeDivisao1);
@@ -74,12 +78,12 @@ public class MapaImpl implements IMapa {
         }
 
         grafo.addEdge(divisao1, divisao2);
-        // System.out.println("Ligação adicionada entre " + nomeDivisao1 + " e " +
+        // System.out.println("Ligacao adicionada entre " + nomeDivisao1 + " e " +
         // nomeDivisao2);
     }
 
     /**
-     * Obtém todas as conexões (arestas) do grafo.
+     * Obtem todas as conexões (arestas) do grafo.
      *
      * @return Uma lista de conexões entre divisões.
      */
@@ -103,60 +107,60 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Adiciona um inimigo a uma divisão.
+     * Adiciona um inimigo a uma divisao.
      *
-     * @param nomeDivisao Nome da divisão.
+     * @param nomeDivisao Nome da divisao.
      * @param inimigo     Inimigo a ser adicionado.
      */
     @Override
     public void adicionarInimigo(String nomeDivisao, IInimigo inimigo) {
         if (nomeDivisao == null || inimigo == null || nomeDivisao.trim().isEmpty()) {
-            System.err.println("Erro: Nome da divisão ou inimigo inválido.");
+            System.err.println("Erro: Nome da divisao ou inimigo invalido.");
             return;
         }
 
         IDivisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
             divisao.adicionarInimigo(inimigo);
-            // System.out.println("Inimigo '" + inimigo.getNome() + "' adicionado à divisão:
+            // System.out.println("Inimigo '" + inimigo.getNome() + "' adicionado à divisao:
             // " + nomeDivisao);
         } else {
-            System.err.println("Erro: Divisão '" + nomeDivisao + "' não encontrada.");
+            System.err.println("Erro: Divisao '" + nomeDivisao + "' nao encontrada.");
         }
     }
 
     /**
-     * Adiciona um item a uma divisão.
+     * Adiciona um item a uma divisao.
      *
-     * @param nomeDivisao Nome da divisão.
+     * @param nomeDivisao Nome da divisao.
      * @param item        Item a ser adicionado.
      */
     @Override
     public void adicionarItem(String nomeDivisao, IItem item) {
         if (nomeDivisao == null || item == null || nomeDivisao.trim().isEmpty()) {
-            System.err.println("Erro: Nome da divisão ou item inválido.");
+            System.err.println("Erro: Nome da divisao ou item invalido.");
             return;
         }
 
         IDivisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
             divisao.adicionarItem(item);
-            // System.out.println("Item '" + item.getTipo() + "' adicionado à divisão: " +
+            // System.out.println("Item '" + item.getTipo() + "' adicionado à divisao: " +
             // nomeDivisao);
         } else {
-            System.err.println("Erro: Divisão '" + nomeDivisao + "' não encontrada.");
+            System.err.println("Erro: Divisao '" + nomeDivisao + "' nao encontrada.");
         }
     }
 
     /**
-     * Adiciona uma divisão como entrada ou saída.
+     * Adiciona uma divisao como entrada ou saida.
      *
-     * @param nomeDivisao Nome da divisão.
+     * @param nomeDivisao Nome da divisao.
      */
     @Override
     public void adicionarEntradaSaida(String nomeDivisao) {
         if (nomeDivisao == null || nomeDivisao.trim().isEmpty()) {
-            System.err.println("Erro: Nome da divisão para entrada/saída inválido.");
+            System.err.println("Erro: Nome da divisao para entrada/saida invalido.");
             return;
         }
 
@@ -170,15 +174,15 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtém uma divisão pelo nome.
+     * Obtem uma divisao pelo nome.
      *
-     * @param nomeDivisao Nome da divisão.
-     * @return A divisão encontrada ou null.
+     * @param nomeDivisao Nome da divisao.
+     * @return A divisao encontrada ou null.
      */
     @Override
     public IDivisao getDivisaoPorNome(String nomeDivisao) {
         if (nomeDivisao == null || nomeDivisao.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome da divisão não pode ser vazio ou nulo.");
+            throw new IllegalArgumentException("Nome da divisao nao pode ser vazio ou nulo.");
         }
 
         Iterator<IDivisao> iterator = grafo.iterator();
@@ -189,15 +193,15 @@ public class MapaImpl implements IMapa {
             }
         }
 
-        throw new RuntimeException("Divisão '" + nomeDivisao + "' não encontrada.");
+        throw new RuntimeException("Divisao '" + nomeDivisao + "' nao encontrada.");
     }
 
     /**
-     * Verifica se é possível mover de uma divisão para outra.
+     * Verifica se e possivel mover de uma divisao para outra.
      *
-     * @param divisao1 Nome da divisão de origem.
-     * @param divisao2 Nome da divisão de destino.
-     * @return true se for possível mover, false caso contrário.
+     * @param divisao1 Nome da divisao de origem.
+     * @param divisao2 Nome da divisao de destino.
+     * @return true se for possivel mover, false caso contrário.
      */
     @Override
     public boolean podeMover(String divisao1, String divisao2) {
@@ -212,16 +216,16 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Define o alvo da missão.
+     * Define o alvo da missao.
      *
-     * @param nomeDivisao Nome da divisão onde o alvo está localizado.
+     * @param nomeDivisao Nome da divisao onde o alvo está localizado.
      * @param tipo        Tipo do alvo.
      */
     @Override
     public void definirAlvo(String nomeDivisao, String tipo) {
         if (nomeDivisao == null || tipo == null ||
                 nomeDivisao.trim().isEmpty() || tipo.trim().isEmpty()) {
-            System.err.println("Erro: Nome da divisão ou tipo do alvo inválido.");
+            System.err.println("Erro: Nome da divisao ou tipo do alvo invalido.");
             return;
         }
 
@@ -248,9 +252,9 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtém o alvo da missão.
+     * Obtem o alvo da missao.
      *
-     * @return Alvo da missão.
+     * @return Alvo da missao.
      */
     @Override
     public IAlvo getAlvo() {
@@ -258,10 +262,10 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtém todas as conexões (divisões acessíveis) a partir de uma divisão
-     * específica.
+     * Obtem todas as conexões (divisões acessiveis) a partir de uma divisao
+     * especifica.
      *
-     * @param divisao Divisão de origem.
+     * @param divisao Divisao de origem.
      * @return Lista de divisões conectadas.
      */
     @Override
@@ -281,7 +285,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtém todas as divisões presentes no grafo.
+     * Obtem todas as divisões presentes no grafo.
      *
      * @return Lista de todas as divisões.
      */
@@ -299,9 +303,9 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtém os nomes das divisões que são entradas ou saídas.
+     * Obtem os nomes das divisões que sao entradas ou saidas.
      *
-     * @return Lista de nomes das entradas e saídas.
+     * @return Lista de nomes das entradas e saidas.
      */
     @Override
     public ArrayUnorderedList<String> getEntradasSaidasNomes() {
@@ -317,9 +321,9 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtém as divisões que são entradas ou saídas.
+     * Obtem as divisões que sao entradas ou saidas.
      *
-     * @return Lista de entradas e saídas.
+     * @return Lista de entradas e saidas.
      */
     @Override
     public ArrayUnorderedList<IDivisao> getEntradasSaidas() {
@@ -335,7 +339,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Move os inimigos aleatoriamente para divisões conectadas até duas divisões de
+     * Move os inimigos aleatoriamente para divisões conectadas ate duas divisões de
      * distância.
      */
     @Override
@@ -344,7 +348,7 @@ public class MapaImpl implements IMapa {
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
         if (divisoes == null || divisoes.isEmpty()) {
-            throw new IllegalStateException("Nenhuma divisão disponível para mover inimigos.");
+            throw new IllegalStateException("Nenhuma divisao disponivel para mover inimigos.");
         }
 
         for (int i = 0; i < divisoes.size(); i++) {
@@ -369,7 +373,7 @@ public class MapaImpl implements IMapa {
                 ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);
                 if (conexoes == null || conexoes.isEmpty()) {
                     throw new IllegalStateException(
-                            "Nenhuma conexão disponível para mover o inimigo '" + inimigo.getNome() + "'.");
+                            "Nenhuma conexao disponivel para mover o inimigo '" + inimigo.getNome() + "'.");
                 }
 
                 IDivisao novaDivisao = conexoes.getElementAt(random.nextInt(conexoes.size()));
@@ -379,14 +383,14 @@ public class MapaImpl implements IMapa {
                     System.out
                             .println("Inimigo '" + inimigo.getNome() + "' movido para " + novaDivisao.getNomeDivisao());
                 } else {
-                    throw new IllegalStateException("A conexão selecionada é inválida (nula).");
+                    throw new IllegalStateException("A conexao selecionada e invalida (nula).");
                 }
             }
         }
     }
 
     /**
-     * Mostra o mapa do edifício, exibindo as divisões (vértices) e suas conexões
+     * Mostra o mapa do edificio, exibindo as divisões (vertices) e suas conexões
      * (arestas).
      */
     @Override
@@ -399,8 +403,8 @@ public class MapaImpl implements IMapa {
             if (divisao == null)
                 continue;
 
-            // Exibir o nome da divisão principal
-            System.out.println("\uD83D\uDCCD " + divisao.getNomeDivisao());
+            // Exibir o nome da divisao principal
+            System.out.println(pin + divisao.getNomeDivisao());
 
             // Obter as conexões
             ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);
@@ -418,22 +422,22 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtém o primeiro vértice (divisão) no grafo.
+     * Obtem o primeiro vertice (divisao) no grafo.
      *
-     * @return A primeira divisão ou null se o grafo estiver vazio.
+     * @return A primeira divisao ou null se o grafo estiver vazio.
      */
     @Override
     public IDivisao getPrimeiroVertice() {
-        Iterator<IDivisao> iterator = grafo.iterator(); // Usar o iterador padrão
+        Iterator<IDivisao> iterator = grafo.iterator(); // Usar o iterador padrao
         return iterator.hasNext() ? iterator.next() : null;
     }
 
     /**
-     * Expande as conexões de uma divisão para incluir divisões conectadas a até
+     * Expande as conexões de uma divisao para incluir divisões conectadas a ate
      * duas conexões de distância.
      *
-     * @param divisaoAtual A divisão atual de onde partirá a expansão.
-     * @return Uma lista de divisões acessíveis a até duas conexões de distância.
+     * @param divisaoAtual A divisao atual de onde partirá a expansao.
+     * @return Uma lista de divisões acessiveis a ate duas conexões de distância.
      */
     @Override
     public ArrayUnorderedList<IDivisao> expandirConexoes(IDivisao divisaoAtual) {
@@ -448,8 +452,8 @@ public class MapaImpl implements IMapa {
             for (int j = 0; j < conexoesSegundaDistancia.size(); j++) {
                 IDivisao segundaConexao = conexoesSegundaDistancia.getElementAt(j);
 
-                // Adiciona a conexão se ela não estiver na lista inicial e não for a própria
-                // divisão atual
+                // Adiciona a conexao se ela nao estiver na lista inicial e nao for a própria
+                // divisao atual
                 if (!conexoesDiretas.contains(segundaConexao) && !conexoesExpandida.contains(segundaConexao)
                         && !segundaConexao.equals(divisaoAtual)) {
                     conexoesExpandida.addToRear(segundaConexao);
@@ -479,7 +483,7 @@ public class MapaImpl implements IMapa {
     @Override
     public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino) {
         if (origem == null || destino == null) {
-            throw new IllegalArgumentException("Origem ou destino inválido");
+            throw new IllegalArgumentException("Origem ou destino invalido");
         }
 
         Iterator<IDivisao> caminhoIterator = grafo.iteratorShortestPath(origem, destino);
@@ -501,7 +505,7 @@ public class MapaImpl implements IMapa {
     @Override
     public IDivisao encontrarKitMaisProximo(IDivisao origem) throws ElementNotFoundException {
         if (origem == null) {
-            throw new IllegalArgumentException("Origem inválida");
+            throw new IllegalArgumentException("Origem invalida");
         }
 
         ArrayUnorderedList<IDivisao> divisoesVisitadas = new ArrayUnorderedList<>();

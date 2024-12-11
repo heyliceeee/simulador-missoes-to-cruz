@@ -3,7 +3,7 @@ package org.example.api.implementation.models;
 import org.example.api.implementation.interfaces.IDivisao;
 
 /**
- * Classe auxiliar para representar uma conexão entre duas divisões.
+ * Classe auxiliar para representar uma conexao entre duas divisões.
  */
 public class Ligacao {
     private IDivisao divisao1;

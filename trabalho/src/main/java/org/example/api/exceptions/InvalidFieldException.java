@@ -1,7 +1,7 @@
 package org.example.api.exceptions;
 
 /**
- * Exceção lançada quando um campo específico do JSON é inválido.
+ * Excecao lancada quando um campo especifico do JSON e inválido.
  */
 public class InvalidFieldException extends Exception {
     public InvalidFieldException(String message) {

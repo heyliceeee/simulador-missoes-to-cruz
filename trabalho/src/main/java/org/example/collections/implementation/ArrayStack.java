@@ -14,12 +14,12 @@ public class ArrayStack<T> implements StackADT<T> {
     protected final int DEFAULT_CAPACITY = 10;
 
     /**
-     * int que representa o número de elementos e o seguinte posição disponivel no array
+     * int que representa o número de elementos e o seguinte posicao disponivel no array
      */
     protected int top;
 
     /**
-     * array de elementos genéricos que representam a stack
+     * array de elementos genericos que representam a stack
      */
     protected T[] stack;
 
@@ -33,8 +33,8 @@ public class ArrayStack<T> implements StackADT<T> {
     }
 
     /**
-     * cria uma stack vazia utilizando uma capacidade específica
-     * @param initialCapacity representa a capacidade específica
+     * cria uma stack vazia utilizando uma capacidade especifica
+     * @param initialCapacity representa a capacidade especifica
      */
     public ArrayStack(int initialCapacity){
         top = 0;
@@ -43,8 +43,8 @@ public class ArrayStack<T> implements StackADT<T> {
 
 
     /**
-     * adiciona um elemento específico ao top da stack, expandindo a capacidade da stack se necessário
-     * @param element elemento genérico a ser colocado na stack
+     * adiciona um elemento especifico ao top da stack, expandindo a capacidade da stack se necessário
+     * @param element elemento generico a ser colocado na stack
      */
     @Override
     public void push(T element) {
@@ -69,14 +69,14 @@ public class ArrayStack<T> implements StackADT<T> {
             newStack[i] = stack[i];
         }
 
-        stack = newStack; //a stack agora é a stack expandida
+        stack = newStack; //a stack agora e a stack expandida
     }
 
     /**
-     * remove o elemento do top da stack e retorna a referência dele
-     * lança uma EmptyCollectionException se a stack estiver vazia
+     * remove o elemento do top da stack e retorna a referencia dele
+     * lanca uma EmptyCollectionException se a stack estiver vazia
      * @return T elemento removido do top da stack
-     * @throws EmptyCollectionException se a remoção foi tentada numa stack vazia
+     * @throws EmptyCollectionException se a remocao foi tentada numa stack vazia
      */
     @Override
     public T pop() throws EmptyCollectionException {
@@ -94,10 +94,10 @@ public class ArrayStack<T> implements StackADT<T> {
         return result;
     }
 
-    /** retorna uma referência ao elemento do top da stack. o elemento não é removido da stack
-     * lança uma EmptyCollectionException se a stack estiver vazia
+    /** retorna uma referencia ao elemento do top da stack. o elemento nao e removido da stack
+     * lanca uma EmptyCollectionException se a stack estiver vazia
      * @return T elemento do top da stack
-     * @throws EmptyCollectionException se a observação foi tentada numa stack vazia
+     * @throws EmptyCollectionException se a observacao foi tentada numa stack vazia
      */
     @Override
     public T peek() throws EmptyCollectionException {
@@ -111,7 +111,7 @@ public class ArrayStack<T> implements StackADT<T> {
     }
 
     /**
-     * retorna true se a stack não conter elementos
+     * retorna true se a stack nao conter elementos
      * @return boolean dependendo se a stack está vazia
      */
     @Override

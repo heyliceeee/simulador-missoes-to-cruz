@@ -24,7 +24,7 @@ public class ImportJsonImpl implements IImportJson {
     /**
      * Construtor que inicializa o mapa.
      *
-     * @param mapa O mapa que será utilizado na importação.
+     * @param mapa O mapa que será utilizado na importacao.
      */
     public ImportJsonImpl(IMapa mapa) {
         this.mapa = mapa;
@@ -46,24 +46,24 @@ public class ImportJsonImpl implements IImportJson {
 
             IMissao missao = new MissaoImpl(codMissao, versao, mapa);
 
-            carregarMapa(jsonPath); // Este método lança DivisionNotFoundException
+            carregarMapa(jsonPath); // Este metodo lanca DivisionNotFoundException
 
             return missao;
         } catch (IOException | ParseException e) {
-            logger.error("Erro ao carregar missão: {}", e.getMessage());
+            logger.error("Erro ao carregar missao: {}", e.getMessage());
             throw new InvalidJsonStructureException("Erro ao processar o arquivo JSON: " + e.getMessage());
         }
     }
 
     /**
-     * Carrega o mapa do edifício a partir de um arquivo JSON.
+     * Carrega o mapa do edificio a partir de um arquivo JSON.
      *
      * @param jsonPath Caminho do arquivo JSON.
      * @throws InvalidJsonStructureException Se a estrutura básica do JSON estiver
      *                                       incorreta.
-     * @throws InvalidFieldException         Se um campo específico do JSON for
+     * @throws InvalidFieldException         Se um campo especifico do JSON for
      *                                       inválido.
-     * @throws DivisionNotFoundException     Se uma divisão referenciada não for
+     * @throws DivisionNotFoundException     Se uma divisao referenciada nao for
      *                                       encontrada no mapa.
      */
     @Override
@@ -110,13 +110,13 @@ public class ImportJsonImpl implements IImportJson {
                 logger.debug("Ligacao adicionada entre '{}' e '{}'", origem, destino);
             }
 
-            // Processar entradas e saídas
+            // Processar entradas e saidas
             JSONArray entradasSaidasArray = (JSONArray) jsonObject.get("entradas-saidas");
-            logger.info("Carregando entradas e saídas...");
+            logger.info("Carregando entradas e saidas...");
             for (Object element : entradasSaidasArray) {
                 String nomeDivisao = validarString(element, "entradas-saidas");
                 mapa.adicionarEntradaSaida(nomeDivisao);
-                // logger.debug("Entrada/Saída adicionada: {}", nomeDivisao);
+                // logger.debug("Entrada/Saida adicionada: {}", nomeDivisao);
             }
 
             // Processar alvo
@@ -125,7 +125,7 @@ public class ImportJsonImpl implements IImportJson {
             String alvoDivisao = validarString(alvoObj.get("divisao"), "alvo.divisao");
             String alvoTipo = validarString(alvoObj.get("tipo"), "alvo.tipo");
             mapa.definirAlvo(alvoDivisao, alvoTipo);
-            // logger.debug("Alvo definido: Divisão '{}', Tipo '{}'", alvoDivisao,
+            // logger.debug("Alvo definido: Divisao '{}', Tipo '{}'", alvoDivisao,
             // alvoTipo);
 
             // Processar inimigos
@@ -174,7 +174,7 @@ public class ImportJsonImpl implements IImportJson {
                                 divisaoNome);
                     }
                     mapa.adicionarItem(divisaoNome, item);
-                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisão '{}'", tipo,
+                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisao '{}'", tipo,
                     // pontos, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para item nao encontrada: " + divisaoNome);
@@ -186,32 +186,32 @@ public class ImportJsonImpl implements IImportJson {
             logger.error("Erro ao analisar o JSON: {}", e.getMessage());
         } catch (InvalidJsonStructureException | InvalidFieldException | DivisionNotFoundException e) {
             logger.error("Erro ao processar o JSON: {}", e.getMessage());
-            throw e; // Repropague a exceção
+            throw e; // Repropague a excecao
         }
     }
 
     /**
-     * Valida se um valor é uma string.
+     * Valida se um valor e uma string.
      *
      * @param value Valor a ser validado.
      * @param campo Nome do campo para mensagens de erro.
      * @return Valor como string, se válido.
-     * @throws InvalidFieldException Se o valor não for uma string válida.
+     * @throws InvalidFieldException Se o valor nao for uma string válida.
      */
     private String validarString(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof String)) {
             throw new InvalidFieldException("Campo '" + campo + "' deve ser uma string valida.");
         }
-        return ((String) value).trim(); // Remove espaços extras
+        return ((String) value).trim(); // Remove espacos extras
     }
 
     /**
-     * Valida se um valor é um número inteiro.
+     * Valida se um valor e um número inteiro.
      *
      * @param value Valor a ser validado.
      * @param campo Nome do campo para mensagens de erro.
      * @return Valor como inteiro, se válido.
-     * @throws InvalidFieldException Se o valor não for um número inteiro válido.
+     * @throws InvalidFieldException Se o valor nao for um número inteiro válido.
      */
     private int validarInt(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof Number)) {

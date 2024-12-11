@@ -4,51 +4,51 @@ import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Interface para a simulação manual de missões.
+ * Interface para a simulacao manual de missões.
  */
 public interface ISimulacaoManual {
 
     /**
-     * Executa a simulação automática até o objetivo.
+     * Executa a simulacao automática ate o objetivo.
      *
-     * @param divisaoObjetivo A divisão objetivo da missão.
-     * @throws ElementNotFoundException Se algum elemento não for encontrado durante
-     *                                  a execução.
+     * @param divisaoObjetivo A divisao objetivo da missao.
+     * @throws ElementNotFoundException Se algum elemento nao for encontrado durante
+     *                                  a execucao.
      */
     void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException;
 
     public int getVidaRestante();
 
     /**
-     * Retorna o status da simulação após a execução.
+     * Retorna o status da simulacao após a execucao.
      *
      * @return "SUCESSO" ou "FALHA" com base no resultado.
      */
     String getStatus();
 
     /**
-     * Obtém a divisão final onde o agente parou.
+     * Obtem a divisao final onde o agente parou.
      *
-     * @return Divisão final.
+     * @return Divisao final.
      */
     IDivisao getDivisaoFinal();
 
     /**
-     * Obtém a lista de divisões percorridas na simulação.
+     * Obtem a lista de divisões percorridas na simulacao.
      *
      * @return Lista de divisões percorridas.
      */
     ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 
     /**
-     * Obtém a lista de itens coletados durante a simulação.
+     * Obtem a lista de itens coletados durante a simulacao.
      *
      * @return Lista de itens coletados.
      */
     ArrayUnorderedList<IItem> getItensColetados();
 
     /**
-     * Obtém a lista de inimigos derrotados durante a simulação.
+     * Obtem a lista de inimigos derrotados durante a simulacao.
      *
      * @return Lista de inimigos derrotados.
      */

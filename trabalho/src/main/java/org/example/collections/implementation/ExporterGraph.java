@@ -22,14 +22,14 @@ import java.util.Iterator;
 public class ExporterGraph implements IExporter
 {
     /**
-     * localização do ficheiro aonde vai ser guardado
+     * localizacao do ficheiro aonde vai ser guardado
      */
     private String fileName;
 
 
     /**
      * constructor
-     * @param fileName localização do ficheiro aonde vai ser guardado
+     * @param fileName localizacao do ficheiro aonde vai ser guardado
      */
     public ExporterGraph(String fileName)
     {
@@ -64,7 +64,7 @@ public class ExporterGraph implements IExporter
      * Exporta um grafo em .dot e em .png
      *
      * @param graph    grafo a ser exportado
-     * @param fileName localização do ficheiro
+     * @param fileName localizacao do ficheiro
      * @throws EmptyCollectionException
      * @throws InterruptedException
      */
@@ -79,7 +79,7 @@ public class ExporterGraph implements IExporter
      *
      * @param graph         grafo a ser exportado
      * @param routeIterator route a ser notado no grafo
-     * @param fileName      localização do ficheiro
+     * @param fileName      localizacao do ficheiro
      * @throws InterruptedException
      * @throws EmptyCollectionException
      */
@@ -99,7 +99,7 @@ public class ExporterGraph implements IExporter
     /**
      * Cria um .dot e um .png
      * @param contentString string do conteúdo .dot
-     * @param fileName localização do ficheiro aonde vai ser guardado
+     * @param fileName localizacao do ficheiro aonde vai ser guardado
      * @throws InterruptedException
      */
     private void makeDotAndPNG(String contentString, String fileName) throws InterruptedException
@@ -178,7 +178,7 @@ public class ExporterGraph implements IExporter
         Graph<T> currentGraph = (Graph<T>) graph;
         String content = "strict digraph{\n\tgraph [ordering=\"out\"]";
 
-        if(!graph.isConnected()) //se o grafo não estiver conectado, irá escrever primeiro em todos os vértices
+        if(!graph.isConnected()) //se o grafo nao estiver conectado, irá escrever primeiro em todos os vertices
         {
             for(int i=0; i < currentGraph.numVertices - 1; i++)
             {
@@ -204,7 +204,7 @@ public class ExporterGraph implements IExporter
             }
         }
 
-        //para todos os vértices faz as arestas
+        //para todos os vertices faz as arestas
         for(int i=0; i < currentGraph.numVertices; i++)
         {
             for(int j=i; j < currentGraph.numVertices; j++)
@@ -272,7 +272,7 @@ public class ExporterGraph implements IExporter
                     content += "\"" + first.toString() + "\"[fillcolor=red, style=\"rounded,filled\"]\n";
                 }
             }
-            else //se não for a 1ª vez, irá assumir o valor antigo do second
+            else //se nao for a 1ª vez, irá assumir o valor antigo do second
             {
                 first = second;
             }
@@ -330,11 +330,11 @@ public class ExporterGraph implements IExporter
 
         while (routeIterator.hasNext())
         {
-            if (first == null) //se é a 1ºvez que entra no ciclo
+            if (first == null) //se e a 1ºvez que entra no ciclo
             {
                 first = routeIterator.next();
             }
-            else //se não for a 1ªvez, assume o valor antigo do second
+            else //se nao for a 1ªvez, assume o valor antigo do second
             {
                 first = second;
             }

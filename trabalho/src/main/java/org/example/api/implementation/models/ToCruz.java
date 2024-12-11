@@ -6,7 +6,7 @@ import org.example.api.implementation.interfaces.IItem;
 import org.example.collections.implementation.ArrayStack;
 
 /**
- * Representa o agente Tó Cruz com atributos como vida, posição e inventário.
+ * Representa o agente Tó Cruz com atributos como vida, posicao e inventário.
  */
 public class ToCruz implements IAgente {
 
@@ -26,7 +26,7 @@ public class ToCruz implements IAgente {
     private int vidaMaxima = 100;
 
     /**
-     * Posição atual no mapa
+     * Posicao atual no mapa
      */
     private IDivisao posicaoAtual;
 
@@ -36,14 +36,14 @@ public class ToCruz implements IAgente {
     private ArrayStack<IItem> inventario;
 
     /**
-     * Indica se o objetivo principal (alvo) foi concluído ou capturado.
+     * Indica se o objetivo principal (alvo) foi concluido ou capturado.
      *
-     * Essa variável é usada para rastrear o estado da missão.
+     * Essa variável e usada para rastrear o estado da missao.
      * - true: O alvo foi capturado com sucesso.
-     * - false: O alvo ainda não foi capturado.
+     * - false: O alvo ainda nao foi capturado.
      */
     private boolean alvoConcluido;
-    private final String icone = "\u1F920";
+    private final String icone = "\u1F920";  // 🤠
 
     /**
      * Construtor do Tó Cruz.
@@ -53,10 +53,10 @@ public class ToCruz implements IAgente {
      */
     public ToCruz(String nome, int vida) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do agente inválido.");
+            throw new IllegalArgumentException("Nome do agente invalido.");
         }
         if (vida < 0) {
-            throw new IllegalArgumentException("Vida não pode ser negativa.");
+            throw new IllegalArgumentException("Vida nao pode ser negativa.");
         }
         this.nome = nome;
         this.vida = vida;
@@ -65,20 +65,20 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Indica se o objetivo principal (alvo) foi concluído ou capturado.
+     * Indica se o objetivo principal (alvo) foi concluido ou capturado.
      *
-     * Essa variável é usada para rastrear o estado da missão.
+     * Essa variável e usada para rastrear o estado da missao.
      * - true: O alvo foi capturado com sucesso.
-     * - false: O alvo ainda não foi capturado.
+     * - false: O alvo ainda nao foi capturado.
      */
     @Override
     public void moverPara(IDivisao novaDivisao) {
         if (novaDivisao == null) {
-            System.err.println("Erro: Divisão para mover é nula.");
+            System.err.println("Erro: Divisao para mover e nula.");
             return;
         }
         this.posicaoAtual = novaDivisao;
-        // System.out.println("Tó Cruz moveu-se para a divisão: " +
+        // System.out.println("Tó Cruz moveu-se para a divisao: " +
         // novaDivisao.getNomeDivisao());
     }
 
@@ -88,7 +88,7 @@ public class ToCruz implements IAgente {
     @Override
     public void usarKitDeVida() {
         if (inventario.isEmpty()) {
-            System.out.println("Inventário vazio! Não há kits de vida para usar.");
+            System.out.println("Inventario vazio! Nao ha kits de vida para usar.");
             return;
         }
 
@@ -122,7 +122,7 @@ public class ToCruz implements IAgente {
     @Override
     public void adicionarAoInventario(IItem item) {
         if (item == null) {
-            System.err.println("Erro: Item a ser adicionado é nulo.");
+            System.err.println("Erro: Item a ser adicionado e nulo.");
             return;
         }
 
@@ -132,7 +132,7 @@ public class ToCruz implements IAgente {
                     .println("Consumiu um colete! Ganhou " + item.getPontos() + " pontos extras. Vida atual: " + vida);
         } else {
             inventario.push(item);
-            System.out.println("Item adicionado ao inventário: " + item.getTipo());
+            System.out.println("Item adicionado ao inventario: " + item.getTipo());
         }
     }
 
@@ -144,7 +144,7 @@ public class ToCruz implements IAgente {
     @Override
     public void sofrerDano(int dano) {
         if (dano < 0) {
-            System.err.println("Erro: Dano não pode ser negativo.");
+            System.err.println("Erro: Dano nao pode ser negativo.");
             return;
         }
         vida -= dano;
@@ -157,7 +157,7 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Obtém a vida atual do Tó Cruz.
+     * Obtem a vida atual do Tó Cruz.
      *
      * @return Pontos de vida restantes.
      */
@@ -169,20 +169,20 @@ public class ToCruz implements IAgente {
     /**
      * Define a vida do Tó Cruz.
      *
-     * @param vida Pontos de vida a serem atribuídos.
+     * @param vida Pontos de vida a serem atribuidos.
      */
     @Override
     public void setVida(int vida) {
         if (vida < 0) {
-            throw new IllegalArgumentException("Vida não pode ser negativa.");
+            throw new IllegalArgumentException("Vida nao pode ser negativa.");
         }
         this.vida = vida;
     }
 
     /**
-     * Obtém a posição atual do Tó Cruz.
+     * Obtem a posicao atual do Tó Cruz.
      *
-     * @return A divisão atual onde o Tó Cruz está localizado.
+     * @return A divisao atual onde o Tó Cruz está localizado.
      */
     @Override
     public IDivisao getPosicaoAtual() {
@@ -190,14 +190,14 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Define a posição atual do Tó Cruz.
+     * Define a posicao atual do Tó Cruz.
      *
-     * @param posicaoAtual A nova divisão onde o Tó Cruz estará.
+     * @param posicaoAtual A nova divisao onde o Tó Cruz estará.
      */
     @Override
     public void setPosicaoAtual(IDivisao posicaoAtual) {
         if (posicaoAtual == null) {
-            throw new IllegalArgumentException("Posição atual não pode ser nula.");
+            throw new IllegalArgumentException("Posicao atual nao pode ser nula.");
         }
         this.posicaoAtual = posicaoAtual;
     }
@@ -220,7 +220,7 @@ public class ToCruz implements IAgente {
     @Override
     public void setNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do agente inválido.");
+            throw new IllegalArgumentException("Nome do agente invalido.");
         }
         this.nome = nome;
     }
@@ -247,7 +247,7 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Verifica se o alvo foi concluído.
+     * Verifica se o alvo foi concluido.
      *
      * @return true se o alvo foi capturado, false caso contrário.
      */
@@ -262,14 +262,14 @@ public class ToCruz implements IAgente {
      */
     public void recuperarVida(int pontos) {
         this.vida += pontos;
-        if (this.vida > this.vidaMaxima) { // Garante que não ultrapassa o máximo
+        if (this.vida > this.vidaMaxima) { // Garante que nao ultrapassa o maximo
             this.vida = this.vidaMaxima;
         }
-        System.out.println("Vida atual do Tó Cruz: " + this.vida);
+        System.out.println("Vida atual do To Cruz: " + this.vida);
     }
 
     /**
-     * Define se o alvo foi concluído.
+     * Define se o alvo foi concluido.
      *
      * @param concluido true se o alvo foi capturado, false caso contrário.
      */

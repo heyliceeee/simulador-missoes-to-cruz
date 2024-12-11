@@ -21,7 +21,7 @@ public class InimigoImpl implements IInimigo {
     }
 
     /**
-     * Obtém o nome do inimigo.
+     * Obtem o nome do inimigo.
      *
      * @return Nome do inimigo.
      */
@@ -41,7 +41,7 @@ public class InimigoImpl implements IInimigo {
     }
 
     /**
-     * Obtém o poder atual do inimigo.
+     * Obtem o poder atual do inimigo.
      *
      * @return Poder do inimigo.
      */

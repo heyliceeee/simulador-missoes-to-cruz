@@ -3,7 +3,7 @@ package org.example.api.implementation.interfaces;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Interface que representa o resultado de uma simulação.
+ * Interface que representa o resultado de uma simulacao.
  */
 public interface IResultadoSimulacao {
 

@@ -61,7 +61,7 @@ public class JsonUtilsTest {
 
     @Test
     public void testCarregarMapaComDivisaoInexistente() {
-        String jsonPath = "D:\\githubProjects\\simulador-missoes-to-cruz\\trabalho\\src\\main\\java\\org\\example\\test\\resources\\missing_division.json"; // Crie um JSON onde uma ligação ou inimigo refere-se a uma divisão inexistente
+        String jsonPath = "D:\\githubProjects\\simulador-missoes-to-cruz\\trabalho\\src\\main\\java\\org\\example\\test\\resources\\missing_division.json"; // Crie um JSON onde uma ligacao ou inimigo refere-se a uma divisao inexistente
 
         DivisionNotFoundException exception = assertThrows(DivisionNotFoundException.class, () -> jsonUtils.carregarMapa(jsonPath));
 

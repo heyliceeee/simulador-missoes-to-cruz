@@ -1,7 +1,7 @@
 package org.example.api.exceptions;
 
 /**
- * Exceção lançada quando a estrutura do JSON é inválida.
+ * Excecao lancada quando a estrutura do JSON e inválida.
  */
 public class InvalidJsonStructureException extends Exception {
     public InvalidJsonStructureException(String message) {

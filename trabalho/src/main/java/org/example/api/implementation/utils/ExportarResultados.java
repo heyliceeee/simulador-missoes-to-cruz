@@ -11,13 +11,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Classe utilitária para exportar os resultados das simulações e trajetos
+ * Classe utilitária para exportar os resultados das simulacões e trajetos
  * usando Gson.
  */
 public class ExportarResultados implements IExportador {
 
     /**
-     * Exporta os resultados das simulações para um arquivo JSON usando Gson.
+     * Exporta os resultados das simulacões para um arquivo JSON usando Gson.
      *
      * @param resultados     Lista de resultados a serem exportados.
      * @param caminhoArquivo O caminho do arquivo para exportar.

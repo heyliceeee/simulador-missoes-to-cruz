@@ -47,18 +47,18 @@ public class LinkedList<T> implements Iterable<T> {
     }
 
     /**
-     * Define o valor de um elemento na posição especificada.
+     * Define o valor de um elemento na posicao especificada.
      *
-     * @param index O índice do elemento a ser atualizado.
+     * @param index O indice do elemento a ser atualizado.
      * @param element O novo valor do elemento.
-     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
+     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
      */
     public void setElementAt(int index, T element) {
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("Indice fora dos limites: " + index);
         }
 
-        Node<T> current = head; // Começa pelo primeiro elemento
+        Node<T> current = head; // Comeca pelo primeiro elemento
         int currentIndex = 0;
 
         while (current != null) {
@@ -66,7 +66,7 @@ public class LinkedList<T> implements Iterable<T> {
                 current.setData(element); // Atualiza o elemento
                 return;
             }
-            current = current.getNext(); // Avança para o próximo nó
+            current = current.getNext(); // Avanca para o próximo nó
             currentIndex++;
         }
 
@@ -74,35 +74,35 @@ public class LinkedList<T> implements Iterable<T> {
     }
 
     /**
-     * Obtém o elemento na posição especificada.
+     * Obtem o elemento na posicao especificada.
      *
-     * @param index O índice do elemento desejado.
-     * @return O elemento na posição especificada.
-     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
+     * @param index O indice do elemento desejado.
+     * @return O elemento na posicao especificada.
+     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
      */
     public T getElementAt(int index) {
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("indice fora dos limites: " + index);
         }
 
-        Node<T> current = head; // Começa pelo primeiro elemento
+        Node<T> current = head; // Comeca pelo primeiro elemento
         int currentIndex = 0;
 
         while (current != null) {
             if (currentIndex == index) {
                 return current.getData();
             }
-            current = current.getNext(); // Avança para o próximo nó
+            current = current.getNext(); // Avanca para o próximo nó
             currentIndex++;
         }
 
-        // Esta linha não deve ser alcançada devido à verificação do índice acima
+        // Esta linha nao deve ser alcancada devido à verificacao do indice acima
         throw new IllegalStateException("Erro inesperado ao procurar o indice.");
     }
 
 
     /**
-     * Verifica se a lista contém o elemento especificado.
+     * Verifica se a lista contem o elemento especificado.
      *
      * @param element O elemento a ser procurado.
      * @return true se o elemento estiver presente, false caso contrário.
@@ -119,7 +119,7 @@ public class LinkedList<T> implements Iterable<T> {
         return false;
     }
 
-    // Retorna o índice de um elemento, ou -1 se não for encontrado
+    // Retorna o indice de um elemento, ou -1 se nao for encontrado
     public int indexOf(T element) {
         Node<T> current = head;
         int index = 0;
@@ -133,7 +133,7 @@ public class LinkedList<T> implements Iterable<T> {
         return -1;
     }
 
-    // Retorna o elemento em uma posição específica
+    // Retorna o elemento em uma posicao especifica
     public T get(int index) {
         if (index < 0 || index >= count) {
             throw new IndexOutOfBoundsException("Indice fora do intervalo");
@@ -168,7 +168,7 @@ public class LinkedList<T> implements Iterable<T> {
         }
 
         if (!found) {
-            throw new RuntimeException("Erro: O elemento não foi encontrado na lista.");
+            throw new RuntimeException("Erro: O elemento nao foi encontrado na lista.");
         }
 
         if (current == this.head) {
@@ -201,7 +201,7 @@ public class LinkedList<T> implements Iterable<T> {
         return result.toString();
     }
 
-    // Implementação do método iterator()
+    // Implementacao do metodo iterator()
     @Override
     public Iterator<T> iterator() {
         return new LinkedListIterator();

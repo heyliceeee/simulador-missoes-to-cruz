@@ -4,7 +4,7 @@ import org.example.api.implementation.interfaces.IAlvo;
 import org.example.api.implementation.interfaces.IDivisao;
 
 /**
- * Implementação do Alvo da missão.
+ * Implementacao do Alvo da missao.
  */
 public class AlvoImpl implements IAlvo {
     private IDivisao divisao;
@@ -13,7 +13,7 @@ public class AlvoImpl implements IAlvo {
     /**
      * Construtor do Alvo.
      *
-     * @param divisao Divisão onde o alvo está localizado.
+     * @param divisao Divisao onde o alvo está localizado.
      * @param tipo    Tipo do alvo.
      */
     public AlvoImpl(IDivisao divisao, String tipo) {

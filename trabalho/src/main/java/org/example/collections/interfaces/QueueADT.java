@@ -21,8 +21,8 @@ public interface QueueADT<T>
     public T first();
 
     /**
-     * retorna true se a queue não contém elementos
-     * @return true se a queue não contém elementos
+     * retorna true se a queue nao contem elementos
+     * @return true se a queue nao contem elementos
      */
     public boolean isEmpty();
 

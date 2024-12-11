@@ -25,14 +25,14 @@ public class OrderedQueue<T extends Comparable<T>> implements QueueADT<T>
     {
         QueueADT<T> tempQueue = new LinkedQueue<T>();
 
-        while (!isEmpty() && element.compareTo(first()) > 0) //enquanto não estiver vazia && novo elemento > primeiro elemento
+        while (!isEmpty() && element.compareTo(first()) > 0) //enquanto nao estiver vazia && novo elemento > primeiro elemento
         {
             tempQueue.enqueue(dequeue()); //adiciona na tempQueue o elemento removido do front da queue
         }
 
         tempQueue.enqueue(element); //adiciona na tempQueue o novo elemento no rear
 
-        while (!isEmpty()) //enquanto não estiver vazia
+        while (!isEmpty()) //enquanto nao estiver vazia
         {
             tempQueue.enqueue(dequeue()); //adiciona na tempQueue o elemento removido do front da queue
         }
@@ -77,7 +77,7 @@ public class OrderedQueue<T extends Comparable<T>> implements QueueADT<T>
     {
         QueueADT<T> mergeQueue = new LinkedQueue<T>();
 
-        while (!queue1.isEmpty() && !queue2.isEmpty()) //enquanto as queues não estiverem vazias
+        while (!queue1.isEmpty() && !queue2.isEmpty()) //enquanto as queues nao estiverem vazias
         {
             T element1 = queue1.first();
             T element2 = queue2.first();

@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class LinkedBinaryTree<T> implements BinaryTreeADT<T>
 {
     protected int count; //tamanho da árvore
-    protected BinaryTreeNode<T> root; //node que é o root da árvore
+    protected BinaryTreeNode<T> root; //node que e o root da árvore
 
 
     /**
@@ -22,7 +22,7 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T>
 
 
     /**
-     * cria uma árvore binária com o elemento específico como root
+     * cria uma árvore binária com o elemento especifico como root
      * @param element o elemento que irá ser como root na nova árvore binária
      */
     public LinkedBinaryTree(T element)
@@ -82,10 +82,10 @@ public class LinkedBinaryTree<T> implements BinaryTreeADT<T>
 
 
     /**
-     * retorna uma referência para o específico elemento se este for encontrado na árvore binária
+     * retorna uma referencia para o especifico elemento se este for encontrado na árvore binária
      * @param targetElement o elemento a ser procurado na árvore
-     * @param next o elemento para começar a pesquisar
-     * @return uma referência para o elemento procurado
+     * @param next o elemento para comecar a pesquisar
+     * @return uma referencia para o elemento procurado
      */
     private BinaryTreeNode<T> findAgain(T targetElement, BinaryTreeNode<T> next)
     {

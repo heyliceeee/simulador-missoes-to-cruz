@@ -10,7 +10,7 @@ public class DoublyLinkedList<T> {
     }
 
     /**
-     * adiciona na cabeça
+     * adiciona na cabeca
      *
      * @param element
      */
@@ -26,7 +26,7 @@ public class DoublyLinkedList<T> {
         } else {
             newNode.setNext(head); // o próximo do novo node aponta para o head do node atual
             head.setPrev(newNode); // o anterior do node da head aponta para o novo node
-            head = newNode; // o node atual da head é o novo node
+            head = newNode; // o node atual da head e o novo node
 
             size++;
         }
@@ -45,14 +45,14 @@ public class DoublyLinkedList<T> {
 
         DoublyNode<T> removedNode = head; // elemento que está na head e q vai ser removido
 
-        if (head == tail) { // se o node head é o único da lista
+        if (head == tail) { // se o node head e o único da lista
             head = tail = null;
             size--;
             return true;
 
         } else {
             head = head.getNext(); // a head fica com o valor do proximo node
-            head.setPrev(null); // o elemento anterior ao head não existe
+            head.setPrev(null); // o elemento anterior ao head nao existe
             size--;
             return true;
         }
@@ -71,14 +71,14 @@ public class DoublyLinkedList<T> {
 
         DoublyNode<T> removedNode = tail; // elemento que está na tail e q vai ser removido
 
-        if (head == tail) { // se o node tail é o único da lista
+        if (head == tail) { // se o node tail e o único da lista
             head = tail = null;
             size--;
             return true;
 
         } else {
             tail = tail.getPrev(); // a tail fica com o valor do proximo node
-            tail.setNext(null); // o elemento seguinte ao tail não existe
+            tail.setNext(null); // o elemento seguinte ao tail nao existe
             size--;
             return true;
         }
@@ -113,7 +113,7 @@ public class DoublyLinkedList<T> {
         System.out.print("[");
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i]);
-            if (i < array.length - 1) { // Se não for o último elemento, imprima uma vírgula
+            if (i < array.length - 1) { // Se nao for o último elemento, imprima uma virgula
                 System.out.print(", ");
             }
         }
@@ -160,7 +160,7 @@ public class DoublyLinkedList<T> {
 
         Object[] result = new Object[effectiveSize]; // criar um array do tamanho apropriado
 
-        // preencha o array c os dados dos nodes até a position
+        // preencha o array c os dados dos nodes ate a position
         current = head;
         int i = 0;
 
@@ -201,7 +201,7 @@ public class DoublyLinkedList<T> {
 
         Object[] result = new Object[effectiveSize]; // criar um array do tamanho apropriado
 
-        // preencha o array c os dados dos nodes até a position
+        // preencha o array c os dados dos nodes ate a position
         int i = 0;
 
         while (current != null) {
@@ -220,7 +220,7 @@ public class DoublyLinkedList<T> {
 
         DoublyNode<T> current = head;
 
-        // correr até a position1
+        // correr ate a position1
         int j = 0;
         while (current != null && j < position1) {
             j++;
@@ -244,7 +244,7 @@ public class DoublyLinkedList<T> {
         // Crie um array do tamanho calculado
         Object[] result = new Object[length];
 
-        // Preencha o array com os dados dos nós entre as posições especificadas
+        // Preencha o array com os dados dos nós entre as posicões especificadas
         int i = 0;
         while (current != null && i < length) {
             result[i] = current.getElement();
@@ -257,7 +257,7 @@ public class DoublyLinkedList<T> {
 
     public DoublyLinkedList<Integer> getEvenElements() {
         if (!(head.getElement() instanceof Integer)) {
-            throw new UnsupportedOperationException("Esta operação só é válida para listas de inteiros.");
+            throw new UnsupportedOperationException("Esta operacao so e valida para listas de inteiros.");
         }
 
         DoublyLinkedList<Integer> evenList = new DoublyLinkedList<>();
@@ -280,7 +280,7 @@ public class DoublyLinkedList<T> {
         int quantity = 0;
 
         for (int i = 0; current != null; i++) {
-            if (current.getElement().equals(element)) { // verifica se o elemento atual é = ao element
+            if (current.getElement().equals(element)) { // verifica se o elemento atual e = ao element
                 quantity++;
             }
 
@@ -316,7 +316,7 @@ public class DoublyLinkedList<T> {
                     current.setPrev(null); // elemento anterior do atual = nulo
                     current = temp; // atual = elemento seguinte do atual
 
-                } else { // se NÃO já encontrou o primeiro elemento (primeira vez agora)
+                } else { // se NaO já encontrou o primeiro elemento (primeira vez agora)
                     foundFirst = true;
                     current = current.getNext(); // atual = elemento seguinte do atual
                 }
