@@ -1,6 +1,7 @@
 package org.example.api.implementation.interfaces;
 
 import org.example.api.exceptions.ElementNotFoundException;
+import org.example.api.implementation.models.ToCruz;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 public interface Mapa {
@@ -17,6 +18,6 @@ public interface Mapa {
     ArrayUnorderedList<Divisao> obterConexoes(Divisao divisao);
     ArrayUnorderedList<Divisao> getDivisoes();
     ArrayUnorderedList<String> getEntradasSaidasNomes();
-    void moverInimigos() throws ElementNotFoundException;
+    public void moverInimigos(ToCruz toCruz, CombateService combateService) throws ElementNotFoundException;
     void mostrarMapa();
 }

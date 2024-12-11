@@ -67,6 +67,16 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
         while (!fila.isEmpty()) {
             Divisao atual = fila.dequeue();
 
+            // Movimentação dos inimigos antes do jogador agir
+            System.out.println("Movimentando inimigos...");
+            mapa.moverInimigos(toCruz, combateService);
+
+            // Verifica se Tó Cruz sobreviveu após a movimentação dos inimigos
+            if (toCruz.getVida() <= 0) {
+                System.err.println("💀 Tó Cruz foi derrotado após a movimentação dos inimigos!");
+                return;
+            }
+
             if (atual.equals(divisaoObjetivo)) {
                 System.out.println("Objetivo encontrado: " + atual.getNomeDivisao());
                 reconstruirCaminho(predecessores, divisaoObjetivo);
@@ -85,7 +95,8 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
 
             for (int i = 0; i < conexoes.size(); i++) {
                 Divisao vizinho = conexoes.getElementAt(i);
-                if (vizinho == null) continue;
+                if (vizinho == null)
+                    continue;
 
                 if (!visitados.contains(vizinho) && mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao())) {
                     visitados.addToRear(vizinho);
@@ -105,9 +116,10 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
      *
      * @param predecessores Lista de predecessores para cada divisão.
      * @param objetivo      Divisão objetivo que foi encontrada.
-          * @throws ElementNotFoundException 
-          */
-         private void reconstruirCaminho(ArrayUnorderedList<Predecessor> predecessores, Divisao objetivo) throws ElementNotFoundException {
+     * @throws ElementNotFoundException
+     */
+    private void reconstruirCaminho(ArrayUnorderedList<Predecessor> predecessores, Divisao objetivo)
+            throws ElementNotFoundException {
         LinkedStack<Divisao> caminhoReverso = new LinkedStack<>();
         Divisao atual = objetivo;
 
@@ -139,20 +151,20 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
      * Move Tó Cruz para a divisão especificada, resolve combates e coleta itens.
      *
      * @param divisao Divisão para onde Tó Cruz deve se mover.
-     * @throws ElementNotFoundException 
+     * @throws ElementNotFoundException
      */
     private void moverParaDivisao(Divisao divisao) throws ElementNotFoundException {
         if (divisao == null) {
             System.err.println("Erro: Tentativa de mover para uma divisão nula.");
             return;
         }
-    
+
         // Atualiza a posição de Tó Cruz
         toCruz.moverPara(divisao);
-    
+
         // Exibe a posição atual sem duplicação
         System.out.println("🤠 Tó Cruz moveu-se para a divisão: " + divisao.getNomeDivisao());
-    
+
         // Verifica e processa inimigos
         ArrayUnorderedList<Inimigo> inimigos = divisao.getInimigosPresentes();
         if (inimigos != null && !inimigos.isEmpty()) {
@@ -169,7 +181,7 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
                 }
             }
         }
-    
+
         // Verifica e processa itens
         ArrayUnorderedList<Item> itens = divisao.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
@@ -187,16 +199,13 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
             }
         }
     }
-    
-    
-    
 
     /**
      * Encontra o caminho para a divisão de saída mais próxima usando BFS.
      *
      * @return Lista de divisões representando o caminho mais curto para a saída.
      */
-    private ArrayUnorderedList<Divisao> encontrarCaminhoParaSaidaMaisProxima() {
+    public ArrayUnorderedList<Divisao> encontrarCaminhoParaSaidaMaisProxima() {
         ArrayUnorderedList<String> entradasSaidas = mapa.getEntradasSaidasNomes();
         if (entradasSaidas.isEmpty()) {
             System.err.println("Erro: Nenhuma divisão de saída definida no mapa.");
@@ -244,7 +253,8 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
 
             for (int i = 0; i < conexoes.size(); i++) {
                 Divisao vizinho = conexoes.getElementAt(i);
-                if (vizinho == null) continue;
+                if (vizinho == null)
+                    continue;
 
                 if (!visitados.contains(vizinho) && mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao())) {
                     visitados.addToRear(vizinho);
@@ -264,13 +274,16 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
      * @param predecessores Lista de predecessores para cada divisão.
      * @param objetivo      Divisão objetivo que foi encontrada.
      */
-    /**private void reconstructPath(ArrayUnorderedList<Predecessor> predecessores, Divisao objetivo, ArrayUnorderedList<Divisao> caminho) {
-        Divisao passo = objetivo;
-        while (passo != null) {
-            caminho.addToRear(passo);
-            passo = getPredecessor(predecessores, passo.getNomeDivisao());
-        }
-    }*/
+    /**
+     * private void reconstructPath(ArrayUnorderedList<Predecessor> predecessores,
+     * Divisao objetivo, ArrayUnorderedList<Divisao> caminho) {
+     * Divisao passo = objetivo;
+     * while (passo != null) {
+     * caminho.addToRear(passo);
+     * passo = getPredecessor(predecessores, passo.getNomeDivisao());
+     * }
+     * }
+     */
 
     /**
      * Recupera o predecessor de uma divisão a partir da lista de predecessores.
@@ -316,44 +329,47 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
 
     /**
      * Verifica e executa o trajeto de volta para a divisão de saída mais próxima.
-          * @throws ElementNotFoundException 
-          */
-          private void verificarTrajetoDeVolta() throws ElementNotFoundException {
-            ArrayUnorderedList<Divisao> caminhoDeVolta = encontrarCaminhoParaSaidaMaisProxima();
-        
-            if (caminhoDeVolta == null || caminhoDeVolta.isEmpty()) {
-                System.err.println("Erro: Caminho de volta não encontrado.");
-                return;
-            }
-        
-            System.out.println("🎯 Divisão de saída encontrada: " + caminhoDeVolta.getElementAt(caminhoDeVolta.size() - 1).getNomeDivisao());
-        
-            for (int i = 0; i < caminhoDeVolta.size(); i++) {
-                Divisao divisao = caminhoDeVolta.getElementAt(i);
-                if (divisao == null) continue;
-        
-                // Combate com inimigos na divisão de volta
-                if (divisao.getInimigosPresentes() != null && !divisao.getInimigosPresentes().isEmpty()) {
-                    System.out.println("⚔️ Combate iniciado na divisão: " + divisao.getNomeDivisao());
-                    combateService.resolverCombate(toCruz, divisao);
-        
-                    // Verificar se Tó Cruz foi derrotado
-                    if (toCruz.getVida() <= 0) {
-                        System.err.println("💀 Tó Cruz foi derrotado durante o retorno!");
-                        mostrarMapaInterativo(toCruz, divisao, false);
-                        return;
-                    }
-                }
-        
-                // Mover para a divisão
-                toCruz.moverPara(divisao);
-                caminhoPercorrido.addToRear(divisao);
-                mostrarMapaInterativo(toCruz, divisao, true);
-            }
-        
-            System.out.println("🏆 Missão concluída com sucesso! Tó Cruz retornou com o alvo.");
+     * 
+     * @throws ElementNotFoundException
+     */
+    private void verificarTrajetoDeVolta() throws ElementNotFoundException {
+        ArrayUnorderedList<Divisao> caminhoDeVolta = encontrarCaminhoParaSaidaMaisProxima();
+
+        if (caminhoDeVolta == null || caminhoDeVolta.isEmpty()) {
+            System.err.println("Erro: Caminho de volta não encontrado.");
+            return;
         }
-        
+
+        System.out.println("🎯 Divisão de saída encontrada: "
+                + caminhoDeVolta.getElementAt(caminhoDeVolta.size() - 1).getNomeDivisao());
+
+        for (int i = 0; i < caminhoDeVolta.size(); i++) {
+            Divisao divisao = caminhoDeVolta.getElementAt(i);
+            if (divisao == null)
+                continue;
+
+            // Combate com inimigos na divisão de volta
+            if (divisao.getInimigosPresentes() != null && !divisao.getInimigosPresentes().isEmpty()) {
+                System.out.println("⚔️ Combate iniciado na divisão: " + divisao.getNomeDivisao());
+                combateService.resolverCombate(toCruz, divisao);
+
+                // Verificar se Tó Cruz foi derrotado
+                if (toCruz.getVida() <= 0) {
+                    System.err.println("💀 Tó Cruz foi derrotado durante o retorno!");
+                    mostrarMapaInterativo(toCruz, divisao, false);
+                    return;
+                }
+            }
+
+            // Mover para a divisão
+            toCruz.moverPara(divisao);
+            caminhoPercorrido.addToRear(divisao);
+            mostrarMapaInterativo(toCruz, divisao, true);
+        }
+
+        System.out.println("🏆 Missão concluída com sucesso! Tó Cruz retornou com o alvo.");
+    }
+
     @Override
     public int getVidaRestante() {
         return toCruz.getVida();
@@ -399,9 +415,10 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
      * @param origem  Divisão de origem.
      * @param destino Divisão de destino.
      * @return Lista de divisões representando o caminho mais curto.
-          * @throws ElementNotFoundException 
-          */
-         public ArrayUnorderedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino) throws ElementNotFoundException {
+     * @throws ElementNotFoundException
+     */
+    public ArrayUnorderedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino)
+            throws ElementNotFoundException {
         if (origem == null || destino == null) {
             System.err.println("Erro: Origem ou destino inválidos.");
             return new ArrayUnorderedList<>();
@@ -430,7 +447,8 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
 
             for (int i = 0; i < conexoes.size(); i++) {
                 Divisao vizinho = conexoes.getElementAt(i);
-                if (vizinho == null) continue;
+                if (vizinho == null)
+                    continue;
 
                 if (!visitados.contains(vizinho) && mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao())) {
                     visitados.addToRear(vizinho);
@@ -446,11 +464,12 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
     public void mostrarMapaInterativo(ToCruz toCruz, Divisao divisaoAtual, boolean sucesso) {
         System.out.println("===== MAPA ATUAL =====");
         ArrayUnorderedList<Divisao> divisoes = mapa.getDivisoes();
-    
+
         for (int i = 0; i < divisoes.size(); i++) {
             Divisao divisao = divisoes.getElementAt(i);
-            if (divisao == null) continue;
-    
+            if (divisao == null)
+                continue;
+
             // Mostrar o ícone de Tó Cruz na posição atual
             if (divisao.equals(divisaoAtual)) {
                 String icone = sucesso ? "🤠" : "💀";
@@ -462,9 +481,4 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
         }
         System.out.println("=======================");
     }
-    
-    
-    
-    
-    
 }

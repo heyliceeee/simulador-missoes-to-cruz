@@ -54,7 +54,7 @@
       {"nome": "badguy30", "poder": 20, "divisao": "WC"}
     ],
     "entradas-saidas": ["Heliporto", "Laboratório", "Garagem", "Porteiro"],
-    "alvo": {"divisao": "Laboratório", "tipo": "artefato"},
+    "alvo": {"divisao": "Segurança", "tipo": "artefato"},
     "itens": [
       {"divisao": "WC", "pontos-recuperados": 10, "tipo": "kit de vida"},
       {"divisao": "Escritório 1", "pontos-recuperados": 15, "tipo": "kit de vida"},

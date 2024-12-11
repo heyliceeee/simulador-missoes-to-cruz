@@ -2,6 +2,7 @@ package org.example.api.implementation.models;
 
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.implementation.interfaces.Alvo;
+import org.example.api.implementation.interfaces.CombateService;
 import org.example.api.implementation.interfaces.Divisao;
 import org.example.api.implementation.interfaces.Inimigo;
 import org.example.api.implementation.interfaces.Item;
@@ -9,7 +10,6 @@ import org.example.api.implementation.interfaces.Mapa;
 import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.collections.implementation.Graph;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -19,6 +19,7 @@ import java.util.Random;
 public class MapaImpl implements Mapa {
     private Graph<Divisao> grafo;
     private Alvo alvo;
+    public static String pin = "\uD83D\uDCCC"; // 📍
 
     public MapaImpl() {
         this.grafo = new Graph<>();
@@ -32,7 +33,7 @@ public class MapaImpl implements Mapa {
         }
         Divisao divisao = new DivisaoImpl(nomeDivisao);
         grafo.addVertex(divisao);
-        //System.out.println("Divisão adicionada: " + nomeDivisao);
+        // System.out.println("Divisão adicionada: " + nomeDivisao);
     }
 
     @Override
@@ -51,7 +52,8 @@ public class MapaImpl implements Mapa {
         }
 
         grafo.addEdge(divisao1, divisao2);
-        //System.out.println("Ligação adicionada entre " + nomeDivisao1 + " e " + nomeDivisao2);
+        // System.out.println("Ligação adicionada entre " + nomeDivisao1 + " e " +
+        // nomeDivisao2);
     }
 
     @Override
@@ -64,7 +66,8 @@ public class MapaImpl implements Mapa {
         Divisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
             divisao.adicionarInimigo(inimigo);
-            //System.out.println("Inimigo '" + inimigo.getNome() + "' adicionado à divisão: " + nomeDivisao);
+            // System.out.println("Inimigo '" + inimigo.getNome() + "' adicionado à divisão:
+            // " + nomeDivisao);
         } else {
             System.err.println("Erro: Divisão '" + nomeDivisao + "' não encontrada.");
         }
@@ -80,7 +83,8 @@ public class MapaImpl implements Mapa {
         Divisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
             divisao.adicionarItem(item);
-            //System.out.println("Item '" + item.getTipo() + "' adicionado à divisão: " + nomeDivisao);
+            // System.out.println("Item '" + item.getTipo() + "' adicionado à divisão: " +
+            // nomeDivisao);
         } else {
             System.err.println("Erro: Divisão '" + nomeDivisao + "' não encontrada.");
         }
@@ -206,61 +210,100 @@ public class MapaImpl implements Mapa {
     }
 
     @Override
-    public void moverInimigos() throws ElementNotFoundException {
+    public void moverInimigos(ToCruz toCruz, CombateService combateService) throws ElementNotFoundException {
         Random random = new Random();
         ArrayUnorderedList<Divisao> divisoes = getDivisoes();
-    
+
         if (divisoes == null || divisoes.isEmpty()) {
             throw new IllegalStateException("Nenhuma divisão disponível para mover inimigos.");
         }
-    
+
         for (int i = 0; i < divisoes.size(); i++) {
-            Divisao divisao = divisoes.getElementAt(i);
-            if (divisao == null) continue;
-    
-            ArrayUnorderedList<Inimigo> inimigos = divisao.getInimigosPresentes();
-            if (inimigos == null || inimigos.isEmpty()) continue;
-    
+            Divisao divisaoAtual = divisoes.getElementAt(i);
+            if (divisaoAtual == null)
+                continue;
+
+            ArrayUnorderedList<Inimigo> inimigos = divisaoAtual.getInimigosPresentes();
+            if (inimigos == null || inimigos.isEmpty())
+                continue;
+
             ArrayUnorderedList<Inimigo> inimigosCopy = new ArrayUnorderedList<>();
             for (int j = 0; j < inimigos.size(); j++) {
                 inimigosCopy.addToRear(inimigos.getElementAt(j));
             }
-    
+
             for (int j = 0; j < inimigosCopy.size(); j++) {
                 Inimigo inimigo = inimigosCopy.getElementAt(j);
-                if (inimigo == null) continue;
-    
-                ArrayUnorderedList<Divisao> conexoes = obterConexoes(divisao);
-                if (conexoes == null || conexoes.isEmpty()) {
-                    throw new IllegalStateException(
-                        "Nenhuma conexão disponível para mover o inimigo '" + inimigo.getNome() + "'.");
+                if (inimigo == null)
+                    continue;
+
+                Divisao origem = divisaoAtual;
+                Divisao destino = origem;
+
+                // Movimentar até 2 divisões aleatoriamente
+                for (int movimentos = 0; movimentos < 2; movimentos++) {
+                    ArrayUnorderedList<Divisao> conexoes = obterConexoes(destino);
+                    if (conexoes.isEmpty())
+                        break;
+
+                    Divisao novaDivisao = conexoes.getElementAt(random.nextInt(conexoes.size()));
+                    if (novaDivisao != null) {
+                        destino = novaDivisao;
+                    }
                 }
-    
-                Divisao novaDivisao = conexoes.getElementAt(random.nextInt(conexoes.size()));
-                if (novaDivisao != null) {
-                    novaDivisao.adicionarInimigo(inimigo);
-                    divisao.removerInimigo(inimigo);
-                    System.out.println("Inimigo '" + inimigo.getNome() + "' movido para " + novaDivisao.getNomeDivisao());
-                } else {
-                    throw new IllegalStateException("A conexão selecionada é inválida (nula).");
+
+                // Mover inimigo para o destino final
+                if (!destino.equals(origem)) {
+                    destino.adicionarInimigo(inimigo);
+                    origem.removerInimigo(inimigo);
+                    System.out.println("Inimigo '" + inimigo.getNome() + "' movido de " +
+                            origem.getNomeDivisao() + " para " + destino.getNomeDivisao());
+
+                    // Verificar se o inimigo entrou na sala de Tó Cruz
+                    if (destino.equals(toCruz.getPosicaoAtual())) {
+                        System.out.println("⚔️ Inimigo entrou na sala de Tó Cruz! Combate iniciado.");
+                        combateService.resolverCombate(toCruz, destino);
+
+                        // Verificar se Tó Cruz foi derrotado
+                        if (toCruz.getVida() <= 0) {
+                            System.err.println("💀 Tó Cruz foi derrotado durante o ataque dos inimigos!");
+                            return;
+                        }
+                    }
                 }
             }
         }
     }
-    
 
     @Override
     public void mostrarMapa() {
         System.out.println("===== MAPA DO EDIFÍCIO =====");
         ArrayUnorderedList<Divisao> divisoes = getDivisoes();
-    
+
         for (int i = 0; i < divisoes.size(); i++) {
             Divisao divisao = divisoes.getElementAt(i);
-            if (divisao == null) continue;
-    
-            // Exibir o nome da divisão principal
-            System.out.println("📍 " + divisao.getNomeDivisao());
-    
+            if (divisao == null)
+                continue;
+
+            // Obter informações da divisão
+            ArrayUnorderedList<Inimigo> inimigos = divisao.getInimigosPresentes();
+            ArrayUnorderedList<Item> itens = divisao.getItensPresentes();
+            
+            // Exibir o nome da divisão com símbolos adicionais
+            System.out.print(pin + divisao.getNomeDivisao());
+
+            if (inimigos != null && !inimigos.isEmpty()) {
+                System.out.print(" ⚔️ (" + inimigos.size() + " inimigos)");
+            }
+            if (itens != null && !itens.isEmpty()) {
+                System.out.print(" 🎒 (" + itens.size() + " itens)");
+            }
+            if (divisao.isEntradaSaida()) {
+                System.out.print(" 🚪 [Entrada/Saída]");
+            }
+
+            System.out.println();
+
             // Obter as conexões
             ArrayUnorderedList<Divisao> conexoes = obterConexoes(divisao);
             if (conexoes.isEmpty()) {
@@ -275,6 +318,5 @@ public class MapaImpl implements Mapa {
         }
         System.out.println("=============================");
     }
-    
 
 }

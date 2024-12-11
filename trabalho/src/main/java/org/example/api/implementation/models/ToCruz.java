@@ -16,7 +16,6 @@ public class ToCruz implements Agente {
     private Divisao posicaoAtual;
     private ArrayStack<Item> inventario;
     private boolean alvoConcluido;
-    private final String icone = "🤠";
 
     /**
      * Construtor do Tó Cruz.
@@ -69,20 +68,37 @@ public class ToCruz implements Agente {
     }
 
     @Override
-    public void adicionarAoInventario(Item item) {
-        if (item == null) {
-            System.err.println("Erro: Item a ser adicionado é nulo.");
-            return;
-        }
+public void adicionarAoInventario(Item item) {
+    if (item == null) {
+        System.err.println("Erro: Item a ser adicionado é nulo.");
+        return;
+    }
 
-        if ("colete".equalsIgnoreCase(item.getTipo())) {
+    switch (item.getTipo().toLowerCase()) {
+        case "colete":
+            // Adiciona os pontos de vida do colete, permitindo ultrapassar o limite de 100
             vida += item.getPontos();
             System.out.println("Consumiu um colete! Ganhou " + item.getPontos() + " pontos extras. Vida atual: " + vida);
-        } else {
+            break;
+
+        case "kit de vida":
+            // Verifica o limite máximo de kits na mochila
+            if (inventario.size() >= 5) { // Considerando 5 como limite configurado
+                System.out.println("Mochila cheia! Não é possível carregar mais kits de vida.");
+            } else {
+                inventario.push(item);
+                System.out.println("Kit de vida adicionado ao inventário.");
+            }
+            break;
+
+        default:
+            // Outros tipos de itens
             inventario.push(item);
             System.out.println("Item adicionado ao inventário: " + item.getTipo());
-        }
+            break;
     }
+}
+
 
     @Override
     public void sofrerDano(int dano) {
@@ -155,9 +171,5 @@ public class ToCruz implements Agente {
 
     public void setAlvoConcluido(boolean concluido) {
         this.alvoConcluido = concluido;
-    }
-
-    public String getIcone() {
-        return icone;
     }
 }

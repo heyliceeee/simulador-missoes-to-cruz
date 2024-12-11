@@ -6,7 +6,6 @@ import org.example.api.implementation.interfaces.Divisao;
 import org.example.api.implementation.interfaces.Inimigo;
 import org.example.api.implementation.interfaces.Item;
 import org.example.api.implementation.interfaces.Mapa;
-import org.example.api.implementation.interfaces.Simulacao;
 import org.example.api.implementation.interfaces.SimulacaoManual;
 import org.example.api.implementation.services.CombateServiceImpl;
 import org.example.api.implementation.models.ToCruz;
@@ -25,7 +24,7 @@ public class SimulacaoManualImpl implements SimulacaoManual {
     private final ToCruz toCruz;
     private final Scanner scanner;
     private final CombateServiceImpl combateService;
-    private final ArrayUnorderedList<Item> itensColetados; // Alterado para ArrayUnorderedList
+    private final ArrayUnorderedList<Item> itensColetados; 
     private final ArrayUnorderedList<Inimigo> inimigosDerrotados;
     private final ArrayUnorderedList<Divisao> caminhoPercorrido;
 
@@ -37,7 +36,7 @@ public class SimulacaoManualImpl implements SimulacaoManual {
         this.toCruz = toCruz;
         this.scanner = new Scanner(System.in);
         this.combateService = new CombateServiceImpl();
-        this.itensColetados = new ArrayUnorderedList<>(); // Alterado para ArrayUnorderedList
+        this.itensColetados = new ArrayUnorderedList<>(); 
         this.inimigosDerrotados = new ArrayUnorderedList<>();
         this.caminhoPercorrido = new ArrayUnorderedList<>();
     }
