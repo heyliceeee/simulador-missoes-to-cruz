@@ -12,7 +12,7 @@ public class CircularArrayQueue<T> implements QueueADT<T>
     /**
      * constante para representar a capacidade default do array
      */
-    private final int DEFAULT_CAPACITY = 100;
+    private final int DEFAULT_CAPACITY = 10;
 
     /**
      * array de elementos genéricos que representam a queue

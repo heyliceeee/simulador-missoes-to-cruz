@@ -1,9 +1,11 @@
 package org.example.api.implementation.models;
 
+import org.example.api.implementation.interfaces.Item;
+
 /**
  * Representa um item no mapa.
  */
-public class Item {
+public class ItemImpl implements Item {
     private String tipo;
     private int pontos;
 
@@ -13,30 +15,34 @@ public class Item {
      * @param tipo   Tipo do item.
      * @param pontos Pontos relacionados ao item.
      */
-    public Item(String tipo, int pontos) {
+    public ItemImpl(String tipo, int pontos) {
         this.tipo = tipo;
         this.pontos = pontos;
     }
 
+    @Override
     public String getTipo() {
         return tipo;
     }
 
+    @Override
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
+    @Override
     public int getPontos() {
         return pontos;
     }
 
+    @Override
     public void setPontos(int pontos) {
         this.pontos = pontos;
     }
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "ItemImpl{" +
                 "tipo='" + tipo + '\'' +
                 ", pontos=" + pontos +
                 '}';
@@ -49,11 +55,11 @@ public class Item {
 
         Item item = (Item) o;
 
-        return tipo.equals(item.tipo);
+        return tipo.equals(item.getTipo());
     }
 
     @Override
     public int hashCode() {
-        return tipo.hashCode();
+        return tipo != null ? tipo.hashCode() : 0;
     }
 }

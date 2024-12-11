@@ -2,74 +2,88 @@ package org.example.collections.interfaces;
 
 import java.util.Iterator;
 
-public interface ListADT<T> extends Iterable<T>
-{
-    /**
-     * adicionar no tail da lista
-     * @param element
-     */
-    //public void add(T element);
+import org.example.api.exceptions.ElementNotFoundException;
+
+public interface ListADT<T> extends Iterable<T> {
 
     /**
-     * remove e retorna o primeiro elemento da lista
-     * @return o primeiro elemento da lista
+     * Removes and returns the first element from this list.
+     *
+     * @return the first element from this list
+     * @throws ed_f5.ElementNotFoundException
      */
-    public T removeFirst();
+    public T removeFirst() throws ElementNotFoundException;
 
     /**
-     * remove e retorna o ultimo elemento da lista
-     * @return o ultimo elemento da lista
+     * Removes and returns the last element from this list.
+     *
+     * @return the last element from this list
+     * @throws ed_f5.ElementNotFoundException
      */
-    public T removeLast();
+    public T removeLast() throws ElementNotFoundException;
 
     /**
-     * remove e retorna o elemento especifico da lista
-     * @param element o elemento que vai ser removido da lista
+     * Removes and returns the specified element from this list.
+     *
+     * @param element the element to be removed from the list
      * @return
+     * @throws ed_f5.ElementNotFoundException
      */
-    public T remove(T element);
+    public T remove(T element) throws ElementNotFoundException;
 
     /**
-     * retorna a referencia do primeiro elemento da lista
-     * @return a referencia do primeiro elemento da lista
+     * Returns a reference to the first element in this list.
+     *
+     * @return a reference to the first element in this list
+     * @throws ed_f5.ElementNotFoundException
      */
-    public T first();
+    public T first() throws ElementNotFoundException;
 
     /**
-     * retorna a referencia do ultimo elemento da lista
-     * @return a referencia do ultimo elemento da lista
+     * Returns a reference to the last element in this list.
+     *
+     * @return a reference to the last element in this list
+     * @throws ed_f5.ElementNotFoundException
      */
-    public T last();
+    public T last() throws ElementNotFoundException;
 
     /**
-     * retorna true se na lista conter o elemento especifico na lista
-     * @param target o alvo que vai ser procurado na lista
-     * @return true se na lista conter o elemento
+     * Returns true if this list contains the specified target element.
+     *
+     * @param target the target that is being sought in the list
+     * @return true if the list contains this element
+     * @throws ed_f5.ElementNotFoundException
      */
     public boolean contains(T target);
 
     /**
-     * retorna true se na lista nao conter elementos
-     * @return true se na lista nao conter elementos
+     * Returns true if this list contains no elements.
+     *
+     * @return true if this list contains no elements
      */
     public boolean isEmpty();
 
     /**
-     * retorna o numero de elementos da lista
-     * @return o numero de elementos da lista
+     * Returns the number of elements in this list.
+     *
+     * @return the integer representation of number of elements in this list
      */
     public int size();
 
     /**
-     * retorna um iterator de elementos da lista
-     * @return um iterator de elementos da lista
+     * Returns an iterator for the elements in this list.
+     *
+     * @return an iterator over the elements in this list
      */
+    @Override
     public Iterator<T> iterator();
 
     /**
-     * retorna a lista
-     * @return a lista
+     * Returns a string representation of this list.
+     *
+     * @return a string representation of this list
      */
     @Override
     public String toString();
+
 }

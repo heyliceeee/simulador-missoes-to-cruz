@@ -14,7 +14,7 @@ public class Network<T> extends Graph<T> implements NetworkADT<T>
     /**
      * capacidade default da rede
      */
-    protected final int DEFAULT_CAPACITY = 100;
+    protected final int DEFAULT_CAPACITY = 10;
 
     /**
      * matriz adjacência
