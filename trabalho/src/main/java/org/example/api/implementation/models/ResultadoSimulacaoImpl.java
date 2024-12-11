@@ -1,12 +1,12 @@
 package org.example.api.implementation.models;
 
-import org.example.api.implementation.interfaces.ResultadoSimulacao;
+import org.example.api.implementation.interfaces.IResultadoSimulacao;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
  * Representa o resultado de uma simulação.
  */
-public class ResultadoSimulacaoImpl implements ResultadoSimulacao {
+public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
     private String id;
     private String divisaoInicial;
     private String divisaoFinal;
@@ -18,9 +18,10 @@ public class ResultadoSimulacaoImpl implements ResultadoSimulacao {
     private int versaoMissao;
 
     // Construtor completo
-    public ResultadoSimulacaoImpl(String id, String divisaoInicial, String divisaoFinal, String status, int vidaRestante,
-                                  ArrayUnorderedList<String> trajeto, ArrayUnorderedList<String> entradasSaidas,
-                                  String codigoMissao, int versaoMissao) {
+    public ResultadoSimulacaoImpl(String id, String divisaoInicial, String divisaoFinal, String status,
+            int vidaRestante,
+            ArrayUnorderedList<String> trajeto, ArrayUnorderedList<String> entradasSaidas,
+            String codigoMissao, int versaoMissao) {
         this.id = id;
         this.divisaoInicial = divisaoInicial;
         this.divisaoFinal = divisaoFinal;
@@ -30,6 +31,10 @@ public class ResultadoSimulacaoImpl implements ResultadoSimulacao {
         this.entradasSaidas = entradasSaidas;
         this.codigoMissao = codigoMissao;
         this.versaoMissao = versaoMissao;
+    }
+
+    // Construtor padrão (opcional, mas recomendado para desserialização)
+    public ResultadoSimulacaoImpl() {
     }
 
     // Getters e Setters

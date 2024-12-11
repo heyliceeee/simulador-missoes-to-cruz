@@ -1,14 +1,23 @@
 package org.example.api.implementation.interfaces;
 
-public interface Agente {
+public interface IAgente {
     String getNome();
+
     void setNome(String nome);
+
     int getVida();
+
     void setVida(int vida);
-    Divisao getPosicaoAtual();
-    void setPosicaoAtual(Divisao divisao);
-    void moverPara(Divisao novaDivisao);
+
+    IDivisao getPosicaoAtual();
+
+    void setPosicaoAtual(IDivisao divisao);
+
+    void moverPara(IDivisao novaDivisao);
+
     void sofrerDano(int dano);
-    void adicionarAoInventario(Item item);
+
+    void adicionarAoInventario(IItem item);
+
     void usarKitDeVida();
 }

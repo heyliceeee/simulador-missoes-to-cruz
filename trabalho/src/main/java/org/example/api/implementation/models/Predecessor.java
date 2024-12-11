@@ -1,13 +1,14 @@
 package org.example.api.implementation.models;
 
-import org.example.api.implementation.interfaces.Divisao;
+import org.example.api.implementation.interfaces.IDivisao;
 
 /**
- * Classe auxiliar para armazenar uma divisão e seu predecessor durante a busca de caminho.
+ * Classe auxiliar para armazenar uma divisão e seu predecessor durante a busca
+ * de caminho.
  */
 public class Predecessor {
-    private final Divisao atual;
-    private final Divisao predecessor;
+    private final IDivisao atual;
+    private final IDivisao predecessor;
 
     /**
      * Construtor da classe Predecessor.
@@ -15,7 +16,7 @@ public class Predecessor {
      * @param atual       A divisão atual.
      * @param predecessor A divisão predecessora.
      */
-    public Predecessor(Divisao atual, Divisao predecessor) {
+    public Predecessor(IDivisao atual, IDivisao predecessor) {
         this.atual = atual;
         this.predecessor = predecessor;
     }
@@ -25,7 +26,7 @@ public class Predecessor {
      *
      * @return A divisão atual.
      */
-    public Divisao getAtual() {
+    public IDivisao getAtual() {
         return atual;
     }
 
@@ -34,7 +35,7 @@ public class Predecessor {
      *
      * @return A divisão predecessora.
      */
-    public Divisao getPredecessor() {
+    public IDivisao getPredecessor() {
         return predecessor;
     }
 }

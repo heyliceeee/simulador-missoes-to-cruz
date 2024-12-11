@@ -27,9 +27,9 @@ public class Main {
         String caminhoJson = "mapa_v6.json";
 
         // Inicialização do mapa e carregamento da missão
-        Mapa mapa = new MapaImpl();
-        ImportJson importJson = new ImportJsonImpl(mapa);
-        Missao missao;
+        IMapa mapa = new MapaImpl();
+        IImportJson importJson = new ImportJsonImpl(mapa);
+        IMissao missao;
 
         try {
             System.out.println("--------------------------------------------------------------------------------");
@@ -51,28 +51,27 @@ public class Main {
         // Inicialização do agente Tó Cruz
         logger.info("Inicializando o agente Tó Cruz...");
         ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
-        Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
+        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
         toCruz.moverPara(divisaoInicial);
         logger.info("Agente {} posicionado na divisão inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
 
         // ============ SIMULAÇÃO AUTOMATICA ============
         logger.info("Iniciando a simulação automática...");
-        SimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz, new CombateServiceImpl());
+        ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
 
-        ResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
-        "AUTO-001",
-        divisaoInicial.getNomeDivisao(),
-        simulacaoAuto.getDivisaoFinal().getNomeDivisao(),
-        simulacaoAuto.getStatus(),
-        simulacaoAuto.getVidaRestante(),
-        filtrarLista(simulacaoAuto.getCaminhoPercorridoNomes()),
-        filtrarLista(mapa.getEntradasSaidasNomes()),
-        missao.getCodMissao(), 
-        missao.getVersao()     
-);
+        IResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
+                "AUTO-001",
+                divisaoInicial.getNomeDivisao(),
+                simulacaoAuto.getDivisaoFinal().getNomeDivisao(),
+                simulacaoAuto.getStatus(),
+                simulacaoAuto.getVidaRestante(),
+                filtrarLista(simulacaoAuto.getCaminhoPercorridoNomes()),
+                filtrarLista(mapa.getEntradasSaidasNomes()),
+                missao.getCodMissao(),
+                missao.getVersao());
 
-        ArrayUnorderedList<ResultadoSimulacao> resultados = new ArrayUnorderedList<>();
+        ArrayUnorderedList<IResultadoSimulacao> resultados = new ArrayUnorderedList<>();
         resultados.addToRear(resultadoAuto);
 
         ExportarResultados exportador = new ExportarResultados();
@@ -81,21 +80,20 @@ public class Main {
 
         // Simulação Manual
         logger.info("Iniciando a simulação manual...");
-        SimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
+        ISimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
         simulacaoManual.executar(mapa.getAlvo().getDivisao());
 
         ArrayUnorderedList<String> trajetoManual = filtrarLista(simulacaoManual.getCaminhoPercorridoNomes());
-        ResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
-        "MANUAL-001",
-        divisaoInicial.getNomeDivisao(),
-        simulacaoManual.getDivisaoFinal().getNomeDivisao(),
-        simulacaoManual.getStatus(),
-        simulacaoManual.getVidaRestante(),
-        filtrarLista(simulacaoManual.getCaminhoPercorridoNomes()),
-        filtrarLista(mapa.getEntradasSaidasNomes()),
-        missao.getCodMissao(), 
-        missao.getVersao()     
-);
+        IResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
+                "MANUAL-001",
+                divisaoInicial.getNomeDivisao(),
+                simulacaoManual.getDivisaoFinal().getNomeDivisao(),
+                simulacaoManual.getStatus(),
+                simulacaoManual.getVidaRestante(),
+                filtrarLista(simulacaoManual.getCaminhoPercorridoNomes()),
+                filtrarLista(mapa.getEntradasSaidasNomes()),
+                missao.getCodMissao(),
+                missao.getVersao());
 
         resultados.addToRear(resultadoManual);
         exportador.exportarParaJson(resultados, "resultado_simulacao_manual.json");

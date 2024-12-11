@@ -2,11 +2,11 @@ package org.example.api.implementation.interfaces;
 
 import org.example.collections.implementation.ArrayUnorderedList;
 
-public interface Simulacao {
+public interface ISimulacao {
     /**
      * Executa a simulação.
      */
-    void executar(Divisao divisaoObjetivo);
+    void executar(IDivisao divisaoObjetivo);
 
     /**
      * Obtém a vida restante de Tó Cruz.
@@ -27,26 +27,26 @@ public interface Simulacao {
      *
      * @return A divisão final.
      */
-    Divisao getDivisaoFinal();
+    IDivisao getDivisaoFinal();
 
     /**
      * Obtém o caminho percorrido durante a simulação.
      *
      * @return Uma lista de divisões representando o caminho percorrido.
      */
-    ArrayUnorderedList<Divisao> getCaminhoPercorrido();
+    ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 
     /**
      * Obtém os itens coletados durante a simulação.
      *
      * @return Uma lista de itens coletados.
      */
-    ArrayUnorderedList<Item> getItensColetados();
+    ArrayUnorderedList<IItem> getItensColetados();
 
     /**
      * Obtém os inimigos derrotados durante a simulação.
      *
      * @return Uma lista de inimigos derrotados.
      */
-    ArrayUnorderedList<Inimigo> getInimigosDerrotados();
+    ArrayUnorderedList<IInimigo> getInimigosDerrotados();
 }

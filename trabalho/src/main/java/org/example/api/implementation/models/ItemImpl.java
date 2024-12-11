@@ -1,11 +1,11 @@
 package org.example.api.implementation.models;
 
-import org.example.api.implementation.interfaces.Item;
+import org.example.api.implementation.interfaces.IItem;
 
 /**
  * Representa um item no mapa.
  */
-public class ItemImpl implements Item {
+public class ItemImpl implements IItem {
     private String tipo;
     private int pontos;
 
@@ -42,7 +42,7 @@ public class ItemImpl implements Item {
 
     @Override
     public String toString() {
-        return "ItemImpl{" +
+        return "Item{" +
                 "tipo='" + tipo + '\'' +
                 ", pontos=" + pontos +
                 '}';
@@ -50,10 +50,12 @@ public class ItemImpl implements Item {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-        Item item = (Item) o;
+        IItem item = (IItem) o;
 
         return tipo.equals(item.getTipo());
     }

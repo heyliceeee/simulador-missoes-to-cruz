@@ -83,4 +83,29 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
         return sb.toString();
     }
 
+    @Override
+    public void setElementAt(int index, T element) {
+        if (index < 0 || index >= count) {
+            throw new IndexOutOfBoundsException("O índice está fora dos limites da lista.");
+        }
+        if (element == null) {
+            throw new IllegalArgumentException("O valor não pode ser null.");
+        }
+        list[index] = element;
+    }
+
+    @Override
+    public int indexOf(T element) {
+        if (element == null) {
+            throw new IllegalArgumentException("O valor não pode ser null.");
+        }
+
+        for (int i = 0; i < count; i++) {
+            if (list[i].equals(element)) {
+                return i; // Retorna o índice do elemento
+            }
+        }
+
+        return -1; // Retorna -1 se o elemento não for encontrado
+    }
 }

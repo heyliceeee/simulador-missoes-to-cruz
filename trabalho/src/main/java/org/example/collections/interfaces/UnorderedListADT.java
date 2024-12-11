@@ -26,5 +26,9 @@ public interface UnorderedListADT<T> extends ListADT<T> {
      * @throws ed_f5.ElementNotFoundException
      */
     public void addAfter(T element, T target) throws ElementNotFoundException;
+
+    void setElementAt(int index, T element);
+
+    int indexOf(T element);
 }
 

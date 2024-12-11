@@ -5,7 +5,7 @@ import org.example.collections.implementation.ArrayUnorderedList;
 /**
  * Interface para exportar resultados de simulações.
  */
-public interface Exportador {
+public interface IExportador {
 
     /**
      * Exporta os resultados das simulações para um arquivo JSON.
@@ -13,5 +13,5 @@ public interface Exportador {
      * @param resultados     Lista de resultados a serem exportados.
      * @param caminhoArquivo Caminho do arquivo para exportar.
      */
-    void exportarParaJson(ArrayUnorderedList<ResultadoSimulacao> resultados, String caminhoArquivo);
+    void exportarParaJson(ArrayUnorderedList<IResultadoSimulacao> resultados, String caminhoArquivo);
 }

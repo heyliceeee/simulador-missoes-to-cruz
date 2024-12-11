@@ -178,7 +178,7 @@ public abstract class ArrayList<T> implements ListADT<T> {
 
     public T getElementAt(int index) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Índice fora do intervalo: " + index);
+            throw new IndexOutOfBoundsException("Indice fora do intervalo: " + index);
         }
         return list[index];
     }

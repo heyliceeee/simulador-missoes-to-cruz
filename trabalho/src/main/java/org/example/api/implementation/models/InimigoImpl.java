@@ -1,11 +1,11 @@
 package org.example.api.implementation.models;
 
-import org.example.api.implementation.interfaces.Inimigo;
+import org.example.api.implementation.interfaces.IInimigo;
 
 /**
  * Representa um inimigo no mapa.
  */
-public class InimigoImpl implements Inimigo {
+public class InimigoImpl implements IInimigo {
     private String nome;
     private int poder;
 
@@ -76,7 +76,7 @@ public class InimigoImpl implements Inimigo {
 
     @Override
     public String toString() {
-        return "InimigoImpl{" +
+        return "Inimigo{" +
                 "nome='" + nome + '\'' +
                 ", poder=" + poder +
                 '}';
@@ -84,8 +84,10 @@ public class InimigoImpl implements Inimigo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         InimigoImpl inimigo = (InimigoImpl) o;
 

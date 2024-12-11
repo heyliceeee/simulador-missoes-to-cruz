@@ -6,7 +6,7 @@ import org.example.collections.implementation.ArrayUnorderedList;
 /**
  * Interface para a simulação manual de missões.
  */
-public interface SimulacaoManual {
+public interface ISimulacaoManual {
 
     /**
      * Executa a simulação automática até o objetivo.
@@ -15,7 +15,7 @@ public interface SimulacaoManual {
      * @throws ElementNotFoundException Se algum elemento não for encontrado durante
      *                                  a execução.
      */
-    void executar(Divisao divisaoObjetivo) throws ElementNotFoundException;
+    void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException;
 
     public int getVidaRestante();
 
@@ -31,28 +31,28 @@ public interface SimulacaoManual {
      *
      * @return Divisão final.
      */
-    Divisao getDivisaoFinal();
+    IDivisao getDivisaoFinal();
 
     /**
      * Obtém a lista de divisões percorridas na simulação.
      *
      * @return Lista de divisões percorridas.
      */
-    ArrayUnorderedList<Divisao> getCaminhoPercorrido();
+    ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 
     /**
      * Obtém a lista de itens coletados durante a simulação.
      *
      * @return Lista de itens coletados.
      */
-    ArrayUnorderedList<Item> getItensColetados();
+    ArrayUnorderedList<IItem> getItensColetados();
 
     /**
      * Obtém a lista de inimigos derrotados durante a simulação.
      *
      * @return Lista de inimigos derrotados.
      */
-    ArrayUnorderedList<Inimigo> getInimigosDerrotados();
+    ArrayUnorderedList<IInimigo> getInimigosDerrotados();
 
     /**
      * Converte o caminho percorrido em uma lista de nomes de divisões.

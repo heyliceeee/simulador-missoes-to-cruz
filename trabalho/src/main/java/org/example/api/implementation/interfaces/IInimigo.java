@@ -1,10 +1,13 @@
 package org.example.api.implementation.interfaces;
 
-
-public interface Inimigo {
+public interface IInimigo {
     String getNome();
+
     void setNome(String nome);
+
     int getPoder();
+
     void setPoder(int poder);
+
     void sofrerDano(int dano);
 }

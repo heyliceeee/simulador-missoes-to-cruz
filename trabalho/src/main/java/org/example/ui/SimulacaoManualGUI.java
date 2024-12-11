@@ -2,30 +2,32 @@ package org.example.ui;
 
 import org.example.Main;
 import org.example.api.exceptions.DivisionNotFoundException;
+import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.exceptions.InvalidFieldException;
 import org.example.api.exceptions.InvalidJsonStructureException;
+import org.example.api.implementation.interfaces.*;
 import org.example.api.implementation.models.*;
-import org.example.api.implementation.services.CombateService;
-import org.example.api.implementation.utils.JsonUtils;
+import org.example.api.implementation.services.CombateServiceImpl;
+import org.example.api.implementation.utils.ImportJsonImpl;
+import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.collections.implementation.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
 
 public class SimulacaoManualGUI extends JFrame {
 
-    private LinkedList<Divisao> divisoes;
-    private LinkedList<Divisao> entradasSaidas;
-    private LinkedList<Ligacao> ligacoes;
-    private Mapa mapa;
+    private ArrayUnorderedList<IDivisao> divisoes;
+    private ArrayUnorderedList<IDivisao> entradasSaidas;
+    private ArrayUnorderedList<Ligacao> ligacoes;
+    private IMapa mapa;
     private ToCruz toCruz;
-    private LinkedList<Point> posicoesDivisoes;
+    private ArrayUnorderedList<Point> posicoesDivisoes;
     private Image toCruzImage;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private CombateService combateService;
+    private ICombateService combateService;
     private JButton moverButton;
     private JButton usarButton;
     private JButton atacarButton;
@@ -33,16 +35,15 @@ public class SimulacaoManualGUI extends JFrame {
     private JButton apanharButton;
     private JButton sairButton;
 
-
-    public SimulacaoManualGUI(LinkedList<Divisao> divisoes, LinkedList<Divisao> entradasSaidas, LinkedList<Ligacao> ligacoes, Mapa mapa, ToCruz toCruz) {
+    public SimulacaoManualGUI(ArrayUnorderedList<IDivisao> divisoes, ArrayUnorderedList<IDivisao> entradasSaidas,
+            ArrayUnorderedList<Ligacao> ligacoes, IMapa mapa, ToCruz toCruz) {
         this.divisoes = divisoes;
         this.mapa = mapa;
         this.ligacoes = ligacoes;
         this.entradasSaidas = entradasSaidas;
         this.toCruz = toCruz;
-        this.posicoesDivisoes = new LinkedList<>();
-        this.combateService = new CombateService();
-
+        this.posicoesDivisoes = new ArrayUnorderedList<>();
+        this.combateService = new CombateServiceImpl();
 
         setTitle("Simulacao - To Cruz");
         setSize(800, 600);
@@ -65,29 +66,14 @@ public class SimulacaoManualGUI extends JFrame {
     }
 
     /**
-     * Verifica se uma divisão é do tipo entrada/saída.
-     *
-     * @param divisao A divisão a verificar.
-     * @return true se for entrada/saída, false caso contrário.
-     */
-    public boolean isEntradaSaida(Divisao divisao) {
-        for (Divisao entradaSaida : entradasSaidas) {
-            if (divisao.equals(entradaSaida)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Interage com o alvo se estiver na mesma divisão.
      * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
      *
      * @param divisao A divisão onde o Tó Cruz está.
      */
-    private void interagirComAlvo(Divisao divisao) {
+    private void interagirComAlvo(IDivisao divisao) {
         if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisao)) {
-            if (divisao.getInimigosPresentes().getSize() > 0) {
+            if (divisao.getInimigosPresentes().size() > 0) {
                 System.out.println("O alvo está nesta sala, mas há inimigos! Elimine-os primeiro.");
             } else {
                 System.out.println("O alvo foi resgatado com sucesso!");
@@ -99,8 +85,9 @@ public class SimulacaoManualGUI extends JFrame {
 
     /**
      * criar botoes de acao
+     * 
      * @param controlePanel
-     * @param mapaPanel mapa do edificio
+     * @param mapaPanel     mapa do edificio
      */
     private void inicializarControlos(JPanel controlePanel, MapaPanel mapaPanel) {
         moverButton = new JButton("Mover");
@@ -119,10 +106,14 @@ public class SimulacaoManualGUI extends JFrame {
 
         atacarButton = new JButton("Atacar");
         atacarButton.addActionListener(e -> {
-            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
 
-            if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().getSize() > 0) {
-                combateService.resolverCombate(toCruz, divisaoAtual);
+            if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().size() > 0) {
+                try {
+                    combateService.resolverCombate(toCruz, divisaoAtual);
+                } catch (ElementNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
                 mapaPanel.repaint();
                 atualizarEstadoBotoes();
             } else {
@@ -132,7 +123,7 @@ public class SimulacaoManualGUI extends JFrame {
 
         resgatarButton = new JButton("Resgatar");
         resgatarButton.addActionListener(e -> {
-            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
             if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
                 JOptionPane.showMessageDialog(this, "Alvo resgatado com sucesso!");
                 mapa.removerAlvo();
@@ -144,13 +135,17 @@ public class SimulacaoManualGUI extends JFrame {
 
         apanharButton = new JButton("Apanhar");
         apanharButton.addActionListener(e -> {
-            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
             if (divisaoAtual != null) {
-                LinkedList<Item> itens = divisaoAtual.getItensPresentes();
-                while (itens.getSize() > 0) {
-                    Item item = itens.getElementAt(0);
+                ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
+                while (itens.size() > 0) {
+                    IItem item = itens.getElementAt(0);
                     toCruz.adicionarAoInventario(item);
-                    divisaoAtual.removerItem(item);
+                    try {
+                        divisaoAtual.removerItem(item);
+                    } catch (ElementNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 JOptionPane.showMessageDialog(this, "Itens apanhados com sucesso!");
                 mapaPanel.repaint();
@@ -160,9 +155,9 @@ public class SimulacaoManualGUI extends JFrame {
 
         sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
-            Divisao divisaoAtual = toCruz.getPosicaoAtual();
+            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
 
-            if(toCruz.getVida() > 0 && isEntradaSaida(divisaoAtual) && toCruz.isAlvoConcluido()){
+            if (toCruz.getVida() > 0 && divisaoAtual.isEntradaSaida() && toCruz.isAlvoConcluido()) {
                 atualizarEstadoBotoes();
                 JOptionPane.showMessageDialog(this, "Simulacao encerrada. Obrigado por jogar!");
                 System.exit(0);
@@ -183,13 +178,13 @@ public class SimulacaoManualGUI extends JFrame {
      * ativar ou desativar botao de acordo com um determinado cenario de jogo
      */
     private void atualizarEstadoBotoes() {
-        Divisao divisaoAtual = toCruz.getPosicaoAtual();
+        IDivisao divisaoAtual = toCruz.getPosicaoAtual();
 
         if (divisaoAtual != null) {
-            boolean temInimigos = divisaoAtual.getInimigosPresentes().getSize() > 0;
-            boolean temItens = divisaoAtual.getItensPresentes().getSize() > 0;
+            boolean temInimigos = divisaoAtual.getInimigosPresentes().size() > 0;
+            boolean temItens = divisaoAtual.getItensPresentes().size() > 0;
             boolean temAlvo = mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual);
-            boolean terminouMissao = isEntradaSaida(divisaoAtual) && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
+            boolean terminouMissao = divisaoAtual.isEntradaSaida() && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
 
             // Botão "Mover" é desativado se houver inimigos
             moverButton.setEnabled(!temInimigos);
@@ -203,7 +198,8 @@ public class SimulacaoManualGUI extends JFrame {
             // Botão "Apanhar" é ativado se houver itens na divisão
             apanharButton.setEnabled(temItens);
 
-            // Botão "Sair" é ativado se to cruz resgastou o alvo e esta numa divisao de saida
+            // Botão "Sair" é ativado se to cruz resgastou o alvo e esta numa divisao de
+            // saida
             sairButton.setEnabled(terminouMissao);
 
         } else {
@@ -235,37 +231,40 @@ public class SimulacaoManualGUI extends JFrame {
         // Gerar posições com maior espaçamento
         int xBase = 100, yBase = 100, offsetX = 150, offsetY = 100;
 
-        for (int i = 0; i < divisoes.getSize(); i++) {
+        for (int i = 0; i < divisoes.size(); i++) {
             int x = xBase + (i % 5) * offsetX; // Maior espaçamento horizontal
             int y = yBase + (i / 5) * offsetY; // Maior espaçamento vertical
-            posicoesDivisoes.add(new Point(x, y));
+            posicoesDivisoes.addToRear(new Point(x, y));
         }
     }
 
     /**
      * Alterar a posicao atual, tanto na logica como no UI, do To Cruz
+     * 
      * @param mapaPanel
      */
     private void moverToCruz(MapaPanel mapaPanel) {
         String destino = JOptionPane.showInputDialog(this, "Digite o nome da divisao:");
-        Divisao novaDivisao = getDivisaoPorNome(destino);
+        IDivisao novaDivisao = getDivisaoPorNome(destino);
 
         if (novaDivisao != null && podeMover(toCruz.getPosicaoAtual(), novaDivisao)) {
             toCruz.moverPara(novaDivisao);
             mapaPanel.repaint(); // Atualizar o desenho
             atualizarEstadoBotoes(); // Atualizar estado dos botões
         } else {
-            JOptionPane.showMessageDialog(this, "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
+            JOptionPane.showMessageDialog(this,
+                    "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
         }
     }
 
     /**
      * obter a Divisao pelo o seu nome
+     * 
      * @param nome nome da divisao
      * @return a Divisao
      */
-    private Divisao getDivisaoPorNome(String nome) {
-        for (Divisao divisao : divisoes) {
+    private IDivisao getDivisaoPorNome(String nome) {
+        for (IDivisao divisao : divisoes) {
             if (divisao.getNomeDivisao().equals(nome)) {
                 return divisao;
             }
@@ -273,7 +272,7 @@ public class SimulacaoManualGUI extends JFrame {
         return null;
     }
 
-    private boolean podeMover(Divisao origem, Divisao destino) {
+    private boolean podeMover(IDivisao origem, IDivisao destino) {
         for (Ligacao ligacao : ligacoes) {
             if (ligacao.conecta(origem, destino)) {
                 return true;
@@ -294,7 +293,7 @@ public class SimulacaoManualGUI extends JFrame {
             // Desenhar conexões apenas para a divisão atual
             g2.setColor(Color.LIGHT_GRAY);
             if (toCruz.getPosicaoAtual() != null && toCruzImage != null) {
-                Divisao posicaoAtual = toCruz.getPosicaoAtual();
+                IDivisao posicaoAtual = toCruz.getPosicaoAtual();
                 for (Ligacao ligacao : ligacoes) {
                     if (ligacao.conecta(posicaoAtual, ligacao.getOutraDivisao(posicaoAtual))) {
                         Point pos1 = posicoesDivisoes.getElementAt(divisoes.indexOf(ligacao.getDivisao1()));
@@ -312,12 +311,12 @@ public class SimulacaoManualGUI extends JFrame {
             }
 
             // Desenhar divisões
-            for (int i = 0; i < divisoes.getSize(); i++) {
-                Divisao divisao = divisoes.getElementAt(i);
+            for (int i = 0; i < divisoes.size(); i++) {
+                IDivisao divisao = divisoes.getElementAt(i);
                 Point pos = posicoesDivisoes.getElementAt(i);
 
                 // Verificar se a divisão é entrada/saída
-                if (isEntradaSaida(divisao)) {
+                if (divisao.isEntradaSaida()) {
                     g2.setColor(Color.GREEN); // Entrada/saída: verde
                 } else {
                     g2.setColor(Color.BLUE); // Normal: azul
@@ -334,24 +333,26 @@ public class SimulacaoManualGUI extends JFrame {
                 g2.drawImage(toCruzImage, toCruzPos.x - 15, toCruzPos.y - 5, 30, 30, this);
 
                 // Assinalar inimigos na divisão atual
-                Divisao divisaoAtual = toCruz.getPosicaoAtual();
+                IDivisao divisaoAtual = toCruz.getPosicaoAtual();
                 if (divisaoAtual != null) {
-                    LinkedList<Inimigo> inimigos = divisaoAtual.getInimigosPresentes();
+                    ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
                     int offsetY = 40; // Deslocamento vertical para evitar sobreposição
-                    for (int i = 0; i < inimigos.getSize(); i++) {
-                        Inimigo inimigo = inimigos.getElementAt(i);
+                    for (int i = 0; i < inimigos.size(); i++) {
+                        IInimigo inimigo = inimigos.getElementAt(i);
                         g2.setColor(Color.RED);
-                        g2.drawString("Inimigo: " + inimigo.getPoder() + " (poder)", toCruzPos.x - 30, toCruzPos.y + offsetY);
+                        g2.drawString("Inimigo: " + inimigo.getPoder() + " (poder)", toCruzPos.x - 30,
+                                toCruzPos.y + offsetY);
                         offsetY += 15; // Incrementa para cada inimigo
                     }
 
                     // Assinalar itens na divisão atual
-                    LinkedList<Item> itens = divisaoAtual.getItensPresentes();
+                    ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
                     offsetY += 10; // Espaço entre inimigos e itens
-                    for (int i = 0; i < itens.getSize(); i++) {
-                        Item item = itens.getElementAt(i);
+                    for (int i = 0; i < itens.size(); i++) {
+                        IItem item = itens.getElementAt(i);
                         g2.setColor(Color.ORANGE);
-                        g2.drawString("Item: " + item.getTipo() + " " + item.getPontos() + "(pontos)", toCruzPos.x - 30, toCruzPos.y + offsetY);
+                        g2.drawString("Item: " + item.getTipo() + " " + item.getPontos() + "(pontos)", toCruzPos.x - 30,
+                                toCruzPos.y + offsetY);
                         offsetY += 15; // Incrementa para cada item
                     }
 
@@ -376,7 +377,7 @@ public class SimulacaoManualGUI extends JFrame {
 
             // Itera sobre os elementos da stack
             for (int i = 0; i < toCruz.getInventario().size(); i++) {
-                Item item = toCruz.getInventario().peek(); // Obtem o item no topo sem remover
+                IItem item = toCruz.getInventario().peek(); // Obtem o item no topo sem remover
                 toCruz.getInventario().pop(); // Remove o item temporariamente
                 if (item.getTipo().equalsIgnoreCase("kit de vida")) {
                     qtdKits++;
@@ -418,7 +419,7 @@ public class SimulacaoManualGUI extends JFrame {
          * @return true se intersecta, false caso contrário.
          */
         private boolean verificaInterseccao(Point pos1, Point pos2) {
-            for (int i = 0; i < posicoesDivisoes.getSize(); i++) {
+            for (int i = 0; i < posicoesDivisoes.size(); i++) {
                 Point divisao = posicoesDivisoes.getElementAt(i);
                 Rectangle divisaoArea = new Rectangle(divisao.x - 10, divisao.y - 10, 20, 20);
                 if (divisaoArea.intersectsLine(pos1.x, pos1.y, pos2.x, pos2.y)) {
@@ -431,7 +432,7 @@ public class SimulacaoManualGUI extends JFrame {
         /**
          * Desenha uma ligação curva entre dois pontos.
          *
-         * @param g2  Graphics2D para desenhar.
+         * @param g2   Graphics2D para desenhar.
          * @param pos1 Ponto inicial.
          * @param pos2 Ponto final.
          */
@@ -444,8 +445,8 @@ public class SimulacaoManualGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        Mapa mapa = new Mapa();
-        JsonUtils jsonUtils = new JsonUtils(mapa);
+        IMapa mapa = new MapaImpl();
+        ImportJsonImpl jsonUtils = new ImportJsonImpl(mapa);
         String caminhoJson = "mapa.json";
 
         // mapa carregado apartir do JSON
@@ -454,9 +455,10 @@ public class SimulacaoManualGUI extends JFrame {
             logger.info("Mapa carregado com sucesso e pronto para uso!");
 
             // Verificar se o alvo foi carregado corretamente
-            Alvo alvo = mapa.getAlvo();
+            IAlvo alvo = mapa.getAlvo();
             if (alvo != null) {
-                logger.info("Alvo carregado do JSON: Divisão - {}, Tipo - {}", alvo.getDivisao().getNomeDivisao(), alvo.getTipo());
+                logger.info("Alvo carregado do JSON: Divisão - {}, Tipo - {}", alvo.getDivisao().getNomeDivisao(),
+                        alvo.getTipo());
             } else {
                 logger.error("Nenhum alvo definido no JSON ou erro ao carregar.");
                 return;
@@ -481,16 +483,15 @@ public class SimulacaoManualGUI extends JFrame {
             return;
         }
 
-        //criar o to cruz e definir a sua posicao inicial
+        // criar o to cruz e definir a sua posicao inicial
         ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
-        Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
+        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
         toCruz.moverPara(divisaoInicial);
 
-
         SwingUtilities.invokeLater(() -> {
-            SimulacaoManualGUI gui = new SimulacaoManualGUI(mapa.getDivisoes(), mapa.getEntradasSaidas(), mapa.getLigacoes(), mapa, toCruz);
+            SimulacaoManualGUI gui = new SimulacaoManualGUI(mapa.getDivisoes(), mapa.getEntradasSaidas(),
+                    mapa.getLigacoes(), mapa, toCruz);
             gui.setVisible(true);
         });
     }
 }
-

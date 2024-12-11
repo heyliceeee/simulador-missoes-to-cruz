@@ -54,16 +54,16 @@ public class LinkedList<T> implements Iterable<T> {
      * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
      */
     public void setElementAt(int index, T element) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("Indice fora dos limites: " + index);
         }
 
-        LinkedListNode<T> current = head; // Começa pelo primeiro elemento
+        Node<T> current = head; // Começa pelo primeiro elemento
         int currentIndex = 0;
 
         while (current != null) {
             if (currentIndex == index) {
-                current.setElement(element); // Atualiza o elemento
+                current.setData(element); // Atualiza o elemento
                 return;
             }
             current = current.getNext(); // Avança para o próximo nó
@@ -71,29 +71,6 @@ public class LinkedList<T> implements Iterable<T> {
         }
 
         throw new IllegalStateException("Erro inesperado ao procurar o indice.");
-    }
-
-
-    /**
-     * remover node sentinela
-     * @param element
-     * @return
-     */
-    public boolean removeSentinel(T element) {
-        //remover um elemento do meio ou da cauda da lista
-        SentinelNode<T> current = sentinel;  //elemento
-
-        while (current.getNext() != null && !current.getNext().getElement().equals(element)){ //vai correr a lista até ao último elemento, se for necessário, até encontrar o elemento
-            current = current.getNext(); //vai para o seguinte elemento
-        }
-
-        //se encontrou o elemento
-        if(current.getNext() != null) {
-            current.setNext(current.getNext().getNext()); //o elemento seguinte será o seguinte do seguinte elemento
-            return true;
-        }
-
-        return false; //elemento não encontrado, ou seja, não removido
     }
 
     /**
@@ -104,16 +81,16 @@ public class LinkedList<T> implements Iterable<T> {
      * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
      */
     public T getElementAt(int index) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("indice fora dos limites: " + index);
         }
 
-        LinkedListNode<T> current = head; // Começa pelo primeiro elemento
+        Node<T> current = head; // Começa pelo primeiro elemento
         int currentIndex = 0;
 
         while (current != null) {
             if (currentIndex == index) {
-                return current.getElement();
+                return current.getData();
             }
             current = current.getNext(); // Avança para o próximo nó
             currentIndex++;
@@ -159,7 +136,7 @@ public class LinkedList<T> implements Iterable<T> {
     // Retorna o elemento em uma posição específica
     public T get(int index) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Índice fora do intervalo");
+            throw new IndexOutOfBoundsException("Indice fora do intervalo");
         }
 
         Node<T> current = head;

@@ -6,7 +6,7 @@ import org.example.api.exceptions.ElementNotFoundException;
 /**
  * Interface para o serviço que gere o combate entre o Tó Cruz e os inimigos.
  */
-public interface CombateService {
+public interface ICombateService {
     /**
      * Resolve o combate na divisão atual.
      *
@@ -14,5 +14,5 @@ public interface CombateService {
      * @param divisaoAtual A divisão onde o combate ocorre.
      * @throws ElementNotFoundException Se um inimigo não for encontrado.
      */
-    void resolverCombate(ToCruz toCruz, Divisao divisaoAtual) throws ElementNotFoundException;
+    void resolverCombate(ToCruz toCruz, IDivisao divisaoAtual) throws ElementNotFoundException;
 }

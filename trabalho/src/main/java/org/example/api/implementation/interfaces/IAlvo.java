@@ -1,8 +1,11 @@
 package org.example.api.implementation.interfaces;
 
-public interface Item {
+public interface IAlvo {
+    IDivisao getDivisao();
+
+    void setDivisao(IDivisao divisao);
+
     String getTipo();
+
     void setTipo(String tipo);
-    int getPontos();
-    void setPontos(int pontos);
 }

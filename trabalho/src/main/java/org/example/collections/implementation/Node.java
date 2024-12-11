@@ -9,6 +9,10 @@ public class Node <T> {
         this.next = null;
     }
 
+    public void setData(T data) {
+        this.data = data;
+    }
+
     public T getData(){
         return (T) this.data;
     }

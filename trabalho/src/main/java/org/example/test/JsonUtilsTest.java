@@ -3,8 +3,10 @@ package org.example.test;
 import org.example.api.exceptions.DivisionNotFoundException;
 import org.example.api.exceptions.InvalidFieldException;
 import org.example.api.exceptions.InvalidJsonStructureException;
-import org.example.api.implementation.models.Mapa;
-import org.example.api.implementation.utils.JsonUtils;
+import org.example.api.implementation.interfaces.IImportJson;
+import org.example.api.implementation.interfaces.IMapa;
+import org.example.api.implementation.models.MapaImpl;
+import org.example.api.implementation.utils.ImportJsonImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class JsonUtilsTest {
-    private Mapa mapa;
-    private JsonUtils jsonUtils;
+    private IMapa mapa;
+    private IImportJson jsonUtils;
 
     @BeforeEach
     public void setUp() {
-        mapa = new Mapa();
-        jsonUtils = new JsonUtils(mapa);
+        mapa = new MapaImpl();
+        jsonUtils = new ImportJsonImpl(mapa);
     }
 
     @Test
@@ -28,7 +30,7 @@ public class JsonUtilsTest {
         assertDoesNotThrow(() -> jsonUtils.carregarMapa(jsonPath));
 
         // Verificar divisões
-        assertEquals(21, mapa.getDivisoes().getSize());
+        assertEquals(21, mapa.getDivisoes().size());
         assertNotNull(mapa.getDivisaoPorNome("Heliporto"));
         assertNotNull(mapa.getDivisaoPorNome("Escada 6"));
 
@@ -36,10 +38,10 @@ public class JsonUtilsTest {
         assertTrue(mapa.podeMover("Heliporto", "Escada 6"));
 
         // Verificar inimigos
-        assertEquals(2, mapa.getDivisaoPorNome("Heliporto").getInimigosPresentes().getSize());
+        assertEquals(2, mapa.getDivisaoPorNome("Heliporto").getInimigosPresentes().size());
 
         // Verificar itens
-        assertEquals(1, mapa.getDivisaoPorNome("WC").getItensPresentes().getSize());
+        assertEquals(1, mapa.getDivisaoPorNome("WC").getItensPresentes().size());
 
         // Verificar alvo
         assertNotNull(mapa.getAlvo());

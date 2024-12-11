@@ -1,23 +1,21 @@
 package org.example.api.implementation.interfaces;
 
-
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
  * Interface para a simulação automática de missões.
  */
-public interface SimulacaoAutomatica {
+public interface ISimulacaoAutomatica {
 
     /**
      * Executa a simulação automática até o objetivo.
      *
      * @param divisaoObjetivo A divisão objetivo da missão.
-     * @throws ElementNotFoundException Se algum elemento não for encontrado durante a execução.
+     * @throws ElementNotFoundException Se algum elemento não for encontrado durante
+     *                                  a execução.
      */
-    void executar(Divisao divisaoObjetivo) throws ElementNotFoundException;
-
-
+    void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException;
 
     public int getVidaRestante();
 
@@ -33,15 +31,14 @@ public interface SimulacaoAutomatica {
      *
      * @return Divisão final.
      */
-    Divisao getDivisaoFinal();
+    IDivisao getDivisaoFinal();
 
     /**
      * Obtém o caminho percorrido na simulação.
      *
      * @return Lista de divisões percorridas.
      */
-    ArrayUnorderedList<Divisao> getCaminhoPercorrido();
-
+    ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 
     public ArrayUnorderedList<String> getCaminhoPercorridoNomes();
 
@@ -50,12 +47,12 @@ public interface SimulacaoAutomatica {
      *
      * @return Lista de inimigos derrotados.
      */
-    ArrayUnorderedList<Inimigo> getInimigosDerrotados();
+    ArrayUnorderedList<IInimigo> getInimigosDerrotados();
 
     /**
      * Obtém a lista de itens coletados durante a simulação.
      *
      * @return Lista de itens coletados.
      */
-    ArrayUnorderedList<Item> getItensColetados();
+    ArrayUnorderedList<IItem> getItensColetados();
 }

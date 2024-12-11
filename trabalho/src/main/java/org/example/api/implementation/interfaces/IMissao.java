@@ -1,6 +1,6 @@
 package org.example.api.implementation.interfaces;
 
-public interface Missao {
+public interface IMissao {
     /**
      * Obtém o código da missão.
      *
@@ -20,5 +20,5 @@ public interface Missao {
      *
      * @return O mapa da missão.
      */
-    Mapa getMapa();
+    IMapa getMapa();
 }

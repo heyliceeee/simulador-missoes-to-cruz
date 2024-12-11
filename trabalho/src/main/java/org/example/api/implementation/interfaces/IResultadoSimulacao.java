@@ -5,7 +5,7 @@ import org.example.collections.implementation.ArrayUnorderedList;
 /**
  * Interface que representa o resultado de uma simulação.
  */
-public interface ResultadoSimulacao {
+public interface IResultadoSimulacao {
 
     String getId();
 

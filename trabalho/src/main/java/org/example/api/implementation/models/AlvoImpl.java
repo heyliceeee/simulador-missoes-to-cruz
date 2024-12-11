@@ -1,13 +1,13 @@
 package org.example.api.implementation.models;
 
-import org.example.api.implementation.interfaces.Alvo;
-import org.example.api.implementation.interfaces.Divisao;
+import org.example.api.implementation.interfaces.IAlvo;
+import org.example.api.implementation.interfaces.IDivisao;
 
 /**
  * Implementação do Alvo da missão.
  */
-public class AlvoImpl implements Alvo {
-    private Divisao divisao;
+public class AlvoImpl implements IAlvo {
+    private IDivisao divisao;
     private String tipo;
 
     /**
@@ -16,18 +16,18 @@ public class AlvoImpl implements Alvo {
      * @param divisao Divisão onde o alvo está localizado.
      * @param tipo    Tipo do alvo.
      */
-    public AlvoImpl(Divisao divisao, String tipo) {
+    public AlvoImpl(IDivisao divisao, String tipo) {
         this.divisao = divisao;
         this.tipo = tipo;
     }
 
     @Override
-    public Divisao getDivisao() {
+    public IDivisao getDivisao() {
         return divisao;
     }
 
     @Override
-    public void setDivisao(Divisao divisao) {
+    public void setDivisao(IDivisao divisao) {
         this.divisao = divisao;
     }
 
@@ -47,5 +47,26 @@ public class AlvoImpl implements Alvo {
                 "divisao=" + divisao +
                 ", tipo='" + tipo + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        IAlvo alvo = (IAlvo) o;
+
+        if (!divisao.equals(alvo.getDivisao()))
+            return false;
+        return tipo.equals(alvo.getTipo());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = divisao.hashCode();
+        result = 31 * result + tipo.hashCode();
+        return result;
     }
 }

@@ -208,6 +208,16 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
     }
 
     @Override
+    public void setElementAt(int index, T element) {
+
+    }
+
+    @Override
+    public int indexOf(T element) {
+        return 0;
+    }
+
+    @Override
     public String toString() {
         return "DoubleLinkedUnorderedList{" +
                 "head=" + head +
