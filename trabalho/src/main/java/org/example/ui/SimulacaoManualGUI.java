@@ -370,7 +370,7 @@ public class SimulacaoManualGUI extends JFrame {
 
             // Exibir informacões no canto superior esquerdo
             g2.setColor(Color.BLACK);
-            g2.drawString("vida: " + toCruz.getVida(), 10, 20);
+            g2.drawString( toCruz.getVida() + " ❤", 10, 20);
 
             int qtdKits = 0;
             int qtdColetes = 0;
@@ -387,7 +387,7 @@ public class SimulacaoManualGUI extends JFrame {
                 toCruz.getInventario().push(item); // Reinsere o item no inventário
             }
 
-            g2.drawString("kits: " + qtdKits + "x", 10, 40);
+            g2.drawString("💉 " + qtdKits + "x", 10, 40);
             g2.drawString("coletes: " + qtdColetes + "x", 10, 60);
         }
 
