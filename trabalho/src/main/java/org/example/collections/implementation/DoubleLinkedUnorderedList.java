@@ -208,6 +208,16 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
     }
 
     @Override
+    public void setElementAt(int index, T element) {
+
+    }
+
+    @Override
+    public int indexOf(T element) {
+        return 0;
+    }
+
+    @Override
     public String toString() {
         return "DoubleLinkedUnorderedList{" +
                 "head=" + head +
@@ -220,7 +230,7 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
         private DoublyNode<T> current; // Ponteiro para o nó atual
 
         public BasicIterator() {
-            current = (DoublyNode<T>) head; // Começa no nó da cabeça
+            current = (DoublyNode<T>) head; // Comeca no nó da cabeca
         }
 
         @Override
@@ -231,14 +241,14 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
         @Override
         public T next() {
             if (!hasNext()) {
-                throw new EmptyCollectionException("double linked unordered list nao existe elementos"); // Lança
-                                                                                                         // exceção se
-                                                                                                         // não houver
+                throw new EmptyCollectionException("double linked unordered list nao existe elementos"); // Lanca
+                                                                                                         // excecao se
+                                                                                                         // nao houver
                                                                                                          // próximo
                                                                                                          // elemento
             }
 
-            T element = current.getElement(); // Obtém o elemento atual
+            T element = current.getElement(); // Obtem o elemento atual
             current = current.getNext(); // Move para o próximo nó
 
             return element;

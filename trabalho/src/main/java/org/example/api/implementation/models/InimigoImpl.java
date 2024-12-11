@@ -1,11 +1,14 @@
 package org.example.api.implementation.models;
 
+import org.example.api.implementation.interfaces.IInimigo;
+
 /**
  * Representa um inimigo no mapa.
  */
-public class Inimigo {
+public class InimigoImpl implements IInimigo {
     private String nome;
     private int poder;
+    private int vida = 100;
 
     /**
      * Construtor do Inimigo.
@@ -13,36 +16,73 @@ public class Inimigo {
      * @param nome  Nome do inimigo.
      * @param poder Poder do inimigo.
      */
-    public Inimigo(String nome, int poder) {
+    public InimigoImpl(String nome, int poder) {
         this.nome = nome;
         this.poder = poder;
     }
 
-    // Getter para o nome
+    /**
+     * Obtem o nome do inimigo.
+     *
+     * @return Nome do inimigo.
+     */
+    @Override
     public String getNome() {
         return nome;
     }
 
-    // Setter para o nome
+    /**
+     * Obtem a vida atual do inimigo
+     * @return vida atual do inimigo
+     */
+    public int getVida() {
+        return vida;
+    }
+
+    /**
+     * Define a quantidade de vida atual do inimigo
+     * @param vida quantidade de vida atual do inimigo
+     */
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
+    /**
+     * Define o nome do inimigo.
+     *
+     * @param nome Novo nome do inimigo.
+     */
+    @Override
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    // Getter para o poder (Nota: 'Poder' com P maiúsculo)
+    /**
+     * Obtem o poder atual do inimigo.
+     *
+     * @return Poder do inimigo.
+     */
+    @Override
     public int getPoder() {
         return poder;
     }
 
-    // Setter para o poder
+    /**
+     * Define o poder do inimigo.
+     *
+     * @param poder Novo poder do inimigo.
+     */
+    @Override
     public void setPoder(int poder) {
         this.poder = poder;
     }
 
     /**
-     * Método para o inimigo sofrer dano.
+     * Reduz o poder do inimigo ao sofrer dano.
      *
-     * @param dano Quantidade de dano a ser sofrido.
+     * @param dano Quantidade de dano sofrido.
      */
+    @Override
     public void sofrerDano(int dano) {
         this.poder -= dano;
         if (this.poder < 0) {
@@ -61,10 +101,12 @@ public class Inimigo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-        Inimigo inimigo = (Inimigo) o;
+        InimigoImpl inimigo = (InimigoImpl) o;
 
         return nome.equals(inimigo.nome);
     }

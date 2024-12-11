@@ -20,8 +20,8 @@ public interface StackADT<T> {
     public T peek();
 
     /**
-     * retorna true se a stack não conter elementos
-     * @return boolean dependendo ou não se a stack está vazia
+     * retorna true se a stack nao conter elementos
+     * @return boolean dependendo ou nao se a stack está vazia
      */
     public boolean isEmpty();
 

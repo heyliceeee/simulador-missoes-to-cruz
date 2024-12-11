@@ -7,28 +7,32 @@ group = 'org.example'
 version = '1.0-SNAPSHOT'
 
 application {
-    // Define a classe principal para iniciar a aplicação
+    // Define a classe principal para iniciar a aplicacao
     mainClass = 'org.example.Main'
 }
 
-// Configuração para permitir entrada padrão no Gradle durante a execução
+// Configuracao para permitir entrada padrao no Gradle durante a execucao
 tasks.named('run') {
     standardInput = System.in
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 repositories {
-    // Repositório Maven para resolver dependências
+    // Repositório Maven para resolver dependencias
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
-    // Dependências para testes
+    // Dependencias para testes
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
-    // Biblioteca Gson para manipulação de JSON
+    // Biblioteca Gson para manipulacao de JSON
     implementation 'com.google.code.gson:gson:2.11.0'
 
     // Biblioteca JSON Simple
@@ -37,14 +41,14 @@ dependencies {
     // SLF4J API para logging
     implementation 'org.slf4j:slf4j-api:2.0.9'
     
-    // Implementação Logback Classic para SLF4J
+    // Implementacao Logback Classic para SLF4J
     implementation 'ch.qos.logback:logback-classic:1.4.11'
 
-    // Dependência opcional: SLF4J Simple (removida, pois Logback já está em uso)
+    // Dependencia opcional: SLF4J Simple (removida, pois Logback já está em uso)
     // implementation 'org.slf4j:slf4j-simple:2.0.9'
 }
 
 test {
-    // Configuração para usar JUnit 5
+    // Configuracao para usar JUnit 5
     useJUnitPlatform()
 }

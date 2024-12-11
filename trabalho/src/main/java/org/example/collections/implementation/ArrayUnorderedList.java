@@ -1,331 +1,111 @@
 package org.example.collections.implementation;
 
-
-import org.example.collections.exceptions.EmptyCollectionException;
+import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.interfaces.UnorderedListADT;
 
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-
-public class ArrayUnorderedList<T> implements UnorderedListADT<T>
-{
-    /**
-     * constante para representar a capacidade default do array
-     */
-    private final int DEFAULT_CAPACITY = 100;
-
-    /**
-     * array de elementos genéricos que representam a lista
-     */
-    private T[] list;
-
-    /**
-     * array de elementos genéricos que representam uma nova lista
-     */
-    private T[] newList;
-
-    /**
-     * int que representa o elemento rear da lista
-     */
-    private int rear;
-
-    /**
-     * int que representa o elemento front da lista
-     */
-    private int front;
-
-    /**
-     * int que representa o tamanho da lista
-     */
-    private int size;
-
-
-
-    public ArrayUnorderedList()
-    {
-        this.size = this.rear = this.front = 0;
-        this.list =  (T[])(new Object[DEFAULT_CAPACITY]);
-    }
-
-    public ArrayUnorderedList(int initialCapacity)
-    {
-        this.size = this.rear = this.front = 0;
-        this.list =  (T[])(new Object[DEFAULT_CAPACITY]);
-    }
-
+public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedListADT<T> {
 
     @Override
-    public T removeFirst()
-    {
-        if(isEmpty())
-        {
-            throw new EmptyCollectionException("array unordered list empty");
+    public void addToFront(T element) {
+        if (element == null) {
+            throw new IllegalArgumentException("O valor nao pode ser null.");
         }
-
-        T result = list[front];
-        list[front] = null; //remover primeiro elemento
-
-        for(int i=0; i < this.rear; i++)
-        {
-            this.list[i] = this.list[i+1];
-        }
-
-        this.rear--;
-        this.size++;
-
-        return result;
-    }
-
-    @Override
-    public T removeLast()
-    {
-        if(isEmpty())
-        {
-            throw new EmptyCollectionException("array unordered list empty");
-        }
-
-        this.rear--;
-
-        T result = list[rear];
-        list[rear] = null; //remover ultimo elemento
-
-        this.size++;
-
-        return result;
-    }
-
-    @Override
-    public T remove(T element)
-    {
-        if(isEmpty())
-        {
-            throw new EmptyCollectionException("array unordered list empty");
-        }
-
-        if(!contains(element)) //elemento nao existir
-        {
-            throw new EmptyCollectionException("elemento nao existe");
-        }
-
-        int pos = 0; //posicao do elemento a ser removido
-
-        for(int i=0; i < this.rear; i++)
-        {
-            if(element.equals(list[i])) //encontrou elemento
-            {
-                pos = i;
-            }
-        }
-
-        T result = list[pos];
-        list[pos] = null; //removeu elemento
-
-        for(int i=pos; i < this.rear; i++) //arranjar o array depois de remover elemento
-        {
-            this.list[i] = this.list[i+1];
-        }
-
-        this.rear--;
-        this.size++;
-
-        return result;
-    }
-
-    @Override
-    public T first()
-    {
-        if(isEmpty())
-        {
-            throw new EmptyCollectionException("array unordered list empty");
-        }
-
-        return list[front];
-    }
-
-    @Override
-    public T last()
-    {
-        if(isEmpty())
-        {
-            throw new EmptyCollectionException("array unordered list empty");
-        }
-
-        return list[rear - 1];
-    }
-
-    @Override
-    public boolean contains(T target)
-    {
-        boolean found = false;
-
-        for(int i=0; i < this.rear; i++)
-        {
-            if(target.equals(list[i])) //elemento mencionado = elemento atual da lista (se encontrou)
-            {
-                found = true;
-            }
-        }
-
-        return found;
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        return (rear == 0);
-    }
-
-    @Override
-    public int size()
-    {
-        return this.rear;
-    }
-
-    @Override
-    public Iterator<T> iterator()
-    {
-        return new BasicIterator<>();
-    }
-
-    @Override
-    public void addToFront(T element)
-    {
-        T[] unorderedList = list;
-
-        if(rear == unorderedList.length - 1) //list chegar á capacidade max.
-        {
+        if (count == list.length) {
             expandCapacity();
         }
 
-        for(int i=rear; i > front; i--) //enquanto a rear for > q front
-        {
-            unorderedList[i] = unorderedList[i - 1]; //vai colocando os elementos desde a posicao do ultimo elemento ao elemento front
+        // Desloca todos os elementos uma posicao para a direita
+        for (int i = count; i > 0; i--) {
+            list[i] = list[i - 1];
         }
 
-        unorderedList[front] = element; //elemento adicionado no front
-
-        rear++;
-        size++;
+        // Adiciona o novo elemento na frente
+        list[0] = element;
+        count++;
     }
 
     @Override
-    public void addToRear(T element)
-    {
-        T[] unorderedList = list;
-
-        if(rear == unorderedList.length - 1) //list chegar á capacidade max.
-        {
+    public void addToRear(T element) {
+        if (element == null) {
+            throw new IllegalArgumentException("O valor nao pode ser null.");
+        }
+        if (count == list.length) {
             expandCapacity();
         }
 
-        unorderedList[rear] = element; //elemento adicionado na rear
+        list[count] = element;
+        count++;
 
-        rear++;
-        size++;
     }
 
     @Override
-    public void addAfter(T element, T target)
-    {
-        T[] unorderedList = list;
+    public void addAfter(T element, T target) throws ElementNotFoundException {
 
-        if(rear == unorderedList.length - 1) //list chegar á capacidade max.
-        {
-            expandCapacity();
+        if (isEmpty()) {
+            throw new ElementNotFoundException("A lista está vazia.");
         }
 
-        int pos=0;
-        for(int i=0; i < rear; i++) //corre a lista
-        {
-            if(target.equals(unorderedList[i])) //se chegou ao elemento alvo
-            {
-                pos = i;
+        int index = -1;
+        for (int i = 0; i < count; i++) {
+            if (list[i].equals(target)) {
+                index = i;
+                break;
             }
         }
 
-        for(int i=rear; i > pos; i--) //correr do ultimo elemento até ao elemento target
-        {
-            unorderedList[i] = unorderedList[i - 1]; //vai colocando os elementos desde a posicao do ultimo elemento ao elemento target
+        if (index == -1) {
+            throw new ElementNotFoundException("Elemento alvo nao encontrado.");
         }
 
-        unorderedList[pos + 1] = element; //elemento a ser adicionado, vai ser adicionado ao lado do elemento target
-
-        rear++;
-        size++;
-    }
-
-    /**
-     * se a list chegou ao limite de capacidade, vai se expandir
-     */
-    private void expandCapacity()
-    {
-        T[] unorderedList = list;
-        int tam = unorderedList.length + 1;
-        T[] temp = (T[])(new Object[tam]);
-
-        for (int i = 0; i < rear; i++)
-        {
-            temp[i] = unorderedList[i];
+        if (count == list.length) {
+            expandCapacity();
         }
 
-        unorderedList = temp;
-    }
+        for (int i = count; i > index + 1; i--) {
+            list[i] = list[i - 1];
+        }
 
+        // Adiciona o novo elemento após o elemento alvo
+        list[index + 1] = element;
+        count++;
+    }
 
     @Override
     public String toString() {
-        return "ArrayUnorderedList{" +
-                "DEFAULT_CAPACITY=" + DEFAULT_CAPACITY +
-                ", list=" + Arrays.toString(list) +
-                ", newList=" + Arrays.toString(newList) +
-                ", rear=" + rear +
-                ", front=" + front +
-                ", size=" + size +
-                '}';
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < count; i++) {
+            sb.append(list[i]);
+            if (i < count - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
-    public class BasicIterator<T> implements Iterator<T>
-    {
-        private final int size;
+    @Override
+    public void setElementAt(int index, T element) {
+        if (index < 0 || index >= count) {
+            throw new IndexOutOfBoundsException("O indice está fora dos limites da lista.");
+        }
+        if (element == null) {
+            throw new IllegalArgumentException("O valor nao pode ser null.");
+        }
+        list[index] = element;
+    }
 
-        private final T[] items;
-
-        private int current, expectedSize;
-
-
-        public BasicIterator()
-        {
-            this.items = (T[]) ArrayUnorderedList.this.list;
-            this.size = ArrayUnorderedList.this.rear;
-            this.current = 0;
-            this.expectedSize = ArrayUnorderedList.this.size;
+    @Override
+    public int indexOf(T element) {
+        if (element == null) {
+            throw new IllegalArgumentException("O valor nao pode ser null.");
         }
 
-
-        @Override
-        public boolean hasNext()
-        {
-            if(expectedSize != size)
-            {
-                throw new ConcurrentModificationException("concorrência");
+        for (int i = 0; i < count; i++) {
+            if (list[i].equals(element)) {
+                return i; // Retorna o indice do elemento
             }
-
-            return (this.items[this.current] != null);
         }
 
-        @Override
-        public T next()
-        {
-            T temp = items[this.current];
-
-            if(hasNext())
-            {
-                this.current++;
-            }
-
-            return temp;
-        }
+        return -1; // Retorna -1 se o elemento nao for encontrado
     }
 }
-

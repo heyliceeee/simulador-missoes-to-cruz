@@ -3,10 +3,10 @@ package org.example.api.implementation.utils;
 import org.example.api.exceptions.DivisionNotFoundException;
 import org.example.api.exceptions.InvalidFieldException;
 import org.example.api.exceptions.InvalidJsonStructureException;
-import org.example.api.implementation.models.Divisao;
-import org.example.api.implementation.models.Inimigo;
-import org.example.api.implementation.models.Item;
-import org.example.api.implementation.models.Mapa;
+import org.example.api.implementation.interfaces.*;
+import org.example.api.implementation.models.InimigoImpl;
+import org.example.api.implementation.models.ItemImpl;
+import org.example.api.implementation.models.MissaoImpl;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,34 +17,65 @@ import org.slf4j.LoggerFactory;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class JsonUtils {
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
-    private final Mapa mapa;
+public class ImportJsonImpl implements IImportJson {
+    private static final Logger logger = LoggerFactory.getLogger(ImportJsonImpl.class);
+    private final IMapa mapa;
 
-    public JsonUtils(Mapa mapa) {
+    /**
+     * Construtor que inicializa o mapa.
+     *
+     * @param mapa O mapa que será utilizado na importacao.
+     */
+    public ImportJsonImpl(IMapa mapa) {
         this.mapa = mapa;
     }
 
-    /**
-     * Carrega o mapa do edifício a partir de um arquivo JSON.
-     *
-     * @param jsonPath Caminho do arquivo JSON.
-     * @throws InvalidJsonStructureException Se a estrutura básica do JSON estiver incorreta.
-     * @throws InvalidFieldException         Se um campo específico do JSON for inválido.
-     * @throws DivisionNotFoundException     Se uma divisão referenciada não for encontrada no mapa.
-     */
-    public void carregarMapa(String jsonPath) throws InvalidJsonStructureException, InvalidFieldException, DivisionNotFoundException {
+    @Override
+    public IMissao carregarMissao(String jsonPath)
+            throws InvalidJsonStructureException, InvalidFieldException, DivisionNotFoundException {
         try (FileReader reader = new FileReader(jsonPath)) {
-            // Parse JSON
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             logger.info("JSON parseado com sucesso.");
 
             // Validar estrutura do JSON
             validarEstrutura(jsonObject);
-            logger.info("Estrutura do JSON validada com sucesso.");
 
-            // Ler divisões
+            String codMissao = validarString(jsonObject.get("cod-missao"), "cod-missao");
+            int versao = validarInt(jsonObject.get("versao"), "versao");
+
+            IMissao missao = new MissaoImpl(codMissao, versao, mapa);
+
+            carregarMapa(jsonPath); // Este metodo lanca DivisionNotFoundException
+
+            return missao;
+        } catch (IOException | ParseException e) {
+            logger.error("Erro ao carregar missao: {}", e.getMessage());
+            throw new InvalidJsonStructureException("Erro ao processar o arquivo JSON: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Carrega o mapa do edificio a partir de um arquivo JSON.
+     *
+     * @param jsonPath Caminho do arquivo JSON.
+     * @throws InvalidJsonStructureException Se a estrutura básica do JSON estiver
+     *                                       incorreta.
+     * @throws InvalidFieldException         Se um campo especifico do JSON for
+     *                                       inválido.
+     * @throws DivisionNotFoundException     Se uma divisao referenciada nao for
+     *                                       encontrada no mapa.
+     */
+    @Override
+    public void carregarMapa(String jsonPath)
+            throws InvalidJsonStructureException, InvalidFieldException, DivisionNotFoundException {
+        try (FileReader reader = new FileReader(jsonPath)) {
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+
+            validarEstrutura(jsonObject);
+
+            // Processar divisões
             JSONArray edificioArray = (JSONArray) jsonObject.get("edificio");
             logger.info("Carregar divisoes:");
             for (Object element : edificioArray) {
@@ -68,7 +99,6 @@ public class JsonUtils {
                 String origem = validarString(ligacao.get(0), "ligacao[0]");
                 String destino = validarString(ligacao.get(1), "ligacao[1]");
 
-                // Verifique se as divisões existem antes de conectar
                 if (mapa.getDivisaoPorNome(origem) == null) {
                     throw new DivisionNotFoundException("Divisao de origem nao encontrada: " + origem);
                 }
@@ -80,7 +110,23 @@ public class JsonUtils {
                 logger.debug("Ligacao adicionada entre '{}' e '{}'", origem, destino);
             }
 
-            logger.info("\nMapa carregado com sucesso!");
+            // Processar entradas e saidas
+            JSONArray entradasSaidasArray = (JSONArray) jsonObject.get("entradas-saidas");
+            logger.info("Carregando entradas e saidas...");
+            for (Object element : entradasSaidasArray) {
+                String nomeDivisao = validarString(element, "entradas-saidas");
+                mapa.adicionarEntradaSaida(nomeDivisao);
+                // logger.debug("Entrada/Saida adicionada: {}", nomeDivisao);
+            }
+
+            // Processar alvo
+            JSONObject alvoObj = (JSONObject) jsonObject.get("alvo");
+            // logger.info("Carregando alvo...");
+            String alvoDivisao = validarString(alvoObj.get("divisao"), "alvo.divisao");
+            String alvoTipo = validarString(alvoObj.get("tipo"), "alvo.tipo");
+            mapa.definirAlvo(alvoDivisao, alvoTipo);
+            // logger.debug("Alvo definido: Divisao '{}', Tipo '{}'", alvoDivisao,
+            // alvoTipo);
 
             // Processar inimigos
             JSONArray inimigosArray = (JSONArray) jsonObject.get("inimigos");
@@ -91,9 +137,9 @@ public class JsonUtils {
                 int poder = validarInt(inimigoObj.get("poder"), "inimigo.poder");
                 String divisaoNome = validarString(inimigoObj.get("divisao"), "inimigo.divisao");
 
-                Divisao divisao = mapa.getDivisaoPorNome(divisaoNome);
+                IDivisao divisao = mapa.getDivisaoPorNome(divisaoNome);
                 if (divisao != null) {
-                    Inimigo inimigo = new Inimigo(nome, poder);
+                    IInimigo inimigo = new InimigoImpl(nome, poder);
                     mapa.adicionarInimigo(divisaoNome, inimigo);
                     logger.debug("Inimigo '{}' adicionado a divisao '{}'", nome, divisaoNome);
                 } else {
@@ -106,75 +152,66 @@ public class JsonUtils {
             logger.info("\nCarregar itens:");
             for (Object element : itensArray) {
                 JSONObject itemObj = (JSONObject) element;
-                String divisaoNome = validarString(itemObj.get("divisao"), "item.divisao");
                 String tipo = validarString(itemObj.get("tipo"), "item.tipo");
-                int pontosRecuperados = itemObj.containsKey("pontos-recuperados") ? validarInt(itemObj.get("pontos-recuperados"), "item.pontos-recuperados") : 0;
-                int pontosExtra = itemObj.containsKey("pontos-extra") ? validarInt(itemObj.get("pontos-extra"), "item.pontos-extra") : 0;
+                int pontosRecuperados = itemObj.containsKey("pontos-recuperados")
+                        ? validarInt(itemObj.get("pontos-recuperados"), "item.pontos-recuperados")
+                        : 0;
+                int pontosExtra = itemObj.containsKey("pontos-extra")
+                        ? validarInt(itemObj.get("pontos-extra"), "item.pontos-extra")
+                        : 0;
+                String divisaoNome = validarString(itemObj.get("divisao"), "item.divisao");
 
-                Divisao divisao = mapa.getDivisaoPorNome(divisaoNome);
+                IDivisao divisao = mapa.getDivisaoPorNome(divisaoNome);
                 if (divisao != null) {
-                    Item item;
+                    IItem item;
                     if (pontosRecuperados > 0) {
-                        item = new Item(tipo, pontosRecuperados);
-                        logger.debug("Item '{}' com pontos recuperados '{}' adicionado a divisao '{}'", tipo, pontosRecuperados, divisaoNome);
+                        item = new ItemImpl(tipo, pontosRecuperados);
+                        logger.debug("Item '{}' com pontos recuperados '{}' adicionado a divisao '{}'", tipo,
+                                pontosRecuperados, divisaoNome);
                     } else {
-                        item = new Item(tipo, pontosExtra);
-                        logger.debug("Item '{}' com pontos extra '{}' adicionado a divisao '{}'", tipo, pontosExtra, divisaoNome);
+                        item = new ItemImpl(tipo, pontosExtra);
+                        logger.debug("Item '{}' com pontos extra '{}' adicionado a divisao '{}'", tipo, pontosExtra,
+                                divisaoNome);
                     }
                     mapa.adicionarItem(divisaoNome, item);
+                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisao '{}'", tipo,
+                    // pontos, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para item nao encontrada: " + divisaoNome);
                 }
             }
-
-            // Processar entradas e saídas
-            JSONArray entradasSaidasArray = (JSONArray) jsonObject.get("entradas-saidas");
-            logger.info("\nCarregar entradas e saidas:");
-            for (Object element : entradasSaidasArray) {
-                String nomeDivisao = validarString(element, "entradas-saidas");
-                mapa.adicionarEntradaSaida(nomeDivisao);
-                logger.debug("Entrada/Saida adicionada: {}", nomeDivisao);
-            }
-
-            // Processar alvo
-            JSONObject alvoObj = (JSONObject) jsonObject.get("alvo");
-            String alvoDivisao = validarString(alvoObj.get("divisao"), "alvo.divisao");
-            String alvoTipo = validarString(alvoObj.get("tipo"), "alvo.tipo");
-            mapa.definirAlvo(alvoDivisao, alvoTipo);
-            logger.debug("Alvo definido: Divisao '{}', Tipo '{}'", alvoDivisao, alvoTipo);
-
         } catch (IOException e) {
             logger.error("Erro de IO ao ler o JSON: {}", e.getMessage());
         } catch (ParseException e) {
             logger.error("Erro ao analisar o JSON: {}", e.getMessage());
         } catch (InvalidJsonStructureException | InvalidFieldException | DivisionNotFoundException e) {
             logger.error("Erro ao processar o JSON: {}", e.getMessage());
-            throw e; // Repropague a exceção
+            throw e; // Repropague a excecao
         }
     }
 
     /**
-     * Valida se um valor é uma string.
+     * Valida se um valor e uma string.
      *
      * @param value Valor a ser validado.
      * @param campo Nome do campo para mensagens de erro.
      * @return Valor como string, se válido.
-     * @throws InvalidFieldException Se o valor não for uma string válida.
+     * @throws InvalidFieldException Se o valor nao for uma string válida.
      */
     private String validarString(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof String)) {
             throw new InvalidFieldException("Campo '" + campo + "' deve ser uma string valida.");
         }
-        return ((String) value).trim(); // Remove espaços extras
+        return ((String) value).trim(); // Remove espacos extras
     }
 
     /**
-     * Valida se um valor é um número inteiro.
+     * Valida se um valor e um número inteiro.
      *
      * @param value Valor a ser validado.
      * @param campo Nome do campo para mensagens de erro.
      * @return Valor como inteiro, se válido.
-     * @throws InvalidFieldException Se o valor não for um número inteiro válido.
+     * @throws InvalidFieldException Se o valor nao for um número inteiro válido.
      */
     private int validarInt(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof Number)) {
@@ -184,12 +221,12 @@ public class JsonUtils {
         return ((Number) value).intValue();
     }
 
-
     /**
      * Valida se a estrutura básica do JSON está presente.
      *
      * @param jsonObject Objeto JSON a ser validado.
-     * @throws InvalidJsonStructureException Se a estrutura básica estiver incorreta.
+     * @throws InvalidJsonStructureException Se a estrutura básica estiver
+     *                                       incorreta.
      */
     private void validarEstrutura(JSONObject jsonObject) throws InvalidJsonStructureException {
         if (!jsonObject.containsKey("edificio") || !(jsonObject.get("edificio") instanceof JSONArray)) {

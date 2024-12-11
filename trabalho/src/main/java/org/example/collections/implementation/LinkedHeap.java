@@ -16,7 +16,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
 
     /**
      * adiciona o elemento especifico no heap na posicao apropriado de acordo com key
-     * nota que os elementos iguais serão adicionados á direita
+     * nota que os elementos iguais serao adicionados á direita
      * @param obj o elemento a ser adicionado ao heap
      */
     @Override
@@ -62,7 +62,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
     {
         HeapNode<T> result = lastNode;
 
-        //percorre a heap até ao último node
+        //percorre a heap ate ao último node
         while ((result != root) && (result.parent.left != result))
         {
             result = result.parent;
@@ -136,7 +136,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
     {
         if (isEmpty())
         {
-            throw new EmptyCollectionException("A lista está vazia");
+            throw new EmptyCollectionException("A lista esta vazia");
         }
 
         return root.element;
@@ -144,9 +144,9 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
 
 
     /**
-     * Retorna o node que será o novo último node após uma remoção
+     * Retorna o node que será o novo último node após uma remocao
      *
-     * @return o node que será o novo último node após uma remoção
+     * @return o node que será o novo último node após uma remocao
      */
     private HeapNode<T> getNewLastNode()
     {

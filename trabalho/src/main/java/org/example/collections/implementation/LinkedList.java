@@ -2,281 +2,232 @@ package org.example.collections.implementation;
 
 import java.util.Iterator;
 
-public class LinkedList<T> implements Iterable<T>
-{
-    private LinkedListNode<T> head;
-    private LinkedListNode<T> tail;
+import org.example.collections.exceptions.EmptyListException;
 
-    private SentinelNode<T> sentinel;
-    private int size;
+public class LinkedList<T> implements Iterable<T> {
+    private Node<T> head;
+    private Node<T> tail;
+    private int count;
 
-    public LinkedList(){
-        this.size = 0;
+    public LinkedList() {
         this.head = null;
-        sentinel = new SentinelNode<T>(null);
+        this.tail = null;
+        this.count = 0;
     }
 
+    // Adiciona um elemento à lista
+    public void add(T data) {
+        Node<T> newNode = new Node<>(data);
 
-    public int getSize()
-    {
-        return size;
+        if (this.head == null) {
+            this.tail = newNode;
+        } else {
+            newNode.setNext(this.head);
+        }
+
+        this.head = newNode;
+        this.count++;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+     // Verifica se a lista está vazia
+     public boolean isEmpty() {
+        return count == 0;
+    }
+
+    public void addFirst(T data) {
+        Node<T> newNode = new Node<>(data);
+        newNode.setNext(head);
+        head = newNode;
+    
+        if (tail == null) {
+            tail = newNode;
+        }
+    
+        count++;
     }
 
     /**
-     * adicionar a lista utilizando node sentinela
-     * @param element
-     */
-    public void addSentinel(T element){
-        SentinelNode<T> newNode = new SentinelNode<T>(element); //criar um novo node com os dados
-        SentinelNode<T> current = sentinel; //elemento
-
-        while (current.getNext() != null){ //vai correr a lista até á cauda (último elemento)
-            current = current.getNext(); //vai para o seguinte elemento
-        }
-
-        current.setNext(newNode); //adicionar um novo node á cauda (último elemento)
-        size++;
-    }
-
-    public void add(T element){
-        LinkedListNode<T> newNode = new LinkedListNode<T>(element); //criar um novo node com os dados
-
-        if(head == null){ //se a lista estiver vazia
-            head = newNode; //o novo node fica na cabeca (torna-se o primeiro)
-            tail = newNode; //o novo node fica na cauda (torna-se o último)
-
-            size++;
-
-        } else { //se a lista NAO estiver vazia
-            tail.setNext(newNode); //adicionar um novo node ao próximo elemento de tail
-            tail = newNode; //tail fica com o valor do novo node
-
-            size++;
-        }
-    }
-
-    /**
-     * Define o valor de um elemento na posição especificada.
+     * Define o valor de um elemento na posicao especificada.
      *
-     * @param index O índice do elemento a ser atualizado.
+     * @param index O indice do elemento a ser atualizado.
      * @param element O novo valor do elemento.
-     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
+     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
      */
     public void setElementAt(int index, T element) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Índice fora dos limites: " + index);
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Indice fora dos limites: " + index);
         }
 
-        LinkedListNode<T> current = head; // Começa pelo primeiro elemento
+        Node<T> current = head; // Comeca pelo primeiro elemento
         int currentIndex = 0;
 
         while (current != null) {
             if (currentIndex == index) {
-                current.setElement(element); // Atualiza o elemento
+                current.setData(element); // Atualiza o elemento
                 return;
             }
-            current = current.getNext(); // Avança para o próximo nó
+            current = current.getNext(); // Avanca para o próximo nó
             currentIndex++;
         }
 
-        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
-    }
-
-
-    /**
-     * remover node sentinela
-     * @param element
-     * @return
-     */
-    public boolean removeSentinel(T element) {
-        //remover um elemento do meio ou da cauda da lista
-        SentinelNode<T> current = sentinel;  //elemento
-
-        while (current.getNext() != null && !current.getNext().getElement().equals(element)){ //vai correr a lista até ao último elemento, se for necessário, até encontrar o elemento
-            current = current.getNext(); //vai para o seguinte elemento
-        }
-
-        //se encontrou o elemento
-        if(current.getNext() != null) {
-            current.setNext(current.getNext().getNext()); //o elemento seguinte será o seguinte do seguinte elemento
-            return true;
-        }
-
-        return false; //elemento não encontrado, ou seja, não removido
+        throw new IllegalStateException("Erro inesperado ao procurar o indice.");
     }
 
     /**
-     * Obtém o elemento na posição especificada.
+     * Obtem o elemento na posicao especificada.
      *
-     * @param index O índice do elemento desejado.
-     * @return O elemento na posição especificada.
-     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
+     * @param index O indice do elemento desejado.
+     * @return O elemento na posicao especificada.
+     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
      */
     public T getElementAt(int index) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("indice fora dos limites: " + index);
         }
 
-        LinkedListNode<T> current = head; // Começa pelo primeiro elemento
+        Node<T> current = head; // Comeca pelo primeiro elemento
         int currentIndex = 0;
 
         while (current != null) {
             if (currentIndex == index) {
-                return current.getElement();
+                return current.getData();
             }
-            current = current.getNext(); // Avança para o próximo nó
+            current = current.getNext(); // Avanca para o próximo nó
             currentIndex++;
         }
 
-        // Esta linha não deve ser alcançada devido à verificação do índice acima
-        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
+        // Esta linha nao deve ser alcancada devido à verificacao do indice acima
+        throw new IllegalStateException("Erro inesperado ao procurar o indice.");
     }
 
-
-    public T remove(T element) {
-
-        if(head == null || size == 0){ //lista vazia
-            return null;
-        }
-
-        if(head.getElement().equals(element)){ //remover o primeiro elemento
-
-            T removedElement = head.getElement();
-
-            head = head.getNext(); //cabeca fica com o valor do segundo elemento (agora é o primeiro elemento porque o primeiro elemento foi removido)
-
-            size--;
-
-            return removedElement; //elemento removido
-        }
-
-        //remover um elemento do meio ou da cauda da lista
-        LinkedListNode<T> current = head;  //elemento da cabeca (primeiro elemento)
-        while (current.getNext() != null && !current.getNext().getElement().equals(element)){  //vai correr a lista até á cauda (último elemento) se for necessário até encontrar o elemento
-            current = current.getNext(); //vai para o seguinte elemento
-        }
-
-        //se encontrou o elemento
-        if(current.getNext() != null) {
-
-            T removedElement = current.getNext().getElement();
-
-            current.setNext(current.getNext().getNext()); //o elemento seguinte será o seguinte do seguinte elemento
-
-            size--;
-
-            return removedElement;
-        }
-
-        return null; //elemento não encontrado, ou seja, não removido
-    }
 
     /**
-     * Verifica se a lista contém o elemento especificado.
+     * Verifica se a lista contem o elemento especificado.
      *
      * @param element O elemento a ser procurado.
      * @return true se o elemento estiver presente, false caso contrário.
      */
+    // Verifica se um elemento está na lista
     public boolean contains(T element) {
-        if (head == null) { // Verifica se a lista está vazia
-            return false;
-        }
-
-        LinkedListNode<T> current = head; // Inicia no primeiro nó
+        Node<T> current = head;
         while (current != null) {
-            if (current.getElement().equals(element)) { // Compara o elemento atual com o procurado
+            if (current.getData().equals(element)) {
                 return true;
             }
-            current = current.getNext(); // Avança para o próximo nó
+            current = current.getNext();
+        }
+        return false;
+    }
+
+    // Retorna o indice de um elemento, ou -1 se nao for encontrado
+    public int indexOf(T element) {
+        Node<T> current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.getData().equals(element)) {
+                return index;
+            }
+            current = current.getNext();
+            index++;
+        }
+        return -1;
+    }
+
+    // Retorna o elemento em uma posicao especifica
+    public T get(int index) {
+        if (index < 0 || index >= count) {
+            throw new IndexOutOfBoundsException("Indice fora do intervalo");
         }
 
-        return false; // Elemento não encontrado
+        Node<T> current = head;
+        int currentIndex = 0;
+        while (currentIndex < index) {
+            current = current.getNext();
+            currentIndex++;
+        }
+        return current.getData();
     }
 
-    /**
-     * Remove todos os elementos da lista.
-     */
-    public void clear() {
-        head = null;
-        tail = null;
-        size = 0;
-    }
+    // Remove um elemento da lista
+    public T remove(T element) throws EmptyListException {
+        if (this.head == null) {
+            throw new EmptyListException("A lista está vazia");
+        }
 
+        boolean found = false;
+        Node<T> current = this.head;
+        Node<T> previous = null;
 
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            private LinkedListNode<T> current = head;
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public T next() {
-                T element = current.getElement();
+        while (current != null && !found) {
+            if (element.equals(current.getData())) {
+                found = true;
+            } else {
+                previous = current;
                 current = current.getNext();
-                return element;
             }
-        };
-    }
-
-    /**
-     * mostrar
-     */
-    public void printSentinel() {
-        SentinelNode<T> current = sentinel; //elemento da cabeca (primeiro elemento)
-
-        System.out.print("LinkedList Sentinel [");
-
-        while (current != null){ //corre a lista toda
-            System.out.print(current.getElement() + ", ");
-            current = current.getNext(); //vai para o seguinte elemento
         }
 
-        System.out.print("]\n");
-    }
-
-
-       /**
-     * Verifica se a lista está vazia.
-     *
-     * @return true se a lista estiver vazia, false caso contrário.
-     */
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    /**
-     * mostrar
-     */
-    public void print() {
-        LinkedListNode<T> current = head; //elemento da cabeca (primeiro elemento)
-
-        System.out.print("LinkedList [");
-
-        while (current != null){ //corre a lista toda
-            System.out.print(current.getElement() + ", ");
-            current = current.getNext(); //vai para o seguinte elemento
+        if (!found) {
+            throw new RuntimeException("Erro: O elemento nao foi encontrado na lista.");
         }
 
-        System.out.print("]\n");
+        if (current == this.head) {
+            this.head = current.getNext();
+        } else {
+            previous.setNext(current.getNext());
+        }
+
+        if (current == this.tail) {
+            this.tail = previous;
+        }
+
+        this.count--;
+        return current.getData();
     }
 
+    // Retorna o número de elementos na lista
+    public int size() {
+        return count;
+    }
 
     @Override
     public String toString() {
-        return "LinkedList{" +
-                "head=" + head +
-                ", tail=" + tail +
-                ", sentinel=" + sentinel +
-                ", size=" + size +
-                '}';
+        StringBuilder result = new StringBuilder();
+        Node<T> current = this.head;
+        while (current != null) {
+            result.append(current.getData()).append(" ");
+            current = current.getNext();
+        }
+        return result.toString();
+    }
+
+    // Implementacao do metodo iterator()
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListIterator();
+    }
+
+    // Classe interna para o iterador
+    private class LinkedListIterator implements Iterator<T> {
+        private Node<T> current;
+
+        public LinkedListIterator() {
+            this.current = head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new RuntimeException("Fim da lista.");
+            }
+            T data = current.getData();
+            current = current.getNext();
+            return data;
+        }
     }
 }
-

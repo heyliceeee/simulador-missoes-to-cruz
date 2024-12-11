@@ -37,7 +37,7 @@ public class LinkedStack<T> implements StackADT<T> {
 
 
     /**
-     * adiciona um elemento específico ao top da stack
+     * adiciona um elemento especifico ao top da stack
      * @param element elemento a ser colocado na stack
      */
     @Override
@@ -54,9 +54,9 @@ public class LinkedStack<T> implements StackADT<T> {
 
     /**
      * remove o elemento do top da stack e retorna o elemento
-     * lança uma EmptyCollectionException se a stack estiver vazia
+     * lanca uma EmptyCollectionException se a stack estiver vazia
      * @return T elemento removido do top da stack
-     * @throws EmptyCollectionException se a remoção foi tentada numa stack vazia
+     * @throws EmptyCollectionException se a remocao foi tentada numa stack vazia
      */
     @Override
     public T pop() throws EmptyCollectionException
@@ -74,10 +74,10 @@ public class LinkedStack<T> implements StackADT<T> {
         return result;
     }
 
-    /** retorna o elemento do top da stack. o elemento não é removido da stack
-     * lança uma EmptyCollectionException se a stack estiver vazia
+    /** retorna o elemento do top da stack. o elemento nao e removido da stack
+     * lanca uma EmptyCollectionException se a stack estiver vazia
      * @return T elemento top da stack
-     * @throws EmptyCollectionException se a observação foi tentada numa stack vazia
+     * @throws EmptyCollectionException se a observacao foi tentada numa stack vazia
      */
     @Override
     public T peek() throws EmptyCollectionException
@@ -91,7 +91,7 @@ public class LinkedStack<T> implements StackADT<T> {
     }
 
     /**
-     * retorna true se a stack não conter elementos
+     * retorna true se a stack nao conter elementos
      * @return boolean dependendo se a stack está vazia
      */
     @Override

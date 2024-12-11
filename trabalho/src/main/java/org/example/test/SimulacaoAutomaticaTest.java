@@ -1,49 +1,50 @@
 package org.example.test;
 
-import org.example.api.implementation.models.Inimigo;
-import org.example.api.implementation.models.Mapa;
+import org.example.api.exceptions.ElementNotFoundException;
+import org.example.api.implementation.interfaces.IMapa;
+import org.example.api.implementation.models.InimigoImpl;
+import org.example.api.implementation.models.MapaImpl;
 import org.example.api.implementation.models.ToCruz;
-import org.example.api.implementation.simulation.SimulacaoAutomatica;
+import org.example.api.implementation.simulation.SimulacaoAutomaticaImpl;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SimulacaoAutomaticaTest {
-    private Mapa mapa;
+    private IMapa mapa;
     private ToCruz toCruz;
 
 
     @Before
     public void setUp() {
-        mapa = new Mapa();
-        toCruz = new ToCruz("Tó Cruz", 100);
+        mapa = new MapaImpl();
+        toCruz = new ToCruz("To Cruz", 100);
 
         mapa.adicionarDivisao("Heliporto");
-        mapa.adicionarDivisao("Laboratório");
-        mapa.adicionarLigacao("Heliporto", "Laboratório");
-        mapa.definirAlvo("Laboratório", "quimico");
+        mapa.adicionarDivisao("Laboratorio");
+        mapa.adicionarLigacao("Heliporto", "Laboratorio");
+        mapa.definirAlvo("Laboratorio", "quimico");
 
         toCruz.moverPara(mapa.getDivisaoPorNome("Heliporto"));
     }
 
 
     @Test
-    public void testSimulacaoComSucesso() {
-        SimulacaoAutomatica simulacao = new SimulacaoAutomatica(mapa, toCruz);
-        simulacao.executar(mapa.getDivisaoPorNome("Laboratório"));
+    public void testSimulacaoComSucesso() throws ElementNotFoundException {
+        SimulacaoAutomaticaImpl simulacao = new SimulacaoAutomaticaImpl(mapa, toCruz);
+        simulacao.executar(mapa.getDivisaoPorNome("Laboratorio"));
 
         assertEquals("SUCESSO", simulacao.getStatus());
-        assertEquals("Laboratório", simulacao.getDivisaoFinal().getNomeDivisao());
+        assertEquals("Laboratorio", simulacao.getDivisaoFinal().getNomeDivisao());
     }
 
     @Test
-    public void testSimulacaoComInimigos() {
-        mapa.adicionarInimigo("Laboratório", new Inimigo("badguy", 30));
+    public void testSimulacaoComInimigos() throws ElementNotFoundException {
+        mapa.adicionarInimigo("Laboratorio", new InimigoImpl("badguy", 30));
 
-        SimulacaoAutomatica simulacao = new SimulacaoAutomatica(mapa, toCruz);
-        simulacao.executar(mapa.getDivisaoPorNome("Laboratório"));
+        SimulacaoAutomaticaImpl simulacao = new SimulacaoAutomaticaImpl(mapa, toCruz);
+        simulacao.executar(mapa.getDivisaoPorNome("Laboratorio"));
 
         assertEquals("SUCESSO", simulacao.getStatus());
         assertTrue(toCruz.getVida() < 100); // Tó Cruz perdeu vida no combate

@@ -30,7 +30,7 @@ public interface BinaryTreeADT<T>
     public boolean contains(T targetElement);
 
     /**
-     * retorna uma referencia de um especifico elemento se este for encontrado na árvore binaria, caso o elemento não for encontrado, retorna uma exceção
+     * retorna uma referencia de um especifico elemento se este for encontrado na árvore binaria, caso o elemento nao for encontrado, retorna uma excecao
      * @param targetElement o elemento a ser procurado na árvore
      * @return uma referencia de um especifico elemento se este for encontrado na árvore
      */
@@ -43,19 +43,19 @@ public interface BinaryTreeADT<T>
     public String toString();
 
     /**
-     * executa uma travessia inorder na árvore binária chamando um método inorder recursivo sobrecarregando que começa com a root
+     * executa uma travessia inorder na árvore binária chamando um metodo inorder recursivo sobrecarregando que comeca com a root
      * @return um iterador sobre os elementos da árvore
      */
     public Iterator<T> iteratorInOrder();
 
    /**
-     * executa uma travessia preorder na árvore binária chamando um método preorder recursivo sobrecarregando que começa com a root
+     * executa uma travessia preorder na árvore binária chamando um metodo preorder recursivo sobrecarregando que comeca com a root
      * @return um iterador sobre os elementos da árvore
      */
     public Iterator<T> iteratorPreOrder();
 
     /**
-     * executa uma travessia postorder na árvore binária chamando um método postorder recursivo sobrecarregado que começa com a root
+     * executa uma travessia postorder na árvore binária chamando um metodo postorder recursivo sobrecarregado que comeca com a root
      * @return um iterador sobre os elementos da árvore
      */
     public Iterator<T> iteratorPostOrder();

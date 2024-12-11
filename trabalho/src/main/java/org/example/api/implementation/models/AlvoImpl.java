@@ -1,35 +1,42 @@
 package org.example.api.implementation.models;
 
+import org.example.api.implementation.interfaces.IAlvo;
+import org.example.api.implementation.interfaces.IDivisao;
+
 /**
- * Representa o alvo da missão.
+ * Implementacao do Alvo da missao.
  */
-public class Alvo {
-    private Divisao divisao;
+public class AlvoImpl implements IAlvo {
+    private IDivisao divisao;
     private String tipo;
 
     /**
      * Construtor do Alvo.
      *
-     * @param divisao Divisão onde o alvo está localizado.
+     * @param divisao Divisao onde o alvo está localizado.
      * @param tipo    Tipo do alvo.
      */
-    public Alvo(Divisao divisao, String tipo) {
+    public AlvoImpl(IDivisao divisao, String tipo) {
         this.divisao = divisao;
         this.tipo = tipo;
     }
 
-    public Divisao getDivisao() {
+    @Override
+    public IDivisao getDivisao() {
         return divisao;
     }
 
-    public void setDivisao(Divisao divisao) {
+    @Override
+    public void setDivisao(IDivisao divisao) {
         this.divisao = divisao;
     }
 
+    @Override
     public String getTipo() {
         return tipo;
     }
 
+    @Override
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -44,13 +51,16 @@ public class Alvo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-        Alvo alvo = (Alvo) o;
+        IAlvo alvo = (IAlvo) o;
 
-        if (!divisao.equals(alvo.divisao)) return false;
-        return tipo.equals(alvo.tipo);
+        if (!divisao.equals(alvo.getDivisao()))
+            return false;
+        return tipo.equals(alvo.getTipo());
     }
 
     @Override

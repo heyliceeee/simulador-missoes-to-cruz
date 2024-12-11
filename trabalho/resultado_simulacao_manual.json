@@ -1,0 +1,101 @@
+{
+  "list": [
+    {
+      "id": "AUTO-001",
+      "divisaoInicial": "Heliporto",
+      "divisaoFinal": "Laboratorio",
+      "status": "SUCESSO",
+      "vidaRestante": 50,
+      "trajeto": {
+        "list": [
+          "Heliporto",
+          "Escada 6",
+          "Camaratas",
+          "Escada 5",
+          "Laboratorio",
+          "Laboratorio",
+          null,
+          null,
+          null,
+          null
+        ],
+        "count": 6,
+        "modCount": 0,
+        "DEFAULT_CAPACITY": 10
+      },
+      "entradasSaidas": {
+        "list": [
+          "Heliporto",
+          "Laboratorio",
+          "Porteiro",
+          "Garagem",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "count": 4,
+        "modCount": 0,
+        "DEFAULT_CAPACITY": 10
+      },
+      "codigoMissao": "pata de coelho",
+      "versaoMissao": 6
+    },
+    {
+      "id": "MANUAL-001",
+      "divisaoInicial": "Heliporto",
+      "divisaoFinal": "Laboratorio",
+      "status": "SUCESSO",
+      "vidaRestante": 50,
+      "trajeto": {
+        "list": [
+          "Laboratorio",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "count": 1,
+        "modCount": 0,
+        "DEFAULT_CAPACITY": 10
+      },
+      "entradasSaidas": {
+        "list": [
+          "Heliporto",
+          "Laboratorio",
+          "Porteiro",
+          "Garagem",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "count": 4,
+        "modCount": 0,
+        "DEFAULT_CAPACITY": 10
+      },
+      "codigoMissao": "pata de coelho",
+      "versaoMissao": 6
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "count": 2,
+  "modCount": 0,
+  "DEFAULT_CAPACITY": 10
+}

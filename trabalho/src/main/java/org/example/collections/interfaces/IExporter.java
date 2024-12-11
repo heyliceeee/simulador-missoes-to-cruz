@@ -16,15 +16,15 @@ public interface IExporter
     void setFileName(String fileName);
 
     /**
-     * Retorna a atual localização do ficheiro a ser exportado
-     * @return a atual localização do ficheiro a ser exportado
+     * Retorna a atual localizacao do ficheiro a ser exportado
+     * @return a atual localizacao do ficheiro a ser exportado
      */
     String getFileName();
 
     /**
      * Exporta um grafo em .dot e em .png
      * @param graph grafo a ser exportado
-     * @param fileName localização do ficheiro
+     * @param fileName localizacao do ficheiro
      * @param <T>
      * @throws EmptyCollectionException
      * @throws InterruptedException
@@ -35,7 +35,7 @@ public interface IExporter
      * Exporta um grafo e uma route em .dot e em .png
      * @param graph grafo a ser exportado
      * @param routeIterator route a ser notado no grafo
-     * @param fileName localização do ficheiro
+     * @param fileName localizacao do ficheiro
      * @param <T>
      * @throws InterruptedException
      * @throws EmptyCollectionException
@@ -45,7 +45,7 @@ public interface IExporter
     /**
      * Exporta uma route descrita em um iterador em .dot e em .png
      * @param routeIterator route a ser desenhada
-     * @param fileName localização do ficheiro
+     * @param fileName localizacao do ficheiro
      * @param <T>
      * @throws EmptyCollectionException
      * @throws InterruptedException

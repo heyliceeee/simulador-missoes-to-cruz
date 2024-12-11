@@ -31,16 +31,16 @@ public interface GraphADT<T>
     public void removeEdge(T vertex1, T vertex2);
 
     /**
-     * retorna o primeiro iterador de largura começando com o vertice dado
+     * retorna o primeiro iterador de largura comecando com o vertice dado
      * @param startVertex o vertice inicial
-     * @return o primeiro iterador de largura começando com o vertice dado
+     * @return o primeiro iterador de largura comecando com o vertice dado
      */
     public Iterator<T> iteratorBFS(T startVertex);
 
     /**
-     * retorna o primeiro iterador de profundidade começando com o vertice dado
+     * retorna o primeiro iterador de profundidade comecando com o vertice dado
      * @param startVertex o vertice inicial
-     * @return retorna o primeiro iterador de profundidade começando com o vertice dado
+     * @return retorna o primeiro iterador de profundidade comecando com o vertice dado
      */
     public Iterator<T> iteratorDFS(T startVertex);
 

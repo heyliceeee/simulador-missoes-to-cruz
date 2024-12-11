@@ -1,15 +1,19 @@
 package org.example;
 
 import org.example.api.exceptions.DivisionNotFoundException;
+import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.exceptions.InvalidFieldException;
 import org.example.api.exceptions.InvalidJsonStructureException;
-import org.example.api.implementation.models.*;
-import org.example.api.implementation.simulation.SimulacaoAutomatica;
-import org.example.api.implementation.simulation.SimulacaoManual;
-import org.example.api.implementation.services.CombateService;
+import org.example.api.implementation.models.MapaImpl;
+import org.example.api.implementation.models.ToCruz;
+import org.example.api.implementation.services.CombateServiceImpl;
+import org.example.api.implementation.simulation.SimulacaoAutomaticaImpl;
+import org.example.api.implementation.simulation.SimulacaoManualImpl;
 import org.example.api.implementation.utils.ExportarResultados;
-import org.example.api.implementation.utils.JsonUtils;
-import org.example.collections.implementation.LinkedList;
+import org.example.api.implementation.utils.ImportJsonImpl;
+import org.example.api.implementation.interfaces.*;
+import org.example.collections.implementation.ArrayUnorderedList;
+import org.example.api.implementation.models.ResultadoSimulacaoImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,111 +21,101 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ElementNotFoundException {
 
-        // ============ INICIALIZAÇÃO DO MAPA ============
-        logger.info("Iniciando o carregamento do mapa...");
-        Mapa mapa = new Mapa();
-        JsonUtils jsonUtils = new JsonUtils(mapa);
-        String caminhoJson = "mapa.json";
+        logger.info("Iniciando o programa...");
+        String caminhoJson = "mapa_v6.json";
+
+        // Inicializacao do mapa e carregamento da missao
+        IMapa mapa = new MapaImpl();
+        IImportJson importJson = new ImportJsonImpl(mapa);
+        IMissao missao;
 
         try {
-            jsonUtils.carregarMapa(caminhoJson);
-            logger.info("Mapa carregado com sucesso e pronto para uso!");
-
-            // Exibir o mapa na consola
-            System.out.println("Mapa do edifício:");
-            mapa.mostrarMapa();
-
-            // Verificar se o alvo foi carregado corretamente
-            Alvo alvo = mapa.getAlvo();
-            if (alvo != null) {
-                logger.info("Alvo carregado do JSON: Divisão - {}, Tipo - {}", alvo.getDivisao().getNomeDivisao(), alvo.getTipo());
-            } else {
-                logger.error("Nenhum alvo definido no JSON ou erro ao carregar.");
-                return;
-            }
-
-        } catch (InvalidJsonStructureException e) {
-            logger.error("Erro na estrutura do JSON: {}", e.getMessage());
-            return;
-        } catch (InvalidFieldException e) {
-            logger.error("Erro em um campo do JSON: {}", e.getMessage());
-            return;
-        } catch (DivisionNotFoundException e) {
-            logger.error("Erro de referência de divisão: {}", e.getMessage());
-            return;
-        } catch (Exception e) {
-            logger.error("Erro inesperado: {}", e.getMessage());
-            e.printStackTrace();
+            System.out.println("--------------------------------------------------------------------------------");
+            missao = importJson.carregarMissao(caminhoJson);
+            logger.info("Missao carregada: {} - Versao {}", missao.getCodMissao(), missao.getVersao());
+        } catch (InvalidJsonStructureException | InvalidFieldException | DivisionNotFoundException e) {
+            logger.error("Erro ao carregar a missao: {}", e.getMessage());
             return;
         }
 
         if (mapa.getDivisoes().isEmpty()) {
-            logger.error("Mapa não possui divisões carregadas. Encerrando o programa.");
+            logger.error("Erro: Nenhuma divisao carregada no mapa. Encerrando o programa.");
             return;
         }
 
-        // ============ INICIALIZAÇÃO DO AGENTE ============
-        logger.info("Inicializando o agente Tó Cruz...");
-        ToCruz toCruz = new ToCruz("Tó Cruz", 100); // Nome e vida inicial
-        Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisão
-        toCruz.moverPara(divisaoInicial);
-        logger.info("Agente {} posicionado na divisão inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
+        System.out.println("--------------------------------------------------------------------------------");
+        mapa.mostrarMapa();
 
-        // ============ SIMULAÇÃO AUTOMATICA ============
-        logger.info("Iniciando a simulação automática...");
-        SimulacaoAutomatica simulacaoAuto = new SimulacaoAutomatica(mapa, toCruz);
+        // Inicializacao do agente Tó Cruz
+        logger.info("Inicializando o agente To Cruz...");
+        ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
+        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisao
+        toCruz.moverPara(divisaoInicial);
+        logger.info("Agente {} posicionado na divisao inicial: {}", toCruz.getNome(), divisaoInicial.getNomeDivisao());
+
+        // ============ SIMULAcaO AUTOMATICA ============
+        logger.info("Iniciando a simulacao automatica...");
+        ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
 
-        ResultadoSimulacao resultadoAuto = new ResultadoSimulacao(
+        IResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
                 "AUTO-001",
                 divisaoInicial.getNomeDivisao(),
                 simulacaoAuto.getDivisaoFinal().getNomeDivisao(),
                 simulacaoAuto.getStatus(),
                 simulacaoAuto.getVidaRestante(),
-                coletarTrajeto(simulacaoAuto.getCaminhoPercorrido()),
-                mapa.getEntradasSaidasNomes()
-        );
-        logger.info("Resultado da Simulação Automática: {}", resultadoAuto.toString());
+                filtrarLista(simulacaoAuto.getCaminhoPercorridoNomes()),
+                filtrarLista(mapa.getEntradasSaidasNomes()),
+                missao.getCodMissao(),
+                missao.getVersao());
 
-        // Exportar resultado para JSON
-        ExportarResultados.exportarParaJson(new LinkedList<ResultadoSimulacao>() {{
-            add(resultadoAuto);
-        }}, "resultado_simulacao.json");
-        logger.info("Resultado da Simulação Automática exportado para 'resultado_simulacao.json'.");
+        ArrayUnorderedList<IResultadoSimulacao> resultados = new ArrayUnorderedList<>();
+        resultados.addToRear(resultadoAuto);
 
-        // ============ SIMULAÇÃO MANUAL ============
-        logger.info("Iniciando a simulação manual...");
-        SimulacaoManual simulacaoManual = new SimulacaoManual(mapa, toCruz);
-        simulacaoManual.executar();
+        ExportarResultados exportador = new ExportarResultados();
+        exportador.exportarParaJson(resultados, "resultado_simulacao_automatica.json");
+        logger.info("Resultado da Simulacao Automatica exportado com sucesso.");
 
-        ResultadoSimulacao resultadoManual = new ResultadoSimulacao(
+        // Simulacao Manual
+        logger.info("Iniciando a simulacao manual...");
+        ISimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
+        simulacaoManual.executar(mapa.getAlvo().getDivisao());
+
+        ArrayUnorderedList<String> trajetoManual = filtrarLista(simulacaoManual.getCaminhoPercorridoNomes());
+        IResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
                 "MANUAL-001",
                 divisaoInicial.getNomeDivisao(),
-                toCruz.getPosicaoAtual().getNomeDivisao(),
-                toCruz.getVida() > 0 ? "SUCESSO" : "FALHA",
-                toCruz.getVida(),
-                new LinkedList<>(), // Atualizar com o trajeto percorrido, se disponível
-                mapa.getEntradasSaidasNomes()
-        );
-        logger.info("Resultado da Simulação Manual: {}", resultadoManual.toString());
+                simulacaoManual.getDivisaoFinal().getNomeDivisao(),
+                simulacaoManual.getStatus(),
+                simulacaoManual.getVidaRestante(),
+                filtrarLista(simulacaoManual.getCaminhoPercorridoNomes()),
+                filtrarLista(mapa.getEntradasSaidasNomes()),
+                missao.getCodMissao(),
+                missao.getVersao());
 
-        // ============ FINALIZAÇÃO ============
+        resultados.addToRear(resultadoManual);
+        exportador.exportarParaJson(resultados, "resultado_simulacao_manual.json");
+        logger.info("Resultado da Simulacao Manual exportado com sucesso.");
+
         logger.info("Programa finalizado com sucesso.");
     }
 
     /**
-     * Método auxiliar para coletar o trajeto percorrido e convertê-lo para uma lista de nomes.
+     * Filtra uma lista para remover valores nulos.
      *
-     * @param caminhoPercorrido Lista de divisões percorridas.
-     * @return Lista de nomes das divisões.
+     * @param lista Lista original a ser filtrada.
+     * @return Nova lista sem valores nulos.
      */
-    private static LinkedList<String> coletarTrajeto(LinkedList<Divisao> caminhoPercorrido) {
-        LinkedList<String> trajetoNomes = new LinkedList<>();
-        for (int i = 0; i < caminhoPercorrido.getSize(); i++) {
-            trajetoNomes.add(caminhoPercorrido.getElementAt(i).getNomeDivisao());
+    private static ArrayUnorderedList<String> filtrarLista(ArrayUnorderedList<String> lista) {
+        ArrayUnorderedList<String> filtrada = new ArrayUnorderedList<>();
+        for (int i = 0; i < lista.size(); i++) {
+            String elemento = lista.getElementAt(i);
+            if (elemento != null) {
+                filtrada.addToRear(elemento);
+            }
         }
-        return trajetoNomes;
+        return filtrada;
     }
 }

@@ -210,7 +210,7 @@ public class DoubleLinkedOrderedList<T extends Comparable> extends DoublyLinkedL
 
         public BasicIterator()
         {
-            current = (DoublyNode<T>) head; // Começa no nó da cabeça
+            current = (DoublyNode<T>) head; // Comeca no nó da cabeca
         }
 
         @Override
@@ -223,10 +223,10 @@ public class DoubleLinkedOrderedList<T extends Comparable> extends DoublyLinkedL
         public T next() {
             if (!hasNext())
             {
-                throw new EmptyCollectionException("double linked ordered list nao existe elementos"); // Lança exceção se não houver próximo elemento
+                throw new EmptyCollectionException("double linked ordered list nao existe elementos"); // Lanca excecao se nao houver próximo elemento
             }
 
-            T element = current.getElement(); // Obtém o elemento atual
+            T element = current.getElement(); // Obtem o elemento atual
             current = current.getNext(); // Move para o próximo nó
 
             return element;
