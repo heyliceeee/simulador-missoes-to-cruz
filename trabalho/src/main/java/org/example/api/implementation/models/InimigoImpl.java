@@ -8,6 +8,7 @@ import org.example.api.implementation.interfaces.IInimigo;
 public class InimigoImpl implements IInimigo {
     private String nome;
     private int poder;
+    private int vida = 100;
 
     /**
      * Construtor do Inimigo.
@@ -28,6 +29,22 @@ public class InimigoImpl implements IInimigo {
     @Override
     public String getNome() {
         return nome;
+    }
+
+    /**
+     * Obtem a vida atual do inimigo
+     * @return vida atual do inimigo
+     */
+    public int getVida() {
+        return vida;
+    }
+
+    /**
+     * Define a quantidade de vida atual do inimigo
+     * @param vida quantidade de vida atual do inimigo
+     */
+    public void setVida(int vida) {
+        this.vida = vida;
     }
 
     /**

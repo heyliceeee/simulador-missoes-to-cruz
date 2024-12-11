@@ -24,13 +24,18 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     private final ArrayUnorderedList<IItem> itensColetados;
 
     public static String checkMark = "\u2705";  // ✅
-    public static String crossedSwords = "\u2694";  // ⚔️
-    public static String skull = "\u1F480";  // 💀
-    public static String target = "\u1F3AF";  // 🎯
-    public static String trophy = "\u1F3C6";  // 🏆
-    public static String cowboy = "\u1F920";  // 🤠
-    public static String pin = "\uD83D\uDCCC"; // 📍
+    public static String crossedSwords = "\uD83D\uDDE1";  // 🗡
+    public static String skull = "\uD83D\uDC80";  // 💀
+    public static String target = "\uD83C\uDFAF";  // 🎯
+    public static String trophy = "\uD83E\uDD47";  // 🥇
+    public static String cowboy = "\uD83E\uDD20";  // 🤠
+    public static String pin = "\uD83D\uDCCC"; // 📌
     public static String backpack = "\uD83C\uDF92"; // 🎒
+    public static String life = "\uD83D\uDC99"; // 💙
+    public static String pill = "\uD83D\uDC8A";// 💊
+    public static String vest = "\uD83D\uDEE1\uFE0F"; // 🛡️
+
+
 
     /**
      * Construtor da Simulacao Automática.
@@ -367,7 +372,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
                 // Verificar se Tó Cruz foi derrotado
                 if (toCruz.getVida() <= 0) {
-                    System.err.println("\uD83D\uDC80 To Cruz foi derrotado durante o retorno!");
+                    System.err.println(skull + " To Cruz foi derrotado durante o retorno!");
                     mostrarMapaInterativo(toCruz, divisao, false);
                     return;
                 }
@@ -379,7 +384,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             mostrarMapaInterativo(toCruz, divisao, true);
         }
 
-        System.out.println("\uD83C\uDFC6 Missao concluida com sucesso! To Cruz retornou com o alvo.");
+        System.out.println(trophy+" Missao concluida com sucesso! To Cruz retornou com o alvo.");
     }
 
     @Override

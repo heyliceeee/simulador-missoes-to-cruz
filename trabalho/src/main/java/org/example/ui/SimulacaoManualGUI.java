@@ -17,6 +17,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
 
+import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.*;
+
 public class SimulacaoManualGUI extends JFrame {
 
     private ArrayUnorderedList<IDivisao> divisoes;
@@ -33,7 +35,8 @@ public class SimulacaoManualGUI extends JFrame {
     private JButton atacarButton;
     private JButton resgatarButton;
     private JButton apanharButton;
-    private JButton sairButton;
+
+
 
     public SimulacaoManualGUI(ArrayUnorderedList<IDivisao> divisoes, ArrayUnorderedList<IDivisao> entradasSaidas,
             ArrayUnorderedList<Ligacao> ligacoes, IMapa mapa, ToCruz toCruz) {
@@ -64,6 +67,8 @@ public class SimulacaoManualGUI extends JFrame {
         atualizarEstadoBotoes();
         interagirComAlvo(toCruz.getPosicaoAtual());
     }
+
+
 
     /**
      * Interage com o alvo se estiver na mesma divisao.
@@ -111,6 +116,12 @@ public class SimulacaoManualGUI extends JFrame {
             if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().size() > 0) {
                 try {
                     combateService.resolverCombate(toCruz, divisaoAtual);
+
+                    if(toCruz.getVida() <= 0){
+                        JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz foi derrotado.");
+                        System.exit(0);
+                    }
+
                 } catch (ElementNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -153,13 +164,20 @@ public class SimulacaoManualGUI extends JFrame {
             }
         });
 
-        sairButton = new JButton("Sair");
+        JButton sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
             IDivisao divisaoAtual = toCruz.getPosicaoAtual();
 
             if (toCruz.getVida() > 0 && divisaoAtual.isEntradaSaida() && toCruz.isAlvoConcluido()) {
-                atualizarEstadoBotoes();
-                JOptionPane.showMessageDialog(this, "Simulacao encerrada. Obrigado por jogar!");
+                //atualizarEstadoBotoes();
+                JOptionPane.showMessageDialog(this, "Missao concluida com sucesso!");
+                System.exit(0);
+            }
+            else if (!divisaoAtual.isEntradaSaida()) {
+                JOptionPane.showMessageDialog(this, "Nao e uma divisao de saida");
+            }
+            else if(divisaoAtual.isEntradaSaida() && !toCruz.isAlvoConcluido()){
+                JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz abandonou o alvo.");
                 System.exit(0);
             }
         });
@@ -169,7 +187,6 @@ public class SimulacaoManualGUI extends JFrame {
         controlePanel.add(atacarButton);
         controlePanel.add(resgatarButton);
         controlePanel.add(apanharButton);
-        controlePanel.add(sairButton);
 
         atualizarEstadoBotoes();
     }
@@ -184,7 +201,7 @@ public class SimulacaoManualGUI extends JFrame {
             boolean temInimigos = divisaoAtual.getInimigosPresentes().size() > 0;
             boolean temItens = divisaoAtual.getItensPresentes().size() > 0;
             boolean temAlvo = mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual);
-            boolean terminouMissao = divisaoAtual.isEntradaSaida() && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
+            //boolean terminouMissao = divisaoAtual.isEntradaSaida() && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
 
             // Botao "Mover" e desativado se houver inimigos
             moverButton.setEnabled(!temInimigos);
@@ -198,17 +215,12 @@ public class SimulacaoManualGUI extends JFrame {
             // Botao "Apanhar" e ativado se houver itens na divisao
             apanharButton.setEnabled(temItens);
 
-            // Botao "Sair" e ativado se to cruz resgastou o alvo e esta numa divisao de
-            // saida
-            sairButton.setEnabled(terminouMissao);
-
         } else {
             // Caso nao haja divisao atual, desativa os botões
             moverButton.setEnabled(false);
             atacarButton.setEnabled(false);
             resgatarButton.setEnabled(false);
             apanharButton.setEnabled(false);
-            sairButton.setEnabled(false);
         }
     }
 
@@ -337,30 +349,35 @@ public class SimulacaoManualGUI extends JFrame {
                 if (divisaoAtual != null) {
                     ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
                     int offsetY = 40; // Deslocamento vertical para evitar sobreposicao
-                    for (int i = 0; i < inimigos.size(); i++) {
-                        IInimigo inimigo = inimigos.getElementAt(i);
-                        g2.setColor(Color.RED);
-                        g2.drawString("Inimigo: " + inimigo.getPoder() + " (poder)", toCruzPos.x - 30,
-                                toCruzPos.y + offsetY);
-                        offsetY += 15; // Incrementa para cada inimigo
-                    }
+                    g2.setColor(Color.RED);
+                    g2.drawString(inimigos.size()+" " + skull , toCruzPos.x - 20, toCruzPos.y + offsetY);
 
                     // Assinalar itens na divisao atual
                     ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
                     offsetY += 10; // Espaco entre inimigos e itens
+                    int countKitVida = 0;
+                    int countColete = 0;
+
                     for (int i = 0; i < itens.size(); i++) {
-                        IItem item = itens.getElementAt(i);
-                        g2.setColor(Color.ORANGE);
-                        g2.drawString("Item: " + item.getTipo() + " " + item.getPontos() + "(pontos)", toCruzPos.x - 30,
-                                toCruzPos.y + offsetY);
-                        offsetY += 15; // Incrementa para cada item
+                        if(itens.getElementAt(i).getTipo().equalsIgnoreCase("kit de vida")){
+                            countKitVida++;
+                        }
+                        else if(itens.getElementAt(i).getTipo().equalsIgnoreCase("colete")){
+                            countColete++;
+                        }
                     }
+
+                    g2.setColor(Color.darkGray);
+                    g2.drawString(countKitVida + "x" + pill, toCruzPos.x - 30, toCruzPos.y + offsetY + 5);
+
+                    g2.setColor(Color.darkGray);
+                    g2.drawString(countColete + "x" + vest, toCruzPos.x, toCruzPos.y + offsetY + 5);
 
                     // Assinalar alvos na divisao atual
                     if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
                         offsetY += 10; // Espaco entre itens e alvos
                         g2.setColor(Color.MAGENTA);
-                        g2.drawString("Alvo: " + mapa.getAlvo().getTipo(), toCruzPos.x - 30, toCruzPos.y + offsetY);
+                        g2.drawString(target , toCruzPos.x - 30, toCruzPos.y + offsetY + 10);
                     }
                 }
             }
@@ -369,8 +386,8 @@ public class SimulacaoManualGUI extends JFrame {
             desenharLegenda(g2);
 
             // Exibir informacões no canto superior esquerdo
-            g2.setColor(Color.BLACK);
-            g2.drawString( toCruz.getVida() + " ❤", 10, 20);
+            g2.setColor(Color.RED);
+            g2.drawString( toCruz.getVida() + " " + life, 10, 20);
 
             int qtdKits = 0;
             int qtdColetes = 0;
@@ -387,8 +404,11 @@ public class SimulacaoManualGUI extends JFrame {
                 toCruz.getInventario().push(item); // Reinsere o item no inventário
             }
 
-            g2.drawString("💉 " + qtdKits + "x", 10, 40);
-            g2.drawString("coletes: " + qtdColetes + "x", 10, 60);
+            g2.setColor(Color.darkGray);
+            g2.drawString(pill + " " + qtdKits + "x", 10, 40);
+
+            g2.setColor(Color.darkGray);
+            g2.drawString(vest + "  " + qtdColetes + "x", 10, 60);
         }
 
         /**

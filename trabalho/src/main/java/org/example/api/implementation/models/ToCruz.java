@@ -43,7 +43,6 @@ public class ToCruz implements IAgente {
      * - false: O alvo ainda nao foi capturado.
      */
     private boolean alvoConcluido;
-    private final String icone = "\u1F920";  // 🤠
 
     /**
      * Construtor do Tó Cruz.
@@ -275,9 +274,5 @@ public class ToCruz implements IAgente {
      */
     public void setAlvoConcluido(boolean concluido) {
         this.alvoConcluido = concluido;
-    }
-
-    public String getIcone() {
-        return icone;
     }
 }
