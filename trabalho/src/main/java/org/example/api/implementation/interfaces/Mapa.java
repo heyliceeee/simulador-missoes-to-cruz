@@ -7,19 +7,19 @@ import org.example.collections.implementation.ArrayUnorderedList;
 public interface Mapa {
     void adicionarDivisao(String nomeDivisao);
     void adicionarLigacao(String nomeDivisao1, String nomeDivisao2);
-    void adicionarInimigo(String nomeDivisao, Inimigo inimigo);
-    void adicionarItem(String nomeDivisao, Item item);
+    void adicionarInimigo(String nomeDivisao, IInimigo inimigo);
+    void adicionarItem(String nomeDivisao, IItem item);
     void adicionarEntradaSaida(String nomeDivisao);
-    Divisao getDivisaoPorNome(String nomeDivisao);
+    IDivisao getDivisaoPorNome(String nomeDivisao);
     boolean podeMover(String divisao1, String divisao2);
     void definirAlvo(String nomeDivisao, String tipo);
     void removerAlvo();
-    Alvo getAlvo();
-    ArrayUnorderedList<Divisao> obterConexoes(Divisao divisao);
-    ArrayUnorderedList<Divisao> getDivisoes();
+    IAlvo getAlvo();
+    ArrayUnorderedList<IDivisao> obterConexoes(IDivisao divisao);
+    ArrayUnorderedList<IDivisao> getDivisoes();
     ArrayUnorderedList<String> getEntradasSaidasNomes();
-    public void moverInimigos(ToCruz toCruz, CombateService combateService) throws ElementNotFoundException;
-    public ArrayUnorderedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino) throws ElementNotFoundException;
-    public ArrayUnorderedList<Item> getItensPorTipo(String tipo);
+    public void moverInimigos(ToCruz toCruz, ICombateService combateService) throws ElementNotFoundException;
+    public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino) throws ElementNotFoundException;
+    public ArrayUnorderedList<IItem> getItensPorTipo(String tipo);
     void mostrarMapa();
 }

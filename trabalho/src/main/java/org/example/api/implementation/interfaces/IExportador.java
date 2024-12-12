@@ -13,7 +13,7 @@ public interface IExportador {
      * @param resultados     Lista de resultados a serem exportados.
      * @param caminhoArquivo Caminho do arquivo de destino para exportacao.
      */
-    void exportarParaJson(ArrayUnorderedList<IResultadoSimulacao> resultados, String caminhoArquivo);
+    void exportarParaJson(IResultadoSimulacao resultado, String caminhoArquivo, IMapa mapa);
 
     /**
      * Exporta um relatorio detalhado das simulacoes automatica e manual.

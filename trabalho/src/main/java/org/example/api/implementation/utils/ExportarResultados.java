@@ -2,10 +2,9 @@ package org.example.api.implementation.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.example.api.implementation.interfaces.Exportador;
-import org.example.api.implementation.interfaces.Mapa;
-import org.example.api.implementation.interfaces.ResultadoSimulacao;
+import org.example.api.implementation.interfaces.*;
 import org.example.api.implementation.utils.ResultadoFormatadoImpl;
+import org.example.collections.implementation.ArrayUnorderedList;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,7 +15,7 @@ import java.io.IOException;
 public class ExportarResultados implements IExportador {
 
     @Override
-public void exportarParaJson(ResultadoSimulacao resultado, String caminhoArquivo, Mapa mapa) {
+    public void exportarParaJson(IResultadoSimulacao resultado, String caminhoArquivo, IMapa mapa) {
     Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .create();
@@ -30,6 +29,9 @@ public void exportarParaJson(ResultadoSimulacao resultado, String caminhoArquivo
         System.err.println("Erro ao exportar relatório: " + e.getMessage());
     }
 }
+
+    @Override
+    public void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica, IResultadoSimulacao simulacaoManual, IMapa mapa, String caminhoArquivo) {}
 
     /**
      * Prepara o objeto para exportação em JSON.

@@ -2,9 +2,8 @@ package org.example.api.implementation.models;
 
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.implementation.interfaces.*;
-import org.example.collections.implementation.ArrayUnorderedList;
-import org.example.collections.implementation.Graph;
-import org.example.collections.implementation.LinkedList;
+import org.example.collections.exceptions.EmptyCollectionException;
+import org.example.collections.implementation.*;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -335,11 +334,6 @@ public class MapaImpl implements IMapa {
         return entradasSaidas;
     }
 
-    @Override
-    public void moverInimigos() throws ElementNotFoundException {
-
-    }
-
     /**
      * Move os inimigos aleatoriamente para divisoes conectadas ate duas divisoes de
      * distancia.
@@ -377,11 +371,21 @@ public class MapaImpl implements IMapa {
 
                 // Movimentar ate 2 divisoes aleatoriamente
                 for (int movimentos = 0; movimentos < 2; movimentos++) {
-                    ArrayUnorderedList<IDivisao> conexoes = obterConexoes(destino);
-                    if (conexoes.isEmpty())
+                    ArrayUnorderedList<Ligacao> ligacoes = new ArrayUnorderedList<>(); //ligacoes diretas do destino
+                    LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(destino); //todas as divisoes perto de destino
+
+                    for (IDivisao adjacente : adjacentes) {
+                        // Adiciona a ligacao se ela ainda nao foi registada
+                        Ligacao novaLigacao = new Ligacao(destino, adjacente);
+                        if (!ligacoes.contains(novaLigacao)) {
+                            ligacoes.addToRear(novaLigacao);
+                        }
+                    }
+
+                    if (ligacoes.isEmpty())
                         break;
 
-                    IDivisao novaDivisao = conexoes.getElementAt(random.nextInt(conexoes.size()));
+                    IDivisao novaDivisao = ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao1() == destino ? ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao2() : ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao1();
                     if (novaDivisao != null) {
                         destino = novaDivisao;
                     }
@@ -415,16 +419,15 @@ public class MapaImpl implements IMapa {
      * (arestas).
      */
     @Override
-    public ArrayUnorderedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino)
-            throws ElementNotFoundException {
+    public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino) {
         if (origem == null || destino == null) {
             System.err.println("Erro: Origem ou destino inválidos.");
             return new ArrayUnorderedList<>();
         }
 
         // Estruturas de suporte
-        LinkedQueue<Divisao> fila = new LinkedQueue<>();
-        ArrayUnorderedList<Divisao> visitados = new ArrayUnorderedList<>();
+        LinkedQueue<IDivisao> fila = new LinkedQueue<>();
+        ArrayUnorderedList<IDivisao> visitados = new ArrayUnorderedList<>();
         ArrayUnorderedList<Predecessor> predecessores = new ArrayUnorderedList<>();
         ArrayUnorderedList<Integer> custos = new ArrayUnorderedList<>(); // Custos paralelos aos visitados
 
@@ -436,7 +439,7 @@ public class MapaImpl implements IMapa {
 
         while (!fila.isEmpty()) {
             // Retirar o próximo nó da fila
-            Divisao atual = fila.dequeue();
+            IDivisao atual = fila.dequeue();
 
             // Encontrar índice do nó atual em `visitados`
             int indiceAtual = findIndex(visitados, atual);
@@ -444,20 +447,20 @@ public class MapaImpl implements IMapa {
 
             // Se chegamos ao destino, reconstruir o caminho
             if (atual.equals(destino)) {
-                ArrayUnorderedList<Divisao> caminho = new ArrayUnorderedList<>();
+                ArrayUnorderedList<IDivisao> caminho = new ArrayUnorderedList<>();
                 reconstruirCaminho(predecessores, destino, caminho);
                 return caminho;
             }
 
             // Obter conexões da divisão atual
-            ArrayUnorderedList<Divisao> conexoes = obterConexoes(atual);
+            ArrayUnorderedList<IDivisao> conexoes = obterConexoes(atual);
             if (conexoes == null || conexoes.isEmpty()) {
                 continue;
             }
 
             // Processar conexões
             for (int i = 0; i < conexoes.size(); i++) {
-                Divisao vizinho = conexoes.getElementAt(i);
+                IDivisao vizinho = conexoes.getElementAt(i);
                 if (vizinho == null)
                     continue;
 
@@ -485,7 +488,7 @@ public class MapaImpl implements IMapa {
         return new ArrayUnorderedList<>();
     }
 
-    private int findIndex(ArrayUnorderedList<Divisao> list, Divisao target) {
+    private int findIndex(ArrayUnorderedList<IDivisao> list, IDivisao target) {
         for (int i = 0; i < list.size(); i++) {
             if (list.getElementAt(i).equals(target)) {
                 return i;
@@ -510,11 +513,11 @@ public class MapaImpl implements IMapa {
     /**
      * Calcula o custo de mover-se de uma divisão para outra.
      */
-    private int calcularCusto(Divisao atual, Divisao vizinho) {
+    private int calcularCusto(IDivisao atual, IDivisao vizinho) {
         int custo = 0;
 
         // Adicionar custo por inimigos (usando o poder dos inimigos)
-        ArrayUnorderedList<Inimigo> inimigos = vizinho.getInimigosPresentes();
+        ArrayUnorderedList<IInimigo> inimigos = vizinho.getInimigosPresentes();
         if (inimigos != null && !inimigos.isEmpty()) {
             for (int i = 0; i < inimigos.size(); i++) {
                 custo += inimigos.getElementAt(i).getPoder(); // Usar `getPoder()` como dano
@@ -522,10 +525,10 @@ public class MapaImpl implements IMapa {
         }
 
         // Subtrair custo por itens de recuperação (usando os pontos do item)
-        ArrayUnorderedList<Item> itens = vizinho.getItensPresentes();
+        ArrayUnorderedList<IItem> itens = vizinho.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
             for (int i = 0; i < itens.size(); i++) {
-                Item item = itens.getElementAt(i);
+                IItem item = itens.getElementAt(i);
                 if ("kit de vida".equalsIgnoreCase(item.getTipo())) {
                     custo -= item.getPontos(); // Usar `getPontos()` para recuperação
                 }
@@ -535,10 +538,10 @@ public class MapaImpl implements IMapa {
         return Math.max(custo, 0); // Evitar custos negativos
     }
 
-    private void reconstruirCaminho(ArrayUnorderedList<Predecessor> predecessores, Divisao objetivo,
-            ArrayUnorderedList<Divisao> caminho) {
-        LinkedStack<Divisao> pilha = new LinkedStack<>();
-        Divisao atual = objetivo;
+    private void reconstruirCaminho(ArrayUnorderedList<Predecessor> predecessores, IDivisao objetivo,
+            ArrayUnorderedList<IDivisao> caminho) {
+        LinkedStack<IDivisao> pilha = new LinkedStack<>();
+        IDivisao atual = objetivo;
 
         while (atual != null) {
             pilha.push(atual);
@@ -554,7 +557,7 @@ public class MapaImpl implements IMapa {
         }
     }
 
-    private Divisao getPredecessor(ArrayUnorderedList<Predecessor> predecessores, String nomeDivisao) {
+    private IDivisao getPredecessor(ArrayUnorderedList<Predecessor> predecessores, String nomeDivisao) {
         for (int i = 0; i < predecessores.size(); i++) {
             Predecessor p = predecessores.getElementAt(i);
             if (p != null && p.getAtual().getNomeDivisao().equalsIgnoreCase(nomeDivisao)) {
@@ -562,27 +565,6 @@ public class MapaImpl implements IMapa {
             }
         }
         return null;
-    }
-
-    @Override
-    public ArrayUnorderedList<Item> getItensPorTipo(String tipo) {
-        ArrayUnorderedList<Item> itens = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Divisao> divisoes = getDivisoes();
-
-        for (int i = 0; i < divisoes.size(); i++) {
-            Divisao divisao = divisoes.getElementAt(i);
-            if (divisao != null) {
-                ArrayUnorderedList<Item> itensDivisao = divisao.getItensPresentes();
-                for (int j = 0; j < itensDivisao.size(); j++) {
-                    Item item = itensDivisao.getElementAt(j);
-                    if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
-                        itens.addToRear(item);
-                    }
-                }
-            }
-        }
-
-        return itens;
     }
 
     @Override
@@ -682,29 +664,6 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Encontrar o melhor caminho ate o alvo
-     * 
-     * @param origem  divisao atual
-     * @param destino divisao destino
-     * @return o percurso de divisoes
-     */
-    @Override
-    public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino) {
-        if (origem == null || destino == null) {
-            throw new IllegalArgumentException("Origem ou destino invalido");
-        }
-
-        Iterator<IDivisao> caminhoIterator = grafo.iteratorShortestPath(origem, destino);
-        ArrayUnorderedList<IDivisao> caminho = new ArrayUnorderedList<>();
-
-        while (caminhoIterator.hasNext()) {
-            caminho.addToRear(caminhoIterator.next());
-        }
-
-        return caminho;
-    }
-
-    /**
      * Localizar o kit de vida mais proximo
      * 
      * @param origem divisao atual
@@ -739,5 +698,26 @@ public class MapaImpl implements IMapa {
         }
 
         return null; // Caso nenhum kit seja encontrado
+    }
+
+    @Override
+    public ArrayUnorderedList<IItem> getItensPorTipo(String tipo) {
+        ArrayUnorderedList<IItem> itens = new ArrayUnorderedList<>();
+        ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
+
+        for (int i = 0; i < divisoes.size(); i++) {
+            IDivisao divisao = divisoes.getElementAt(i);
+            if (divisao != null) {
+                ArrayUnorderedList<IItem> itensDivisao = divisao.getItensPresentes();
+                for (int j = 0; j < itensDivisao.size(); j++) {
+                    IItem item = itensDivisao.getElementAt(j);
+                    if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
+                        itens.addToRear(item);
+                    }
+                }
+            }
+        }
+
+        return itens;
     }
 }

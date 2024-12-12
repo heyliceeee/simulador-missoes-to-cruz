@@ -74,22 +74,22 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             return;
         }
 
-        Divisao melhorEntrada = null;
-        ArrayUnorderedList<Divisao> melhorCaminhoParaObjetivo = null;
-        ArrayUnorderedList<Divisao> melhorCaminhoDeVolta = null;
+        IDivisao melhorEntrada = null;
+        ArrayUnorderedList<IDivisao> melhorCaminhoParaObjetivo = null;
+        ArrayUnorderedList<IDivisao> melhorCaminhoDeVolta = null;
         int maiorVidaRestante = Integer.MIN_VALUE;
 
         // Loop para encontrar o melhor caminho com base na vida restante
         for (int i = 0; i < entradasSaidas.size(); i++) {
-            Divisao entradaAtual = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(i));
+            IDivisao entradaAtual = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(i));
             if (entradaAtual == null)
                 continue;
 
-            ArrayUnorderedList<Divisao> caminhoParaObjetivo = mapa.calcularMelhorCaminho(entradaAtual, divisaoObjetivo);
+            ArrayUnorderedList<IDivisao> caminhoParaObjetivo = mapa.calcularMelhorCaminho(entradaAtual, divisaoObjetivo);
             if (caminhoParaObjetivo == null || caminhoParaObjetivo.isEmpty())
                 continue;
 
-            ArrayUnorderedList<Divisao> caminhoDeVolta = mapa.calcularMelhorCaminho(divisaoObjetivo, entradaAtual);
+            ArrayUnorderedList<IDivisao> caminhoDeVolta = mapa.calcularMelhorCaminho(divisaoObjetivo, entradaAtual);
             if (caminhoDeVolta == null || caminhoDeVolta.isEmpty())
                 continue;
 
@@ -107,7 +107,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         if (melhorEntrada == null || melhorCaminhoParaObjetivo == null || melhorCaminhoDeVolta == null) {
             System.err.println("Nenhum trajeto ideal encontrado. Selecionando o primeiro trajeto viável...");
             for (int i = 0; i < entradasSaidas.size(); i++) {
-                Divisao entradaAlternativa = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(i));
+                IDivisao entradaAlternativa = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(i));
                 if (entradaAlternativa != null) {
                     melhorCaminhoParaObjetivo = mapa.calcularMelhorCaminho(entradaAlternativa, divisaoObjetivo);
                     melhorCaminhoDeVolta = mapa.calcularMelhorCaminho(divisaoObjetivo, entradaAlternativa);
@@ -137,7 +137,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         toCruz.moverPara(melhorEntrada);
 
         for (int i = 0; i < melhorCaminhoParaObjetivo.size(); i++) {
-            Divisao divisao = melhorCaminhoParaObjetivo.getElementAt(i);
+            IDivisao divisao = melhorCaminhoParaObjetivo.getElementAt(i);
             moverParaDivisao(divisao);
 
             if (toCruz.getVida() <= 0) {
@@ -149,7 +149,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         System.out.println("🏁 Tó Cruz alcançou o objetivo!");
 
         for (int i = 0; i < melhorCaminhoDeVolta.size(); i++) {
-            Divisao divisao = melhorCaminhoDeVolta.getElementAt(i);
+            IDivisao divisao = melhorCaminhoDeVolta.getElementAt(i);
             moverParaDivisao(divisao);
 
             if (toCruz.getVida() <= 0) {
@@ -165,13 +165,13 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      * Simula o trajeto de ida e volta, considerando o impacto de inimigos e itens,
      * para calcular a vida restante de Tó Cruz.
      */
-    private int simularTrajeto(ArrayUnorderedList<Divisao> caminhoParaObjetivo,
-            ArrayUnorderedList<Divisao> caminhoDeVolta) {
+    private int simularTrajeto(ArrayUnorderedList<IDivisao> caminhoParaObjetivo,
+            ArrayUnorderedList<IDivisao> caminhoDeVolta) {
         int vidaSimulada = toCruz.getVida();
 
         // Simular impacto do caminho para o objetivo
         for (int i = 0; i < caminhoParaObjetivo.size(); i++) {
-            Divisao divisao = caminhoParaObjetivo.getElementAt(i);
+            IDivisao divisao = caminhoParaObjetivo.getElementAt(i);
             vidaSimulada -= calcularDanoInimigos(divisao);
             vidaSimulada += calcularRecuperacaoItens(divisao);
             if (vidaSimulada <= 0)
@@ -180,7 +180,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
         // Simular impacto do caminho de volta
         for (int i = 0; i < caminhoDeVolta.size(); i++) {
-            Divisao divisao = caminhoDeVolta.getElementAt(i);
+            IDivisao divisao = caminhoDeVolta.getElementAt(i);
             vidaSimulada -= calcularDanoInimigos(divisao);
             vidaSimulada += calcularRecuperacaoItens(divisao);
             if (vidaSimulada <= 0)
@@ -193,9 +193,9 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     /**
      * Calcula o dano causado pelos inimigos em uma divisão.
      */
-    private int calcularDanoInimigos(Divisao divisao) {
+    private int calcularDanoInimigos(IDivisao divisao) {
         int dano = 0;
-        ArrayUnorderedList<Inimigo> inimigos = divisao.getInimigosPresentes();
+        ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
         if (inimigos != null) {
             for (int i = 0; i < inimigos.size(); i++) {
                 dano += inimigos.getElementAt(i).getPoder();
@@ -207,9 +207,9 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     /**
      * Calcula a recuperação de vida proporcionada pelos itens em uma divisão.
      */
-    private int calcularRecuperacaoItens(Divisao divisao) {
+    private int calcularRecuperacaoItens(IDivisao divisao) {
         int recuperacao = 0;
-        ArrayUnorderedList<Item> itens = divisao.getItensPresentes();
+        ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
         if (itens != null) {
             for (int i = 0; i < itens.size(); i++) {
                 if ("kit de vida".equalsIgnoreCase(itens.getElementAt(i).getTipo())) {
@@ -243,7 +243,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             System.out.println(crossedSwords + " Combate iniciado na divisao: " + divisao.getNomeDivisao());
             while (!inimigos.isEmpty()) {
                 try {
-                    Inimigo inimigo = inimigos.removeFirst();
+                    IInimigo inimigo = inimigos.removeFirst();
                     int dano = inimigo.getPoder(); // Dano baseado no poder do inimigo
                     toCruz.sofrerDano(dano);
                     inimigosDerrotados.addToRear(inimigo);
@@ -500,7 +500,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         return nomes;
     }
 
-    public void mostrarMapaInterativo(ToCruz toCruz, Divisao divisaoAtual, boolean sucesso) {
+    public void mostrarMapaInterativo(ToCruz toCruz, IDivisao divisaoAtual, boolean sucesso) {
         System.out.println("===== MAPA ATUAL =====");
         ArrayUnorderedList<IDivisao> divisoes = mapa.getDivisoes();
 

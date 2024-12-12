@@ -46,7 +46,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
      * Executa o loop principal da simulacao manual.
      */
     @Override
-    public void executar(Divisao divisaoObjetivo) throws ElementNotFoundException {
+    public void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException {
         System.out.println("Início da simulação manual!");
     
         // Obter entradas/saídas disponíveis
@@ -57,7 +57,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
         }
     
         // Pedir ao jogador para escolher uma entrada
-        Divisao posicaoInicial = null;
+        IDivisao posicaoInicial = null;
         while (posicaoInicial == null) {
             System.out.println("Escolha uma das entradas disponíveis:");
             for (int i = 0; i < entradasSaidas.size(); i++) {
@@ -120,15 +120,15 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             }
     
             // Mostrar o melhor caminho para o alvo
-            ArrayUnorderedList<Divisao> caminhoParaAlvo = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), divisaoObjetivo);
+            ArrayUnorderedList<IDivisao> caminhoParaAlvo = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), divisaoObjetivo);
             System.out.print("Melhor caminho para o alvo: ");
             mostrarCaminho(caminhoParaAlvo);
     
             // Mostrar o melhor caminho para o kit de recuperação mais próximo
-            ArrayUnorderedList<Item> kitsDisponiveis = mapa.getItensPorTipo("kit de vida");
+            ArrayUnorderedList<IItem> kitsDisponiveis = mapa.getItensPorTipo("kit de vida");
             if (!kitsDisponiveis.isEmpty()) {
-                Item kitMaisProximo = encontrarKitMaisProximo(kitsDisponiveis);
-                ArrayUnorderedList<Divisao> caminhoParaKit = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), kitMaisProximo.getDivisao());
+                IItem kitMaisProximo = encontrarKitMaisProximo(kitsDisponiveis);
+                ArrayUnorderedList<IDivisao> caminhoParaKit = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), kitMaisProximo.getDivisao());
                 System.out.print("Melhor caminho para o kit de recuperação: ");
                 mostrarCaminho(caminhoParaKit);
             } else {
@@ -149,11 +149,11 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
 
 
 
-    private void mostrarConexoesAdjacentes(Divisao divisaoAtual) throws ElementNotFoundException {
-        ArrayUnorderedList<Divisao> conexoes = mapa.obterConexoes(divisaoAtual);
+    private void mostrarConexoesAdjacentes(IDivisao divisaoAtual) throws ElementNotFoundException {
+        ArrayUnorderedList<IDivisao> conexoes = mapa.obterConexoes(divisaoAtual);
         System.out.println("\n--- Divisões Adjacentes ---");
         for (int i = 0; i < conexoes.size(); i++) {
-            Divisao conexao = conexoes.getElementAt(i);
+            IDivisao conexao = conexoes.getElementAt(i);
             if (conexao != null) {
                 int numInimigos = conexao.getInimigosPresentes().size();
                 int numItens = conexao.getItensPresentes().size();
@@ -163,15 +163,15 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
         System.out.println("---------------------------");
     }
 
-    private void mostrarCaminho(ArrayUnorderedList<Divisao> caminho) {
+    private void mostrarCaminho(ArrayUnorderedList<IDivisao> caminho) {
         if (caminho == null || caminho.isEmpty()) {
             System.out.println("Nenhum caminho disponível.");
             return;
         }
     
-        ArrayUnorderedList<Divisao> caminhoFiltrado = new ArrayUnorderedList<>();
+        ArrayUnorderedList<IDivisao> caminhoFiltrado = new ArrayUnorderedList<>();
         for (int i = 0; i < caminho.size(); i++) {
-            Divisao divisao = caminho.getElementAt(i);
+            IDivisao divisao = caminho.getElementAt(i);
             if (!mapa.getEntradasSaidasNomes().contains(divisao.getNomeDivisao())) {
                 caminhoFiltrado.addToRear(divisao);
             }
@@ -193,13 +193,13 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
 
     
 
-    private Item encontrarKitMaisProximo(ArrayUnorderedList<Item> kits) throws ElementNotFoundException {
+    private IItem encontrarKitMaisProximo(ArrayUnorderedList<IItem> kits) throws ElementNotFoundException {
         // Assume que o mapa pode retornar uma lista de itens e as divisões onde estão localizados
-        Item kitMaisProximo = null;
+        IItem kitMaisProximo = null;
         int menorDistancia = Integer.MAX_VALUE;
     
         for (int i = 0; i < kits.size(); i++) {
-            Item kit = kits.getElementAt(i);
+            IItem kit = kits.getElementAt(i);
             int distancia = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), kit.getDivisao()).size();
             if (distancia < menorDistancia) {
                 menorDistancia = distancia;

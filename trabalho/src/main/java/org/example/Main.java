@@ -70,7 +70,7 @@ public class Main {
                     logger.info("Iniciando a simulação automática...");
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
 
-                    Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0);
+                    IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0);
                     if (divisaoInicial == null) {
                         System.out.println("Erro: Nenhuma divisão inicial encontrada.");
                         break;
@@ -79,8 +79,7 @@ public class Main {
                     toCruz.moverPara(divisaoInicial);
                     logger.info("Tó Cruz posicionado na divisão inicial: {}", divisaoInicial.getNomeDivisao());
 
-                    SimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz,
-                            new CombateServiceImpl());
+                    ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
                     try {
                         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
                     } catch (Exception e) {
@@ -89,11 +88,11 @@ public class Main {
                         break;
                     }
 
-                    Divisao divisaoFinal = simulacaoAuto.getDivisaoFinal();
+                    IDivisao divisaoFinal = simulacaoAuto.getDivisaoFinal();
                     if (divisaoFinal == null) {
                         System.out.println("Erro: Simulação automática falhou.");
                     } else {
-                        ResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
+                        IResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
                                 "AUTO-001",
                                 divisaoInicial.getNomeDivisao(),
                                 divisaoFinal.getNomeDivisao(),
@@ -113,10 +112,10 @@ public class Main {
                     logger.info("Iniciando a simulação manual...");
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
 
-                    SimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
+                    ISimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
                     simulacaoManual.executar(mapa.getAlvo().getDivisao());
 
-                    ResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
+                    IResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
                             "MANUAL-001",
                             mapa.getDivisoes().getElementAt(0).getNomeDivisao(),
                             simulacaoManual.getDivisaoFinal().getNomeDivisao(),
@@ -148,7 +147,7 @@ public class Main {
         return new ToCruz(original.getNome(), original.getVida());
     }
 
-    private static ArrayUnorderedList<String> filtrarLista(ArrayUnorderedList<String> lista) {
+    public static ArrayUnorderedList<String> filtrarLista(ArrayUnorderedList<String> lista) {
         ArrayUnorderedList<String> filtrada = new ArrayUnorderedList<>();
         for (int i = 0; i < lista.size(); i++) {
             String elemento = lista.getElementAt(i);

@@ -37,8 +37,6 @@ public interface IMapa {
 
     ArrayUnorderedList<IDivisao> getEntradasSaidas();
 
-    void moverInimigos() throws ElementNotFoundException;
-
     void moverInimigos(ToCruz toCruz, ICombateService combateService) throws ElementNotFoundException;
 
     void mostrarMapa();
@@ -50,4 +48,6 @@ public interface IMapa {
     ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino);
 
     IDivisao encontrarKitMaisProximo(IDivisao origem) throws ElementNotFoundException;
+
+    ArrayUnorderedList<IItem> getItensPorTipo(String kitDeVida);
 }
