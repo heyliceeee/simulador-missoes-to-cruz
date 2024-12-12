@@ -1,16 +1,17 @@
 {
   "id": "MANUAL-001",
-  "divisaoInicial": "Heliporto",
-  "divisaoFinal": "Escada 2",
-  "status": "FALHA",
-  "vidaRestante": 0,
+  "divisaoInicial": "Base Inferior",
+  "divisaoFinal": "Altar Sombrio",
+  "status": "SUCESSO",
+  "vidaRestante": 50,
   "trajeto": [
-    "Porteiro",
-    "Escada 2"
+    "Observatório Infernal",
+    "Sala de Controle Principal",
+    "Altar Sombrio"
   ],
   "entradasSaidas": [
-    "Porteiro"
+    "Observatório Infernal"
   ],
-  "codigoMissao": "pata de coelho",
-  "versaoMissao": 6
+  "codigoMissao": "circulo infernal",
+  "versaoMissao": 1
 }

@@ -8,27 +8,63 @@ import java.util.NoSuchElementException;
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.interfaces.ListADT;
 
+/**
+ * Classe abstrata que implementa uma lista baseada em array.
+ *
+ * @param <T> O tipo de elementos armazenados na lista.
+ */
 public abstract class ArrayList<T> implements ListADT<T> {
 
+    /**
+     * Array que armazena os elementos da lista.
+     */
     protected T[] list;
+
+    /**
+     * Número de elementos atualmente armazenados na lista.
+     */
     protected int count;
+
+    /**
+     * Contador de modificações para controlar a concorrência.
+     */
     protected int modCount;
+
     protected final int DEFAULT_CAPACITY = 10;
 
+    /**
+     * Construtor padrão que inicializa a lista com a capacidade padrão.
+     */
     public ArrayList() {
         list = (T[]) new Object[DEFAULT_CAPACITY];
         count = 0;
         modCount = 0;
     }
 
+    /**
+     * Retorna uma cópia dos elementos armazenados na lista.
+     *
+     * @return Um array contendo os elementos da lista.
+     */
     public T[] getList() {
         return Arrays.copyOf(list, count);
     }
 
+    /**
+     * Retorna o número de elementos na lista.
+     *
+     * @return O número de elementos atualmente armazenados na lista.
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     * Remove e retorna o primeiro elemento da lista.
+     *
+     * @return O primeiro elemento da lista.
+     * @throws ElementNotFoundException se a lista estiver vazia.
+     */
     @Override
     public T removeFirst() throws ElementNotFoundException {
         if (isEmpty()) {
@@ -45,6 +81,12 @@ public abstract class ArrayList<T> implements ListADT<T> {
         return result;
     }
 
+    /**
+     * Remove e retorna o último elemento da lista.
+     *
+     * @return O último elemento da lista.
+     * @throws ElementNotFoundException se a lista estiver vazia.
+     */
     @Override
     public T removeLast() throws ElementNotFoundException {
         if (isEmpty()) {
@@ -57,6 +99,14 @@ public abstract class ArrayList<T> implements ListADT<T> {
         return result;
     }
 
+    /**
+     * Remove e retorna o elemento especificado na lista.
+     *
+     * @param element O elemento a ser removido.
+     * @return O elemento removido.
+     * @throws ElementNotFoundException se o elemento não for encontrado ou se a
+     *                                  lista estiver vazia.
+     */
     @Override
     public T remove(T element) throws ElementNotFoundException {
         if (isEmpty()) {
@@ -87,6 +137,13 @@ public abstract class ArrayList<T> implements ListADT<T> {
         return removedElement;
     }
 
+    /**
+     * Verifica se a lista contém o elemento especificado.
+     *
+     * @param target O elemento a ser verificado.
+     * @return {@code true} se o elemento estiver na lista, {@code false} caso
+     *         contrário.
+     */
     @Override
     public boolean contains(T target) {
         for (int i = 0; i < count; i++) {
@@ -97,16 +154,32 @@ public abstract class ArrayList<T> implements ListADT<T> {
         return false;
     }
 
+    /**
+     * Verifica se a lista está vazia.
+     *
+     * @return {@code true} se a lista estiver vazia, {@code false} caso contrário.
+     */
     @Override
     public boolean isEmpty() {
         return count == 0;
     }
 
+    /**
+     * Retorna o número de elementos na lista.
+     *
+     * @return O número de elementos na lista.
+     */
     @Override
     public int size() {
         return count;
     }
 
+    /**
+     * Retorna o primeiro elemento da lista.
+     *
+     * @return O primeiro elemento da lista ou {@code null} se a lista estiver
+     *         vazia.
+     */
     @Override
     public T first() {
         if (isEmpty()) {
@@ -116,6 +189,11 @@ public abstract class ArrayList<T> implements ListADT<T> {
         return list[0];
     }
 
+    /**
+     * Retorna o último elemento da lista.
+     *
+     * @return O último elemento da lista ou {@code null} se a lista estiver vazia.
+     */
     @Override
     public T last() {
         if (isEmpty()) {
@@ -125,22 +203,55 @@ public abstract class ArrayList<T> implements ListADT<T> {
         return list[count - 1];
     }
 
+    /**
+     * Retorna um iterador para os elementos da lista.
+     *
+     * @return Um iterador para os elementos da lista.
+     */
     @Override
     public Iterator<T> iterator() {
         return new ArrayIterator();
     }
 
+    /**
+     * Classe interna que implementa um iterador para a lista.
+     */
     private class ArrayIterator implements Iterator<T> {
 
+        /**
+         * Índice atual do iterador.
+         */
         private int currentIndex = 0;
-        private int expectedModCount = modCount; // captura o modCount atual
-        private boolean canRemove = false; // controle para o método remove
 
+        /**
+         * ModCount esperado para detecção de modificações na lista.
+         */
+        private int expectedModCount = modCount;
+
+        /**
+         * Indica se o método {@code next()} foi chamado antes de {@code remove()}.
+         */
+        private boolean canRemove = false;
+
+        /**
+         * Verifica se há elementos restantes no iterador.
+         *
+         * @return {@code true} se houver elementos restantes, {@code false} caso
+         *         contrário.
+         */
         @Override
         public boolean hasNext() {
             return currentIndex < count;
         }
 
+        /**
+         * Retorna o próximo elemento no iterador.
+         *
+         * @return O próximo elemento.
+         * @throws ConcurrentModificationException se a lista foi modificada durante a
+         *                                         iteração.
+         * @throws NoSuchElementException          se não houver mais elementos.
+         */
         @Override
         public T next() {
             if (expectedModCount != modCount) {
@@ -153,6 +264,15 @@ public abstract class ArrayList<T> implements ListADT<T> {
             return list[currentIndex++];
         }
 
+        /**
+         * Remove o último elemento retornado pelo iterador.
+         *
+         * @throws IllegalStateException           se o método {@code next()} não foi
+         *                                         chamado ou {@code remove()} já foi
+         *                                         chamado.
+         * @throws ConcurrentModificationException se a lista foi modificada durante a
+         *                                         iteração.
+         */
         @Override
         public void remove() {
             if (!canRemove) {
@@ -175,7 +295,14 @@ public abstract class ArrayList<T> implements ListADT<T> {
         }
     }
 
-
+    /**
+     * Retorna o elemento no índice especificado.
+     *
+     * @param index O índice do elemento.
+     * @return O elemento no índice especificado.
+     * @throws IndexOutOfBoundsException se o índice estiver fora do intervalo
+     *                                   válido.
+     */
     public T getElementAt(int index) {
         if (index < 0 || index >= count) {
             throw new IndexOutOfBoundsException("Índice fora do intervalo: " + index);
@@ -183,6 +310,9 @@ public abstract class ArrayList<T> implements ListADT<T> {
         return list[index];
     }
 
+    /**
+     * Expande a capacidade do array subjacente, dobrando seu tamanho atual.
+     */
     protected void expandCapacity() {
         list = Arrays.copyOf(list, list.length * 2);
     }

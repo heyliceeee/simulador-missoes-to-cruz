@@ -5,60 +5,69 @@ import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
  * Interface para a simulação manual de missões.
+ *
+ * <p>
+ * Define os métodos necessários para gerenciar e executar uma simulação manual,
+ * permitindo monitorar o progresso, itens coletados e inimigos derrotados.
+ * </p>
  */
 public interface SimulacaoManual {
 
     /**
-     * Executa a simulação automática até o objetivo.
+     * Executa a simulação manual até o objetivo especificado.
      *
      * @param divisaoObjetivo A divisão objetivo da missão.
-     * @throws ElementNotFoundException Se algum elemento não for encontrado durante
-     *                                  a execução.
+     * @throws ElementNotFoundException Se algum elemento necessário não for
+     *                                  encontrado durante a execução.
      */
     void executar(Divisao divisaoObjetivo) throws ElementNotFoundException;
 
-    public int getVidaRestante();
+    /**
+     * Obtém a quantidade de vida restante do agente ao final da simulação.
+     *
+     * @return A vida restante do agente.
+     */
+    int getVidaRestante();
 
     /**
      * Retorna o status da simulação após a execução.
      *
-     * @return "SUCESSO" ou "FALHA" com base no resultado.
+     * @return Uma string indicando o resultado, como "SUCESSO" ou "FALHA".
      */
     String getStatus();
 
     /**
-     * Obtém a divisão final onde o agente parou.
+     * Obtém a divisão final onde o agente terminou a simulação.
      *
-     * @return Divisão final.
+     * @return A divisão final.
      */
     Divisao getDivisaoFinal();
 
     /**
-     * Obtém a lista de divisões percorridas na simulação.
+     * Obtém a lista de divisões percorridas durante a simulação.
      *
-     * @return Lista de divisões percorridas.
+     * @return Uma lista com as divisões percorridas na simulação.
      */
     ArrayUnorderedList<Divisao> getCaminhoPercorrido();
 
     /**
      * Obtém a lista de itens coletados durante a simulação.
      *
-     * @return Lista de itens coletados.
+     * @return Uma lista com os itens coletados.
      */
     ArrayUnorderedList<Item> getItensColetados();
 
     /**
      * Obtém a lista de inimigos derrotados durante a simulação.
      *
-     * @return Lista de inimigos derrotados.
+     * @return Uma lista com os inimigos derrotados.
      */
     ArrayUnorderedList<Inimigo> getInimigosDerrotados();
 
     /**
-     * Converte o caminho percorrido em uma lista de nomes de divisões.
+     * Converte o caminho percorrido em uma lista de nomes das divisões.
      *
-     * @return Lista de nomes das divisões percorridas.
+     * @return Uma lista contendo os nomes das divisões percorridas.
      */
     ArrayUnorderedList<String> getCaminhoPercorridoNomes();
-
 }

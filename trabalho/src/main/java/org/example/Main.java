@@ -19,15 +19,27 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
+/**
+ * Classe principal que gerencia a execução do programa.
+ * 
+ * <p>O programa permite que o usuário escolha entre simular uma missão automaticamente ou manualmente.
+ * Também gerencia o carregamento do mapa, inicialização do agente Tó Cruz e exportação dos resultados da simulação.</p>
+ */
 public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
+    /**
+     * Método principal para executar o programa.
+     *
+     * @param args Argumentos da linha de comando.
+     * @throws ElementNotFoundException Exceção lançada se algum elemento não for encontrado no mapa ou durante a simulação.
+     */
     public static void main(String[] args) throws ElementNotFoundException {
         logger.info("Iniciando o programa...");
         String caminhoJson = "mapa_v5.json";
 
-        // Inicialização do mapa e carregamento da missão
+        // Inicializa o mapa e tenta carregar a missão a partir do arquivo JSON.
         Mapa mapa = new MapaImpl();
         ImportJson importJson = new ImportJsonImpl(mapa);
         Missao missao;
@@ -41,6 +53,7 @@ public class Main {
             return;
         }
 
+        // Verifica se o mapa contém divisões válidas.
         if (mapa.getDivisoes().isEmpty()) {
             logger.error("Erro: Nenhuma divisão carregada no mapa. Encerrando o programa.");
             return;
@@ -49,13 +62,14 @@ public class Main {
         System.out.println("--------------------------------------------------------------------------------");
         mapa.mostrarMapa();
 
-        // Inicialização do agente Tó Cruz
+        // Inicializa o agente Tó Cruz com valores padrão.
         logger.info("Inicializando o agente Tó Cruz...");
         ToCruz toCruzOriginal = new ToCruz("Tó Cruz", 100);
 
         Scanner scanner = new Scanner(System.in);
         boolean continuar = true;
 
+        // Menu principal para o usuário escolher o tipo de simulação.
         while (continuar) {
             System.out.println("\nEscolha o tipo de simulação:");
             System.out.println("1. Simulação Automática");
@@ -69,6 +83,7 @@ public class Main {
                     logger.info("Iniciando a simulação automática...");
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
 
+                    // Define a divisão inicial como a primeira no mapa.
                     Divisao divisaoInicial = mapa.getDivisoes().getElementAt(0);
                     if (divisaoInicial == null) {
                         System.out.println("Erro: Nenhuma divisão inicial encontrada.");
@@ -78,8 +93,8 @@ public class Main {
                     toCruz.moverPara(divisaoInicial);
                     logger.info("Tó Cruz posicionado na divisão inicial: {}", divisaoInicial.getNomeDivisao());
 
-                    SimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz,
-                            new CombateServiceImpl());
+                    // Executa a simulação automática.
+                    SimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz, new CombateServiceImpl());
                     try {
                         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
                     } catch (Exception e) {
@@ -88,6 +103,7 @@ public class Main {
                         break;
                     }
 
+                    // Exporta os resultados da simulação automática.
                     Divisao divisaoFinal = simulacaoAuto.getDivisaoFinal();
                     if (divisaoFinal == null) {
                         System.out.println("Erro: Simulação automática falhou.");
@@ -112,9 +128,11 @@ public class Main {
                     logger.info("Iniciando a simulação manual...");
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
 
+                    // Executa a simulação manual.
                     SimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
                     simulacaoManual.executar(mapa.getAlvo().getDivisao());
 
+                    // Exporta os resultados da simulação manual.
                     ResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
                             "MANUAL-001",
                             mapa.getDivisoes().getElementAt(0).getNomeDivisao(),
@@ -129,9 +147,7 @@ public class Main {
                     ExportarResultados exportador = new ExportarResultados();
                     exportador.exportarParaJson(resultadoManual, "relatorio_simulacao_manual.json", mapa);
                     logger.info("Simulação manual concluída.");
-
                 }
-
                 case "3" -> {
                     continuar = false;
                     logger.info("Encerrando o programa...");
@@ -143,18 +159,33 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * Cria uma cópia do agente Tó Cruz com os mesmos atributos.
+     *
+     * @param original Objeto original de Tó Cruz.
+     * @return Nova instância de Tó Cruz.
+     */
     private static ToCruz clonarToCruz(ToCruz original) {
         return new ToCruz(original.getNome(), original.getVida());
     }
 
+    /**
+     * Filtra uma lista de strings, removendo elementos nulos ou vazios.
+     *
+     * @param lista Lista de strings a ser filtrada.
+     * @return Nova lista contendo apenas elementos válidos.
+     */
     private static ArrayUnorderedList<String> filtrarLista(ArrayUnorderedList<String> lista) {
         ArrayUnorderedList<String> filtrada = new ArrayUnorderedList<>();
-        for (int i = 0; i < lista.size(); i++) {
-            String elemento = lista.getElementAt(i);
-            if (elemento != null) {
-                filtrada.addToRear(elemento);
+        if (lista != null) {
+            for (int i = 0; i < lista.size(); i++) {
+                String elemento = lista.getElementAt(i);
+                if (elemento != null && !elemento.isEmpty()) {
+                    filtrada.addToRear(elemento);
+                }
             }
         }
         return filtrada;
     }
+
 }

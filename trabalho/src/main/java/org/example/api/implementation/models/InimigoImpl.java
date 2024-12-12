@@ -14,16 +14,13 @@ public class InimigoImpl implements Inimigo {
      *
      * @param nome  Nome do inimigo.
      * @param poder Poder do inimigo.
-     * @throws IllegalArgumentException se o nome for nulo ou vazio, ou se o poder for negativo.
+     * @throws IllegalArgumentException se o nome for nulo ou vazio, ou se o poder
+     *                                  for negativo.
      */
     public InimigoImpl(String nome, int poder) {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do inimigo não pode ser nulo ou vazio.");
-        }
-        if (poder < 0) {
-            throw new IllegalArgumentException("O poder do inimigo não pode ser negativo.");
-        }
-        this.nome = nome;
+        validarNome(nome);
+        validarPoder(poder);
+        this.nome = nome.trim();
         this.poder = poder;
     }
 
@@ -45,10 +42,8 @@ public class InimigoImpl implements Inimigo {
      */
     @Override
     public void setNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do inimigo não pode ser nulo ou vazio.");
-        }
-        this.nome = nome;
+        validarNome(nome);
+        this.nome = nome.trim();
     }
 
     /**
@@ -69,9 +64,7 @@ public class InimigoImpl implements Inimigo {
      */
     @Override
     public void setPoder(int poder) {
-        if (poder < 0) {
-            throw new IllegalArgumentException("O poder do inimigo não pode ser negativo.");
-        }
+        validarPoder(poder);
         this.poder = poder;
     }
 
@@ -86,7 +79,31 @@ public class InimigoImpl implements Inimigo {
         if (dano < 0) {
             throw new IllegalArgumentException("O dano não pode ser negativo.");
         }
-        this.poder = Math.max(0, this.poder - dano); // Garante que o poder não fique negativo
+        this.poder = Math.max(0, this.poder - dano);
+    }
+
+    /**
+     * Valida o nome fornecido.
+     *
+     * @param nome Nome a ser validado.
+     * @throws IllegalArgumentException se o nome for nulo ou vazio.
+     */
+    private void validarNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do inimigo não pode ser nulo ou vazio.");
+        }
+    }
+
+    /**
+     * Valida o poder fornecido.
+     *
+     * @param poder Poder a ser validado.
+     * @throws IllegalArgumentException se o poder for negativo.
+     */
+    private void validarPoder(int poder) {
+        if (poder < 0) {
+            throw new IllegalArgumentException("O poder do inimigo não pode ser negativo.");
+        }
     }
 
     /**
@@ -96,10 +113,7 @@ public class InimigoImpl implements Inimigo {
      */
     @Override
     public String toString() {
-        return "InimigoImpl{" +
-                "nome='" + nome + '\'' +
-                ", poder=" + poder +
-                '}';
+        return String.format("InimigoImpl{nome='%s', poder=%d}", nome, poder);
     }
 
     /**
@@ -110,8 +124,10 @@ public class InimigoImpl implements Inimigo {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         InimigoImpl inimigo = (InimigoImpl) o;
 

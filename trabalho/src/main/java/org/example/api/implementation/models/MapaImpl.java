@@ -35,7 +35,6 @@ public class MapaImpl implements Mapa {
         }
         Divisao divisao = new DivisaoImpl(nomeDivisao);
         grafo.addVertex(divisao);
-        // System.out.println("Divisão adicionada: " + nomeDivisao);
     }
 
     @Override
@@ -54,8 +53,6 @@ public class MapaImpl implements Mapa {
         }
 
         grafo.addEdge(divisao1, divisao2);
-        // System.out.println("Ligação adicionada entre " + nomeDivisao1 + " e " +
-        // nomeDivisao2);
     }
 
     @Override
@@ -68,8 +65,6 @@ public class MapaImpl implements Mapa {
         Divisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
             divisao.adicionarInimigo(inimigo);
-            // System.out.println("Inimigo '" + inimigo.getNome() + "' adicionado à divisão:
-            // " + nomeDivisao);
         } else {
             System.err.println("Erro: Divisão '" + nomeDivisao + "' não encontrada.");
         }

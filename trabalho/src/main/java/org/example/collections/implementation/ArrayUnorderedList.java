@@ -3,8 +3,19 @@ package org.example.collections.implementation;
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.interfaces.UnorderedListADT;
 
+/**
+ * Implementação de uma lista não ordenada baseada em um array.
+ *
+ * @param <T> O tipo de elementos armazenados na lista.
+ */
 public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedListADT<T> {
 
+    /**
+     * Adiciona um elemento ao início da lista.
+     *
+     * @param element O elemento a ser adicionado.
+     * @throws IllegalArgumentException se o elemento for {@code null}.
+     */
     @Override
     public void addToFront(T element) {
         if (element == null) {
@@ -24,6 +35,12 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
         count++;
     }
 
+    /**
+     * Adiciona um elemento ao final da lista.
+     *
+     * @param element O elemento a ser adicionado.
+     * @throws IllegalArgumentException se o elemento for {@code null}.
+     */
     @Override
     public void addToRear(T element) {
         if (element == null) {
@@ -35,11 +52,22 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
 
         list[count] = element;
         count++;
-
     }
 
+    /**
+     * Adiciona um elemento após um elemento alvo na lista.
+     *
+     * @param element O elemento a ser adicionado.
+     * @param target  O elemento alvo após o qual o novo elemento será adicionado.
+     * @throws ElementNotFoundException se o elemento alvo não for encontrado.
+     * @throws IllegalArgumentException se o elemento a ser adicionado for
+     *                                  {@code null}.
+     */
     @Override
     public void addAfter(T element, T target) throws ElementNotFoundException {
+        if (element == null) {
+            throw new IllegalArgumentException("O valor não pode ser null.");
+        }
 
         if (isEmpty()) {
             throw new ElementNotFoundException("A lista está vazia.");
@@ -61,6 +89,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
             expandCapacity();
         }
 
+        // Desloca os elementos para a direita para abrir espaço
         for (int i = count; i > index + 1; i--) {
             list[i] = list[i - 1];
         }
@@ -70,6 +99,11 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
         count++;
     }
 
+    /**
+     * Retorna uma representação textual da lista.
+     *
+     * @return Uma string representando os elementos da lista.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
@@ -82,5 +116,4 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
         sb.append("]");
         return sb.toString();
     }
-
 }

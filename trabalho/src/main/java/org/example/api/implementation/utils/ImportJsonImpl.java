@@ -31,27 +31,27 @@ public class ImportJsonImpl implements ImportJson {
     }
 
     @Override
-    public Missao carregarMissao(String jsonPath) throws InvalidJsonStructureException, InvalidFieldException, DivisionNotFoundException {
+    public Missao carregarMissao(String jsonPath)
+            throws InvalidJsonStructureException, InvalidFieldException, DivisionNotFoundException {
         try (FileReader reader = new FileReader(jsonPath)) {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-    
+
             validarEstrutura(jsonObject);
-    
+
             String codMissao = validarString(jsonObject.get("cod-missao"), "cod-missao");
             int versao = validarInt(jsonObject.get("versao"), "versao");
-    
+
             Missao missao = new MissaoImpl(codMissao, versao, mapa);
-    
+
             carregarMapa(jsonPath); // Este método lança DivisionNotFoundException
-    
+
             return missao;
         } catch (IOException | ParseException e) {
             logger.error("Erro ao carregar missão: {}", e.getMessage());
             throw new InvalidJsonStructureException("Erro ao processar o arquivo JSON: " + e.getMessage());
         }
     }
-    
 
     @Override
     public void carregarMapa(String jsonPath)
@@ -64,16 +64,16 @@ public class ImportJsonImpl implements ImportJson {
 
             // Processar divisões
             JSONArray edificioArray = (JSONArray) jsonObject.get("edificio");
-            //logger.info("Carregando divisões...");
+            // logger.info("Carregando divisões...");
             for (Object element : edificioArray) {
                 String divisaoNome = validarString(element, "edificio");
                 mapa.adicionarDivisao(divisaoNome);
-                //logger.debug("Divisão adicionada: {}", divisaoNome);
+                // logger.debug("Divisão adicionada: {}", divisaoNome);
             }
 
             // Processar conexões
             JSONArray ligacoesArray = (JSONArray) jsonObject.get("ligacoes");
-            //logger.info("Carregando conexões...");
+            // logger.info("Carregando conexões...");
             for (Object element : ligacoesArray) {
                 JSONArray ligacao = (JSONArray) element;
                 if (ligacao.size() != 2) {
@@ -90,7 +90,7 @@ public class ImportJsonImpl implements ImportJson {
                 }
 
                 mapa.adicionarLigacao(origem, destino);
-                //logger.debug("Ligação adicionada entre '{}' e '{}'", origem, destino);
+                // logger.debug("Ligação adicionada entre '{}' e '{}'", origem, destino);
             }
 
             // Processar entradas e saídas
@@ -99,20 +99,21 @@ public class ImportJsonImpl implements ImportJson {
             for (Object element : entradasSaidasArray) {
                 String nomeDivisao = validarString(element, "entradas-saidas");
                 mapa.adicionarEntradaSaida(nomeDivisao);
-                //logger.debug("Entrada/Saída adicionada: {}", nomeDivisao);
+                // logger.debug("Entrada/Saída adicionada: {}", nomeDivisao);
             }
 
             // Processar alvo
             JSONObject alvoObj = (JSONObject) jsonObject.get("alvo");
-            //logger.info("Carregando alvo...");
+            // logger.info("Carregando alvo...");
             String alvoDivisao = validarString(alvoObj.get("divisao"), "alvo.divisao");
             String alvoTipo = validarString(alvoObj.get("tipo"), "alvo.tipo");
             mapa.definirAlvo(alvoDivisao, alvoTipo);
-            //logger.debug("Alvo definido: Divisão '{}', Tipo '{}'", alvoDivisao, alvoTipo);
+            // logger.debug("Alvo definido: Divisão '{}', Tipo '{}'", alvoDivisao,
+            // alvoTipo);
 
             // Processar inimigos
             JSONArray inimigosArray = (JSONArray) jsonObject.get("inimigos");
-            //logger.info("Carregando inimigos...");
+            // logger.info("Carregando inimigos...");
             for (Object element : inimigosArray) {
                 JSONObject inimigoObj = (JSONObject) element;
                 String nome = validarString(inimigoObj.get("nome"), "inimigo.nome");
@@ -123,7 +124,7 @@ public class ImportJsonImpl implements ImportJson {
                 if (divisao != null) {
                     Inimigo inimigo = new InimigoImpl(nome, poder);
                     mapa.adicionarInimigo(divisaoNome, inimigo);
-                    //logger.debug("Inimigo '{}' adicionado à divisão '{}'", nome, divisaoNome);
+                    // logger.debug("Inimigo '{}' adicionado à divisão '{}'", nome, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisão para inimigo não encontrada: " + divisaoNome);
                 }
@@ -131,7 +132,7 @@ public class ImportJsonImpl implements ImportJson {
 
             // Processar itens
             JSONArray itensArray = (JSONArray) jsonObject.get("itens");
-            //logger.info("Carregando itens...");
+            // logger.info("Carregando itens...");
             for (Object element : itensArray) {
                 JSONObject itemObj = (JSONObject) element;
                 String tipo = validarString(itemObj.get("tipo"), "item.tipo");
@@ -144,7 +145,8 @@ public class ImportJsonImpl implements ImportJson {
                 if (divisao != null) {
                     Item item = new ItemImpl(tipo, pontos);
                     mapa.adicionarItem(divisaoNome, item);
-                    //logger.debug("Item '{}' com pontos '{}' adicionado à divisão '{}'", tipo, pontos, divisaoNome);
+                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisão '{}'", tipo,
+                    // pontos, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisão para item não encontrada: " + divisaoNome);
                 }
@@ -191,6 +193,5 @@ public class ImportJsonImpl implements ImportJson {
         }
         return ((Number) value).intValue();
     }
-
 
 }
