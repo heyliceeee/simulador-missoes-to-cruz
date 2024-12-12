@@ -44,6 +44,7 @@
   {"divisao": "Heliporto", "pontos-recuperados": 3, "tipo":"kit de vida"},
     {"divisao": "Heliporto", "pontos-recuperados": 4, "tipo":"kit de vida"},
     {"divisao": "Heliporto", "pontos-recuperados": 5, "tipo":"kit de vida"},
+    {"divisao": "Laboratorio", "pontos-recuperados": 5, "tipo":"kit de vida"},
     {"divisao": "Heliporto", "pontos-recuperados": 6, "tipo":"kit de vida"},
     {"divisao": "Heliporto", "pontos-recuperados": 7, "tipo":"kit de vida"},
     {"divisao": "Escada 6", "pontos-recuperados": 8, "tipo":"kit de vida"},

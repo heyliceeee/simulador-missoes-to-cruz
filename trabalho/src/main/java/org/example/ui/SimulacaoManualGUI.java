@@ -24,8 +24,8 @@ import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.
 
 public class SimulacaoManualGUI extends JFrame {
 
+    //#region Constantes e Atributos
     private ArrayUnorderedList<IDivisao> divisoes;
-    private ArrayUnorderedList<IDivisao> entradasSaidas;
     private ArrayUnorderedList<Ligacao> ligacoes;
     private ArrayUnorderedList<IDivisao> caminhoPercorridoToCruz;
     private IMapa mapa;
@@ -44,40 +44,85 @@ public class SimulacaoManualGUI extends JFrame {
     public static IMissao missao;
     private ExportarResultados exportador;
 
+    //#endregion
 
+    /**
+     * Construtor e Inicializacao
+     *
+     * @param divisoes
+     * @param entradasSaidas
+     * @param ligacoes
+     * @param mapa
+     * @param toCruz
+     */
     public SimulacaoManualGUI(ArrayUnorderedList<IDivisao> divisoes, ArrayUnorderedList<IDivisao> entradasSaidas,
             ArrayUnorderedList<Ligacao> ligacoes, IMapa mapa, ToCruz toCruz) {
         this.divisoes = divisoes;
         this.mapa = mapa;
         this.ligacoes = ligacoes;
-        this.entradasSaidas = entradasSaidas;
         this.toCruz = toCruz;
         this.posicoesDivisoes = new ArrayUnorderedList<>();
         this.combateService = new CombateServiceImpl();
         this.exportador = new ExportarResultados();
         this.caminhoPercorridoToCruz = new ArrayUnorderedList<>();
 
-        setTitle("Simulacao - To Cruz");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        configurarJanela();
+        carregarImagens();
+        gerarPosicoesDivisoes();
+        inicializarComponentes();
+    }
 
+
+
+    /**
+     * Inicializar os componentes da janela
+     */
+    private void inicializarComponentes() {
         // Adicionar o painel de mapa
         MapaPanel mapaPanel = new MapaPanel();
         add(mapaPanel, BorderLayout.CENTER);
 
         // Adicionar controlos
         JPanel controlePanel = new JPanel();
-        inicializarControlos(controlePanel, mapaPanel);
+        inicializarBotoes(controlePanel, mapaPanel);
 
         add(controlePanel, BorderLayout.SOUTH);
-        carregarImagens();
-        gerarPosicoesDivisoes();
         atualizarEstadoBotoes();
         interagirComAlvo(toCruz.getPosicaoAtual());
     }
 
+    /**
+     * Configuracao da janela da simulacao manual
+     */
+    private void configurarJanela() {
+        setTitle("Simulacao - To Cruz");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+    }
 
+
+    //#region Funcoes de Controlo do Jogo
+
+    /**
+     * Alterar a posicao atual, tanto na logica como no UI, do To Cruz
+     *
+     * @param mapaPanel
+     */
+    private void moverToCruz(MapaPanel mapaPanel) {
+        String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao:");
+        IDivisao novaDivisao = getDivisaoPorNome(destino);
+
+        if (novaDivisao != null && podeMover(toCruz.getPosicaoAtual(), novaDivisao)) {
+            toCruz.moverPara(novaDivisao);
+            caminhoPercorridoToCruz.addToRear(novaDivisao);
+            mapaPanel.repaint(); // Atualizar o desenho
+            atualizarEstadoBotoes(); // Atualizar estado dos botoes
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
+        }
+    }
 
     /**
      * Interage com o alvo se estiver na mesma divisao.
@@ -98,178 +143,6 @@ public class SimulacaoManualGUI extends JFrame {
     }
 
     /**
-     * criar botoes de acao
-     * 
-     * @param controlePanel
-     * @param mapaPanel     mapa do edificio
-     */
-    private void inicializarControlos(JPanel controlePanel, MapaPanel mapaPanel) {
-        //TODO questionar ao To Cruz, qual divisao entrada/saida quer comecar
-        iniciarButton = new JButton("Iniciar");
-        iniciarButton.addActionListener(e -> moverEntradaSaidaToCruz(mapaPanel));
-
-        moverButton = new JButton("Mover");
-        moverButton.addActionListener(e -> moverToCruz(mapaPanel));
-
-        usarButton = new JButton("Mochila");
-        usarButton.addActionListener(e -> {
-            if (!toCruz.getInventario().isEmpty()) {
-                toCruz.usarKitDeVida();
-                mapaPanel.repaint();
-                atualizarEstadoBotoes();
-            } else {
-                JOptionPane.showMessageDialog(this, "Inventario vazio! Nao ha kits para usar.");
-            }
-        });
-
-        atacarButton = new JButton("Atacar");
-        atacarButton.addActionListener(e -> {
-            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
-
-            if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().size() > 0) {
-                try {
-                    combateService.resolverCombate(toCruz, divisaoAtual);
-
-                    if(toCruz.getVida() <= 0){
-                        JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz foi derrotado.");
-
-                        IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
-                                "MANUAL-002",
-                                caminhoPercorridoToCruz.first().getNomeDivisao(),
-                                caminhoPercorridoToCruz.last().getNomeDivisao(),
-                                "FALHA",
-                                toCruz.getVida(),
-                                filtrarListaDivisao(caminhoPercorridoToCruz),
-                                filtrarLista(mapa.getEntradasSaidasNomes()),
-                                missao.getCodMissao(),
-                                missao.getVersao()
-                        );
-
-                        // Exportar o relatorio combinado
-                        exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
-
-                        logger.info("Relatorio de simulacoes exportado com sucesso.");
-                        logger.info("Programa finalizado com sucesso.");
-
-                        System.exit(0);
-                    }
-
-                } catch (ElementNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-                mapaPanel.repaint();
-                atualizarEstadoBotoes();
-            } else {
-                JOptionPane.showMessageDialog(this, "Nenhum inimigo para atacar nesta divisao.");
-            }
-        });
-
-        resgatarButton = new JButton("Resgatar");
-        resgatarButton.addActionListener(e -> {
-            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
-            if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
-                JOptionPane.showMessageDialog(this, "Alvo resgatado com sucesso!");
-                mapa.removerAlvo();
-                toCruz.setAlvoConcluido(true);
-                mapaPanel.repaint();
-                atualizarEstadoBotoes();
-            }
-        });
-
-        apanharButton = new JButton("Apanhar");
-        apanharButton.addActionListener(e -> {
-            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
-            if (divisaoAtual != null) {
-                ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
-
-                if(toCruz.getInventario().size() >= 5){
-                    JOptionPane.showMessageDialog(this, "Mochila cheia! Nao e possivel carregar mais kits de vida.");
-                    return;
-                }
-
-                while (itens.size() > 0) {
-                    IItem item = itens.getElementAt(0);
-                    toCruz.adicionarAoInventario(item);
-                    try {
-                        divisaoAtual.removerItem(item);
-                    } catch (ElementNotFoundException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-                JOptionPane.showMessageDialog(this, "Itens apanhados com sucesso!");
-                mapaPanel.repaint();
-                atualizarEstadoBotoes();
-            }
-        });
-
-        sairButton = new JButton("Sair");
-        sairButton.addActionListener(e -> {
-            IDivisao divisaoAtual = toCruz.getPosicaoAtual();
-
-            if (toCruz.getVida() > 0 && divisaoAtual.isEntradaSaida() && toCruz.isAlvoConcluido()) {
-                atualizarEstadoBotoes();
-                JOptionPane.showMessageDialog(this, "Missao concluida com sucesso!");
-
-                IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
-                        "MANUAL-002",
-                        caminhoPercorridoToCruz.first().getNomeDivisao(),
-                        caminhoPercorridoToCruz.last().getNomeDivisao(),
-                        "SUCESSO",
-                        toCruz.getVida(),
-                        filtrarListaDivisao(caminhoPercorridoToCruz),
-                        filtrarLista(mapa.getEntradasSaidasNomes()),
-                        missao.getCodMissao(),
-                        missao.getVersao()
-                );
-
-                // Exportar o relatorio combinado
-                exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
-
-                logger.info("Relatorio de simulacoes exportado com sucesso.");
-                logger.info("Programa finalizado com sucesso.");
-
-                System.exit(0);
-            }
-            else if (!divisaoAtual.isEntradaSaida()) {
-                JOptionPane.showMessageDialog(this, "Nao e uma divisao de saida");
-            }
-            else if(divisaoAtual.isEntradaSaida() && !toCruz.isAlvoConcluido()){
-                JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz abandonou o alvo.");
-
-                IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
-                        "MANUAL-002",
-                        caminhoPercorridoToCruz.first().getNomeDivisao(),
-                        caminhoPercorridoToCruz.last().getNomeDivisao(),
-                        "FALHA",
-                        toCruz.getVida(),
-                        filtrarListaDivisao(caminhoPercorridoToCruz),
-                        filtrarLista(mapa.getEntradasSaidasNomes()),
-                        missao.getCodMissao(),
-                        missao.getVersao()
-                );
-
-                // Exportar o relatorio combinado
-                exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
-
-                logger.info("Relatorio de simulacoes exportado com sucesso.");
-                logger.info("Programa finalizado com sucesso.");
-
-                System.exit(0);
-            }
-        });
-
-        controlePanel.add(iniciarButton);
-        controlePanel.add(moverButton);
-        controlePanel.add(usarButton);
-        controlePanel.add(atacarButton);
-        controlePanel.add(resgatarButton);
-        controlePanel.add(apanharButton);
-        controlePanel.add(sairButton);
-
-        atualizarEstadoBotoes();
-    }
-
-    /**
      * ativar ou desativar botao de acordo com um determinado cenario de jogo
      */
     private void atualizarEstadoBotoes() {
@@ -279,7 +152,6 @@ public class SimulacaoManualGUI extends JFrame {
             boolean temInimigos = divisaoAtual.getInimigosPresentes().size() > 0;
             boolean temItens = divisaoAtual.getItensPresentes().size() > 0;
             boolean temAlvo = mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual);
-            //boolean terminouMissao = divisaoAtual.isEntradaSaida() && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
 
             //Botao "iniciar"
             iniciarButton.setEnabled(false);
@@ -315,6 +187,107 @@ public class SimulacaoManualGUI extends JFrame {
     }
 
     /**
+     * Alterar a posicao atual, tanto na logica como no UI, do To Cruz
+     *
+     * @param mapaPanel
+     */
+    private void moverEntradaSaidaToCruz(MapaPanel mapaPanel) {
+        String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao do tipo entrada/saida:");
+        IDivisao novaDivisao = getDivisaoPorNome(destino);
+
+        if (novaDivisao != null && novaDivisao.isEntradaSaida()) {
+            toCruz.moverPara(novaDivisao);
+            caminhoPercorridoToCruz.addToRear(novaDivisao);
+            mapaPanel.repaint(); // Atualizar o desenho
+            atualizarEstadoBotoes(); // Atualizar estado dos botoes
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Movimento invalido (nao existe essa divisao ou nao e um tipo entrada/saida)!");
+        }
+    }
+
+    /**
+     * obter a Divisao pelo o seu nome
+     *
+     * @param nome nome da divisao
+     * @return a Divisao
+     */
+    private IDivisao getDivisaoPorNome(String nome) {
+        for (IDivisao divisao : divisoes) {
+            if (divisao.getNomeDivisao().equals(nome)) {
+                return divisao;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Verifica se existe uma ligacao direta entre a divisao origem e divisao destino
+     * @param origem
+     * @param destino
+     * @return
+     */
+    private boolean podeMover(IDivisao origem, IDivisao destino) {
+        for (Ligacao ligacao : ligacoes) {
+            if (ligacao.conecta(origem, destino)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //#endregion
+
+
+    //#region Funcoes da UI
+
+    /**
+     * criar botoes de acao
+     * 
+     * @param controlePanel
+     * @param mapaPanel     mapa do edificio
+     */
+    private void inicializarBotoes(JPanel controlePanel, MapaPanel mapaPanel) {
+        iniciarButton = new JButton("Iniciar");
+        iniciarButton.addActionListener(e -> moverEntradaSaidaToCruz(mapaPanel));
+
+        moverButton = new JButton("Mover");
+        moverButton.addActionListener(e -> moverToCruz(mapaPanel));
+
+        usarButton = new JButton("Mochila");
+        usarButton.addActionListener(e -> {
+            if (!toCruz.getInventario().isEmpty()) {
+                toCruz.usarKitDeVida();
+                mapaPanel.repaint();
+                atualizarEstadoBotoes();
+            } else {
+                JOptionPane.showMessageDialog(this, "Inventario vazio! Nao ha kits para usar.");
+            }
+        });
+
+        atacarButton = new JButton("Atacar");
+        atacarButton.addActionListener(e -> realizarAtaque(mapaPanel) );
+
+        resgatarButton = new JButton("Resgatar");
+        resgatarButton.addActionListener(e -> resgatar(mapaPanel));
+
+        apanharButton = new JButton("Apanhar");
+        apanharButton.addActionListener(e -> apanharItens(mapaPanel));
+
+        sairButton = new JButton("Sair");
+        sairButton.addActionListener(e -> finalizarMissao());
+
+        controlePanel.add(iniciarButton);
+        controlePanel.add(moverButton);
+        controlePanel.add(usarButton);
+        controlePanel.add(atacarButton);
+        controlePanel.add(resgatarButton);
+        controlePanel.add(apanharButton);
+        controlePanel.add(sairButton);
+
+        atualizarEstadoBotoes();
+    }
+
+    /**
      * carregar a foto do to cruz
      */
     private void carregarImagens() {
@@ -341,68 +314,125 @@ public class SimulacaoManualGUI extends JFrame {
     }
 
     /**
-     * Alterar a posicao atual, tanto na logica como no UI, do To Cruz
-     * 
+     * Combate direto entre To Cruz e inimigos na divisao atual
      * @param mapaPanel
      */
-    private void moverToCruz(MapaPanel mapaPanel) {
-        String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao:");
-        IDivisao novaDivisao = getDivisaoPorNome(destino);
+    private void realizarAtaque(MapaPanel mapaPanel) {
+        IDivisao divisaoAtual = toCruz.getPosicaoAtual();
 
-        if (novaDivisao != null && podeMover(toCruz.getPosicaoAtual(), novaDivisao)) {
-            toCruz.moverPara(novaDivisao);
-            caminhoPercorridoToCruz.addToRear(novaDivisao);
-            mapaPanel.repaint(); // Atualizar o desenho
-            atualizarEstadoBotoes(); // Atualizar estado dos botoes
+        if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().size() > 0) {
+            try {
+                combateService.resolverCombate(toCruz, divisaoAtual);
+
+                if(toCruz.getVida() <= 0){
+                    JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz foi derrotado.");
+
+                    IResultadoSimulacao resultado = new ResultadoSimulacaoImpl("MANUAL-002", caminhoPercorridoToCruz.first().getNomeDivisao(), caminhoPercorridoToCruz.last().getNomeDivisao(), "FALHA", toCruz.getVida(), filtrarListaDivisao(caminhoPercorridoToCruz), filtrarLista(mapa.getEntradasSaidasNomes()), missao.getCodMissao(), missao.getVersao());
+
+                    // Exportar o relatorio combinado
+                    exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
+
+                    logger.info("Relatorio de simulacoes exportado com sucesso.");
+                    logger.info("Programa finalizado com sucesso.");
+
+                    System.exit(0);
+                }
+
+            } catch (ElementNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+            mapaPanel.repaint();
+            atualizarEstadoBotoes();
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
+            JOptionPane.showMessageDialog(this, "Nenhum inimigo para atacar nesta divisao.");
         }
     }
 
     /**
-     * Alterar a posicao atual, tanto na logica como no UI, do To Cruz
-     *
+     *  To Cruz resgata o alvo
      * @param mapaPanel
      */
-    private void moverEntradaSaidaToCruz(MapaPanel mapaPanel) {
-        String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao do tipo entrada/saida:");
-        IDivisao novaDivisao = getDivisaoPorNome(destino);
+    private void resgatar(MapaPanel mapaPanel){
+        IDivisao divisaoAtual = toCruz.getPosicaoAtual();
 
-        if (novaDivisao != null && novaDivisao.isEntradaSaida()) {
-            toCruz.moverPara(novaDivisao);
-            caminhoPercorridoToCruz.addToRear(novaDivisao);
-            mapaPanel.repaint(); // Atualizar o desenho
-            atualizarEstadoBotoes(); // Atualizar estado dos botoes
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Movimento invalido (nao existe essa divisao ou nao e um tipo entrada/saida)!");
+        if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
+            JOptionPane.showMessageDialog(this, "Alvo resgatado com sucesso!");
+            mapa.removerAlvo();
+            toCruz.setAlvoConcluido(true);
+            mapaPanel.repaint();
+            atualizarEstadoBotoes();
         }
     }
 
     /**
-     * obter a Divisao pelo o seu nome
-     * 
-     * @param nome nome da divisao
-     * @return a Divisao
+     * To Cruz apanha itens como kit de vida e colete
+     * @param mapaPanel
      */
-    private IDivisao getDivisaoPorNome(String nome) {
-        for (IDivisao divisao : divisoes) {
-            if (divisao.getNomeDivisao().equals(nome)) {
-                return divisao;
+    private void apanharItens(MapaPanel mapaPanel){
+        IDivisao divisaoAtual = toCruz.getPosicaoAtual();
+
+        if (divisaoAtual != null) {
+            ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
+
+            if(toCruz.getInventario().size() >= 5){
+                JOptionPane.showMessageDialog(this, "Mochila cheia! Nao e possivel carregar mais kits de vida.");
+                return;
             }
+
+            while (itens.size() > 0) {
+                IItem item = itens.getElementAt(0);
+                toCruz.adicionarAoInventario(item);
+                try {
+                    divisaoAtual.removerItem(item);
+                } catch (ElementNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Itens apanhados com sucesso!");
+            mapaPanel.repaint();
+            atualizarEstadoBotoes();
         }
-        return null;
     }
 
-    private boolean podeMover(IDivisao origem, IDivisao destino) {
-        for (Ligacao ligacao : ligacoes) {
-            if (ligacao.conecta(origem, destino)) {
-                return true;
-            }
+    /**
+     * To Cruz decide finalizar a missao
+     */
+    private void finalizarMissao() {
+        IDivisao divisaoAtual = toCruz.getPosicaoAtual();
+
+        if (toCruz.getVida() > 0 && divisaoAtual.isEntradaSaida() && toCruz.isAlvoConcluido()) {
+            atualizarEstadoBotoes();
+            JOptionPane.showMessageDialog(this, "Missao concluida com sucesso!");
+
+            IResultadoSimulacao resultado = new ResultadoSimulacaoImpl("MANUAL-002", caminhoPercorridoToCruz.first().getNomeDivisao(), caminhoPercorridoToCruz.last().getNomeDivisao(), "SUCESSO", toCruz.getVida(), filtrarListaDivisao(caminhoPercorridoToCruz), filtrarLista(mapa.getEntradasSaidasNomes()), missao.getCodMissao(), missao.getVersao());
+
+            // Exportar o relatorio combinado
+            exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
+
+            logger.info("Relatorio de simulacoes exportado com sucesso.");
+            logger.info("Programa finalizado com sucesso.");
+
+            System.exit(0);
         }
-        return false;
+        else if (!divisaoAtual.isEntradaSaida()) {
+            JOptionPane.showMessageDialog(this, "Nao e uma divisao de saida");
+        }
+        else if(divisaoAtual.isEntradaSaida() && !toCruz.isAlvoConcluido()){
+            JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz abandonou o alvo.");
+
+            IResultadoSimulacao resultado = new ResultadoSimulacaoImpl("MANUAL-002", caminhoPercorridoToCruz.first().getNomeDivisao(), caminhoPercorridoToCruz.last().getNomeDivisao(), "FALHA", toCruz.getVida(), filtrarListaDivisao(caminhoPercorridoToCruz), filtrarLista(mapa.getEntradasSaidasNomes()), missao.getCodMissao(), missao.getVersao());
+
+            // Exportar o relatorio combinado
+            exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
+
+            logger.info("Relatorio de simulacoes exportado com sucesso.");
+            logger.info("Programa finalizado com sucesso.");
+
+            System.exit(0);
+        }
     }
+
+    //#endregion
 
     private class MapaPanel extends JPanel {
         @Override
@@ -433,7 +463,7 @@ public class SimulacaoManualGUI extends JFrame {
                 }
             }
 
-            // Desenhar divisoes
+            // Desenhar divisoes e assinalar informacoes
             for (int i = 0; i < divisoes.size(); i++) {
                 IDivisao divisao = divisoes.getElementAt(i);
                 Point pos = posicoesDivisoes.getElementAt(i);
@@ -450,45 +480,99 @@ public class SimulacaoManualGUI extends JFrame {
                 g2.drawString(divisao.getNomeDivisao(), pos.x - 30, pos.y - 15);
             }
 
-            // Desenhar To Cruz
+            // Assinalar informacoes da divisao atual e das divisoes adjacentes
             if (toCruz.getPosicaoAtual() != null && toCruzImage != null) {
+                // Desenhar To Cruz na posicao atual
                 Point toCruzPos = posicoesDivisoes.getElementAt(divisoes.indexOf(toCruz.getPosicaoAtual()));
                 g2.drawImage(toCruzImage, toCruzPos.x - 15, toCruzPos.y - 5, 30, 30, this);
 
-                // Assinalar inimigos na divisao atual
+                // Obter divisao atual e divisoes adjacentes
                 IDivisao divisaoAtual = toCruz.getPosicaoAtual();
-                if (divisaoAtual != null) {
-                    ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
-                    int offsetY = 40; // Deslocamento vertical para evitar sobreposicao
+
+                //Assinalar inimigos
+                ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
+                int offsetY = 40; // Deslocamento vertical inicial
+
+                if (inimigos.size() > 0) {
                     g2.setColor(Color.RED);
-                    g2.drawString(inimigos.size()+" " + skull , toCruzPos.x - 20, toCruzPos.y + offsetY);
+                    g2.drawString(inimigos.size() + " " + skull, toCruzPos.x - 20, toCruzPos.y + offsetY);
+                }
 
-                    // Assinalar itens na divisao atual
-                    ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
-                    offsetY += 10; // Espaco entre inimigos e itens
-                    int countKitVida = 0;
-                    int countColete = 0;
+                // Assinalar itens
+                ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
+                int countKitVida = 0;
+                int countColete = 0;
 
-                    for (int i = 0; i < itens.size(); i++) {
-                        if(itens.getElementAt(i).getTipo().equals("kit de vida")){
-                            countKitVida++;
+                for(IItem item : itens){
+                    if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+                        countKitVida++;
+                    } else if (item.getTipo().equalsIgnoreCase("colete")) {
+                        countColete++;
+                    }
+                }
+
+                if (countKitVida > 0) {
+                    g2.setColor(Color.darkGray);
+                    g2.drawString(countKitVida + "x" + pill, toCruzPos.x - 30, toCruzPos.y + offsetY + 15);
+                }
+
+                if (countColete  > 0) {
+                    g2.setColor(Color.darkGray);
+                    g2.drawString(countColete + "x" + vest, toCruzPos.x, toCruzPos.y + offsetY + 15);
+                }
+
+                // Assinalar alvos na divisao atual
+                if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
+                    offsetY += 10; // Espaco entre itens e alvos
+                    g2.setColor(Color.MAGENTA);
+                    g2.drawString(target , toCruzPos.x - 30, toCruzPos.y + offsetY + 10);
+                }
+
+                // Iterar sobre as divisoes com ligacao direta a divisao atual, para assinalar itens, inimigos e alvos
+                for (Ligacao ligacao : ligacoes) {
+                    if (ligacao.conecta(divisaoAtual, ligacao.getOutraDivisao(divisaoAtual))) {
+                        IDivisao divisaoConetadaAtual = ligacao.getDivisao1() == divisaoAtual ? ligacao.getDivisao2() : ligacao.getDivisao1();
+
+                        Point divisaoConetadaPos = posicoesDivisoes.getElementAt(divisoes.indexOf(divisaoConetadaAtual));
+
+                        //Assinalar inimigos
+                        ArrayUnorderedList<IInimigo> inimigos1 = divisaoConetadaAtual.getInimigosPresentes();
+                        offsetY = 40; // Deslocamento vertical inicial
+
+                        if (inimigos1.size() > 0) {
+                            g2.setColor(Color.RED);
+                            g2.drawString(inimigos1.size()+" " + skull , divisaoConetadaPos.x - 20, divisaoConetadaPos.y + offsetY);
                         }
-                        else if(itens.getElementAt(i).getTipo().equals("colete")){
-                            countColete++;
+
+                        // Assinalar itens
+                    ArrayUnorderedList<IItem> itens1 = divisaoConetadaAtual.getItensPresentes();
+                    int countKitVida1 = 0;
+                    int countColete1 = 0;
+
+                    for(IItem item : itens1){
+                        if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+                            countKitVida1++;
+                        } else if (item.getTipo().equalsIgnoreCase("colete")) {
+                            countColete1++;
                         }
                     }
 
-                    g2.setColor(Color.darkGray);
-                    g2.drawString(countKitVida + "x" + pill, toCruzPos.x - 30, toCruzPos.y + offsetY + 5);
+                    if (countKitVida1 > 0) {
+                        g2.setColor(Color.darkGray);
+                        g2.drawString(countKitVida1 + "x" + pill, divisaoConetadaPos.x - 30, divisaoConetadaPos.y + offsetY + 15);
+                   }
 
-                    g2.setColor(Color.darkGray);
-                    g2.drawString(countColete + "x" + vest, toCruzPos.x, toCruzPos.y + offsetY + 5);
+                    if (countColete1  > 0) {
+                        g2.setColor(Color.darkGray);
+                        g2.drawString(countColete1 + "x" + vest, divisaoConetadaPos.x, divisaoConetadaPos.y + offsetY + 15);
+                    }
 
                     // Assinalar alvos na divisao atual
-                    if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual)) {
+                    if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoConetadaAtual)) {
                         offsetY += 10; // Espaco entre itens e alvos
                         g2.setColor(Color.MAGENTA);
-                        g2.drawString(target , toCruzPos.x - 30, toCruzPos.y + offsetY + 10);
+                        g2.drawString(target , divisaoConetadaPos.x - 30, divisaoConetadaPos.y + offsetY + 25);
+                    }
                     }
                 }
             }
