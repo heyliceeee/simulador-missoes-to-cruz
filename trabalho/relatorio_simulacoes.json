@@ -2,31 +2,45 @@
   "simulacaoAutomatica": {
     "id": "MANUAL-002",
     "divisaoInicial": "Escada 6",
-    "divisaoFinal": "Escada 6",
+    "divisaoFinal": "Corredor 1",
     "status": "FALHA",
-    "vidaRestante": 60,
+    "vidaRestante": 0,
     "trajeto": [
-      "Escada 6"
+      "Escada 6",
+      "Camaratas",
+      "Escada 5",
+      "Escritorio 3",
+      "Escada 4",
+      "Corredor 2",
+      "Seguranca",
+      "Hall",
+      "Escada 3",
+      "Corredor 1"
     ],
-    "entradasSaidas": [
-      "Escada 6"
-    ],
+    "entradasSaidas": [],
     "codigoMissao": "pata de coelho",
-    "versaoMissao": 3
+    "versaoMissao": 1
   },
   "simulacaoManual": {
     "id": "MANUAL-002",
     "divisaoInicial": "Escada 6",
-    "divisaoFinal": "Escada 6",
+    "divisaoFinal": "Corredor 1",
     "status": "FALHA",
-    "vidaRestante": 60,
+    "vidaRestante": 0,
     "trajeto": [
-      "Escada 6"
+      "Escada 6",
+      "Camaratas",
+      "Escada 5",
+      "Escritorio 3",
+      "Escada 4",
+      "Corredor 2",
+      "Seguranca",
+      "Hall",
+      "Escada 3",
+      "Corredor 1"
     ],
-    "entradasSaidas": [
-      "Escada 6"
-    ],
+    "entradasSaidas": [],
     "codigoMissao": "pata de coelho",
-    "versaoMissao": 3
+    "versaoMissao": 1
   }
 }

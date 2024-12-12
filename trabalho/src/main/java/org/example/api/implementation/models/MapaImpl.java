@@ -188,7 +188,7 @@ public class MapaImpl implements IMapa {
         Iterator<IDivisao> iterator = grafo.iterator();
         while (iterator.hasNext()) {
             IDivisao divisao = iterator.next();
-            if (divisao.getNomeDivisao().equalsIgnoreCase(nomeDivisao.trim())) {
+            if (divisao.getNomeDivisao().equals(nomeDivisao.trim())) {
                 return divisao;
             }
         }

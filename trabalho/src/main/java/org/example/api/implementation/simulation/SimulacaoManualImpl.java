@@ -269,7 +269,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
 
             System.out.print("Deseja pegar todos os itens? (sim/nao): ");
             String resposta = scanner.nextLine().trim();
-            if ("sim".equalsIgnoreCase(resposta)) {
+            if ("sim".equals(resposta)) {
                 while (!itens.isEmpty()) {
                     try {
                         IItem item = itens.removeFirst();

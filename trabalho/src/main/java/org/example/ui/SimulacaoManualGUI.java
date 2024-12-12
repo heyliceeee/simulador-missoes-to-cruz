@@ -142,7 +142,7 @@ public class SimulacaoManualGUI extends JFrame {
                         );
 
                         // Exportar o relatorio combinado
-                        exportador.exportarRelatorioSimulacoes(null, resultado, mapa, "relatorio_simulacoes.json");
+                        exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
 
                         logger.info("Relatorio de simulacoes exportado com sucesso.");
                         logger.info("Programa finalizado com sucesso.");
@@ -180,6 +180,7 @@ public class SimulacaoManualGUI extends JFrame {
 
                 if(toCruz.getInventario().size() >= 5){
                     JOptionPane.showMessageDialog(this, "Mochila cheia! Nao e possivel carregar mais kits de vida.");
+                    return;
                 }
 
                 while (itens.size() > 0) {
@@ -219,7 +220,7 @@ public class SimulacaoManualGUI extends JFrame {
                 );
 
                 // Exportar o relatorio combinado
-                exportador.exportarRelatorioSimulacoes(null, resultado, mapa, "relatorio_simulacoes.json");
+                exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
 
                 logger.info("Relatorio de simulacoes exportado com sucesso.");
                 logger.info("Programa finalizado com sucesso.");
@@ -437,10 +438,10 @@ public class SimulacaoManualGUI extends JFrame {
                     int countColete = 0;
 
                     for (int i = 0; i < itens.size(); i++) {
-                        if(itens.getElementAt(i).getTipo().equalsIgnoreCase("kit de vida")){
+                        if(itens.getElementAt(i).getTipo().equals("kit de vida")){
                             countKitVida++;
                         }
-                        else if(itens.getElementAt(i).getTipo().equalsIgnoreCase("colete")){
+                        else if(itens.getElementAt(i).getTipo().equals("colete")){
                             countColete++;
                         }
                     }
@@ -474,9 +475,9 @@ public class SimulacaoManualGUI extends JFrame {
             for (int i = 0; i < toCruz.getInventario().size(); i++) {
                 IItem item = toCruz.getInventario().peek(); // Obtem o item no topo sem remover
                 toCruz.getInventario().pop(); // Remove o item temporariamente
-                if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+                if (item.getTipo().equals("kit de vida")) {
                     qtdKits++;
-                } else if (item.getTipo().equalsIgnoreCase("colete")) {
+                } else if (item.getTipo().equals("colete")) {
                     qtdColetes++;
                 }
                 toCruz.getInventario().push(item); // Reinsere o item no inventario
@@ -545,12 +546,12 @@ public class SimulacaoManualGUI extends JFrame {
     public static void main(String[] args) {
         IMapa mapa = new MapaImpl();
         IImportJson jsonUtils = new ImportJsonImpl(mapa);
-        String caminhoJson = "mapa_v3.json";
+        String caminhoJson = "mapa_v7.json";
 
         // mapa carregado apartir do JSON
         try {
-            jsonUtils.carregarMapa(caminhoJson);
-            logger.info("Mapa carregado com sucesso e pronto para uso!");
+            //jsonUtils.carregarMapa(caminhoJson);
+            //logger.info("Mapa carregado com sucesso e pronto para uso!");
 
             missao = jsonUtils.carregarMissao(caminhoJson);
             logger.info("Missao carregada: {} - Versao {}", missao.getCodMissao(), missao.getVersao());

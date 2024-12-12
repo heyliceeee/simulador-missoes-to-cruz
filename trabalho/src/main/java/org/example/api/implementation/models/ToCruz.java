@@ -92,7 +92,7 @@ public class ToCruz implements IAgente {
         }
 
         IItem item = inventario.pop(); // Retira o item do topo da pilha
-        if (item.getTipo().equalsIgnoreCase("kit de vida")) {
+        if (item.getTipo().equals("kit de vida")) {
             if (vida < vidaMaxima) {
                 if (vida + item.getPontos() > vidaMaxima || vida + item.getPontos() == vidaMaxima) {
                     vida = vidaMaxima;
@@ -104,7 +104,7 @@ public class ToCruz implements IAgente {
             }
             // }
 
-            // if(item.getTipo().equalsIgnoreCase("colete")) {
+            // if(item.getTipo().equalsI("colete")) {
             // vida += item.getPontos(); // Recupera pontos de vida
             // System.out.println("Usou um colete! Vida atual: " + vida);
 

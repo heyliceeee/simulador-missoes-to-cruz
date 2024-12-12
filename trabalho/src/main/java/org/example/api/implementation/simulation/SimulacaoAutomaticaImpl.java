@@ -259,7 +259,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             // Verifica se a divisao atual e uma das saidas
             for (int i = 0; i < entradasSaidas.size(); i++) {
                 String nomeSaida = entradasSaidas.getElementAt(i);
-                if (atual.getNomeDivisao().equalsIgnoreCase(nomeSaida)) {
+                if (atual.getNomeDivisao().equals(nomeSaida)) {
                     System.out.println("Divisao de saida encontrada: " + atual.getNomeDivisao());
                     // Reconstruir o caminho ate esta divisao
                     ArrayUnorderedList<IDivisao> caminho = new ArrayUnorderedList<>();
@@ -332,7 +332,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     private IDivisao getPredecessor(ArrayUnorderedList<Predecessor> predecessores, String nomeDivisao) {
         for (int i = 0; i < predecessores.size(); i++) {
             Predecessor p = predecessores.getElementAt(i);
-            if (p != null && p.getAtual().getNomeDivisao().equalsIgnoreCase(nomeDivisao.trim())) {
+            if (p != null && p.getAtual().getNomeDivisao().equals(nomeDivisao.trim())) {
                 return p.getPredecessor();
             }
         }

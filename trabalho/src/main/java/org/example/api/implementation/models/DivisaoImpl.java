@@ -193,8 +193,8 @@ public class DivisaoImpl implements IDivisao {
     public boolean temKit() {
         for (int i = 0; i < itensPresentes.size(); i++) {
             IItem item = itensPresentes.getElementAt(i);
-            if (item.getTipo().equalsIgnoreCase("kit de vida") ||
-                    item.getTipo().equalsIgnoreCase("colete")) {
+            if (item.getTipo().equals("kit de vida") ||
+                    item.getTipo().equals("colete")) {
                 return true;
             }
         }
