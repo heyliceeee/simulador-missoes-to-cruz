@@ -34,8 +34,9 @@ public class ExportarResultados implements IExportador {
     }
 
     @Override
-    public void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica, IResultadoSimulacao simulacaoManual,
-                                            IMapa mapa, String caminhoArquivo) {
+    public void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica,
+            IResultadoSimulacao simulacaoManual,
+            IMapa mapa, String caminhoArquivo) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         IRelatorioSimulacoes relatorio = new RelatorioSimulacoesImpl(

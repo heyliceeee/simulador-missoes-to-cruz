@@ -33,6 +33,7 @@ public class InimigoImpl implements IInimigo {
 
     /**
      * Obtem a vida atual do inimigo
+     * 
      * @return vida atual do inimigo
      */
     public int getVida() {
@@ -41,6 +42,7 @@ public class InimigoImpl implements IInimigo {
 
     /**
      * Define a quantidade de vida atual do inimigo
+     * 
      * @param vida quantidade de vida atual do inimigo
      */
     public void setVida(int vida) {

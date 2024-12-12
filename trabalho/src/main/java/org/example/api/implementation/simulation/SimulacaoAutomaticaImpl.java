@@ -23,19 +23,17 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     private final ArrayUnorderedList<IInimigo> inimigosDerrotados;
     private final ArrayUnorderedList<IItem> itensColetados;
 
-    public static String checkMark = "\u2705";  // ✅
-    public static String crossedSwords = "\uD83D\uDDE1";  // 🗡
-    public static String skull = "\uD83D\uDC80";  // 💀
-    public static String target = "\uD83C\uDFAF";  // 🎯
-    public static String trophy = "\uD83E\uDD47";  // 🥇
-    public static String cowboy = "\uD83E\uDD20";  // 🤠
+    public static String checkMark = "\u2705"; // ✅
+    public static String crossedSwords = "\uD83D\uDDE1"; // 🗡
+    public static String skull = "\uD83D\uDC80"; // 💀
+    public static String target = "\uD83C\uDFAF"; // 🎯
+    public static String trophy = "\uD83E\uDD47"; // 🥇
+    public static String cowboy = "\uD83E\uDD20"; // 🤠
     public static String pin = "\uD83D\uDCCC"; // 📌
     public static String backpack = "\uD83C\uDF92"; // 🎒
     public static String life = "\uD83D\uDC99"; // 💙
     public static String pill = "\uD83D\uDC8A";// 💊
     public static String vest = "\uD83D\uDEE1\uFE0F"; // 🛡️
-
-
 
     /**
      * Construtor da Simulacao Automatica.
@@ -190,18 +188,18 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         toCruz.moverPara(divisao);
 
         // Exibe a posicao atual sem duplicacao
-        System.out.println(cowboy+" To Cruz moveu-se para a divisao: " + divisao.getNomeDivisao());
+        System.out.println(cowboy + " To Cruz moveu-se para a divisao: " + divisao.getNomeDivisao());
 
         // Verifica e processa inimigos
         ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
         if (inimigos != null && !inimigos.isEmpty()) {
-            System.out.println(crossedSwords+" Combate iniciado na divisao: " + divisao.getNomeDivisao());
+            System.out.println(crossedSwords + " Combate iniciado na divisao: " + divisao.getNomeDivisao());
             while (!inimigos.isEmpty()) {
                 try {
                     IInimigo inimigo = inimigos.removeFirst();
                     toCruz.sofrerDano(5); // Simular dano
                     inimigosDerrotados.addToRear(inimigo);
-                    System.out.println(skull+" Inimigo derrotado: " + inimigo.getNome());
+                    System.out.println(skull + " Inimigo derrotado: " + inimigo.getNome());
                 } catch (EmptyCollectionException e) {
                     System.err.println("Erro ao processar inimigo: " + e.getMessage());
                     break;
@@ -218,7 +216,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
                     IItem item = itens.removeFirst();
                     toCruz.adicionarAoInventario(item);
                     itensColetados.addToRear(item);
-                    System.out.println(checkMark+" Item coletado: " + item.getTipo());
+                    System.out.println(checkMark + " Item coletado: " + item.getTipo());
                 } catch (EmptyCollectionException e) {
                     System.err.println("Erro ao coletar item: " + e.getMessage());
                     break;
@@ -377,7 +375,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             return;
         }
 
-        System.out.println(target+" Divisao de saida encontrada: "
+        System.out.println(target + " Divisao de saida encontrada: "
                 + caminhoDeVolta.getElementAt(caminhoDeVolta.size() - 1).getNomeDivisao());
 
         for (int i = 0; i < caminhoDeVolta.size(); i++) {
@@ -387,7 +385,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
             // Combate com inimigos na divisao de volta
             if (divisao.getInimigosPresentes() != null && !divisao.getInimigosPresentes().isEmpty()) {
-                System.out.println(crossedSwords+" Combate iniciado na divisao: " + divisao.getNomeDivisao());
+                System.out.println(crossedSwords + " Combate iniciado na divisao: " + divisao.getNomeDivisao());
                 combateService.resolverCombate(toCruz, divisao);
 
                 // Verificar se To Cruz foi derrotado
@@ -404,7 +402,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             mostrarMapaInterativo(toCruz, divisao, true);
         }
 
-        System.out.println(trophy+" Missao concluida com sucesso! To Cruz retornou com o alvo.");
+        System.out.println(trophy + " Missao concluida com sucesso! To Cruz retornou com o alvo.");
     }
 
     @Override

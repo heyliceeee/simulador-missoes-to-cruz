@@ -84,7 +84,8 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
         return array;
     }
 
-    private String[] filtrarEntradasSaidas(ArrayUnorderedList<String> entradasSaidas, ArrayUnorderedList<String> trajeto) {
+    private String[] filtrarEntradasSaidas(ArrayUnorderedList<String> entradasSaidas,
+            ArrayUnorderedList<String> trajeto) {
         ArrayUnorderedList<String> relevantes = new ArrayUnorderedList<>();
         for (int i = 0; i < entradasSaidas.size(); i++) {
             String entradaSaida = entradasSaidas.getElementAt(i);

@@ -23,5 +23,6 @@ public interface IExportador {
      * @param mapa                O mapa usado nas simulacoes.
      * @param caminhoArquivo      Caminho do arquivo de destino para exportacao.
      */
-    void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica, IResultadoSimulacao simulacaoManual, IMapa mapa, String caminhoArquivo);
+    void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica, IResultadoSimulacao simulacaoManual,
+            IMapa mapa, String caminhoArquivo);
 }

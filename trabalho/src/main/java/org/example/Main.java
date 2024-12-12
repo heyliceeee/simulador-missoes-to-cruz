@@ -70,8 +70,7 @@ public class Main {
                 filtrarLista(simulacaoAuto.getCaminhoPercorridoNomes()),
                 filtrarLista(mapa.getEntradasSaidasNomes()),
                 missao.getCodMissao(),
-                missao.getVersao()
-        );
+                missao.getVersao());
 
         // Simulacao Manual
         logger.info("Iniciando a simulacao manual...");
@@ -87,8 +86,7 @@ public class Main {
                 filtrarLista(simulacaoManual.getCaminhoPercorridoNomes()),
                 filtrarLista(mapa.getEntradasSaidasNomes()),
                 missao.getCodMissao(),
-                missao.getVersao()
-        );
+                missao.getVersao());
 
         // Exportar o relatorio combinado
         ExportarResultados exportador = new ExportarResultados();
@@ -114,7 +112,6 @@ public class Main {
         }
         return filtrada;
     }
-
 
     /**
      * Filtra uma lista para remover valores nulos.

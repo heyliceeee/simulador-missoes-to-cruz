@@ -37,7 +37,7 @@ public class CombateServiceImpl implements ICombateService {
             return;
         }
 
-        System.out.println(crossedSwords+" Combate iniciado na divisao: " + divisaoAtual.getNomeDivisao());
+        System.out.println(crossedSwords + " Combate iniciado na divisao: " + divisaoAtual.getNomeDivisao());
         for (int i = 0; i < inimigos.size(); i++) {
             IInimigo inimigo = inimigos.getElementAt(i);
             if (inimigo == null)
@@ -48,7 +48,7 @@ public class CombateServiceImpl implements ICombateService {
             // Prioridade para o ataque do inimigo
             if (toCruz.getVida() > 0 && inimigo.getPoder() > 0) {
                 toCruz.sofrerDano(5); // Inimigo ataca com dano fixo de 5
-                System.out.println(crossedSwords+" Inimigo '" + inimigo.getNome() + "' atacou To Cruz!");
+                System.out.println(crossedSwords + " Inimigo '" + inimigo.getNome() + "' atacou To Cruz!");
             }
 
             // Combate direto
@@ -58,24 +58,24 @@ public class CombateServiceImpl implements ICombateService {
 
                 if (inimigo.getPoder() > 0) {
                     toCruz.sofrerDano(5); // O inimigo ataca novamente
-                    System.out.println(crossedSwords+" Inimigo '" + inimigo.getNome() + "' contra-atacou!");
+                    System.out.println(crossedSwords + " Inimigo '" + inimigo.getNome() + "' contra-atacou!");
                 }
             }
 
             // Verificar o estado do inimigo
             if (inimigo.getPoder() <= 0) {
-                System.out.println(skull+" Inimigo '" + inimigo.getNome() + "' foi derrotado!");
+                System.out.println(skull + " Inimigo '" + inimigo.getNome() + "' foi derrotado!");
                 inimigos.remove(inimigo);
                 i--; // Ajustar indice apos remocao
             }
 
             // Verificar o estado de To Cruz
             if (toCruz.getVida() <= 0) {
-                System.err.println(skull+" To Cruz foi derrotado!");
+                System.err.println(skull + " To Cruz foi derrotado!");
                 return;
             }
         }
 
-        System.out.println(trophy+" Todos os inimigos na sala foram derrotados!");
+        System.out.println(trophy + " Todos os inimigos na sala foram derrotados!");
     }
 }

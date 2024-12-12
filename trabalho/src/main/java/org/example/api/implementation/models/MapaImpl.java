@@ -30,8 +30,6 @@ public class MapaImpl implements IMapa {
      */
     private ArrayUnorderedList<IDivisao> entradasSaidas;
 
-
-
     /**
      * Construtor padrao do Mapa.
      */
@@ -423,14 +421,14 @@ public class MapaImpl implements IMapa {
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
         for (int i = 0; i < divisoes.size(); i++) {
-           IDivisao divisao = divisoes.getElementAt(i);
+            IDivisao divisao = divisoes.getElementAt(i);
             if (divisao == null)
                 continue;
 
             // Obter informacoes da divisao
             ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
             ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
-            
+
             // Exibir o nome da divisao com simbolos adicionais
             System.out.print(pin + divisao.getNomeDivisao());
 
