@@ -7,8 +7,11 @@ import org.example.api.implementation.interfaces.Divisao;
 import org.example.api.implementation.interfaces.Inimigo;
 import org.example.api.implementation.interfaces.Item;
 import org.example.api.implementation.interfaces.Mapa;
+import org.example.collections.exceptions.EmptyCollectionException;
 import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.collections.implementation.Graph;
+import org.example.collections.implementation.LinkedQueue;
+import org.example.collections.implementation.LinkedStack;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -19,7 +22,6 @@ import java.util.Random;
 public class MapaImpl implements Mapa {
     private Graph<Divisao> grafo;
     private Alvo alvo;
-    public static String pin = "\uD83D\uDCCC"; // 📍
 
     public MapaImpl() {
         this.grafo = new Graph<>();
@@ -82,9 +84,8 @@ public class MapaImpl implements Mapa {
 
         Divisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
+            item.setDivisao(divisao); // Vincula o item à divisão
             divisao.adicionarItem(item);
-            // System.out.println("Item '" + item.getTipo() + "' adicionado à divisão: " +
-            // nomeDivisao);
         } else {
             System.err.println("Erro: Divisão '" + nomeDivisao + "' não encontrada.");
         }
@@ -256,7 +257,7 @@ public class MapaImpl implements Mapa {
                 if (!destino.equals(origem)) {
                     destino.adicionarInimigo(inimigo);
                     origem.removerInimigo(inimigo);
-                    System.out.println("Inimigo '" + inimigo.getNome() + "' movido de " +
+                    System.out.println("Inimigo '" + inimigo.getNome() + "' movimentou de " +
                             origem.getNomeDivisao() + " para " + destino.getNomeDivisao());
 
                     // Verificar se o inimigo entrou na sala de Tó Cruz
@@ -276,6 +277,177 @@ public class MapaImpl implements Mapa {
     }
 
     @Override
+    public ArrayUnorderedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino)
+            throws ElementNotFoundException {
+        if (origem == null || destino == null) {
+            System.err.println("Erro: Origem ou destino inválidos.");
+            return new ArrayUnorderedList<>();
+        }
+
+        // Estruturas de suporte
+        LinkedQueue<Divisao> fila = new LinkedQueue<>();
+        ArrayUnorderedList<Divisao> visitados = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Predecessor> predecessores = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Integer> custos = new ArrayUnorderedList<>(); // Custos paralelos aos visitados
+
+        // Inicialização
+        fila.enqueue(origem);
+        visitados.addToRear(origem);
+        predecessores.addToRear(new Predecessor(origem, null));
+        custos.addToRear(0); // Custo inicial é zero
+
+        while (!fila.isEmpty()) {
+            // Retirar o próximo nó da fila
+            Divisao atual = fila.dequeue();
+
+            // Encontrar índice do nó atual em `visitados`
+            int indiceAtual = findIndex(visitados, atual);
+            int custoAtual = custos.getElementAt(indiceAtual);
+
+            // Se chegamos ao destino, reconstruir o caminho
+            if (atual.equals(destino)) {
+                ArrayUnorderedList<Divisao> caminho = new ArrayUnorderedList<>();
+                reconstruirCaminho(predecessores, destino, caminho);
+                return caminho;
+            }
+
+            // Obter conexões da divisão atual
+            ArrayUnorderedList<Divisao> conexoes = obterConexoes(atual);
+            if (conexoes == null || conexoes.isEmpty()) {
+                continue;
+            }
+
+            // Processar conexões
+            for (int i = 0; i < conexoes.size(); i++) {
+                Divisao vizinho = conexoes.getElementAt(i);
+                if (vizinho == null)
+                    continue;
+
+                // Calcular custo para alcançar o vizinho
+                int custoMovimento = calcularCusto(atual, vizinho);
+                int novoCusto = custoAtual + custoMovimento;
+
+                // Verificar se o vizinho já foi visitado
+                int indiceVizinho = findIndex(visitados, vizinho);
+                if (indiceVizinho == -1) { // Não visitado
+                    visitados.addToRear(vizinho);
+                    custos.addToRear(novoCusto);
+                    fila.enqueue(vizinho);
+                    predecessores.addToRear(new Predecessor(vizinho, atual));
+                } else if (novoCusto < custos.getElementAt(indiceVizinho)) { // Melhor custo
+                    // Atualizar custo manualmente
+                    replaceElementAt(custos, indiceVizinho, novoCusto);
+                    predecessores.addToRear(new Predecessor(vizinho, atual));
+                }
+            }
+        }
+
+        System.err
+                .println("Caminho não encontrado entre " + origem.getNomeDivisao() + " e " + destino.getNomeDivisao());
+        return new ArrayUnorderedList<>();
+    }
+
+    private int findIndex(ArrayUnorderedList<Divisao> list, Divisao target) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.getElementAt(i).equals(target)) {
+                return i;
+            }
+        }
+        return -1; // Retorna -1 se não encontrado
+    }
+
+    private void replaceElementAt(ArrayUnorderedList<Integer> list, int index, int value) {
+        try {
+            list.remove(list.getElementAt(index)); // Remove o elemento atual
+            if (index == 0) {
+                list.addToFront(value); // Adiciona na frente se for o primeiro elemento
+            } else {
+                list.addAfter(value, list.getElementAt(index - 1)); // Adiciona após o anterior
+            }
+        } catch (ElementNotFoundException e) {
+            System.err.println("Erro ao substituir elemento na lista: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Calcula o custo de mover-se de uma divisão para outra.
+     */
+    private int calcularCusto(Divisao atual, Divisao vizinho) {
+        int custo = 0;
+
+        // Adicionar custo por inimigos (usando o poder dos inimigos)
+        ArrayUnorderedList<Inimigo> inimigos = vizinho.getInimigosPresentes();
+        if (inimigos != null && !inimigos.isEmpty()) {
+            for (int i = 0; i < inimigos.size(); i++) {
+                custo += inimigos.getElementAt(i).getPoder(); // Usar `getPoder()` como dano
+            }
+        }
+
+        // Subtrair custo por itens de recuperação (usando os pontos do item)
+        ArrayUnorderedList<Item> itens = vizinho.getItensPresentes();
+        if (itens != null && !itens.isEmpty()) {
+            for (int i = 0; i < itens.size(); i++) {
+                Item item = itens.getElementAt(i);
+                if ("kit de vida".equalsIgnoreCase(item.getTipo())) {
+                    custo -= item.getPontos(); // Usar `getPontos()` para recuperação
+                }
+            }
+        }
+
+        return Math.max(custo, 0); // Evitar custos negativos
+    }
+
+    private void reconstruirCaminho(ArrayUnorderedList<Predecessor> predecessores, Divisao objetivo,
+            ArrayUnorderedList<Divisao> caminho) {
+        LinkedStack<Divisao> pilha = new LinkedStack<>();
+        Divisao atual = objetivo;
+
+        while (atual != null) {
+            pilha.push(atual);
+            atual = getPredecessor(predecessores, atual.getNomeDivisao());
+        }
+
+        while (!pilha.isEmpty()) {
+            try {
+                caminho.addToRear(pilha.pop());
+            } catch (EmptyCollectionException e) {
+                System.err.println("Erro ao reconstruir o caminho: " + e.getMessage());
+            }
+        }
+    }
+
+    private Divisao getPredecessor(ArrayUnorderedList<Predecessor> predecessores, String nomeDivisao) {
+        for (int i = 0; i < predecessores.size(); i++) {
+            Predecessor p = predecessores.getElementAt(i);
+            if (p != null && p.getAtual().getNomeDivisao().equalsIgnoreCase(nomeDivisao)) {
+                return p.getPredecessor();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayUnorderedList<Item> getItensPorTipo(String tipo) {
+        ArrayUnorderedList<Item> itens = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Divisao> divisoes = getDivisoes();
+
+        for (int i = 0; i < divisoes.size(); i++) {
+            Divisao divisao = divisoes.getElementAt(i);
+            if (divisao != null) {
+                ArrayUnorderedList<Item> itensDivisao = divisao.getItensPresentes();
+                for (int j = 0; j < itensDivisao.size(); j++) {
+                    Item item = itensDivisao.getElementAt(j);
+                    if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
+                        itens.addToRear(item);
+                    }
+                }
+            }
+        }
+
+        return itens;
+    }
+
+    @Override
     public void mostrarMapa() {
         System.out.println("===== MAPA DO EDIFÍCIO =====");
         ArrayUnorderedList<Divisao> divisoes = getDivisoes();
@@ -288,9 +460,9 @@ public class MapaImpl implements Mapa {
             // Obter informações da divisão
             ArrayUnorderedList<Inimigo> inimigos = divisao.getInimigosPresentes();
             ArrayUnorderedList<Item> itens = divisao.getItensPresentes();
-            
+
             // Exibir o nome da divisão com símbolos adicionais
-            System.out.print(pin + divisao.getNomeDivisao());
+            System.out.print("📍 " + divisao.getNomeDivisao());
 
             if (inimigos != null && !inimigos.isEmpty()) {
                 System.out.print(" ⚔️ (" + inimigos.size() + " inimigos)");

@@ -489,12 +489,13 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
         return adjacentes;
     }
 
+     
     /**
      * Retorna uma cópia profunda do array de vértices.
      *
      * @return Cópia profunda do array de vértices.
      */
-    public T[] getVertices() {
+    /*public T[] getVertices() {
         T[] verticesCopy = (T[]) new Object[vertices.length];
 
         for (int i = 0; i < vertices.length; i++) {
@@ -505,14 +506,14 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
 
         return verticesCopy;
     }
-
+*/
     /**
      * Realiza uma cópia profunda de um objeto do tipo T.
      *
      * @param object Objeto a ser copiado.
      * @return Cópia profunda do objeto.
      */
-    private T deepCopy(T object) {
+   /*  private T deepCopy(T object) {
         try {
             // Verifica se o objeto implementa Cloneable e invoca o método clone
             if (object instanceof Cloneable) {
@@ -523,8 +524,8 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao realizar cópia profunda", e);
         }
-    }
-
+    }*/
+    
     /**
      * Verifica se dois vértices são adjacentes no grafo.
      * 

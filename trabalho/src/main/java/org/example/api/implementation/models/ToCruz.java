@@ -102,18 +102,14 @@ public void adicionarAoInventario(Item item) {
 
     @Override
     public void sofrerDano(int dano) {
-        if (dano < 0) {
-            System.err.println("Erro: Dano não pode ser negativo.");
-            return;
-        }
-        vida -= dano;
-        if (vida <= 0) {
-            vida = 0;
-            System.out.println("Tó Cruz foi derrotado!");
-        } else {
-            System.out.println("Tó Cruz sofreu " + dano + " de dano! Vida restante: " + vida);
+        if (dano > 0) {
+            this.vida -= dano;
+            if (this.vida < 0) {
+                this.vida = 0; // Vida não pode ser negativa
+            }
         }
     }
+    
 
     @Override
     public int getVida() {
@@ -172,4 +168,5 @@ public void adicionarAoInventario(Item item) {
     public void setAlvoConcluido(boolean concluido) {
         this.alvoConcluido = concluido;
     }
+    
 }

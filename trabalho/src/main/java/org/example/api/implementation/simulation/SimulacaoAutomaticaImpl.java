@@ -48,103 +48,156 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
             return;
         }
 
-        LinkedQueue<Divisao> fila = new LinkedQueue<>();
-        ArrayUnorderedList<Divisao> visitados = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Predecessor> predecessores = new ArrayUnorderedList<>();
-
-        Divisao posicaoInicial = toCruz.getPosicaoAtual();
-        if (posicaoInicial == null) {
-            System.err.println("Erro: Posição inicial de Tó Cruz é nula.");
+        ArrayUnorderedList<String> entradasSaidas = mapa.getEntradasSaidasNomes();
+        if (entradasSaidas == null || entradasSaidas.isEmpty()) {
+            System.err.println("Erro: Nenhuma entrada ou saída encontrada no mapa.");
             return;
         }
 
-        fila.enqueue(posicaoInicial);
-        visitados.addToRear(posicaoInicial);
-        predecessores.addToRear(new Predecessor(posicaoInicial, null));
+        Divisao melhorEntrada = null;
+        ArrayUnorderedList<Divisao> melhorCaminhoParaObjetivo = null;
+        ArrayUnorderedList<Divisao> melhorCaminhoDeVolta = null;
+        int maiorVidaRestante = Integer.MIN_VALUE;
 
-        boolean objetivoEncontrado = false;
+        // Loop para encontrar o melhor caminho com base na vida restante
+        for (int i = 0; i < entradasSaidas.size(); i++) {
+            Divisao entradaAtual = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(i));
+            if (entradaAtual == null)
+                continue;
 
-        while (!fila.isEmpty()) {
-            Divisao atual = fila.dequeue();
+            ArrayUnorderedList<Divisao> caminhoParaObjetivo = mapa.calcularMelhorCaminho(entradaAtual, divisaoObjetivo);
+            if (caminhoParaObjetivo == null || caminhoParaObjetivo.isEmpty())
+                continue;
 
-            // Movimentação dos inimigos antes do jogador agir
-            System.out.println("Movimentando inimigos...");
-            mapa.moverInimigos(toCruz, combateService);
+            ArrayUnorderedList<Divisao> caminhoDeVolta = mapa.calcularMelhorCaminho(divisaoObjetivo, entradaAtual);
+            if (caminhoDeVolta == null || caminhoDeVolta.isEmpty())
+                continue;
 
-            // Verifica se Tó Cruz sobreviveu após a movimentação dos inimigos
+            int vidaRestante = simularTrajeto(caminhoParaObjetivo, caminhoDeVolta);
+
+            if (vidaRestante > maiorVidaRestante) {
+                maiorVidaRestante = vidaRestante;
+                melhorEntrada = entradaAtual;
+                melhorCaminhoParaObjetivo = caminhoParaObjetivo;
+                melhorCaminhoDeVolta = caminhoDeVolta;
+            }
+        }
+
+        // Se nenhum caminho ideal foi encontrado, tentar alternativas
+        if (melhorEntrada == null || melhorCaminhoParaObjetivo == null || melhorCaminhoDeVolta == null) {
+            System.err.println("Nenhum trajeto ideal encontrado. Selecionando o primeiro trajeto viável...");
+            for (int i = 0; i < entradasSaidas.size(); i++) {
+                Divisao entradaAlternativa = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(i));
+                if (entradaAlternativa != null) {
+                    melhorCaminhoParaObjetivo = mapa.calcularMelhorCaminho(entradaAlternativa, divisaoObjetivo);
+                    melhorCaminhoDeVolta = mapa.calcularMelhorCaminho(divisaoObjetivo, entradaAlternativa);
+
+                    if (melhorCaminhoParaObjetivo != null && !melhorCaminhoParaObjetivo.isEmpty() &&
+                            melhorCaminhoDeVolta != null && !melhorCaminhoDeVolta.isEmpty()) {
+                        melhorEntrada = entradaAlternativa;
+                        break;
+                    }
+                }
+            }
+
+            // Caso ainda não encontre uma entrada válida
+            if (melhorEntrada == null) {
+                System.err.println("Erro: Nenhuma entrada viável encontrada. Forçando início pela primeira entrada.");
+                melhorEntrada = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(0));
+            }
+        }
+
+        // Garantir que melhorEntrada está definida antes de continuar
+        if (melhorEntrada == null) {
+            System.err.println("Erro crítico: Não foi possível definir uma entrada válida. Abortando missão.");
+            return;
+        }
+
+        System.out.println("Movendo-se para a melhor entrada: " + melhorEntrada.getNomeDivisao());
+        toCruz.moverPara(melhorEntrada);
+
+        for (int i = 0; i < melhorCaminhoParaObjetivo.size(); i++) {
+            Divisao divisao = melhorCaminhoParaObjetivo.getElementAt(i);
+            moverParaDivisao(divisao);
+
             if (toCruz.getVida() <= 0) {
-                System.err.println("💀 Tó Cruz foi derrotado após a movimentação dos inimigos!");
+                System.err.println("💀 Tó Cruz foi derrotado!");
                 return;
             }
+        }
 
-            if (atual.equals(divisaoObjetivo)) {
-                System.out.println("Objetivo encontrado: " + atual.getNomeDivisao());
-                reconstruirCaminho(predecessores, divisaoObjetivo);
-                if (toCruz.getVida() > 0) {
-                    verificarTrajetoDeVolta();
-                }
-                objetivoEncontrado = true;
-                break;
-            }
+        System.out.println("🏁 Tó Cruz alcançou o objetivo!");
 
-            ArrayUnorderedList<Divisao> conexoes = mapa.obterConexoes(atual);
-            if (conexoes == null || conexoes.isEmpty()) {
-                System.out.println("Aviso: Divisão " + atual.getNomeDivisao() + " não possui conexões.");
-                continue;
-            }
+        for (int i = 0; i < melhorCaminhoDeVolta.size(); i++) {
+            Divisao divisao = melhorCaminhoDeVolta.getElementAt(i);
+            moverParaDivisao(divisao);
 
-            for (int i = 0; i < conexoes.size(); i++) {
-                Divisao vizinho = conexoes.getElementAt(i);
-                if (vizinho == null)
-                    continue;
-
-                if (!visitados.contains(vizinho) && mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao())) {
-                    visitados.addToRear(vizinho);
-                    fila.enqueue(vizinho);
-                    predecessores.addToRear(new Predecessor(vizinho, atual));
-                }
+            if (toCruz.getVida() <= 0) {
+                System.err.println("💀 Tó Cruz foi derrotado no retorno!");
+                return;
             }
         }
 
-        if (!objetivoEncontrado) {
-            System.err.println("Erro: Caminho não encontrado para o objetivo.");
-        }
+        System.out.println("🏆 Missão concluída com sucesso! Tó Cruz retornou com o alvo.");
     }
 
     /**
-     * Reconstrói o caminho percorrido a partir dos predecessores.
-     *
-     * @param predecessores Lista de predecessores para cada divisão.
-     * @param objetivo      Divisão objetivo que foi encontrada.
-     * @throws ElementNotFoundException
+     * Simula o trajeto de ida e volta, considerando o impacto de inimigos e itens,
+     * para calcular a vida restante de Tó Cruz.
      */
-    private void reconstruirCaminho(ArrayUnorderedList<Predecessor> predecessores, Divisao objetivo)
-            throws ElementNotFoundException {
-        LinkedStack<Divisao> caminhoReverso = new LinkedStack<>();
-        Divisao atual = objetivo;
+    private int simularTrajeto(ArrayUnorderedList<Divisao> caminhoParaObjetivo,
+            ArrayUnorderedList<Divisao> caminhoDeVolta) {
+        int vidaSimulada = toCruz.getVida();
 
-        while (atual != null) {
-            caminhoReverso.push(atual);
-            atual = getPredecessor(predecessores, atual.getNomeDivisao());
+        // Simular impacto do caminho para o objetivo
+        for (int i = 0; i < caminhoParaObjetivo.size(); i++) {
+            Divisao divisao = caminhoParaObjetivo.getElementAt(i);
+            vidaSimulada -= calcularDanoInimigos(divisao);
+            vidaSimulada += calcularRecuperacaoItens(divisao);
+            if (vidaSimulada <= 0)
+                return Integer.MIN_VALUE; // Tó Cruz não sobrevive
         }
 
-        while (!caminhoReverso.isEmpty()) {
-            try {
-                Divisao divisao = caminhoReverso.pop();
-                if (divisao != null) {
-                    caminhoPercorrido.addToRear(divisao);
-                    moverParaDivisao(divisao);
-                    if (toCruz.getVida() <= 0) {
-                        System.err.println("Tó Cruz foi derrotado durante a simulação!");
-                        return;
-                    }
-                }
-            } catch (EmptyCollectionException e) {
-                System.err.println("Erro ao reconstruir o caminho: " + e.getMessage());
-                return;
+        // Simular impacto do caminho de volta
+        for (int i = 0; i < caminhoDeVolta.size(); i++) {
+            Divisao divisao = caminhoDeVolta.getElementAt(i);
+            vidaSimulada -= calcularDanoInimigos(divisao);
+            vidaSimulada += calcularRecuperacaoItens(divisao);
+            if (vidaSimulada <= 0)
+                return Integer.MIN_VALUE; // Tó Cruz não sobrevive
+        }
+
+        return vidaSimulada;
+    }
+
+    /**
+     * Calcula o dano causado pelos inimigos em uma divisão.
+     */
+    private int calcularDanoInimigos(Divisao divisao) {
+        int dano = 0;
+        ArrayUnorderedList<Inimigo> inimigos = divisao.getInimigosPresentes();
+        if (inimigos != null) {
+            for (int i = 0; i < inimigos.size(); i++) {
+                dano += inimigos.getElementAt(i).getPoder();
             }
         }
-        System.out.println("Tó Cruz alcançou o objetivo com sucesso!");
+        return dano;
+    }
+
+    /**
+     * Calcula a recuperação de vida proporcionada pelos itens em uma divisão.
+     */
+    private int calcularRecuperacaoItens(Divisao divisao) {
+        int recuperacao = 0;
+        ArrayUnorderedList<Item> itens = divisao.getItensPresentes();
+        if (itens != null) {
+            for (int i = 0; i < itens.size(); i++) {
+                if ("kit de vida".equalsIgnoreCase(itens.getElementAt(i).getTipo())) {
+                    recuperacao += itens.getElementAt(i).getPontos();
+                }
+            }
+        }
+        return recuperacao;
     }
 
     /**
@@ -158,13 +211,12 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
             System.err.println("Erro: Tentativa de mover para uma divisão nula.");
             return;
         }
-
+    
         // Atualiza a posição de Tó Cruz
         toCruz.moverPara(divisao);
-
-        // Exibe a posição atual sem duplicação
+    
         System.out.println("🤠 Tó Cruz moveu-se para a divisão: " + divisao.getNomeDivisao());
-
+    
         // Verifica e processa inimigos
         ArrayUnorderedList<Inimigo> inimigos = divisao.getInimigosPresentes();
         if (inimigos != null && !inimigos.isEmpty()) {
@@ -172,16 +224,24 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
             while (!inimigos.isEmpty()) {
                 try {
                     Inimigo inimigo = inimigos.removeFirst();
-                    toCruz.sofrerDano(5); // Simular dano
+                    int dano = inimigo.getPoder(); // Dano baseado no poder do inimigo
+                    toCruz.sofrerDano(dano);
                     inimigosDerrotados.addToRear(inimigo);
+    
+                    System.out.println("Tó Cruz sofreu " + dano + " de dano! Vida restante: " + toCruz.getVida());
                     System.out.println("💀 Inimigo derrotado: " + inimigo.getNome());
+    
+                    if (toCruz.getVida() <= 0) {
+                        System.err.println("💀 Tó Cruz foi derrotado no combate!");
+                        return;
+                    }
                 } catch (EmptyCollectionException e) {
                     System.err.println("Erro ao processar inimigo: " + e.getMessage());
                     break;
                 }
             }
         }
-
+    
         // Verifica e processa itens
         ArrayUnorderedList<Item> itens = divisao.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
@@ -199,6 +259,7 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
             }
         }
     }
+    
 
     /**
      * Encontra o caminho para a divisão de saída mais próxima usando BFS.
@@ -407,58 +468,6 @@ public class SimulacaoAutomaticaImpl implements SimulacaoAutomatica {
             }
         }
         return nomes;
-    }
-
-    /**
-     * Calcula o melhor caminho entre duas divisões usando BFS.
-     *
-     * @param origem  Divisão de origem.
-     * @param destino Divisão de destino.
-     * @return Lista de divisões representando o caminho mais curto.
-     * @throws ElementNotFoundException
-     */
-    public ArrayUnorderedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino)
-            throws ElementNotFoundException {
-        if (origem == null || destino == null) {
-            System.err.println("Erro: Origem ou destino inválidos.");
-            return new ArrayUnorderedList<>();
-        }
-
-        LinkedQueue<Divisao> fila = new LinkedQueue<>();
-        ArrayUnorderedList<Divisao> visitados = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Predecessor> predecessores = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Divisao> caminho = new ArrayUnorderedList<>();
-
-        fila.enqueue(origem);
-        visitados.addToRear(origem);
-        predecessores.addToRear(new Predecessor(origem, null));
-
-        while (!fila.isEmpty()) {
-            Divisao atual = fila.dequeue();
-            if (atual.equals(destino)) {
-                reconstruirCaminho(predecessores, destino);
-                break;
-            }
-
-            ArrayUnorderedList<Divisao> conexoes = mapa.obterConexoes(atual);
-            if (conexoes == null || conexoes.isEmpty()) {
-                continue;
-            }
-
-            for (int i = 0; i < conexoes.size(); i++) {
-                Divisao vizinho = conexoes.getElementAt(i);
-                if (vizinho == null)
-                    continue;
-
-                if (!visitados.contains(vizinho) && mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao())) {
-                    visitados.addToRear(vizinho);
-                    fila.enqueue(vizinho);
-                    predecessores.addToRear(new Predecessor(vizinho, atual));
-                }
-            }
-        }
-
-        return inverterLista(caminho);
     }
 
     public void mostrarMapaInterativo(ToCruz toCruz, Divisao divisaoAtual, boolean sucesso) {

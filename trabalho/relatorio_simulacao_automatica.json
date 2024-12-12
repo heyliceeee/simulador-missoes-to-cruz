@@ -1,0 +1,11 @@
+{
+  "id": "AUTO-001",
+  "divisaoInicial": "Base Inferior",
+  "divisaoFinal": "Base Inferior",
+  "status": "SUCESSO",
+  "vidaRestante": 10,
+  "trajeto": [],
+  "entradasSaidas": [],
+  "codigoMissao": "circulo infernal",
+  "versaoMissao": 1
+}

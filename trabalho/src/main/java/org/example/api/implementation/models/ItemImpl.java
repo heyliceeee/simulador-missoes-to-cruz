@@ -1,5 +1,6 @@
 package org.example.api.implementation.models;
 
+import org.example.api.implementation.interfaces.Divisao;
 import org.example.api.implementation.interfaces.Item;
 
 /**
@@ -8,6 +9,7 @@ import org.example.api.implementation.interfaces.Item;
 public class ItemImpl implements Item {
     private String tipo;
     private int pontos;
+    private Divisao divisao;
 
     /**
      * Construtor do Item.
@@ -41,6 +43,16 @@ public class ItemImpl implements Item {
     }
 
     @Override
+    public Divisao getDivisao() {
+        return divisao;
+    }
+
+    @Override
+    public void setDivisao(Divisao divisao) {
+        this.divisao = divisao;
+    }
+
+    @Override
     public String toString() {
         return "ItemImpl{" +
                 "tipo='" + tipo + '\'' +
@@ -50,8 +62,10 @@ public class ItemImpl implements Item {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Item item = (Item) o;
 

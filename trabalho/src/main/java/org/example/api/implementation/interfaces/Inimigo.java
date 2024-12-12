@@ -7,4 +7,5 @@ public interface Inimigo {
     int getPoder();
     void setPoder(int poder);
     void sofrerDano(int dano);
+    
 }

@@ -19,5 +19,7 @@ public interface Mapa {
     ArrayUnorderedList<Divisao> getDivisoes();
     ArrayUnorderedList<String> getEntradasSaidasNomes();
     public void moverInimigos(ToCruz toCruz, CombateService combateService) throws ElementNotFoundException;
+    public ArrayUnorderedList<Divisao> calcularMelhorCaminho(Divisao origem, Divisao destino) throws ElementNotFoundException;
+    public ArrayUnorderedList<Item> getItensPorTipo(String tipo);
     void mostrarMapa();
 }
