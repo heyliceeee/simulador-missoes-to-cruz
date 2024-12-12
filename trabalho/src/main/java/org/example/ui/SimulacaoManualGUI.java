@@ -34,6 +34,7 @@ public class SimulacaoManualGUI extends JFrame {
     private Image toCruzImage;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private ICombateService combateService;
+    private JButton iniciarButton;
     private JButton moverButton;
     private JButton usarButton;
     private JButton atacarButton;
@@ -103,6 +104,10 @@ public class SimulacaoManualGUI extends JFrame {
      * @param mapaPanel     mapa do edificio
      */
     private void inicializarControlos(JPanel controlePanel, MapaPanel mapaPanel) {
+        //TODO questionar ao To Cruz, qual divisao entrada/saida quer comecar
+        iniciarButton = new JButton("Iniciar");
+        iniciarButton.addActionListener(e -> moverEntradaSaidaToCruz(mapaPanel));
+
         moverButton = new JButton("Mover");
         moverButton.addActionListener(e -> moverToCruz(mapaPanel));
 
@@ -128,7 +133,6 @@ public class SimulacaoManualGUI extends JFrame {
                     if(toCruz.getVida() <= 0){
                         JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz foi derrotado.");
 
-                        //TODO exportar resultado
                         IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
                                 "MANUAL-002",
                                 caminhoPercorridoToCruz.first().getNomeDivisao(),
@@ -206,7 +210,6 @@ public class SimulacaoManualGUI extends JFrame {
                 atualizarEstadoBotoes();
                 JOptionPane.showMessageDialog(this, "Missao concluida com sucesso!");
 
-                //TODO exportar resultado
                 IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
                         "MANUAL-002",
                         caminhoPercorridoToCruz.first().getNomeDivisao(),
@@ -233,7 +236,6 @@ public class SimulacaoManualGUI extends JFrame {
             else if(divisaoAtual.isEntradaSaida() && !toCruz.isAlvoConcluido()){
                 JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz abandonou o alvo.");
 
-                //TODO exportar resultado
                 IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
                         "MANUAL-002",
                         caminhoPercorridoToCruz.first().getNomeDivisao(),
@@ -256,6 +258,7 @@ public class SimulacaoManualGUI extends JFrame {
             }
         });
 
+        controlePanel.add(iniciarButton);
         controlePanel.add(moverButton);
         controlePanel.add(usarButton);
         controlePanel.add(atacarButton);
@@ -278,6 +281,12 @@ public class SimulacaoManualGUI extends JFrame {
             boolean temAlvo = mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisaoAtual);
             //boolean terminouMissao = divisaoAtual.isEntradaSaida() && toCruz.getVida() > 0 && toCruz.isAlvoConcluido();
 
+            //Botao "iniciar"
+            iniciarButton.setEnabled(false);
+
+            //Botao "mochila"
+            usarButton.setEnabled(true);
+
             // Botao "Mover" e desativado se houver inimigos
             moverButton.setEnabled(!temInimigos);
 
@@ -292,8 +301,11 @@ public class SimulacaoManualGUI extends JFrame {
 
             //Botao "Sair"
             sairButton.setEnabled(true);
-        } else {
+        }
+        else {
             // Caso nao haja divisao atual, desativa os botoes
+            iniciarButton.setEnabled(true);
+            usarButton.setEnabled(false);
             moverButton.setEnabled(false);
             atacarButton.setEnabled(false);
             resgatarButton.setEnabled(false);
@@ -345,6 +357,26 @@ public class SimulacaoManualGUI extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this,
                     "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
+        }
+    }
+
+    /**
+     * Alterar a posicao atual, tanto na logica como no UI, do To Cruz
+     *
+     * @param mapaPanel
+     */
+    private void moverEntradaSaidaToCruz(MapaPanel mapaPanel) {
+        String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao do tipo entrada/saida:");
+        IDivisao novaDivisao = getDivisaoPorNome(destino);
+
+        if (novaDivisao != null && novaDivisao.isEntradaSaida()) {
+            toCruz.moverPara(novaDivisao);
+            caminhoPercorridoToCruz.addToRear(novaDivisao);
+            mapaPanel.repaint(); // Atualizar o desenho
+            atualizarEstadoBotoes(); // Atualizar estado dos botoes
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Movimento invalido (nao existe essa divisao ou nao e um tipo entrada/saida)!");
         }
     }
 
@@ -587,8 +619,8 @@ public class SimulacaoManualGUI extends JFrame {
 
         // criar o to cruz e definir a sua posicao inicial
         ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
-        IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisao
-        toCruz.moverPara(divisaoInicial);
+        //IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisao
+        //toCruz.moverPara(divisaoInicial);
 
         SwingUtilities.invokeLater(() -> {
             SimulacaoManualGUI gui = new SimulacaoManualGUI(mapa.getDivisoes(), mapa.getEntradasSaidas(),
