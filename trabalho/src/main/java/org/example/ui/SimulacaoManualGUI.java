@@ -107,15 +107,13 @@ public class SimulacaoManualGUI extends JFrame {
      * @param mapaPanel
      */
     private void moverToCruz(MapaPanel mapaPanel) throws ElementNotFoundException {
-        //mover inimigo antes do To Cruz agir
-        mapa.moverInimigos(toCruz, combateService);
-
         String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao:");
         IDivisao novaDivisao = getDivisaoPorNome(destino);
 
         if (novaDivisao != null && podeMover(toCruz.getPosicaoAtual(), novaDivisao)) {
             toCruz.moverPara(novaDivisao);
             caminhoPercorridoToCruz.addToRear(novaDivisao);
+            mapa.moverInimigos(toCruz, combateService); //mover inimigo antes do To Cruz agir
             mapaPanel.repaint(); // Atualizar o desenho
             atualizarEstadoBotoes(); // Atualizar estado dos botoes
         } else {
