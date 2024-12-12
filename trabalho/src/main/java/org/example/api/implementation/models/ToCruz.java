@@ -158,18 +158,14 @@ public class ToCruz implements IAgente {
      */
     @Override
     public void sofrerDano(int dano) {
-        if (dano < 0) {
-            System.err.println("Erro: Dano nao pode ser negativo.");
-            return;
-        }
-        vida -= dano;
-        if (vida <= 0) {
-            vida = 0;
-            System.out.println("To Cruz foi derrotado!");
-        } else {
-            System.out.println("To Cruz sofreu " + dano + " de dano! Vida restante: " + vida);
+        if (dano > 0) {
+            this.vida -= dano;
+            if (this.vida < 0) {
+                this.vida = 0; // Vida não pode ser negativa
+            }
         }
     }
+    
 
     /**
      * Obtem a vida atual do To Cruz.
@@ -291,4 +287,5 @@ public class ToCruz implements IAgente {
     public void setAlvoConcluido(boolean concluido) {
         this.alvoConcluido = concluido;
     }
+    
 }

@@ -8,6 +8,7 @@ import org.example.api.implementation.interfaces.IItem;
 public class ItemImpl implements IItem {
     private String tipo;
     private int pontos;
+    private Divisao divisao;
 
     /**
      * Construtor do Item.
@@ -38,6 +39,16 @@ public class ItemImpl implements IItem {
     @Override
     public void setPontos(int pontos) {
         this.pontos = pontos;
+    }
+
+    @Override
+    public Divisao getDivisao() {
+        return divisao;
+    }
+
+    @Override
+    public void setDivisao(Divisao divisao) {
+        this.divisao = divisao;
     }
 
     @Override

@@ -14,4 +14,5 @@ public interface IInimigo {
     void setPoder(int poder);
 
     void sofrerDano(int dano);
+    
 }

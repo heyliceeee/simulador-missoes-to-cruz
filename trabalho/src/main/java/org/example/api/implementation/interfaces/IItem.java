@@ -8,4 +8,9 @@ public interface IItem {
     int getPontos();
 
     void setPontos(int pontos);
+
+    Divisao getDivisao();
+
+    void setDivisao(Divisao divisao);
+
 }

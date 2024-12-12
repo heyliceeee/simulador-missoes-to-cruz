@@ -1,0 +1,16 @@
+{
+  "id": "MANUAL-001",
+  "divisaoInicial": "Heliporto",
+  "divisaoFinal": "Escada 2",
+  "status": "FALHA",
+  "vidaRestante": 0,
+  "trajeto": [
+    "Porteiro",
+    "Escada 2"
+  ],
+  "entradasSaidas": [
+    "Porteiro"
+  ],
+  "codigoMissao": "pata de coelho",
+  "versaoMissao": 6
+}

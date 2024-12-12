@@ -15,8 +15,15 @@ public class InimigoImpl implements IInimigo {
      *
      * @param nome  Nome do inimigo.
      * @param poder Poder do inimigo.
+     * @throws IllegalArgumentException se o nome for nulo ou vazio, ou se o poder for negativo.
      */
     public InimigoImpl(String nome, int poder) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do inimigo não pode ser nulo ou vazio.");
+        }
+        if (poder < 0) {
+            throw new IllegalArgumentException("O poder do inimigo não pode ser negativo.");
+        }
         this.nome = nome;
         this.poder = poder;
     }
@@ -53,9 +60,13 @@ public class InimigoImpl implements IInimigo {
      * Define o nome do inimigo.
      *
      * @param nome Novo nome do inimigo.
+     * @throws IllegalArgumentException se o nome for nulo ou vazio.
      */
     @Override
     public void setNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do inimigo não pode ser nulo ou vazio.");
+        }
         this.nome = nome;
     }
 
@@ -73,9 +84,13 @@ public class InimigoImpl implements IInimigo {
      * Define o poder do inimigo.
      *
      * @param poder Novo poder do inimigo.
+     * @throws IllegalArgumentException se o poder for negativo.
      */
     @Override
     public void setPoder(int poder) {
+        if (poder < 0) {
+            throw new IllegalArgumentException("O poder do inimigo não pode ser negativo.");
+        }
         this.poder = poder;
     }
 
@@ -83,16 +98,21 @@ public class InimigoImpl implements IInimigo {
      * Reduz o poder do inimigo ao sofrer dano.
      *
      * @param dano Quantidade de dano sofrido.
+     * @throws IllegalArgumentException se o dano for negativo.
      */
     @Override
     public void sofrerDano(int dano) {
-        this.poder -= dano;
-        if (this.poder < 0) {
-            this.poder = 0; // Evita que o poder seja negativo
+        if (dano < 0) {
+            throw new IllegalArgumentException("O dano não pode ser negativo.");
         }
-        System.out.println(this.nome + " sofreu " + dano + " de dano. Poder restante: " + this.poder);
+        this.poder = Math.max(0, this.poder - dano); // Garante que o poder não fique negativo
     }
 
+    /**
+     * Retorna uma representação em string do inimigo.
+     *
+     * @return String representando o inimigo.
+     */
     @Override
     public String toString() {
         return "Inimigo{" +
@@ -101,6 +121,12 @@ public class InimigoImpl implements IInimigo {
                 '}';
     }
 
+    /**
+     * Verifica a igualdade entre dois objetos do tipo InimigoImpl.
+     *
+     * @param o Objeto a ser comparado.
+     * @return true se os objetos forem iguais, false caso contrário.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -113,6 +139,11 @@ public class InimigoImpl implements IInimigo {
         return nome.equals(inimigo.nome);
     }
 
+    /**
+     * Retorna o hash code do objeto baseado no nome.
+     *
+     * @return Hash code do objeto.
+     */
     @Override
     public int hashCode() {
         return nome.hashCode();

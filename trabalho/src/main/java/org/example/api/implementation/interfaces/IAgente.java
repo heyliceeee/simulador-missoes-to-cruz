@@ -20,4 +20,5 @@ public interface IAgente {
     void adicionarAoInventario(IItem item);
 
     void usarKitDeVida();
+    
 }
