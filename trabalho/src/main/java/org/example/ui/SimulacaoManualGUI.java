@@ -35,7 +35,7 @@ public class SimulacaoManualGUI extends JFrame {
     private JButton atacarButton;
     private JButton resgatarButton;
     private JButton apanharButton;
-
+    private  JButton sairButton;
 
 
     public SimulacaoManualGUI(ArrayUnorderedList<IDivisao> divisoes, ArrayUnorderedList<IDivisao> entradasSaidas,
@@ -169,12 +169,12 @@ public class SimulacaoManualGUI extends JFrame {
             }
         });
 
-        JButton sairButton = new JButton("Sair");
+        sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
             IDivisao divisaoAtual = toCruz.getPosicaoAtual();
 
             if (toCruz.getVida() > 0 && divisaoAtual.isEntradaSaida() && toCruz.isAlvoConcluido()) {
-                //atualizarEstadoBotoes();
+                atualizarEstadoBotoes();
                 JOptionPane.showMessageDialog(this, "Missao concluida com sucesso!");
                 System.exit(0);
             }
@@ -192,6 +192,7 @@ public class SimulacaoManualGUI extends JFrame {
         controlePanel.add(atacarButton);
         controlePanel.add(resgatarButton);
         controlePanel.add(apanharButton);
+        controlePanel.add(sairButton);
 
         atualizarEstadoBotoes();
     }
@@ -220,12 +221,15 @@ public class SimulacaoManualGUI extends JFrame {
             // Botao "Apanhar" e ativado se houver itens na divisao
             apanharButton.setEnabled(temItens);
 
+            //Botao "Sair"
+            sairButton.setEnabled(true);
         } else {
             // Caso nao haja divisao atual, desativa os botoes
             moverButton.setEnabled(false);
             atacarButton.setEnabled(false);
             resgatarButton.setEnabled(false);
             apanharButton.setEnabled(false);
+            sairButton.setEnabled(false);
         }
     }
 
