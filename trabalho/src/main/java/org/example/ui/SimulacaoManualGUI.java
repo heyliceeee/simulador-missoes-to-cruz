@@ -24,7 +24,7 @@ import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.
 
 public class SimulacaoManualGUI extends JFrame {
 
-    // #region Constantes e Atributos
+    //#region Constantes e Atributos
     private ArrayUnorderedList<IDivisao> divisoes;
     private ArrayUnorderedList<Ligacao> ligacoes;
     private ArrayUnorderedList<IDivisao> caminhoPercorridoToCruz;
@@ -44,7 +44,7 @@ public class SimulacaoManualGUI extends JFrame {
     public static IMissao missao;
     private ExportarResultados exportador;
 
-    // #endregion
+    //#endregion
 
     /**
      * Construtor e Inicializacao
@@ -99,14 +99,17 @@ public class SimulacaoManualGUI extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    // #region Funcoes de Controlo do Jogo
+    //#region Funcoes de Controlo do Jogo
 
     /**
      * Alterar a posicao atual, tanto na logica como no UI, do To Cruz
      *
      * @param mapaPanel
      */
-    private void moverToCruz(MapaPanel mapaPanel) {
+    private void moverToCruz(MapaPanel mapaPanel) throws ElementNotFoundException {
+        //mover inimigo antes do To Cruz agir
+        mapa.moverInimigos(toCruz, combateService);
+
         String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao:");
         IDivisao novaDivisao = getDivisaoPorNome(destino);
 
@@ -233,9 +236,9 @@ public class SimulacaoManualGUI extends JFrame {
         }
         return false;
     }
-    // #endregion
+    //#endregion
 
-    // #region Funcoes da UI
+    //#region Funcoes da UI
 
     /**
      * criar botoes de acao
@@ -248,7 +251,13 @@ public class SimulacaoManualGUI extends JFrame {
         iniciarButton.addActionListener(e -> moverEntradaSaidaToCruz(mapaPanel));
 
         moverButton = new JButton("Mover");
-        moverButton.addActionListener(e -> moverToCruz(mapaPanel));
+        moverButton.addActionListener(e -> {
+            try {
+                moverToCruz(mapaPanel);
+            } catch (ElementNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         usarButton = new JButton("Mochila");
         usarButton.addActionListener(e -> {
@@ -440,7 +449,7 @@ public class SimulacaoManualGUI extends JFrame {
         }
     }
 
-    // #endregion
+    //#endregion
 
     private class MapaPanel extends JPanel {
         @Override
