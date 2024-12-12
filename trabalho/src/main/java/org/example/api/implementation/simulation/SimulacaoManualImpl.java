@@ -37,7 +37,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
         this.toCruz = toCruz;
         this.scanner = new Scanner(System.in);
         this.combateService = new CombateServiceImpl();
-        this.itensColetados = new ArrayUnorderedList<>(); // Alterado para ArrayUnorderedList
+        this.itensColetados = new ArrayUnorderedList<>(); 
         this.inimigosDerrotados = new ArrayUnorderedList<>();
         this.caminhoPercorrido = new ArrayUnorderedList<>();
     }

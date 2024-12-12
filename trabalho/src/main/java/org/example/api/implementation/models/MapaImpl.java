@@ -343,7 +343,7 @@ public class MapaImpl implements IMapa {
      * distância.
      */
     @Override
-    public void moverInimigos() throws ElementNotFoundException {
+    public void moverInimigos(ToCruz toCruz, CombateService combateService) throws ElementNotFoundException {
         Random random = new Random();
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
@@ -352,11 +352,11 @@ public class MapaImpl implements IMapa {
         }
 
         for (int i = 0; i < divisoes.size(); i++) {
-            IDivisao divisao = divisoes.getElementAt(i);
-            if (divisao == null)
+            IDivisao divisaoAtual = divisoes.getElementAt(i);
+            if (divisaoAtual == null)
                 continue;
 
-            ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
+            ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
             if (inimigos == null || inimigos.isEmpty())
                 continue;
 
@@ -366,24 +366,43 @@ public class MapaImpl implements IMapa {
             }
 
             for (int j = 0; j < inimigosCopy.size(); j++) {
-                IInimigo inimigo = inimigosCopy.getElementAt(j);
+                Inimigo inimigo = inimigosCopy.getElementAt(j);
                 if (inimigo == null)
                     continue;
 
-                ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);
-                if (conexoes == null || conexoes.isEmpty()) {
-                    throw new IllegalStateException(
-                            "Nenhuma conexao disponivel para mover o inimigo '" + inimigo.getNome() + "'.");
+                IDivisao origem = divisaoAtual;
+                IDivisao destino = origem;
+
+                // Movimentar até 2 divisões aleatoriamente
+                for (int movimentos = 0; movimentos < 2; movimentos++) {
+                    ArrayUnorderedList<IDivisao> conexoes = obterConexoes(destino);
+                    if (conexoes.isEmpty())
+                        break;
+
+                    IDivisao novaDivisao = conexoes.getElementAt(random.nextInt(conexoes.size()));
+                    if (novaDivisao != null) {
+                        destino = novaDivisao;
+                    }
                 }
 
-                IDivisao novaDivisao = conexoes.getElementAt(random.nextInt(conexoes.size()));
-                if (novaDivisao != null) {
-                    novaDivisao.adicionarInimigo(inimigo);
-                    divisao.removerInimigo(inimigo);
-                    System.out
-                            .println("Inimigo '" + inimigo.getNome() + "' movido para " + novaDivisao.getNomeDivisao());
-                } else {
-                    throw new IllegalStateException("A conexao selecionada e invalida (nula).");
+                // Mover inimigo para o destino final
+                if (!destino.equals(origem)) {
+                    destino.adicionarInimigo(inimigo);
+                    origem.removerInimigo(inimigo);
+                    System.out.println("Inimigo '" + inimigo.getNome() + "' movido de " +
+                            origem.getNomeDivisao() + " para " + destino.getNomeDivisao());
+
+                    // Verificar se o inimigo entrou na sala de Tó Cruz
+                    if (destino.equals(toCruz.getPosicaoAtual())) {
+                        System.out.println("⚔️ Inimigo entrou na sala de Tó Cruz! Combate iniciado.");
+                        combateService.resolverCombate(toCruz, destino);
+
+                        // Verificar se Tó Cruz foi derrotado
+                        if (toCruz.getVida() <= 0) {
+                            System.err.println("💀 Tó Cruz foi derrotado durante o ataque dos inimigos!");
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -395,16 +414,32 @@ public class MapaImpl implements IMapa {
      */
     @Override
     public void mostrarMapa() {
-        System.out.println("===== MAPA DO EDIFICIO =====");
+        System.out.println("===== MAPA DO EDIFÍCIO =====");
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
         for (int i = 0; i < divisoes.size(); i++) {
-            IDivisao divisao = divisoes.getElementAt(i);
+           IDivisao divisao = divisoes.getElementAt(i);
             if (divisao == null)
                 continue;
 
-            // Exibir o nome da divisao principal
-            System.out.println(pin + divisao.getNomeDivisao());
+            // Obter informações da divisão
+            ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
+            ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
+            
+            // Exibir o nome da divisão com símbolos adicionais
+            System.out.print(pin + divisao.getNomeDivisao());
+
+            if (inimigos != null && !inimigos.isEmpty()) {
+                System.out.print(" ⚔️ (" + inimigos.size() + " inimigos)");
+            }
+            if (itens != null && !itens.isEmpty()) {
+                System.out.print(" 🎒 (" + itens.size() + " itens)");
+            }
+            if (divisao.isEntradaSaida()) {
+                System.out.print(" 🚪 [Entrada/Saída]");
+            }
+
+            System.out.println();
 
             // Obter as conexões
             ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);

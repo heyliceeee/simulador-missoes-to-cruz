@@ -119,21 +119,37 @@ public class ToCruz implements IAgente {
      * @param item O item a ser adicionado.
      */
     @Override
-    public void adicionarAoInventario(IItem item) {
-        if (item == null) {
-            System.err.println("Erro: Item a ser adicionado e nulo.");
-            return;
-        }
-
-        if ("colete".equalsIgnoreCase(item.getTipo())) {
-            vida += item.getPontos();
-            System.out
-                    .println("Consumiu um colete! Ganhou " + item.getPontos() + " pontos extras. Vida atual: " + vida);
-        } else {
-            inventario.push(item);
-            System.out.println("Item adicionado ao inventario: " + item.getTipo());
-        }
+public void adicionarAoInventario(IItem item) {
+    if (item == null) {
+        System.err.println("Erro: Item a ser adicionado é nulo.");
+        return;
     }
+
+    switch (item.getTipo().toLowerCase()) {
+        case "colete":
+            // Adiciona os pontos de vida do colete, permitindo ultrapassar o limite de 100
+            vida += item.getPontos();
+            System.out.println("Consumiu um colete! Ganhou " + item.getPontos() + " pontos extras. Vida atual: " + vida);
+            break;
+
+        case "kit de vida":
+            // Verifica o limite máximo de kits na mochila
+            if (inventario.size() >= 5) { // Considerando 5 como limite configurado
+                System.out.println("Mochila cheia! Não é possível carregar mais kits de vida.");
+            } else {
+                inventario.push(item);
+                System.out.println("Kit de vida adicionado ao inventário.");
+            }
+            break;
+
+        default:
+            // Outros tipos de itens
+            inventario.push(item);
+            System.out.println("Item adicionado ao inventário: " + item.getTipo());
+            break;
+    }
+}
+
 
     /**
      * Reduz os pontos de vida do Tó Cruz ao sofrer dano.

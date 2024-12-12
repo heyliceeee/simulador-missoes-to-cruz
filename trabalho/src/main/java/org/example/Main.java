@@ -60,7 +60,7 @@ public class Main {
         ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
 
-        IResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
+        ResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
                 "AUTO-001",
                 divisaoInicial.getNomeDivisao(),
                 simulacaoAuto.getDivisaoFinal().getNomeDivisao(),
@@ -69,22 +69,15 @@ public class Main {
                 filtrarLista(simulacaoAuto.getCaminhoPercorridoNomes()),
                 filtrarLista(mapa.getEntradasSaidasNomes()),
                 missao.getCodMissao(),
-                missao.getVersao());
-
-        ArrayUnorderedList<IResultadoSimulacao> resultados = new ArrayUnorderedList<>();
-        resultados.addToRear(resultadoAuto);
-
-        ExportarResultados exportador = new ExportarResultados();
-        exportador.exportarParaJson(resultados, "resultado_simulacao_automatica.json");
-        logger.info("Resultado da Simulacao Automatica exportado com sucesso.");
+                missao.getVersao()
+        );
 
         // Simulacao Manual
         logger.info("Iniciando a simulacao manual...");
         ISimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
         simulacaoManual.executar(mapa.getAlvo().getDivisao());
 
-        ArrayUnorderedList<String> trajetoManual = filtrarLista(simulacaoManual.getCaminhoPercorridoNomes());
-        IResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
+        ResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
                 "MANUAL-001",
                 divisaoInicial.getNomeDivisao(),
                 simulacaoManual.getDivisaoFinal().getNomeDivisao(),
@@ -93,11 +86,14 @@ public class Main {
                 filtrarLista(simulacaoManual.getCaminhoPercorridoNomes()),
                 filtrarLista(mapa.getEntradasSaidasNomes()),
                 missao.getCodMissao(),
-                missao.getVersao());
+                missao.getVersao()
+        );
 
-        resultados.addToRear(resultadoManual);
-        exportador.exportarParaJson(resultados, "resultado_simulacao_manual.json");
-        logger.info("Resultado da Simulacao Manual exportado com sucesso.");
+        // Exportar o relatório combinado
+        ExportarResultados exportador = new ExportarResultados();
+        exportador.exportarRelatorioSimulacoes(resultadoAuto, resultadoManual, mapa, "relatorio_simulacoes.json");
+
+        logger.info("Relatório de simulações exportado com sucesso.");
 
         logger.info("Programa finalizado com sucesso.");
     }

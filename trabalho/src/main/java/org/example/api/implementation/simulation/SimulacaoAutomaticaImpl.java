@@ -89,6 +89,16 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         while (!fila.isEmpty()) {
             IDivisao atual = fila.dequeue();
 
+            // Movimentação dos inimigos antes do jogador agir
+            System.out.println("Movimentando inimigos...");
+            mapa.moverInimigos(toCruz, combateService);
+
+            // Verifica se Tó Cruz sobreviveu após a movimentação dos inimigos
+            if (toCruz.getVida() <= 0) {
+                System.err.println("💀 Tó Cruz foi derrotado após a movimentação dos inimigos!");
+                return;
+            }
+
             if (atual.equals(divisaoObjetivo)) {
                 // Reconstruir o caminho ate o objetivo
                 System.out.println("Objetivo encontrado: " + atual.getNomeDivisao());
@@ -222,7 +232,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      *
      * @return Lista de divisões representando o caminho mais curto para a saida.
      */
-    private ArrayUnorderedList<IDivisao> encontrarCaminhoParaSaidaMaisProxima() {
+    public ArrayUnorderedList<IDivisao> encontrarCaminhoParaSaidaMaisProxima() {
         ArrayUnorderedList<String> entradasSaidas = mapa.getEntradasSaidasNomes();
         if (entradasSaidas.isEmpty()) {
             System.err.println("Erro: Nenhuma divisao de saida definida no mapa.");
@@ -290,6 +300,16 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      *
      * @param predecessores Lista de predecessores para cada divisao.
      * @param objetivo      Divisao objetivo que foi encontrada.
+     */
+    /**
+     * private void reconstructPath(ArrayUnorderedList<Predecessor> predecessores,
+     * Divisao objetivo, ArrayUnorderedList<Divisao> caminho) {
+     * Divisao passo = objetivo;
+     * while (passo != null) {
+     * caminho.addToRear(passo);
+     * passo = getPredecessor(predecessores, passo.getNomeDivisao());
+     * }
+     * }
      */
     /**
      * private void reconstructPath(ArrayUnorderedList<Predecessor> predecessores,

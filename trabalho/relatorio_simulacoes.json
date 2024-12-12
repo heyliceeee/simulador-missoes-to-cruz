@@ -1,0 +1,28 @@
+{
+  "simulacaoAutomatica": {
+    "id": "AUTO-001",
+    "divisaoInicial": "Heliporto",
+    "divisaoFinal": "Heliporto",
+    "status": "FALHA",
+    "vidaRestante": 0,
+    "trajeto": [],
+    "entradasSaidas": [],
+    "codigoMissao": "pata de coelho",
+    "versaoMissao": 6
+  },
+  "simulacaoManual": {
+    "id": "MANUAL-001",
+    "divisaoInicial": "Heliporto",
+    "divisaoFinal": "Heliporto",
+    "status": "FALHA",
+    "vidaRestante": 0,
+    "trajeto": [
+      "Heliporto"
+    ],
+    "entradasSaidas": [
+      "Heliporto"
+    ],
+    "codigoMissao": "pata de coelho",
+    "versaoMissao": 6
+  }
+}
