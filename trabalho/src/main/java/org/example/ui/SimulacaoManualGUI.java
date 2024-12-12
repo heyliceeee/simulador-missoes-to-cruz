@@ -149,7 +149,11 @@ public class SimulacaoManualGUI extends JFrame {
             IDivisao divisaoAtual = toCruz.getPosicaoAtual();
             if (divisaoAtual != null) {
                 ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
-                
+
+                if(toCruz.getInventario().size() >= 5){
+                    JOptionPane.showMessageDialog(this, "Mochila cheia! Nao e possivel carregar mais kits de vida.");
+                }
+
                 while (itens.size() > 0) {
                     IItem item = itens.getElementAt(0);
                     toCruz.adicionarAoInventario(item);
