@@ -42,7 +42,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     public void addAfter(T element, T target) throws ElementNotFoundException {
 
         if (isEmpty()) {
-            throw new ElementNotFoundException("A lista está vazia.");
+            throw new ElementNotFoundException("A lista esta vazia.");
         }
 
         int index = -1;
@@ -65,7 +65,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
             list[i] = list[i - 1];
         }
 
-        // Adiciona o novo elemento após o elemento alvo
+        // Adiciona o novo elemento apos o elemento alvo
         list[index + 1] = element;
         count++;
     }
@@ -86,7 +86,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     @Override
     public void setElementAt(int index, T element) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("O indice está fora dos limites da lista.");
+            throw new IndexOutOfBoundsException("O indice esta fora dos limites da lista.");
         }
         if (element == null) {
             throw new IllegalArgumentException("O valor nao pode ser null.");

@@ -13,7 +13,7 @@ public class AlvoImpl implements IAlvo {
     /**
      * Construtor do Alvo.
      *
-     * @param divisao Divisao onde o alvo está localizado.
+     * @param divisao Divisao onde o alvo esta localizado.
      * @param tipo    Tipo do alvo.
      */
     public AlvoImpl(IDivisao divisao, String tipo) {

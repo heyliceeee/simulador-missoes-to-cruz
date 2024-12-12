@@ -27,7 +27,7 @@ public interface QueueADT<T>
     public boolean isEmpty();
 
     /**
-     * retorna o número de elementos da queue
+     * retorna o numero de elementos da queue
      * @return o tamanho da queue
      */
     public int size();

@@ -3,25 +3,25 @@ package org.example.api.implementation.interfaces;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Interface para exportação de resultados e relatórios de simulações.
+ * Interface para exportacao de resultados e relatorios de simulacoes.
  */
 public interface IExportador {
 
     /**
-     * Exporta os resultados das simulacões para um arquivo JSON.
+     * Exporta os resultados das simulacoes para um arquivo JSON.
      *
      * @param resultados     Lista de resultados a serem exportados.
-     * @param caminhoArquivo Caminho do arquivo de destino para exportação.
+     * @param caminhoArquivo Caminho do arquivo de destino para exportacao.
      */
-    void exportarParaJson(ArrayUnorderedList<ResultadoSimulacao> resultados, String caminhoArquivo);
+    void exportarParaJson(ArrayUnorderedList<IResultadoSimulacao> resultados, String caminhoArquivo);
 
     /**
-     * Exporta um relatório detalhado das simulações automática e manual.
+     * Exporta um relatorio detalhado das simulacoes automatica e manual.
      *
-     * @param simulacaoAutomatica Resultado da simulação automática.
-     * @param simulacaoManual     Resultado da simulação manual.
-     * @param mapa                O mapa usado nas simulações.
-     * @param caminhoArquivo      Caminho do arquivo de destino para exportação.
+     * @param simulacaoAutomatica Resultado da simulacao automatica.
+     * @param simulacaoManual     Resultado da simulacao manual.
+     * @param mapa                O mapa usado nas simulacoes.
+     * @param caminhoArquivo      Caminho do arquivo de destino para exportacao.
      */
-    void exportarRelatorioSimulacoes(ResultadoSimulacao simulacaoAutomatica, ResultadoSimulacao simulacaoManual, Mapa mapa, String caminhoArquivo);
+    void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica, IResultadoSimulacao simulacaoManual, IMapa mapa, String caminhoArquivo);
 }

@@ -24,7 +24,7 @@ public class ImportJsonImpl implements IImportJson {
     /**
      * Construtor que inicializa o mapa.
      *
-     * @param mapa O mapa que será utilizado na importacao.
+     * @param mapa O mapa que sera utilizado na importacao.
      */
     public ImportJsonImpl(IMapa mapa) {
         this.mapa = mapa;
@@ -59,10 +59,10 @@ public class ImportJsonImpl implements IImportJson {
      * Carrega o mapa do edificio a partir de um arquivo JSON.
      *
      * @param jsonPath Caminho do arquivo JSON.
-     * @throws InvalidJsonStructureException Se a estrutura básica do JSON estiver
+     * @throws InvalidJsonStructureException Se a estrutura basica do JSON estiver
      *                                       incorreta.
      * @throws InvalidFieldException         Se um campo especifico do JSON for
-     *                                       inválido.
+     *                                       invalido.
      * @throws DivisionNotFoundException     Se uma divisao referenciada nao for
      *                                       encontrada no mapa.
      */
@@ -75,7 +75,7 @@ public class ImportJsonImpl implements IImportJson {
 
             validarEstrutura(jsonObject);
 
-            // Processar divisões
+            // Processar divisoes
             JSONArray edificioArray = (JSONArray) jsonObject.get("edificio");
             logger.info("Carregar divisoes:");
             for (Object element : edificioArray) {
@@ -84,11 +84,11 @@ public class ImportJsonImpl implements IImportJson {
                 logger.debug("Divisao adicionada: {}", divisaoNome);
             }
 
-            // Verificar se as divisões foram carregadas corretamente
+            // Verificar se as divisoes foram carregadas corretamente
             logger.info("\nDivisoes carregadas no grafo:");
             mapa.getDivisoes().forEach(divisao -> logger.info(divisao.getNomeDivisao()));
 
-            // Ler conexões
+            // Ler conexoes
             JSONArray ligacoesArray = (JSONArray) jsonObject.get("ligacoes");
             logger.info("\nCarregando ligacoes:");
             for (Object element : ligacoesArray) {
@@ -195,8 +195,8 @@ public class ImportJsonImpl implements IImportJson {
      *
      * @param value Valor a ser validado.
      * @param campo Nome do campo para mensagens de erro.
-     * @return Valor como string, se válido.
-     * @throws InvalidFieldException Se o valor nao for uma string válida.
+     * @return Valor como string, se valido.
+     * @throws InvalidFieldException Se o valor nao for uma string valida.
      */
     private String validarString(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof String)) {
@@ -206,12 +206,12 @@ public class ImportJsonImpl implements IImportJson {
     }
 
     /**
-     * Valida se um valor e um número inteiro.
+     * Valida se um valor e um numero inteiro.
      *
      * @param value Valor a ser validado.
      * @param campo Nome do campo para mensagens de erro.
-     * @return Valor como inteiro, se válido.
-     * @throws InvalidFieldException Se o valor nao for um número inteiro válido.
+     * @return Valor como inteiro, se valido.
+     * @throws InvalidFieldException Se o valor nao for um numero inteiro valido.
      */
     private int validarInt(Object value, String campo) throws InvalidFieldException {
         if (value == null || !(value instanceof Number)) {
@@ -222,10 +222,10 @@ public class ImportJsonImpl implements IImportJson {
     }
 
     /**
-     * Valida se a estrutura básica do JSON está presente.
+     * Valida se a estrutura basica do JSON esta presente.
      *
      * @param jsonObject Objeto JSON a ser validado.
-     * @throws InvalidJsonStructureException Se a estrutura básica estiver
+     * @throws InvalidJsonStructureException Se a estrutura basica estiver
      *                                       incorreta.
      */
     private void validarEstrutura(JSONObject jsonObject) throws InvalidJsonStructureException {

@@ -29,7 +29,7 @@ public class LinkedList<T> implements Iterable<T> {
         this.count++;
     }
 
-     // Verifica se a lista está vazia
+     // Verifica se a lista esta vazia
      public boolean isEmpty() {
         return count == 0;
     }
@@ -66,7 +66,7 @@ public class LinkedList<T> implements Iterable<T> {
                 current.setData(element); // Atualiza o elemento
                 return;
             }
-            current = current.getNext(); // Avanca para o próximo nó
+            current = current.getNext(); // Avanca para o proximo no
             currentIndex++;
         }
 
@@ -92,7 +92,7 @@ public class LinkedList<T> implements Iterable<T> {
             if (currentIndex == index) {
                 return current.getData();
             }
-            current = current.getNext(); // Avanca para o próximo nó
+            current = current.getNext(); // Avanca para o proximo no
             currentIndex++;
         }
 
@@ -105,9 +105,9 @@ public class LinkedList<T> implements Iterable<T> {
      * Verifica se a lista contem o elemento especificado.
      *
      * @param element O elemento a ser procurado.
-     * @return true se o elemento estiver presente, false caso contrário.
+     * @return true se o elemento estiver presente, false caso contrario.
      */
-    // Verifica se um elemento está na lista
+    // Verifica se um elemento esta na lista
     public boolean contains(T element) {
         Node<T> current = head;
         while (current != null) {
@@ -151,7 +151,7 @@ public class LinkedList<T> implements Iterable<T> {
     // Remove um elemento da lista
     public T remove(T element) throws EmptyListException {
         if (this.head == null) {
-            throw new EmptyListException("A lista está vazia");
+            throw new EmptyListException("A lista esta vazia");
         }
 
         boolean found = false;
@@ -185,7 +185,7 @@ public class LinkedList<T> implements Iterable<T> {
         return current.getData();
     }
 
-    // Retorna o número de elementos na lista
+    // Retorna o numero de elementos na lista
     public int size() {
         return count;
     }

@@ -21,7 +21,7 @@ tasks.withType(JavaCompile) {
 }
 
 repositories {
-    // Repositório Maven para resolver dependencias
+    // Repositorio Maven para resolver dependencias
     mavenCentral()
 }
 
@@ -44,7 +44,7 @@ dependencies {
     // Implementacao Logback Classic para SLF4J
     implementation 'ch.qos.logback:logback-classic:1.4.11'
 
-    // Dependencia opcional: SLF4J Simple (removida, pois Logback já está em uso)
+    // Dependencia opcional: SLF4J Simple (removida, pois Logback ja esta em uso)
     // implementation 'org.slf4j:slf4j-simple:2.0.9'
 }
 

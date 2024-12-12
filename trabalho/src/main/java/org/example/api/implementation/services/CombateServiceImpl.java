@@ -27,13 +27,13 @@ public class CombateServiceImpl implements ICombateService {
     @Override
     public void resolverCombate(ToCruz toCruz, IDivisao divisaoAtual) throws ElementNotFoundException {
         if (toCruz == null || divisaoAtual == null) {
-            System.err.println("Erro: Agente ou divisão atual é nula.");
+            System.err.println("Erro: Agente ou divisao atual e nula.");
             return;
         }
 
         ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
         if (inimigos == null || inimigos.isEmpty()) {
-            System.out.println("Nenhum inimigo na divisão.");
+            System.out.println("Nenhum inimigo na divisao.");
             return;
         }
 
@@ -53,7 +53,7 @@ public class CombateServiceImpl implements ICombateService {
 
             // Combate direto
             while (toCruz.getVida() > 0 && inimigo.getPoder() > 0) {
-                inimigo.sofrerDano(10); // Tó Cruz ataca o inimigo com um dano fixo de 10
+                inimigo.sofrerDano(10); // To Cruz ataca o inimigo com um dano fixo de 10
                 System.out.println("\uD83D\uDFE2 To Cruz atacou o inimigo '" + inimigo.getNome() + "'!");
 
                 if (inimigo.getPoder() > 0) {
@@ -66,10 +66,10 @@ public class CombateServiceImpl implements ICombateService {
             if (inimigo.getPoder() <= 0) {
                 System.out.println(skull+" Inimigo '" + inimigo.getNome() + "' foi derrotado!");
                 inimigos.remove(inimigo);
-                i--; // Ajustar índice após remoção
+                i--; // Ajustar indice apos remocao
             }
 
-            // Verificar o estado de Tó Cruz
+            // Verificar o estado de To Cruz
             if (toCruz.getVida() <= 0) {
                 System.err.println(skull+" To Cruz foi derrotado!");
                 return;

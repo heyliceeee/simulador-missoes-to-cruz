@@ -11,59 +11,59 @@ public interface BinaryTreeADT<T>
     public T getRoot();
 
     /**
-     * retorna true se a árvore binaria estiver vazia, caso contrário retorna falso
-     * @return true se a árvore binaria estiver vazia
+     * retorna true se a arvore binaria estiver vazia, caso contrario retorna falso
+     * @return true se a arvore binaria estiver vazia
      */
     public boolean isEmpty();
 
     /**
-     * retorna o número de elementos da árvore binária
-     * @return o número de elementos da árvore
+     * retorna o numero de elementos da arvore binaria
+     * @return o numero de elementos da arvore
      */
     public int size();
 
     /**
-     * retorna true se a árvore binária conter o elemento procurado, caso contrário retorna false
+     * retorna true se a arvore binaria conter o elemento procurado, caso contrario retorna false
      * @param targetElement o elemento a ser procurado
-     * @return true se a árvore conter o elemento procurado
+     * @return true se a arvore conter o elemento procurado
      */
     public boolean contains(T targetElement);
 
     /**
-     * retorna uma referencia de um especifico elemento se este for encontrado na árvore binaria, caso o elemento nao for encontrado, retorna uma excecao
-     * @param targetElement o elemento a ser procurado na árvore
-     * @return uma referencia de um especifico elemento se este for encontrado na árvore
+     * retorna uma referencia de um especifico elemento se este for encontrado na arvore binaria, caso o elemento nao for encontrado, retorna uma excecao
+     * @param targetElement o elemento a ser procurado na arvore
+     * @return uma referencia de um especifico elemento se este for encontrado na arvore
      */
     public T find(T targetElement);
 
     /**
-     * retorna a árvore binária
-     * @return a árvore
+     * retorna a arvore binaria
+     * @return a arvore
      */
     public String toString();
 
     /**
-     * executa uma travessia inorder na árvore binária chamando um metodo inorder recursivo sobrecarregando que comeca com a root
-     * @return um iterador sobre os elementos da árvore
+     * executa uma travessia inorder na arvore binaria chamando um metodo inorder recursivo sobrecarregando que comeca com a root
+     * @return um iterador sobre os elementos da arvore
      */
     public Iterator<T> iteratorInOrder();
 
    /**
-     * executa uma travessia preorder na árvore binária chamando um metodo preorder recursivo sobrecarregando que comeca com a root
-     * @return um iterador sobre os elementos da árvore
+     * executa uma travessia preorder na arvore binaria chamando um metodo preorder recursivo sobrecarregando que comeca com a root
+     * @return um iterador sobre os elementos da arvore
      */
     public Iterator<T> iteratorPreOrder();
 
     /**
-     * executa uma travessia postorder na árvore binária chamando um metodo postorder recursivo sobrecarregado que comeca com a root
-     * @return um iterador sobre os elementos da árvore
+     * executa uma travessia postorder na arvore binaria chamando um metodo postorder recursivo sobrecarregado que comeca com a root
+     * @return um iterador sobre os elementos da arvore
      */
     public Iterator<T> iteratorPostOrder();
 
 
     /**
-     * executa uma travessia levelorder na árvore binária utilizando uma queue
-     * @return um iterador sobre os elementos da árvore
+     * executa uma travessia levelorder na arvore binaria utilizando uma queue
+     * @return um iterador sobre os elementos da arvore
      */
     public Iterator<T> iteratorLevelOrder();
 }

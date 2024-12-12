@@ -72,9 +72,9 @@ public class SimulacaoManualGUI extends JFrame {
 
     /**
      * Interage com o alvo se estiver na mesma divisao.
-     * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
+     * Se houver inimigos, avisa o jogador que deve elimina-los antes.
      *
-     * @param divisao A divisao onde o Tó Cruz está.
+     * @param divisao A divisao onde o To Cruz esta.
      */
     private void interagirComAlvo(IDivisao divisao) {
         if (mapa.getAlvo() != null && mapa.getAlvo().getDivisao().equals(divisao)) {
@@ -149,6 +149,7 @@ public class SimulacaoManualGUI extends JFrame {
             IDivisao divisaoAtual = toCruz.getPosicaoAtual();
             if (divisaoAtual != null) {
                 ArrayUnorderedList<IItem> itens = divisaoAtual.getItensPresentes();
+                
                 while (itens.size() > 0) {
                     IItem item = itens.getElementAt(0);
                     toCruz.adicionarAoInventario(item);
@@ -216,7 +217,7 @@ public class SimulacaoManualGUI extends JFrame {
             apanharButton.setEnabled(temItens);
 
         } else {
-            // Caso nao haja divisao atual, desativa os botões
+            // Caso nao haja divisao atual, desativa os botoes
             moverButton.setEnabled(false);
             atacarButton.setEnabled(false);
             resgatarButton.setEnabled(false);
@@ -229,7 +230,7 @@ public class SimulacaoManualGUI extends JFrame {
      */
     private void carregarImagens() {
         try {
-            // Caminho para a imagem do Tó Cruz
+            // Caminho para a imagem do To Cruz
             toCruzImage = new ImageIcon(getClass().getResource("/images/to_cruz.jpg")).getImage();
         } catch (Exception e) {
             System.err.println("Erro ao carregar a imagem do To Cruz: " + e.getMessage());
@@ -240,7 +241,7 @@ public class SimulacaoManualGUI extends JFrame {
      * criar divisoes no mapa
      */
     private void gerarPosicoesDivisoes() {
-        // Gerar posicões com maior espacamento
+        // Gerar posicoes com maior espacamento
         int xBase = 100, yBase = 100, offsetX = 150, offsetY = 100;
 
         for (int i = 0; i < divisoes.size(); i++) {
@@ -262,7 +263,7 @@ public class SimulacaoManualGUI extends JFrame {
         if (novaDivisao != null && podeMover(toCruz.getPosicaoAtual(), novaDivisao)) {
             toCruz.moverPara(novaDivisao);
             mapaPanel.repaint(); // Atualizar o desenho
-            atualizarEstadoBotoes(); // Atualizar estado dos botões
+            atualizarEstadoBotoes(); // Atualizar estado dos botoes
         } else {
             JOptionPane.showMessageDialog(this,
                     "Movimento invalido (nao existe essa divisao ou nao ha ligacao direta)!");
@@ -302,7 +303,7 @@ public class SimulacaoManualGUI extends JFrame {
             // Configura suavizacao para melhorar o visual
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // Desenhar conexões apenas para a divisao atual
+            // Desenhar conexoes apenas para a divisao atual
             g2.setColor(Color.LIGHT_GRAY);
             if (toCruz.getPosicaoAtual() != null && toCruzImage != null) {
                 IDivisao posicaoAtual = toCruz.getPosicaoAtual();
@@ -322,7 +323,7 @@ public class SimulacaoManualGUI extends JFrame {
                 }
             }
 
-            // Desenhar divisões
+            // Desenhar divisoes
             for (int i = 0; i < divisoes.size(); i++) {
                 IDivisao divisao = divisoes.getElementAt(i);
                 Point pos = posicoesDivisoes.getElementAt(i);
@@ -339,7 +340,7 @@ public class SimulacaoManualGUI extends JFrame {
                 g2.drawString(divisao.getNomeDivisao(), pos.x - 30, pos.y - 15);
             }
 
-            // Desenhar Tó Cruz
+            // Desenhar To Cruz
             if (toCruz.getPosicaoAtual() != null && toCruzImage != null) {
                 Point toCruzPos = posicoesDivisoes.getElementAt(divisoes.indexOf(toCruz.getPosicaoAtual()));
                 g2.drawImage(toCruzImage, toCruzPos.x - 15, toCruzPos.y - 5, 30, 30, this);
@@ -385,7 +386,7 @@ public class SimulacaoManualGUI extends JFrame {
             // Adicionar legenda
             desenharLegenda(g2);
 
-            // Exibir informacões no canto superior esquerdo
+            // Exibir informacoes no canto superior esquerdo
             g2.setColor(Color.RED);
             g2.drawString( toCruz.getVida() + " " + life, 10, 20);
 
@@ -401,7 +402,7 @@ public class SimulacaoManualGUI extends JFrame {
                 } else if (item.getTipo().equalsIgnoreCase("colete")) {
                     qtdColetes++;
                 }
-                toCruz.getInventario().push(item); // Reinsere o item no inventário
+                toCruz.getInventario().push(item); // Reinsere o item no inventario
             }
 
             g2.setColor(Color.darkGray);
@@ -412,7 +413,7 @@ public class SimulacaoManualGUI extends JFrame {
         }
 
         /**
-         * Desenha uma legenda na interface gráfica.
+         * Desenha uma legenda na interface grafica.
          *
          * @param g2 Graphics2D para desenhar.
          */
@@ -432,11 +433,11 @@ public class SimulacaoManualGUI extends JFrame {
         }
 
         /**
-         * Verifica se a linha entre dois pontos intersecta outras divisões.
+         * Verifica se a linha entre dois pontos intersecta outras divisoes.
          *
          * @param pos1 Ponto inicial da linha.
          * @param pos2 Ponto final da linha.
-         * @return true se intersecta, false caso contrário.
+         * @return true se intersecta, false caso contrario.
          */
         private boolean verificaInterseccao(Point pos1, Point pos2) {
             for (int i = 0; i < posicoesDivisoes.size(); i++) {
@@ -499,7 +500,7 @@ public class SimulacaoManualGUI extends JFrame {
         }
 
         if (mapa.getDivisoes().isEmpty()) {
-            logger.error("Mapa nao possui divisões carregadas. Encerrando o programa.");
+            logger.error("Mapa nao possui divisoes carregadas. Encerrando o programa.");
             return;
         }
 

@@ -149,14 +149,14 @@ public abstract class ArrayList<T> implements ListADT<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            canRemove = true; // podemos remover após chamar next()
+            canRemove = true; // podemos remover apos chamar next()
             return list[currentIndex++];
         }
 
         @Override
         public void remove() {
             if (!canRemove) {
-                throw new IllegalStateException("Metodo next() nao foi chamado ou já foi chamado remove().");
+                throw new IllegalStateException("Metodo next() nao foi chamado ou ja foi chamado remove().");
             }
             if (expectedModCount != modCount) {
                 throw new ConcurrentModificationException("A lista foi modificada.");
@@ -167,9 +167,9 @@ public abstract class ArrayList<T> implements ListADT<T> {
                 list[i] = list[i + 1];
             }
 
-            list[count - 1] = null; // limpe a última posicao
+            list[count - 1] = null; // limpe a ultima posicao
             count--;
-            modCount++; // incrementa o contador de modificacões
+            modCount++; // incrementa o contador de modificacoes
             expectedModCount++; // atualiza o esperado
             canRemove = false; // reseta o controle de remocao
         }

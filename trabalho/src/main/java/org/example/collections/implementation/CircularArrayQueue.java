@@ -68,7 +68,7 @@ public class CircularArrayQueue<T> implements QueueADT<T>
         } else
         {
             queue[rear] = element; //rear = novo elemento
-            rear = (rear + 1) % queue.length; //rear volta á posicao inicial
+            rear = (rear + 1) % queue.length; //rear volta a posicao inicial
 
             size++;
         }
@@ -87,7 +87,7 @@ public class CircularArrayQueue<T> implements QueueADT<T>
             result = queue[front]; //elemento front
             queue[front] = null; //elemento front passa a ser nulo (foi removido)
 
-            front = (front + 1) % queue.length; //front volta á posicao inicial
+            front = (front + 1) % queue.length; //front volta a posicao inicial
 
             size--;
         }

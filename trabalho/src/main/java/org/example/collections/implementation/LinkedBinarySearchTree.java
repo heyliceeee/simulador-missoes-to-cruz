@@ -7,7 +7,7 @@ public class LinkedBinarySearchTree<T> extends LinkedBinaryTree<T> implements Bi
 {
 
     /**
-     * cria uma árvore binária de pesquisa vazia
+     * cria uma arvore binaria de pesquisa vazia
      */
     public LinkedBinarySearchTree()
     {
@@ -16,8 +16,8 @@ public class LinkedBinarySearchTree<T> extends LinkedBinaryTree<T> implements Bi
 
 
     /**
-     * cria uma árvore binária de pesquisa com o elemento especificado como root
-     * @param element o elemento que irá ser a root da nova árvore binária de pesquisa
+     * cria uma arvore binaria de pesquisa com o elemento especificado como root
+     * @param element o elemento que ira ser a root da nova arvore binaria de pesquisa
      */
     public LinkedBinarySearchTree(T element)
     {
@@ -144,7 +144,7 @@ public class LinkedBinarySearchTree<T> extends LinkedBinaryTree<T> implements Bi
 
 
     /**
-     * retorna uma referencia a um node que substituirá aquele especificado para remocao.
+     * retorna uma referencia a um node que substituira aquele especificado para remocao.
      * no caso em que o node removido possui 2 filhos, o sucessor inorder e utilizado como seu substituto.
      *
      * @param node o node a ser removido
@@ -247,7 +247,7 @@ public class LinkedBinarySearchTree<T> extends LinkedBinaryTree<T> implements Bi
 
         BinaryTreeNode<T> current = root;
 
-        //o ciclo só testa a parte esquerda porque os elementos menores que o root sao inseridos na parte esquerda
+        //o ciclo so testa a parte esquerda porque os elementos menores que o root sao inseridos na parte esquerda
         while (current.left != null)
         {
             current = current.left;

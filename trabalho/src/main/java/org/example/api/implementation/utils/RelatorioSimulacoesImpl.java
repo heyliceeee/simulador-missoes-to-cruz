@@ -1,27 +1,27 @@
 package org.example.api.implementation.utils;
 
-import org.example.api.implementation.interfaces.RelatorioSimulacoes;
-import org.example.api.implementation.interfaces.ResultadoFormatado;
+import org.example.api.implementation.interfaces.IRelatorioSimulacoes;
+import org.example.api.implementation.interfaces.IResultadoFormatado;
 
 /**
- * Implementação de RelatorioSimulacoes.
+ * Implementacao de RelatorioSimulacoes.
  */
-public class RelatorioSimulacoesImpl implements RelatorioSimulacoes {
-    private final ResultadoFormatado simulacaoAutomatica;
-    private final ResultadoFormatado simulacaoManual;
+public class RelatorioSimulacoesImpl implements IRelatorioSimulacoes {
+    private final IResultadoFormatado simulacaoAutomatica;
+    private final IResultadoFormatado simulacaoManual;
 
-    public RelatorioSimulacoesImpl(ResultadoFormatado simulacaoAutomatica, ResultadoFormatado simulacaoManual) {
+    public RelatorioSimulacoesImpl(IResultadoFormatado simulacaoAutomatica, IResultadoFormatado simulacaoManual) {
         this.simulacaoAutomatica = simulacaoAutomatica;
         this.simulacaoManual = simulacaoManual;
     }
 
     @Override
-    public ResultadoFormatado getSimulacaoAutomatica() {
+    public IResultadoFormatado getSimulacaoAutomatica() {
         return simulacaoAutomatica;
     }
 
     @Override
-    public ResultadoFormatado getSimulacaoManual() {
+    public IResultadoFormatado getSimulacaoManual() {
         return simulacaoManual;
     }
 }

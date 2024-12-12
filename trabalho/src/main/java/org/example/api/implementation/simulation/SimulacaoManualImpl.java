@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Gerencia a simulacao manual, onde o jogador toma as decisões.
+ * Gerencia a simulacao manual, onde o jogador toma as decisoes.
  */
 public class SimulacaoManualImpl implements ISimulacaoManual {
 
@@ -198,7 +198,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     /**
-     * Gerencia o movimento do Tó Cruz.
+     * Gerencia o movimento do To Cruz.
      */
     private void mover() throws ElementNotFoundException {
         System.out.print("Digite o nome da divisao para onde deseja mover: ");
@@ -220,7 +220,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                 System.err.println("Erro: Divisao '" + novaDivisao + "' nao encontrada.");
             }
         } else {
-            System.out.println("Movimento invalido! Divisões nao conectadas.");
+            System.out.println("Movimento invalido! Divisoes nao conectadas.");
         }
     }
 
@@ -252,9 +252,9 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     /**
-     * Verifica se há itens na divisao e pergunta ao jogador se deseja pegá-los.
+     * Verifica se ha itens na divisao e pergunta ao jogador se deseja pega-los.
      *
-     * @param divisao A divisao atual do Tó Cruz.
+     * @param divisao A divisao atual do To Cruz.
      */
     private void verificarItens(IDivisao divisao) throws ElementNotFoundException {
         ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
@@ -287,15 +287,15 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
 
     /**
      * Interage com o alvo se estiver na mesma divisao.
-     * Se houver inimigos, avisa o jogador que deve eliminá-los antes.
+     * Se houver inimigos, avisa o jogador que deve elimina-los antes.
      *
-     * @param divisao A divisao onde o Tó Cruz está.
+     * @param divisao A divisao onde o To Cruz esta.
      */
     private void interagirComAlvo(IDivisao divisao) {
         IAlvo alvo = mapa.getAlvo();
         if (alvo != null && divisao.equals(alvo.getDivisao())) {
             if (divisao.getInimigosPresentes() != null && !divisao.getInimigosPresentes().isEmpty()) {
-                System.out.println("O alvo está nesta sala, mas há inimigos! Elimine-os primeiro.");
+                System.out.println("O alvo esta nesta sala, mas ha inimigos! Elimine-os primeiro.");
             } else {
                 System.out.println("O alvo foi resgatado com sucesso!");
                 mapa.removerAlvo();

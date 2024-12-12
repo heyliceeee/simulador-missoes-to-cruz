@@ -47,6 +47,6 @@ public class SimulacaoAutomaticaTest {
         simulacao.executar(mapa.getDivisaoPorNome("Laboratorio"));
 
         assertEquals("SUCESSO", simulacao.getStatus());
-        assertTrue(toCruz.getVida() < 100); // Tó Cruz perdeu vida no combate
+        assertTrue(toCruz.getVida() < 100); // To Cruz perdeu vida no combate
     }
 }

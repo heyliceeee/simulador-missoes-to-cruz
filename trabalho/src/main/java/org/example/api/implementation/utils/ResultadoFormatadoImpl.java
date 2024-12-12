@@ -1,14 +1,14 @@
 package org.example.api.implementation.utils;
 
-import org.example.api.implementation.interfaces.Mapa;
-import org.example.api.implementation.interfaces.ResultadoFormatado;
-import org.example.api.implementation.interfaces.ResultadoSimulacao;
+import org.example.api.implementation.interfaces.IMapa;
+import org.example.api.implementation.interfaces.IResultadoFormatado;
+import org.example.api.implementation.interfaces.IResultadoSimulacao;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Implementação de ResultadoFormatado.
+ * Implementacao de ResultadoFormatado.
  */
-public class ResultadoFormatadoImpl implements ResultadoFormatado {
+public class ResultadoFormatadoImpl implements IResultadoFormatado {
     private final String id;
     private final String divisaoInicial;
     private final String divisaoFinal;
@@ -19,7 +19,7 @@ public class ResultadoFormatadoImpl implements ResultadoFormatado {
     private final String codigoMissao;
     private final int versaoMissao;
 
-    public ResultadoFormatadoImpl(ResultadoSimulacao resultado, Mapa mapa) {
+    public ResultadoFormatadoImpl(IResultadoSimulacao resultado, IMapa mapa) {
         this.id = resultado.getId();
         this.divisaoInicial = resultado.getDivisaoInicial();
         this.divisaoFinal = resultado.getDivisaoFinal();

@@ -9,24 +9,24 @@ import org.example.collections.implementation.LinkedList;
 import java.util.Iterator;
 import java.util.Random;
 
-import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.pin;
+import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.*;
 
 /**
  * Representa o mapa do edificio como um grafo.
  */
 public class MapaImpl implements IMapa {
     /**
-     * Grafo que representa o edificio e suas conexões.
+     * Grafo que representa o edificio e suas conexoes.
      */
     private Graph<IDivisao> grafo;
 
     /**
-     * Informacões sobre o alvo da missao.
+     * Informacoes sobre o alvo da missao.
      */
     private IAlvo alvo;
 
     /**
-     * Lista de divisões que sao entradas ou saidas do edificio.
+     * Lista de divisoes que sao entradas ou saidas do edificio.
      */
     private ArrayUnorderedList<IDivisao> entradasSaidas;
 
@@ -57,7 +57,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Adiciona uma ligacao entre duas divisões.
+     * Adiciona uma ligacao entre duas divisoes.
      *
      * @param nomeDivisao1 Nome da primeira divisao.
      * @param nomeDivisao2 Nome da segunda divisao.
@@ -66,7 +66,7 @@ public class MapaImpl implements IMapa {
     public void adicionarLigacao(String nomeDivisao1, String nomeDivisao2) {
         if (nomeDivisao1 == null || nomeDivisao2 == null ||
                 nomeDivisao1.trim().isEmpty() || nomeDivisao2.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nomes das divisões nao podem ser vazios ou nulos.");
+            throw new IllegalArgumentException("Nomes das divisoes nao podem ser vazios ou nulos.");
         }
 
         IDivisao divisao1 = getDivisaoPorNome(nomeDivisao1);
@@ -83,9 +83,9 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem todas as conexões (arestas) do grafo.
+     * Obtem todas as conexoes (arestas) do grafo.
      *
-     * @return Uma lista de conexões entre divisões.
+     * @return Uma lista de conexoes entre divisoes.
      */
     @Override
     public ArrayUnorderedList<Ligacao> getLigacoes() {
@@ -201,7 +201,7 @@ public class MapaImpl implements IMapa {
      *
      * @param divisao1 Nome da divisao de origem.
      * @param divisao2 Nome da divisao de destino.
-     * @return true se for possivel mover, false caso contrário.
+     * @return true se for possivel mover, false caso contrario.
      */
     @Override
     public boolean podeMover(String divisao1, String divisao2) {
@@ -218,7 +218,7 @@ public class MapaImpl implements IMapa {
     /**
      * Define o alvo da missao.
      *
-     * @param nomeDivisao Nome da divisao onde o alvo está localizado.
+     * @param nomeDivisao Nome da divisao onde o alvo esta localizado.
      * @param tipo        Tipo do alvo.
      */
     @Override
@@ -262,11 +262,11 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem todas as conexões (divisões acessiveis) a partir de uma divisao
+     * Obtem todas as conexoes (divisoes acessiveis) a partir de uma divisao
      * especifica.
      *
      * @param divisao Divisao de origem.
-     * @return Lista de divisões conectadas.
+     * @return Lista de divisoes conectadas.
      */
     @Override
     public ArrayUnorderedList<IDivisao> obterConexoes(IDivisao divisao) {
@@ -285,9 +285,9 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem todas as divisões presentes no grafo.
+     * Obtem todas as divisoes presentes no grafo.
      *
-     * @return Lista de todas as divisões.
+     * @return Lista de todas as divisoes.
      */
     @Override
     public ArrayUnorderedList<IDivisao> getDivisoes() {
@@ -303,7 +303,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem os nomes das divisões que sao entradas ou saidas.
+     * Obtem os nomes das divisoes que sao entradas ou saidas.
      *
      * @return Lista de nomes das entradas e saidas.
      */
@@ -321,7 +321,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem as divisões que sao entradas ou saidas.
+     * Obtem as divisoes que sao entradas ou saidas.
      *
      * @return Lista de entradas e saidas.
      */
@@ -338,12 +338,17 @@ public class MapaImpl implements IMapa {
         return entradasSaidas;
     }
 
+    @Override
+    public void moverInimigos() throws ElementNotFoundException {
+
+    }
+
     /**
-     * Move os inimigos aleatoriamente para divisões conectadas ate duas divisões de
-     * distância.
+     * Move os inimigos aleatoriamente para divisoes conectadas ate duas divisoes de
+     * distancia.
      */
     @Override
-    public void moverInimigos(ToCruz toCruz, CombateService combateService) throws ElementNotFoundException {
+    public void moverInimigos(ToCruz toCruz, ICombateService combateService) throws ElementNotFoundException {
         Random random = new Random();
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
@@ -366,14 +371,14 @@ public class MapaImpl implements IMapa {
             }
 
             for (int j = 0; j < inimigosCopy.size(); j++) {
-                Inimigo inimigo = inimigosCopy.getElementAt(j);
+                IInimigo inimigo = inimigosCopy.getElementAt(j);
                 if (inimigo == null)
                     continue;
 
                 IDivisao origem = divisaoAtual;
                 IDivisao destino = origem;
 
-                // Movimentar até 2 divisões aleatoriamente
+                // Movimentar ate 2 divisoes aleatoriamente
                 for (int movimentos = 0; movimentos < 2; movimentos++) {
                     ArrayUnorderedList<IDivisao> conexoes = obterConexoes(destino);
                     if (conexoes.isEmpty())
@@ -392,14 +397,14 @@ public class MapaImpl implements IMapa {
                     System.out.println("Inimigo '" + inimigo.getNome() + "' movido de " +
                             origem.getNomeDivisao() + " para " + destino.getNomeDivisao());
 
-                    // Verificar se o inimigo entrou na sala de Tó Cruz
+                    // Verificar se o inimigo entrou na sala de To Cruz
                     if (destino.equals(toCruz.getPosicaoAtual())) {
-                        System.out.println("⚔️ Inimigo entrou na sala de Tó Cruz! Combate iniciado.");
+                        System.out.println(crossedSwords + "  Inimigo entrou na sala de To Cruz! Combate iniciado.");
                         combateService.resolverCombate(toCruz, destino);
 
-                        // Verificar se Tó Cruz foi derrotado
+                        // Verificar se To Cruz foi derrotado
                         if (toCruz.getVida() <= 0) {
-                            System.err.println("💀 Tó Cruz foi derrotado durante o ataque dos inimigos!");
+                            System.err.println(skull + " To Cruz foi derrotado durante o ataque dos inimigos!");
                             return;
                         }
                     }
@@ -409,12 +414,12 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Mostra o mapa do edificio, exibindo as divisões (vertices) e suas conexões
+     * Mostra o mapa do edificio, exibindo as divisoes (vertices) e suas conexoes
      * (arestas).
      */
     @Override
     public void mostrarMapa() {
-        System.out.println("===== MAPA DO EDIFÍCIO =====");
+        System.out.println("===== MAPA DO EDIFiCIO =====");
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
         for (int i = 0; i < divisoes.size(); i++) {
@@ -422,29 +427,29 @@ public class MapaImpl implements IMapa {
             if (divisao == null)
                 continue;
 
-            // Obter informações da divisão
+            // Obter informacoes da divisao
             ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
             ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
             
-            // Exibir o nome da divisão com símbolos adicionais
+            // Exibir o nome da divisao com simbolos adicionais
             System.out.print(pin + divisao.getNomeDivisao());
 
             if (inimigos != null && !inimigos.isEmpty()) {
-                System.out.print(" ⚔️ (" + inimigos.size() + " inimigos)");
+                System.out.print(crossedSwords + " (" + inimigos.size() + " inimigos)");
             }
             if (itens != null && !itens.isEmpty()) {
                 System.out.print(" 🎒 (" + itens.size() + " itens)");
             }
             if (divisao.isEntradaSaida()) {
-                System.out.print(" 🚪 [Entrada/Saída]");
+                System.out.print(" 🚪 [Entrada/Saida]");
             }
 
             System.out.println();
 
-            // Obter as conexões
+            // Obter as conexoes
             ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);
             if (conexoes.isEmpty()) {
-                System.out.println("   ↳ Sem conexões");
+                System.out.println("   ↳ Sem conexoes");
             } else {
                 for (int j = 0; j < conexoes.size(); j++) {
                     IDivisao conexao = conexoes.getElementAt(j);
@@ -468,18 +473,18 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Expande as conexões de uma divisao para incluir divisões conectadas a ate
-     * duas conexões de distância.
+     * Expande as conexoes de uma divisao para incluir divisoes conectadas a ate
+     * duas conexoes de distancia.
      *
-     * @param divisaoAtual A divisao atual de onde partirá a expansao.
-     * @return Uma lista de divisões acessiveis a ate duas conexões de distância.
+     * @param divisaoAtual A divisao atual de onde partira a expansao.
+     * @return Uma lista de divisoes acessiveis a ate duas conexoes de distancia.
      */
     @Override
     public ArrayUnorderedList<IDivisao> expandirConexoes(IDivisao divisaoAtual) {
         ArrayUnorderedList<IDivisao> conexoesDiretas = obterConexoes(divisaoAtual);
         ArrayUnorderedList<IDivisao> conexoesExpandida = new ArrayUnorderedList<>();
 
-        // Adiciona conexões de segunda distância
+        // Adiciona conexoes de segunda distancia
         for (int i = 0; i < conexoesDiretas.size(); i++) {
             IDivisao conexao = conexoesDiretas.getElementAt(i);
             ArrayUnorderedList<IDivisao> conexoesSegundaDistancia = obterConexoes(divisaoAtual);
@@ -487,7 +492,7 @@ public class MapaImpl implements IMapa {
             for (int j = 0; j < conexoesSegundaDistancia.size(); j++) {
                 IDivisao segundaConexao = conexoesSegundaDistancia.getElementAt(j);
 
-                // Adiciona a conexao se ela nao estiver na lista inicial e nao for a própria
+                // Adiciona a conexao se ela nao estiver na lista inicial e nao for a propria
                 // divisao atual
                 if (!conexoesDiretas.contains(segundaConexao) && !conexoesExpandida.contains(segundaConexao)
                         && !segundaConexao.equals(divisaoAtual)) {

@@ -98,7 +98,7 @@ public class ExporterGraph implements IExporter
 
     /**
      * Cria um .dot e um .png
-     * @param contentString string do conteúdo .dot
+     * @param contentString string do conteudo .dot
      * @param fileName localizacao do ficheiro aonde vai ser guardado
      * @throws InterruptedException
      */
@@ -178,7 +178,7 @@ public class ExporterGraph implements IExporter
         Graph<T> currentGraph = (Graph<T>) graph;
         String content = "strict digraph{\n\tgraph [ordering=\"out\"]";
 
-        if(!graph.isConnected()) //se o grafo nao estiver conectado, irá escrever primeiro em todos os vertices
+        if(!graph.isConnected()) //se o grafo nao estiver conectado, ira escrever primeiro em todos os vertices
         {
             for(int i=0; i < currentGraph.numVertices - 1; i++)
             {
@@ -249,7 +249,7 @@ public class ExporterGraph implements IExporter
     private <T> String exportRouteGraph(GraphADT<T> graph, Iterator<T> routeIterator) throws EmptyCollectionException, InterruptedException
     {
         /*String content = this.exportGraph(graph);
-        content = content.substring(0, content.length() - 2); //remove os últimos 2 caracteres, o "\n}" final do ficheiro
+        content = content.substring(0, content.length() - 2); //remove os ultimos 2 caracteres, o "\n}" final do ficheiro
 
         //depois de ter o grafo feito, iremos fazer a rota das arestas
         T first = null;
@@ -272,7 +272,7 @@ public class ExporterGraph implements IExporter
                     content += "\"" + first.toString() + "\"[fillcolor=red, style=\"rounded,filled\"]\n";
                 }
             }
-            else //se nao for a 1ª vez, irá assumir o valor antigo do second
+            else //se nao for a 1ª vez, ira assumir o valor antigo do second
             {
                 first = second;
             }

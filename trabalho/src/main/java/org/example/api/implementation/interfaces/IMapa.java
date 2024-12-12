@@ -2,6 +2,7 @@ package org.example.api.implementation.interfaces;
 
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.implementation.models.Ligacao;
+import org.example.api.implementation.models.ToCruz;
 import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.collections.implementation.LinkedList;
 
@@ -37,6 +38,8 @@ public interface IMapa {
     ArrayUnorderedList<IDivisao> getEntradasSaidas();
 
     void moverInimigos() throws ElementNotFoundException;
+
+    void moverInimigos(ToCruz toCruz, ICombateService combateService) throws ElementNotFoundException;
 
     void mostrarMapa();
 

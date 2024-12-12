@@ -13,7 +13,7 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
 
 
     /**
-     * cria uma árvore binaria vazia
+     * cria uma arvore binaria vazia
      */
     public ArrayBinaryTree()
     {
@@ -24,7 +24,7 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
 
 
     /**
-     * cria uma árvore binária com o elemento especifico como root
+     * cria uma arvore binaria com o elemento especifico como root
      * @param element o elemento que vai ser o root
      */
     public ArrayBinaryTree(T element)
@@ -39,11 +39,11 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
     @Override
     public T getRoot()
     {
-        if(size() > 0) //se a árvore nao está vazia
+        if(size() > 0) //se a arvore nao esta vazia
         {
-            return (T) tree[0]; //retorna o elemento no indice 0, que representa a root da árvore
+            return (T) tree[0]; //retorna o elemento no indice 0, que representa a root da arvore
         }
-        else //se a árvore estiver vazia, retorna null, pois nao há root
+        else //se a arvore estiver vazia, retorna null, pois nao ha root
         {
           return null;
         }
@@ -64,7 +64,7 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
     @Override
     public boolean contains(T targetElement)
     {
-        //itera sobre todos os elementos do array representando a árvore
+        //itera sobre todos os elementos do array representando a arvore
         for(Object element : tree)
         {
             if(element != null && element.equals(targetElement)) //se o elemento nao e nulo e e igual ao elemento alvo
@@ -82,7 +82,7 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
         T tmp = null;
         boolean found = false;
 
-        for(int i=0; i < count && !found; i++) //percorrer os elementos da árvore em pesquisa do elemento alvo
+        for(int i=0; i < count && !found; i++) //percorrer os elementos da arvore em pesquisa do elemento alvo
         {
             if(targetElement.equals(tree[i])) //se o elemento alvo for igual ao valor atual da arvore
             {
@@ -103,10 +103,10 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorInOrder()
     {
-        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia inorder
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporaria para armazenar os elementos durante a travessia inorder
         inorder(0, tmpList); //inicia a travessia inorder a partir do node root (indice 0)
 
-        return tmpList.iterator(); //retorna um iterador para a lista temporária
+        return tmpList.iterator(); //retorna um iterador para a lista temporaria
     }
 
 
@@ -117,13 +117,13 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
      */
     protected void inorder(int node, ArrayUnorderedList<T> tmpList)
     {
-        if(node < tree.length) //se o indice do node está dentro dos limites do array da árvore.
+        if(node < tree.length) //se o indice do node esta dentro dos limites do array da arvore.
         {
             if(tree[node] != null) //se o node atual nao e nulo
             {
-                inorder(node*2+1, tmpList); //realiza a travessia inorder recursivamente na subárvore esquerda
-                tmpList.addToRear(tree[node]); //adiciona o elemento do node atual à lista temporária
-                inorder((node+1)*2, tmpList); //realiza a travessia inorder recursivamente na subárvore direita
+                inorder(node*2+1, tmpList); //realiza a travessia inorder recursivamente na subarvore esquerda
+                tmpList.addToRear(tree[node]); //adiciona o elemento do node atual à lista temporaria
+                inorder((node+1)*2, tmpList); //realiza a travessia inorder recursivamente na subarvore direita
             }
         }
     }
@@ -132,10 +132,10 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorPreOrder()
     {
-        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia preorder
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporaria para armazenar os elementos durante a travessia preorder
         preorder(0, tmpList); //inicia a travessia preorder a partir do node root (indice 0)
 
-        return tmpList.iterator(); //retorna um iterador para a lista temporária
+        return tmpList.iterator(); //retorna um iterador para a lista temporaria
     }
 
 
@@ -146,11 +146,11 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
      */
     protected void preorder(int node, ArrayUnorderedList<T> tmpList)
     {
-        if(node < tree.length) //se o indice do node está dentro dos limites do array
+        if(node < tree.length) //se o indice do node esta dentro dos limites do array
         {
             if(tree[node] != null) //se o node nao e nulo
             {
-                tmpList.addToRear(tree[node]); //adiciona o elemento do node à lista temporária
+                tmpList.addToRear(tree[node]); //adiciona o elemento do node à lista temporaria
                 preorder(node*2+1, tmpList); //realiza a travessia pre-ordem no filho esquerdo
                 preorder((node+1)*2, tmpList); //realiza a travessia pre-ordem no filho direito
             }
@@ -161,10 +161,10 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
     @Override
     public Iterator<T> iteratorPostOrder()
     {
-        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporária para armazenar os elementos durante a travessia postorder
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporaria para armazenar os elementos durante a travessia postorder
         postorder(0, tmpList); //inicia a travessia postorder a partir do node root (indice 0)
 
-        return tmpList.iterator(); //retorna um iterador para a lista temporária
+        return tmpList.iterator(); //retorna um iterador para a lista temporaria
     }
 
 
@@ -175,13 +175,13 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
      */
     protected void postorder(int node, ArrayUnorderedList<T> tmpList)
     {
-        if (node < tree.length) //se o indice do node está dentro dos limites do array
+        if (node < tree.length) //se o indice do node esta dentro dos limites do array
         {
             if (tree[node] != null) //se o node nao e nulo
             {
                 postorder(node*2+1, tmpList); //realiza a travessia postorder no filho esquerdo
                 postorder((node+1)*2, tmpList); //realiza a travessia postorder no filho direito
-                tmpList.addToRear(tree[node]); //adiciona o node atual à lista após visitar os filhos
+                tmpList.addToRear(tree[node]); //adiciona o node atual à lista apos visitar os filhos
             }
         }
     }
@@ -191,9 +191,9 @@ public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
     public Iterator<T> iteratorLevelOrder()
     {
         LinkedQueue<Integer> nodes = new LinkedQueue<>(); //cria uma fila para armazenar os indices dos nodes na ordem de nivelamento
-        ArrayUnorderedList<T> results = new ArrayUnorderedList<>(); //cria uma lista temporária para armazenar os elementos na ordem de nivelamento
+        ArrayUnorderedList<T> results = new ArrayUnorderedList<>(); //cria uma lista temporaria para armazenar os elementos na ordem de nivelamento
 
-        if (!isEmpty()) //se a árvore nao está vazia antes de iniciar a travessia em largura
+        if (!isEmpty()) //se a arvore nao esta vazia antes de iniciar a travessia em largura
         {
             nodes.enqueue(0); //coloca o indice da root na fila
             int current;

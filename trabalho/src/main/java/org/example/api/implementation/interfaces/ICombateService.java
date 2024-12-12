@@ -4,7 +4,7 @@ import org.example.api.implementation.models.ToCruz;
 import org.example.api.exceptions.ElementNotFoundException;
 
 /**
- * Interface para o servico que gere o combate entre o Tó Cruz e os inimigos.
+ * Interface para o servico que gere o combate entre o To Cruz e os inimigos.
  */
 public interface ICombateService {
     /**

@@ -2,9 +2,9 @@ package org.example.api.implementation.interfaces;
 
 public interface IMissao {
     /**
-     * Obtem o código da missao.
+     * Obtem o codigo da missao.
      *
-     * @return O código da missao.
+     * @return O codigo da missao.
      */
     String getCodMissao();
 

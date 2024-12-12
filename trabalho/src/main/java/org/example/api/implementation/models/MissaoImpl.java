@@ -15,9 +15,9 @@ public class MissaoImpl implements IMissao {
     }
 
     /**
-     * Obtem o código da missao.
+     * Obtem o codigo da missao.
      *
-     * @return O código da missao.
+     * @return O codigo da missao.
      */
     @Override
     public String getCodMissao() {

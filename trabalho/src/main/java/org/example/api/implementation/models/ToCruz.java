@@ -6,7 +6,7 @@ import org.example.api.implementation.interfaces.IItem;
 import org.example.collections.implementation.ArrayStack;
 
 /**
- * Representa o agente Tó Cruz com atributos como vida, posicao e inventário.
+ * Representa o agente To Cruz com atributos como vida, posicao e inventario.
  */
 public class ToCruz implements IAgente {
 
@@ -31,21 +31,21 @@ public class ToCruz implements IAgente {
     private IDivisao posicaoAtual;
 
     /**
-     * Inventário do Tó Cruz
+     * Inventario do To Cruz
      */
     private ArrayStack<IItem> inventario;
 
     /**
      * Indica se o objetivo principal (alvo) foi concluido ou capturado.
      *
-     * Essa variável e usada para rastrear o estado da missao.
+     * Essa variavel e usada para rastrear o estado da missao.
      * - true: O alvo foi capturado com sucesso.
      * - false: O alvo ainda nao foi capturado.
      */
     private boolean alvoConcluido;
 
     /**
-     * Construtor do Tó Cruz.
+     * Construtor do To Cruz.
      *
      * @param nome Nome do agente.
      * @param vida Vida inicial do agente.
@@ -66,7 +66,7 @@ public class ToCruz implements IAgente {
     /**
      * Indica se o objetivo principal (alvo) foi concluido ou capturado.
      *
-     * Essa variável e usada para rastrear o estado da missao.
+     * Essa variavel e usada para rastrear o estado da missao.
      * - true: O alvo foi capturado com sucesso.
      * - false: O alvo ainda nao foi capturado.
      */
@@ -77,12 +77,12 @@ public class ToCruz implements IAgente {
             return;
         }
         this.posicaoAtual = novaDivisao;
-        // System.out.println("Tó Cruz moveu-se para a divisao: " +
+        // System.out.println("To Cruz moveu-se para a divisao: " +
         // novaDivisao.getNomeDivisao());
     }
 
     /**
-     * Usa um kit de vida do inventário para recuperar pontos de vida.
+     * Usa um kit de vida do inventario para recuperar pontos de vida.
      */
     @Override
     public void usarKitDeVida() {
@@ -114,14 +114,14 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Adiciona um item ao inventário do Tó Cruz.
+     * Adiciona um item ao inventario do To Cruz.
      *
      * @param item O item a ser adicionado.
      */
     @Override
 public void adicionarAoInventario(IItem item) {
     if (item == null) {
-        System.err.println("Erro: Item a ser adicionado é nulo.");
+        System.err.println("Erro: Item a ser adicionado e nulo.");
         return;
     }
 
@@ -133,26 +133,26 @@ public void adicionarAoInventario(IItem item) {
             break;
 
         case "kit de vida":
-            // Verifica o limite máximo de kits na mochila
+            // Verifica o limite maximo de kits na mochila
             if (inventario.size() >= 5) { // Considerando 5 como limite configurado
-                System.out.println("Mochila cheia! Não é possível carregar mais kits de vida.");
+                System.out.println("Mochila cheia! Nao e possivel carregar mais kits de vida.");
             } else {
                 inventario.push(item);
-                System.out.println("Kit de vida adicionado ao inventário.");
+                System.out.println("Kit de vida adicionado ao inventario.");
             }
             break;
 
         default:
             // Outros tipos de itens
             inventario.push(item);
-            System.out.println("Item adicionado ao inventário: " + item.getTipo());
+            System.out.println("Item adicionado ao inventario: " + item.getTipo());
             break;
     }
 }
 
 
     /**
-     * Reduz os pontos de vida do Tó Cruz ao sofrer dano.
+     * Reduz os pontos de vida do To Cruz ao sofrer dano.
      *
      * @param dano Quantidade de dano recebido.
      */
@@ -172,7 +172,7 @@ public void adicionarAoInventario(IItem item) {
     }
 
     /**
-     * Obtem a vida atual do Tó Cruz.
+     * Obtem a vida atual do To Cruz.
      *
      * @return Pontos de vida restantes.
      */
@@ -182,7 +182,7 @@ public void adicionarAoInventario(IItem item) {
     }
 
     /**
-     * Define a vida do Tó Cruz.
+     * Define a vida do To Cruz.
      *
      * @param vida Pontos de vida a serem atribuidos.
      */
@@ -195,9 +195,9 @@ public void adicionarAoInventario(IItem item) {
     }
 
     /**
-     * Obtem a posicao atual do Tó Cruz.
+     * Obtem a posicao atual do To Cruz.
      *
-     * @return A divisao atual onde o Tó Cruz está localizado.
+     * @return A divisao atual onde o To Cruz esta localizado.
      */
     @Override
     public IDivisao getPosicaoAtual() {
@@ -205,9 +205,9 @@ public void adicionarAoInventario(IItem item) {
     }
 
     /**
-     * Define a posicao atual do Tó Cruz.
+     * Define a posicao atual do To Cruz.
      *
-     * @param posicaoAtual A nova divisao onde o Tó Cruz estará.
+     * @param posicaoAtual A nova divisao onde o To Cruz estara.
      */
     @Override
     public void setPosicaoAtual(IDivisao posicaoAtual) {
@@ -264,7 +264,7 @@ public void adicionarAoInventario(IItem item) {
     /**
      * Verifica se o alvo foi concluido.
      *
-     * @return true se o alvo foi capturado, false caso contrário.
+     * @return true se o alvo foi capturado, false caso contrario.
      */
     public boolean isAlvoConcluido() {
         return alvoConcluido;
@@ -286,7 +286,7 @@ public void adicionarAoInventario(IItem item) {
     /**
      * Define se o alvo foi concluido.
      *
-     * @param concluido true se o alvo foi capturado, false caso contrário.
+     * @param concluido true se o alvo foi capturado, false caso contrario.
      */
     public void setAlvoConcluido(boolean concluido) {
         this.alvoConcluido = concluido;

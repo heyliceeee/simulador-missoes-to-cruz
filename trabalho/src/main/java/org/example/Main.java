@@ -48,7 +48,7 @@ public class Main {
         System.out.println("--------------------------------------------------------------------------------");
         mapa.mostrarMapa();
 
-        // Inicializacao do agente Tó Cruz
+        // Inicializacao do agente To Cruz
         logger.info("Inicializando o agente To Cruz...");
         ToCruz toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
         IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0); // Primeira divisao
@@ -60,7 +60,7 @@ public class Main {
         ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
 
-        ResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
+        IResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
                 "AUTO-001",
                 divisaoInicial.getNomeDivisao(),
                 simulacaoAuto.getDivisaoFinal().getNomeDivisao(),
@@ -77,7 +77,7 @@ public class Main {
         ISimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
         simulacaoManual.executar(mapa.getAlvo().getDivisao());
 
-        ResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
+        IResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
                 "MANUAL-001",
                 divisaoInicial.getNomeDivisao(),
                 simulacaoManual.getDivisaoFinal().getNomeDivisao(),
@@ -89,11 +89,11 @@ public class Main {
                 missao.getVersao()
         );
 
-        // Exportar o relatório combinado
+        // Exportar o relatorio combinado
         ExportarResultados exportador = new ExportarResultados();
         exportador.exportarRelatorioSimulacoes(resultadoAuto, resultadoManual, mapa, "relatorio_simulacoes.json");
 
-        logger.info("Relatório de simulações exportado com sucesso.");
+        logger.info("Relatorio de simulacoes exportado com sucesso.");
 
         logger.info("Programa finalizado com sucesso.");
     }

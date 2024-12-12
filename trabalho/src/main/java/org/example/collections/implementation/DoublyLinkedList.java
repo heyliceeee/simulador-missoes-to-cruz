@@ -24,7 +24,7 @@ public class DoublyLinkedList<T> {
             size++;
 
         } else {
-            newNode.setNext(head); // o próximo do novo node aponta para o head do node atual
+            newNode.setNext(head); // o proximo do novo node aponta para o head do node atual
             head.setPrev(newNode); // o anterior do node da head aponta para o novo node
             head = newNode; // o node atual da head e o novo node
 
@@ -43,9 +43,9 @@ public class DoublyLinkedList<T> {
             return false;
         }
 
-        DoublyNode<T> removedNode = head; // elemento que está na head e q vai ser removido
+        DoublyNode<T> removedNode = head; // elemento que esta na head e q vai ser removido
 
-        if (head == tail) { // se o node head e o único da lista
+        if (head == tail) { // se o node head e o unico da lista
             head = tail = null;
             size--;
             return true;
@@ -69,9 +69,9 @@ public class DoublyLinkedList<T> {
             return false;
         }
 
-        DoublyNode<T> removedNode = tail; // elemento que está na tail e q vai ser removido
+        DoublyNode<T> removedNode = tail; // elemento que esta na tail e q vai ser removido
 
-        if (head == tail) { // se o node tail e o único da lista
+        if (head == tail) { // se o node tail e o unico da lista
             head = tail = null;
             size--;
             return true;
@@ -85,7 +85,7 @@ public class DoublyLinkedList<T> {
     }
 
     /**
-     * verificar se a lista está vazia
+     * verificar se a lista esta vazia
      *
      * @return
      */
@@ -113,7 +113,7 @@ public class DoublyLinkedList<T> {
         System.out.print("[");
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i]);
-            if (i < array.length - 1) { // Se nao for o último elemento, imprima uma virgula
+            if (i < array.length - 1) { // Se nao for o ultimo elemento, imprima uma virgula
                 System.out.print(", ");
             }
         }
@@ -132,7 +132,7 @@ public class DoublyLinkedList<T> {
         // Crie um array do tamanho apropriado
         Object[] result = new Object[i];
 
-        // Preencha o array com os dados dos nós
+        // Preencha o array com os dados dos nos
         current = head;
         int index = 0;
 
@@ -244,7 +244,7 @@ public class DoublyLinkedList<T> {
         // Crie um array do tamanho calculado
         Object[] result = new Object[length];
 
-        // Preencha o array com os dados dos nós entre as posicões especificadas
+        // Preencha o array com os dados dos nos entre as posicoes especificadas
         int i = 0;
         while (current != null && i < length) {
             result[i] = current.getElement();
@@ -292,12 +292,12 @@ public class DoublyLinkedList<T> {
 
     public boolean removeDuplicateElements(T element) {
         DoublyNode<T> current = head; // elemento atual
-        boolean foundFirst = false; // para controlar se já encontramos o primeiro elemento
+        boolean foundFirst = false; // para controlar se ja encontramos o primeiro elemento
         boolean elementRemoved = false;
 
         while (current != null) { // vai percorrendo os elementos
             if (current.getElement().equals(element)) { // elemento atual = elemento q vai ser removido
-                if (foundFirst) { // se já encontrou o primeiro elemento, remove
+                if (foundFirst) { // se ja encontrou o primeiro elemento, remove
                     elementRemoved = true;
 
                     if (current.getPrev() != null) { // existe o elemento anterior ao atual
@@ -316,7 +316,7 @@ public class DoublyLinkedList<T> {
                     current.setPrev(null); // elemento anterior do atual = nulo
                     current = temp; // atual = elemento seguinte do atual
 
-                } else { // se NaO já encontrou o primeiro elemento (primeira vez agora)
+                } else { // se NaO ja encontrou o primeiro elemento (primeira vez agora)
                     foundFirst = true;
                     current = current.getNext(); // atual = elemento seguinte do atual
                 }

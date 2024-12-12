@@ -12,7 +12,7 @@ import org.example.collections.implementation.LinkedQueue;
 import org.example.collections.implementation.LinkedStack;
 
 /**
- * Gerencia a simulacao automática para o Tó Cruz.
+ * Gerencia a simulacao automatica para o To Cruz.
  */
 public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
@@ -38,7 +38,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
 
     /**
-     * Construtor da Simulacao Automática.
+     * Construtor da Simulacao Automatica.
      *
      * @param mapa   O mapa do edificio.
      * @param toCruz O agente controlado pelo jogador.
@@ -57,9 +57,9 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Executa a simulacao automática para alcancar um objetivo.
+     * Executa a simulacao automatica para alcancar um objetivo.
      *
-     * @param divisaoObjetivo A divisao onde o objetivo está localizado.
+     * @param divisaoObjetivo A divisao onde o objetivo esta localizado.
      */
     @Override
     public void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException {
@@ -89,13 +89,13 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         while (!fila.isEmpty()) {
             IDivisao atual = fila.dequeue();
 
-            // Movimentação dos inimigos antes do jogador agir
+            // Movimentacao dos inimigos antes do jogador agir
             System.out.println("Movimentando inimigos...");
             mapa.moverInimigos(toCruz, combateService);
 
-            // Verifica se Tó Cruz sobreviveu após a movimentação dos inimigos
+            // Verifica se To Cruz sobreviveu apos a movimentacao dos inimigos
             if (toCruz.getVida() <= 0) {
-                System.err.println("💀 Tó Cruz foi derrotado após a movimentação dos inimigos!");
+                System.err.println(skull + " To Cruz foi derrotado apos a movimentacao dos inimigos!");
                 return;
             }
 
@@ -104,7 +104,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
                 System.out.println("Objetivo encontrado: " + atual.getNomeDivisao());
                 reconstruirCaminho(predecessores, divisaoObjetivo);
 
-                // Após alcancar o objetivo, verifica o trajeto de volta
+                // Apos alcancar o objetivo, verifica o trajeto de volta
                 if (toCruz.getVida() > 0) {
                     verificarTrajetoDeVolta();
                 }
@@ -112,10 +112,10 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
                 break;
             }
 
-            // Obtem as conexões da divisao atual
+            // Obtem as conexoes da divisao atual
             ArrayUnorderedList<IDivisao> conexoes = mapa.obterConexoes(atual);
             if (conexoes == null || conexoes.isEmpty()) {
-                System.out.println("Aviso: Divisao " + atual.getNomeDivisao() + " nao possui conexões.");
+                System.out.println("Aviso: Divisao " + atual.getNomeDivisao() + " nao possui conexoes.");
                 continue;
             }
 
@@ -124,7 +124,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
                 if (vizinho == null)
                     continue;
 
-                // Verifica se e possivel mover para a próxima divisao
+                // Verifica se e possivel mover para a proxima divisao
                 if (!visitados.contains(vizinho) && mapa.podeMover(atual.getNomeDivisao(), vizinho.getNomeDivisao())) {
                     visitados.addToRear(vizinho);
                     fila.enqueue(vizinho);
@@ -139,7 +139,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Reconstrói o caminho percorrido a partir dos predecessores.
+     * Reconstroi o caminho percorrido a partir dos predecessores.
      *
      * @param predecessores Lista de predecessores para cada divisao.
      * @param objetivo      Divisao objetivo que foi encontrada.
@@ -175,9 +175,9 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Move Tó Cruz para a divisao especificada, resolve combates e coleta itens.
+     * Move To Cruz para a divisao especificada, resolve combates e coleta itens.
      *
-     * @param divisao Divisao para onde Tó Cruz deve se mover.
+     * @param divisao Divisao para onde To Cruz deve se mover.
      * @throws ElementNotFoundException
      */
     private void moverParaDivisao(IDivisao divisao) throws ElementNotFoundException {
@@ -186,7 +186,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             return;
         }
 
-        // Atualiza a posicao de Tó Cruz
+        // Atualiza a posicao de To Cruz
         toCruz.moverPara(divisao);
 
         // Exibe a posicao atual sem duplicacao
@@ -228,9 +228,9 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Encontra o caminho para a divisao de saida mais próxima usando BFS.
+     * Encontra o caminho para a divisao de saida mais proxima usando BFS.
      *
-     * @return Lista de divisões representando o caminho mais curto para a saida.
+     * @return Lista de divisoes representando o caminho mais curto para a saida.
      */
     public ArrayUnorderedList<IDivisao> encontrarCaminhoParaSaidaMaisProxima() {
         ArrayUnorderedList<String> entradasSaidas = mapa.getEntradasSaidasNomes();
@@ -296,7 +296,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Reconstrói o caminho percorrido a partir dos predecessores.
+     * Reconstroi o caminho percorrido a partir dos predecessores.
      *
      * @param predecessores Lista de predecessores para cada divisao.
      * @param objetivo      Divisao objetivo que foi encontrada.
@@ -340,7 +340,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Inverte uma lista de divisões para obter a ordem correta do caminho.
+     * Inverte uma lista de divisoes para obter a ordem correta do caminho.
      *
      * @param lista Lista original.
      * @return Lista invertida.
@@ -447,11 +447,11 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Calcula o melhor caminho entre duas divisões usando BFS.
+     * Calcula o melhor caminho entre duas divisoes usando BFS.
      *
      * @param origem  Divisao de origem.
      * @param destino Divisao de destino.
-     * @return Lista de divisões representando o caminho mais curto.
+     * @return Lista de divisoes representando o caminho mais curto.
      * @throws ElementNotFoundException
      */
     public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino)

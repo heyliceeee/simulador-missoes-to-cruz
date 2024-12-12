@@ -7,8 +7,8 @@ public class BinaryTreeNode<T>
 
 
     /**
-     * cria uma nova árvore com os dados especificos
-     * @param obj o elemento que irá fazer parte da nova node da árvore
+     * cria uma nova arvore com os dados especificos
+     * @param obj o elemento que ira fazer parte da nova node da arvore
      */
     BinaryTreeNode(T obj)
     {
@@ -73,8 +73,8 @@ public class BinaryTreeNode<T>
 
 
     /**
-     * retorna o número de filhos nao nulos do node. este metodo pode ser escrito de forma mais eficiente.
-     * @return o número de filhos nao nulos do node
+     * retorna o numero de filhos nao nulos do node. este metodo pode ser escrito de forma mais eficiente.
+     * @return o numero de filhos nao nulos do node
      */
     public int numChildren()
     {

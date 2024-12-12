@@ -4,12 +4,12 @@ import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Interface para a simulacao manual de missões.
+ * Interface para a simulacao manual de missoes.
  */
 public interface ISimulacaoManual {
 
     /**
-     * Executa a simulacao automática ate o objetivo.
+     * Executa a simulacao automatica ate o objetivo.
      *
      * @param divisaoObjetivo A divisao objetivo da missao.
      * @throws ElementNotFoundException Se algum elemento nao for encontrado durante
@@ -20,7 +20,7 @@ public interface ISimulacaoManual {
     public int getVidaRestante();
 
     /**
-     * Retorna o status da simulacao após a execucao.
+     * Retorna o status da simulacao apos a execucao.
      *
      * @return "SUCESSO" ou "FALHA" com base no resultado.
      */
@@ -34,9 +34,9 @@ public interface ISimulacaoManual {
     IDivisao getDivisaoFinal();
 
     /**
-     * Obtem a lista de divisões percorridas na simulacao.
+     * Obtem a lista de divisoes percorridas na simulacao.
      *
-     * @return Lista de divisões percorridas.
+     * @return Lista de divisoes percorridas.
      */
     ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 
@@ -55,9 +55,9 @@ public interface ISimulacaoManual {
     ArrayUnorderedList<IInimigo> getInimigosDerrotados();
 
     /**
-     * Converte o caminho percorrido em uma lista de nomes de divisões.
+     * Converte o caminho percorrido em uma lista de nomes de divisoes.
      *
-     * @return Lista de nomes das divisões percorridas.
+     * @return Lista de nomes das divisoes percorridas.
      */
     ArrayUnorderedList<String> getCaminhoPercorridoNomes();
 

@@ -148,10 +148,10 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Sobrescreve o metodo equals para comparar divisões com base no nome.
+     * Sobrescreve o metodo equals para comparar divisoes com base no nome.
      *
      * @param obj Objeto a ser comparado.
-     * @return true se os nomes forem iguais, false caso contrário.
+     * @return true se os nomes forem iguais, false caso contrario.
      */
     @Override
     public boolean equals(Object obj) {
@@ -187,7 +187,7 @@ public class DivisaoImpl implements IDivisao {
      * Verifica se ha um kit na divisao.
      * Um kit pode ser do tipo "kit de vida" ou "colete".
      *
-     * @return true se há um kit, false caso contrario.
+     * @return true se ha um kit, false caso contrario.
      */
     @Override
     public boolean temKit() {

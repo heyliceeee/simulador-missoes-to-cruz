@@ -99,7 +99,7 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Remove um único vertice com o valor dado do grafo
+     * Remove um unico vertice com o valor dado do grafo
      *
      * @param index que vai ser removido
      */
@@ -126,7 +126,7 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
                 }
             }
 
-            // Opcional: Limpar a última posicao para evitar referencias residuais
+            // Opcional: Limpar a ultima posicao para evitar referencias residuais
             vertices[numVertices] = null;
             for (int i = 0; i < numVertices; i++) {
                 adjMatrix[numVertices][i] = 0;
@@ -490,9 +490,9 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Retorna uma cópia profunda do array de vertices.
+     * Retorna uma copia profunda do array de vertices.
      *
-     * @return Cópia profunda do array de vertices.
+     * @return Copia profunda do array de vertices.
      */
     public T[] getVertices() {
         T[] verticesCopy = (T[]) new Object[vertices.length];
@@ -507,10 +507,10 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Realiza uma cópia profunda de um objeto do tipo T.
+     * Realiza uma copia profunda de um objeto do tipo T.
      *
      * @param object Objeto a ser copiado.
-     * @return Cópia profunda do objeto.
+     * @return Copia profunda do objeto.
      */
     private T deepCopy(T object) {
         try {
@@ -530,7 +530,7 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
      * 
      * @param vertex1 O primeiro vertice.
      * @param vertex2 O segundo vertice.
-     * @return true se os vertices sao adjacentes, false caso contrário.
+     * @return true se os vertices sao adjacentes, false caso contrario.
      */
     public boolean isAdjacent(T vertex1, T vertex2) {
         int index1 = getIndex(vertex1);

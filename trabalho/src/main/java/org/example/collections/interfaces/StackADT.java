@@ -21,7 +21,7 @@ public interface StackADT<T> {
 
     /**
      * retorna true se a stack nao conter elementos
-     * @return boolean dependendo ou nao se a stack está vazia
+     * @return boolean dependendo ou nao se a stack esta vazia
      */
     public boolean isEmpty();
 

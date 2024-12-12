@@ -29,12 +29,12 @@ public class JsonUtilsTest {
 
         assertDoesNotThrow(() -> jsonUtils.carregarMapa(jsonPath));
 
-        // Verificar divisões
+        // Verificar divisoes
         assertEquals(21, mapa.getDivisoes().size());
         assertNotNull(mapa.getDivisaoPorNome("Heliporto"));
         assertNotNull(mapa.getDivisaoPorNome("Escada 6"));
 
-        // Verificar conexões
+        // Verificar conexoes
         assertTrue(mapa.podeMover("Heliporto", "Escada 6"));
 
         // Verificar inimigos
@@ -71,7 +71,7 @@ public class JsonUtilsTest {
 
     @Test
     public void testCarregarMapaComCampoInvalido() {
-        String jsonPath = "D:\\githubProjects\\simulador-missoes-to-cruz\\trabalho\\src\\main\\java\\org\\example\\test\\resources\\invalid_field.json"; // Crie um JSON com campos inválidos, como poder do inimigo como string
+        String jsonPath = "D:\\githubProjects\\simulador-missoes-to-cruz\\trabalho\\src\\main\\java\\org\\example\\test\\resources\\invalid_field.json"; // Crie um JSON com campos invalidos, como poder do inimigo como string
 
         InvalidFieldException exception = assertThrows(InvalidFieldException.class, () -> jsonUtils.carregarMapa(jsonPath));
 
