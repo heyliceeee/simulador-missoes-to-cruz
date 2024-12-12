@@ -249,7 +249,7 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
             }
 
             T element = current.getElement(); // Obtem o elemento atual
-            current = current.getNext(); // Move para o proximo nó
+            current = current.getNext(); // Move para o proximo no
 
             return element;
         }

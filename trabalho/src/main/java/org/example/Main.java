@@ -12,6 +12,7 @@ import org.example.api.implementation.simulation.SimulacaoManualImpl;
 import org.example.api.implementation.utils.ExportarResultados;
 import org.example.api.implementation.utils.ImportJsonImpl;
 import org.example.api.implementation.interfaces.*;
+import org.example.collections.implementation.ArrayOrderedList;
 import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.api.implementation.models.ResultadoSimulacaoImpl;
 import org.slf4j.Logger;
@@ -94,7 +95,6 @@ public class Main {
         exportador.exportarRelatorioSimulacoes(resultadoAuto, resultadoManual, mapa, "relatorio_simulacoes.json");
 
         logger.info("Relatorio de simulacoes exportado com sucesso.");
-
         logger.info("Programa finalizado com sucesso.");
     }
 
@@ -104,10 +104,28 @@ public class Main {
      * @param lista Lista original a ser filtrada.
      * @return Nova lista sem valores nulos.
      */
-    private static ArrayUnorderedList<String> filtrarLista(ArrayUnorderedList<String> lista) {
+    public static ArrayUnorderedList<String> filtrarLista(ArrayUnorderedList<String> lista) {
         ArrayUnorderedList<String> filtrada = new ArrayUnorderedList<>();
         for (int i = 0; i < lista.size(); i++) {
             String elemento = lista.getElementAt(i);
+            if (elemento != null) {
+                filtrada.addToRear(elemento);
+            }
+        }
+        return filtrada;
+    }
+
+
+    /**
+     * Filtra uma lista para remover valores nulos.
+     *
+     * @param lista Lista original a ser filtrada.
+     * @return Nova lista sem valores nulos.
+     */
+    public static ArrayUnorderedList<String> filtrarListaDivisao(ArrayUnorderedList<IDivisao> lista) {
+        ArrayUnorderedList<String> filtrada = new ArrayUnorderedList<>();
+        for (int i = 0; i < lista.size(); i++) {
+            String elemento = lista.getElementAt(i).getNomeDivisao();
             if (elemento != null) {
                 filtrada.addToRear(elemento);
             }

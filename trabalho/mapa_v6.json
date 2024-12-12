@@ -27,16 +27,16 @@
       {"nome": "badguy3", "poder": 30, "divisao": "Camaratas"},
       {"nome": "badguy4", "poder": 35, "divisao": "Armazem"},
       {"nome": "badguy5", "poder": 40, "divisao": "Escada 5"},
-      {"nome": "badguy6", "poder": 50, "divisao": "Laboratório"},
-      {"nome": "badguy7", "poder": 25, "divisao": "Escritório 3"},
+      {"nome": "badguy6", "poder": 50, "divisao": "Laboratorio"},
+      {"nome": "badguy7", "poder": 25, "divisao": "Escritorio 3"},
       {"nome": "badguy8", "poder": 30, "divisao": "Escada 4"},
       {"nome": "badguy9", "poder": 20, "divisao": "WC"},
       {"nome": "badguy10", "poder": 35, "divisao": "Corredor 2"},
       {"nome": "badguy11", "poder": 40, "divisao": "Seguranca"},
       {"nome": "badguy12", "poder": 50, "divisao": "Hall"},
       {"nome": "badguy13", "poder": 45, "divisao": "Escada 3"},
-      {"nome": "badguy14", "poder": 30, "divisao": "Escritório 1"},
-      {"nome": "badguy15", "poder": 25, "divisao": "Escritório 2"},
+      {"nome": "badguy14", "poder": 30, "divisao": "Escritorio 1"},
+      {"nome": "badguy15", "poder": 25, "divisao": "Escritorio 2"},
       {"nome": "badguy16", "poder": 35, "divisao": "Escada de Emergencia"},
       {"nome": "badguy17", "poder": 30, "divisao": "Corredor 1"},
       {"nome": "badguy18", "poder": 40, "divisao": "Escada 2"},
@@ -48,18 +48,18 @@
       {"nome": "badguy24", "poder": 45, "divisao": "Camaratas"},
       {"nome": "badguy25", "poder": 50, "divisao": "Armazem"},
       {"nome": "badguy26", "poder": 40, "divisao": "Escada 5"},
-      {"nome": "badguy27", "poder": 50, "divisao": "Laboratório"},
-      {"nome": "badguy28", "poder": 30, "divisao": "Escritório 3"},
+      {"nome": "badguy27", "poder": 50, "divisao": "Laboratorio"},
+      {"nome": "badguy28", "poder": 30, "divisao": "Escritorio 3"},
       {"nome": "badguy29", "poder": 35, "divisao": "Escada 4"},
       {"nome": "badguy30", "poder": 20, "divisao": "WC"}
     ],
-    "entradas-saidas": ["Heliporto", "Laboratório", "Garagem", "Porteiro"],
+    "entradas-saidas": ["Heliporto", "Laboratorio", "Garagem", "Porteiro"],
     "alvo": {"divisao": "Seguranca", "tipo": "artefato"},
     "itens": [
       {"divisao": "WC", "pontos-recuperados": 10, "tipo": "kit de vida"},
-      {"divisao": "Escritório 1", "pontos-recuperados": 15, "tipo": "kit de vida"},
+      {"divisao": "Escritorio 1", "pontos-recuperados": 15, "tipo": "kit de vida"},
       {"divisao": "Escada 2", "pontos-extra": 20, "tipo": "colete"},
-      {"divisao": "Laboratório", "pontos-extra": 30, "tipo": "colete especial"}
+      {"divisao": "Laboratorio", "pontos-extra": 30, "tipo": "colete especial"}
     ]
   }
   

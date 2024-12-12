@@ -365,7 +365,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Verifica e executa o trajeto de volta para a divisao de saida mais próxima.
+     * Verifica e executa o trajeto de volta para a divisao de saida mais proxima.
      * 
      * @throws ElementNotFoundException
      */
@@ -390,7 +390,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
                 System.out.println(crossedSwords+" Combate iniciado na divisao: " + divisao.getNomeDivisao());
                 combateService.resolverCombate(toCruz, divisao);
 
-                // Verificar se Tó Cruz foi derrotado
+                // Verificar se To Cruz foi derrotado
                 if (toCruz.getVida() <= 0) {
                     System.err.println(skull + " To Cruz foi derrotado durante o retorno!");
                     mostrarMapaInterativo(toCruz, divisao, false);
@@ -507,7 +507,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             if (divisao == null)
                 continue;
 
-            // Mostrar o icone de Tó Cruz na posicao atual
+            // Mostrar o icone de To Cruz na posicao atual
             if (divisao.equals(divisaoAtual)) {
                 String icone = sucesso ? cowboy : skull;
                 System.out.print(icone + " " + divisao.getNomeDivisao() + " <- To Cruz esta aqui");

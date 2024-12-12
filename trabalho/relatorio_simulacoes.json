@@ -1,28 +1,32 @@
 {
   "simulacaoAutomatica": {
-    "id": "AUTO-001",
-    "divisaoInicial": "Heliporto",
-    "divisaoFinal": "Heliporto",
+    "id": "MANUAL-002",
+    "divisaoInicial": "Escada 6",
+    "divisaoFinal": "Escada 6",
     "status": "FALHA",
-    "vidaRestante": 0,
-    "trajeto": [],
-    "entradasSaidas": [],
-    "codigoMissao": "pata de coelho",
-    "versaoMissao": 6
-  },
-  "simulacaoManual": {
-    "id": "MANUAL-001",
-    "divisaoInicial": "Heliporto",
-    "divisaoFinal": "Heliporto",
-    "status": "FALHA",
-    "vidaRestante": 0,
+    "vidaRestante": 60,
     "trajeto": [
-      "Heliporto"
+      "Escada 6"
     ],
     "entradasSaidas": [
-      "Heliporto"
+      "Escada 6"
     ],
     "codigoMissao": "pata de coelho",
-    "versaoMissao": 6
+    "versaoMissao": 3
+  },
+  "simulacaoManual": {
+    "id": "MANUAL-002",
+    "divisaoInicial": "Escada 6",
+    "divisaoFinal": "Escada 6",
+    "status": "FALHA",
+    "vidaRestante": 60,
+    "trajeto": [
+      "Escada 6"
+    ],
+    "entradasSaidas": [
+      "Escada 6"
+    ],
+    "codigoMissao": "pata de coelho",
+    "versaoMissao": 3
   }
 }

@@ -165,9 +165,9 @@ public void adicionarAoInventario(IItem item) {
         vida -= dano;
         if (vida <= 0) {
             vida = 0;
-            System.out.println("TO Cruz foi derrotado!");
+            System.out.println("To Cruz foi derrotado!");
         } else {
-            System.out.println("TO Cruz sofreu " + dano + " de dano! Vida restante: " + vida);
+            System.out.println("To Cruz sofreu " + dano + " de dano! Vida restante: " + vida);
         }
     }
 

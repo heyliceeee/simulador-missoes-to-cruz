@@ -227,7 +227,7 @@ public class DoubleLinkedOrderedList<T extends Comparable> extends DoublyLinkedL
             }
 
             T element = current.getElement(); // Obtem o elemento atual
-            current = current.getNext(); // Move para o próximo nó
+            current = current.getNext(); // Move para o proximo no
 
             return element;
         }

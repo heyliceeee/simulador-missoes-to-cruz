@@ -8,7 +8,9 @@ import org.example.api.exceptions.InvalidJsonStructureException;
 import org.example.api.implementation.interfaces.*;
 import org.example.api.implementation.models.*;
 import org.example.api.implementation.services.CombateServiceImpl;
+import org.example.api.implementation.utils.ExportarResultados;
 import org.example.api.implementation.utils.ImportJsonImpl;
+import org.example.collections.implementation.ArrayOrderedList;
 import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.collections.implementation.LinkedList;
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
 
+import static org.example.Main.*;
 import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.*;
 
 public class SimulacaoManualGUI extends JFrame {
@@ -24,6 +27,7 @@ public class SimulacaoManualGUI extends JFrame {
     private ArrayUnorderedList<IDivisao> divisoes;
     private ArrayUnorderedList<IDivisao> entradasSaidas;
     private ArrayUnorderedList<Ligacao> ligacoes;
+    private ArrayUnorderedList<IDivisao> caminhoPercorridoToCruz;
     private IMapa mapa;
     private ToCruz toCruz;
     private ArrayUnorderedList<Point> posicoesDivisoes;
@@ -36,6 +40,8 @@ public class SimulacaoManualGUI extends JFrame {
     private JButton resgatarButton;
     private JButton apanharButton;
     private  JButton sairButton;
+    public static IMissao missao;
+    private ExportarResultados exportador;
 
 
     public SimulacaoManualGUI(ArrayUnorderedList<IDivisao> divisoes, ArrayUnorderedList<IDivisao> entradasSaidas,
@@ -47,6 +53,8 @@ public class SimulacaoManualGUI extends JFrame {
         this.toCruz = toCruz;
         this.posicoesDivisoes = new ArrayUnorderedList<>();
         this.combateService = new CombateServiceImpl();
+        this.exportador = new ExportarResultados();
+        this.caminhoPercorridoToCruz = new ArrayUnorderedList<>();
 
         setTitle("Simulacao - To Cruz");
         setSize(800, 600);
@@ -119,6 +127,26 @@ public class SimulacaoManualGUI extends JFrame {
 
                     if(toCruz.getVida() <= 0){
                         JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz foi derrotado.");
+
+                        //TODO exportar resultado
+                        IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
+                                "MANUAL-002",
+                                caminhoPercorridoToCruz.first().getNomeDivisao(),
+                                caminhoPercorridoToCruz.last().getNomeDivisao(),
+                                "FALHA",
+                                toCruz.getVida(),
+                                filtrarListaDivisao(caminhoPercorridoToCruz),
+                                filtrarLista(mapa.getEntradasSaidasNomes()),
+                                missao.getCodMissao(),
+                                missao.getVersao()
+                        );
+
+                        // Exportar o relatorio combinado
+                        exportador.exportarRelatorioSimulacoes(null, resultado, mapa, "relatorio_simulacoes.json");
+
+                        logger.info("Relatorio de simulacoes exportado com sucesso.");
+                        logger.info("Programa finalizado com sucesso.");
+
                         System.exit(0);
                     }
 
@@ -176,6 +204,26 @@ public class SimulacaoManualGUI extends JFrame {
             if (toCruz.getVida() > 0 && divisaoAtual.isEntradaSaida() && toCruz.isAlvoConcluido()) {
                 atualizarEstadoBotoes();
                 JOptionPane.showMessageDialog(this, "Missao concluida com sucesso!");
+
+                //TODO exportar resultado
+                IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
+                        "MANUAL-002",
+                        caminhoPercorridoToCruz.first().getNomeDivisao(),
+                        caminhoPercorridoToCruz.last().getNomeDivisao(),
+                        "SUCESSO",
+                        toCruz.getVida(),
+                        filtrarListaDivisao(caminhoPercorridoToCruz),
+                        filtrarLista(mapa.getEntradasSaidasNomes()),
+                        missao.getCodMissao(),
+                        missao.getVersao()
+                );
+
+                // Exportar o relatorio combinado
+                exportador.exportarRelatorioSimulacoes(null, resultado, mapa, "relatorio_simulacoes.json");
+
+                logger.info("Relatorio de simulacoes exportado com sucesso.");
+                logger.info("Programa finalizado com sucesso.");
+
                 System.exit(0);
             }
             else if (!divisaoAtual.isEntradaSaida()) {
@@ -183,6 +231,26 @@ public class SimulacaoManualGUI extends JFrame {
             }
             else if(divisaoAtual.isEntradaSaida() && !toCruz.isAlvoConcluido()){
                 JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz abandonou o alvo.");
+
+                //TODO exportar resultado
+                IResultadoSimulacao resultado = new ResultadoSimulacaoImpl(
+                        "MANUAL-002",
+                        caminhoPercorridoToCruz.first().getNomeDivisao(),
+                        caminhoPercorridoToCruz.last().getNomeDivisao(),
+                        "FALHA",
+                        toCruz.getVida(),
+                        filtrarListaDivisao(caminhoPercorridoToCruz),
+                        filtrarLista(mapa.getEntradasSaidasNomes()),
+                        missao.getCodMissao(),
+                        missao.getVersao()
+                );
+
+                // Exportar o relatorio combinado
+                exportador.exportarRelatorioSimulacoes(resultado, resultado, mapa, "relatorio_simulacoes.json");
+
+                logger.info("Relatorio de simulacoes exportado com sucesso.");
+                logger.info("Programa finalizado com sucesso.");
+
                 System.exit(0);
             }
         });
@@ -265,11 +333,12 @@ public class SimulacaoManualGUI extends JFrame {
      * @param mapaPanel
      */
     private void moverToCruz(MapaPanel mapaPanel) {
-        String destino = JOptionPane.showInputDialog(this, "Digite o nome da divisao:");
+        String destino = JOptionPane.showInputDialog(this, "Introduza o nome da divisao:");
         IDivisao novaDivisao = getDivisaoPorNome(destino);
 
         if (novaDivisao != null && podeMover(toCruz.getPosicaoAtual(), novaDivisao)) {
             toCruz.moverPara(novaDivisao);
+            caminhoPercorridoToCruz.addToRear(novaDivisao);
             mapaPanel.repaint(); // Atualizar o desenho
             atualizarEstadoBotoes(); // Atualizar estado dos botoes
         } else {
@@ -475,13 +544,16 @@ public class SimulacaoManualGUI extends JFrame {
 
     public static void main(String[] args) {
         IMapa mapa = new MapaImpl();
-        ImportJsonImpl jsonUtils = new ImportJsonImpl(mapa);
-        String caminhoJson = "mapa_v1.json";
+        IImportJson jsonUtils = new ImportJsonImpl(mapa);
+        String caminhoJson = "mapa_v3.json";
 
         // mapa carregado apartir do JSON
         try {
             jsonUtils.carregarMapa(caminhoJson);
             logger.info("Mapa carregado com sucesso e pronto para uso!");
+
+            missao = jsonUtils.carregarMissao(caminhoJson);
+            logger.info("Missao carregada: {} - Versao {}", missao.getCodMissao(), missao.getVersao());
 
             // Verificar se o alvo foi carregado corretamente
             IAlvo alvo = mapa.getAlvo();
