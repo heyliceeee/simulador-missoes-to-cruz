@@ -39,7 +39,7 @@ public class Main {
      */
     public static void main(String[] args) throws ElementNotFoundException {
         logger.info("Iniciando o programa...");
-        String caminhoJson = "mapa_v2.json";
+        String caminhoJson = "mapa_v6.json";
 
         // Inicializacao do mapa e carregamento da missao
         IMapa mapa = new MapaImpl();

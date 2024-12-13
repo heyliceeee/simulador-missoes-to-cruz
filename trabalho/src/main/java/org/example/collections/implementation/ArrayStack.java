@@ -3,108 +3,138 @@ package org.example.collections.implementation;
 import org.example.collections.exceptions.EmptyCollectionException;
 import org.example.collections.interfaces.StackADT;
 
+/**
+ * Classe que implementa a interface {@link StackADT} utilizando um array para armazenar elementos.
+ * Esta classe oferece operações básicas de uma pilha (stack): empilhar (push), desempilhar (pop),
+ * observar o elemento do topo (peek), verificar se está vazia e obter o tamanho. Caso a capacidade
+ * do array seja alcançada, o array será redimensionado automaticamente, dobrando seu tamanho.
+ *
+ * <p><b>Invariantes da classe:</b></p>
+ * <ul>
+ *   <li>A capacidade do array é sempre maior ou igual à quantidade de elementos armazenados.</li>
+ *   <li>O atributo {@code top} aponta para a próxima posição livre no array, ou seja, o índice
+ *       logo após o último elemento armazenado.</li>
+ *   <li>Quando a pilha está vazia, {@code top == 0}.</li>
+ *   <li>Os elementos são armazenados do índice 0 até o índice {@code top-1} do array.</li>
+ * </ul>
+ *
+ * @param <T> o tipo de elementos armazenados na pilha
+ */
 public class ArrayStack<T> implements StackADT<T> {
 
     /**
-     * constante para representar a capacidade default do array
+     * Capacidade padrão inicial do array.
      */
     protected final int DEFAULT_CAPACITY = 10;
 
     /**
-     * int que representa o número de elementos e a seguinte posição disponível no array
+     * Índice que representa tanto o número de elementos na pilha quanto a próxima posição livre no array.
+     * Quando a pilha está vazia, top = 0.
+     * Quando a pilha possui n elementos, top = n.
      */
     protected int top;
 
     /**
-     * array de elementos genéricos que representam a stack
+     * Array genérico que representa a pilha internamente.
+     * Os elementos são empilhados do índice 0 até top-1.
      */
     protected T[] stack;
 
 
     /**
-     * cria uma stack vazia utilizando a capacidade default
+     * Cria uma pilha vazia utilizando a capacidade padrão {@link #DEFAULT_CAPACITY}.
+     * Inicialmente, {@code top = 0} e o array possui 10 posições.
      */
-    public ArrayStack(){
+    @SuppressWarnings("unchecked")
+    public ArrayStack() {
         top = 0;
         stack = (T[]) (new Object[DEFAULT_CAPACITY]);
     }
 
     /**
-     * cria uma stack vazia utilizando uma capacidade específica
-     * @param initialCapacity representa a capacidade específica
+     * Cria uma pilha vazia com uma capacidade inicial específica.
+     *
+     * @param initialCapacity capacidade inicial da pilha.
+     *                        Se {@code initialCapacity} for menor ou igual a zero, o comportamento 
+     *                        será indefinido (recomendado fornecer um valor positivo).
      */
-    public ArrayStack(int initialCapacity){
+    @SuppressWarnings("unchecked")
+    public ArrayStack(int initialCapacity) {
         top = 0;
         stack = (T[]) (new Object[initialCapacity]);
     }
 
 
     /**
-     * adiciona um elemento específico ao top da stack, expandindo a capacidade da stack se necessário
-     * @param element elemento genérico a ser colocado na stack
+     * Empilha (adiciona) um elemento no topo da pilha.
+     * Se a pilha estiver cheia, a capacidade será expandida automaticamente para o dobro.
+     *
+     * @param element elemento a ser empilhado.
      */
     @Override
     public void push(T element) {
-        if(size() == stack.length) { // se a stack já atingiu a capacidade máxima
+        if (size() == stack.length) {
             expandCapacity();
         }
 
-        stack[top] = element; // o novo elemento fica no top
-        top++; // top aponta para o elemento seguinte (vazio)
+        stack[top] = element;
+        top++;
     }
 
     /**
-     * expande a capacidade da stack
+     * Expande a capacidade da pilha dobrando o tamanho do array interno.
+     * Todos os elementos já armazenados são copiados para o novo array.
      */
+    @SuppressWarnings("unchecked")
     private void expandCapacity() {
-        T[] newStack = (T[]) new Object[stack.length * 2]; // cria uma nova stack com o dobro da capacidade
+        T[] newStack = (T[]) new Object[stack.length * 2];
 
-        // copiar os elementos da stack anterior para a nova stack
-        for(int i = 0; i < stack.length; i++) {
+        for (int i = 0; i < stack.length; i++) {
             newStack[i] = stack[i];
         }
 
-        stack = newStack; // a stack agora é a stack expandida
+        stack = newStack;
     }
 
     /**
-     * remove o elemento do top da stack e retorna a referência dele
-     * lança uma EmptyCollectionException se a stack estiver vazia
-     * @return T elemento removido do top da stack
-     * @throws EmptyCollectionException se a remoção foi tentada numa stack vazia
+     * Desempilha (remove) e retorna o elemento no topo da pilha.
+     * Lança uma {@link EmptyCollectionException} se a pilha estiver vazia.
+     *
+     * @return o elemento que estava no topo da pilha.
+     * @throws EmptyCollectionException se a pilha estiver vazia.
      */
     @Override
     public T pop() throws EmptyCollectionException {
-        if(isEmpty()) {
+        if (isEmpty()) {
             throw new EmptyCollectionException("Stack");
         }
 
-        top--; // top aponta para o elemento anterior
-
-        T result = stack[top]; // elemento top
-        stack[top] = null; // elemento top removido
-
+        top--;
+        T result = stack[top];
+        stack[top] = null; // Remove a referência para ajudar o coletor de lixo
         return result;
     }
 
     /**
-     * retorna uma referência ao elemento do top da stack. O elemento não é removido da stack
-     * lança uma EmptyCollectionException se a stack estiver vazia
-     * @return T elemento do top da stack
-     * @throws EmptyCollectionException se a observação foi tentada numa stack vazia
+     * Retorna (mas não remove) o elemento do topo da pilha.
+     * Lança uma {@link EmptyCollectionException} se a pilha estiver vazia.
+     *
+     * @return o elemento do topo da pilha.
+     * @throws EmptyCollectionException se a pilha estiver vazia.
      */
     @Override
     public T peek() throws EmptyCollectionException {
-        if(isEmpty()) {
+        if (isEmpty()) {
             throw new EmptyCollectionException("Stack");
         }
 
-        return stack[top - 1]; // elemento top
+        return stack[top - 1];
     }
 
     /**
-     * retorna true se a stack não contiver elementos
-     * @return boolean dependendo se a stack está vazia
+     * Verifica se a pilha está vazia.
+     *
+     * @return {@code true} se a pilha não contiver elementos, {@code false} caso contrário.
      */
     @Override
     public boolean isEmpty() {
@@ -112,14 +142,21 @@ public class ArrayStack<T> implements StackADT<T> {
     }
 
     /**
-     * retorna o número de elementos da stack
-     * @return int número de elementos da stack
+     * Retorna o número de elementos contidos na pilha.
+     *
+     * @return a quantidade de elementos na pilha.
      */
     @Override
     public int size() {
         return top;
     }
 
+    /**
+     * Retorna uma representação em String da pilha, exibindo valores internos 
+     * para fins de debug, incluindo a capacidade padrão, o índice top e todos os elementos do array.
+     *
+     * @return Uma string representando o estado interno da pilha.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("ArrayStack{");

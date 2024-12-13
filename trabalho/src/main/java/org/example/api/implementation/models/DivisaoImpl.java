@@ -136,9 +136,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtem a lista de itens presentes na divisao.
+     * Define a lista de inimigos presentes na divisão.
      *
-     * @return Lista de itens presentes.
+     * @param inimigosPresentes Lista de inimigos a serem definidos.
      */
     @Override
     public void setInimigosPresentes(ArrayUnorderedList<IInimigo> inimigosPresentes) {
