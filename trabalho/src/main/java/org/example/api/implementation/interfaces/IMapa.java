@@ -168,4 +168,6 @@ public interface IMapa {
      * @return Uma lista de itens do tipo especificado.
      */
     ArrayUnorderedList<IItem> getItensPorTipo(String tipo);
+
+    ArrayUnorderedList<IItem> getItens();
 }

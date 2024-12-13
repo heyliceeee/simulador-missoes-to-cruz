@@ -452,7 +452,7 @@ public class MapaImpl implements IMapa {
             }
 
             // Obter conexoes da divisao atual
-            ArrayUnorderedList<IDivisao> conexoes = obterConexoes(atual);
+            LinkedList<IDivisao> conexoes = grafo.getAdjacentes(atual);
             if (conexoes == null || conexoes.isEmpty()) {
                 continue;
             }
@@ -596,7 +596,7 @@ public class MapaImpl implements IMapa {
             System.out.println();
 
             // Obter as conexoes
-            ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);
+            LinkedList<IDivisao> conexoes = grafo.getAdjacentes(divisao);
             if (conexoes.isEmpty()) {
                 System.out.println("   ↳ Sem conexoes");
             } else {
@@ -630,13 +630,13 @@ public class MapaImpl implements IMapa {
      */
     @Override
     public ArrayUnorderedList<IDivisao> expandirConexoes(IDivisao divisaoAtual) {
-        ArrayUnorderedList<IDivisao> conexoesDiretas = obterConexoes(divisaoAtual);
+        LinkedList<IDivisao> conexoesDiretas = grafo.getAdjacentes(divisaoAtual);
         ArrayUnorderedList<IDivisao> conexoesExpandida = new ArrayUnorderedList<>();
 
         // Adiciona conexoes de segunda distancia
         for (int i = 0; i < conexoesDiretas.size(); i++) {
             IDivisao conexao = conexoesDiretas.getElementAt(i);
-            ArrayUnorderedList<IDivisao> conexoesSegundaDistancia = obterConexoes(divisaoAtual);
+            LinkedList<IDivisao> conexoesSegundaDistancia = grafo.getAdjacentes(divisaoAtual);
 
             for (int j = 0; j < conexoesSegundaDistancia.size(); j++) {
                 IDivisao segundaConexao = conexoesSegundaDistancia.getElementAt(j);
@@ -686,7 +686,7 @@ public class MapaImpl implements IMapa {
                 return atual;
             }
 
-            ArrayUnorderedList<IDivisao> adjacentes = obterConexoes(atual);
+            LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(atual);
             for (int i = 0; i < adjacentes.size(); i++) {
                 IDivisao vizinho = adjacentes.getElementAt(i);
                 if (!divisoesVisitadas.contains(vizinho)) {
@@ -713,6 +713,27 @@ public class MapaImpl implements IMapa {
                     if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
                         itens.addToRear(item);
                     }
+                }
+            }
+        }
+
+        return itens;
+    }
+
+    @Override
+    public ArrayUnorderedList<IItem> getItens() {
+        ArrayUnorderedList<IItem> itens = new ArrayUnorderedList<>();
+        ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
+
+        for (int i = 0; i < divisoes.size(); i++) {
+            IDivisao divisao = divisoes.getElementAt(i);
+            if (divisao != null) {
+                ArrayUnorderedList<IItem> itensDivisao = divisao.getItensPresentes();
+                for (int j = 0; j < itensDivisao.size(); j++) {
+                    IItem item = itensDivisao.getElementAt(j);
+                    //if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
+                        itens.addToRear(item);
+                    //}
                 }
             }
         }
