@@ -116,7 +116,7 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem o codigo identificador da missao associada à simulacao.
+     * Obtem o codigo identificador da missao associada a simulacao.
      *
      * @return O codigo da missao.
      */
@@ -126,7 +126,7 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem a versao da missao associada à simulacao.
+     * Obtem a versao da missao associada a simulacao.
      *
      * @return A versao da missao.
      */

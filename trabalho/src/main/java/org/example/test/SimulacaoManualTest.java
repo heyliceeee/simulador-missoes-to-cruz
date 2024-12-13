@@ -20,7 +20,7 @@ public class SimulacaoManualTest {
     private SimulacaoManualImpl simulacaoManual;
 
     /**
-     * Configuração inicial antes de cada teste.
+     * Configuracao inicial antes de cada teste.
      */
     @BeforeEach
     void setUp() {
@@ -28,12 +28,12 @@ public class SimulacaoManualTest {
         toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
         simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
 
-        // Criar divisões para testes
+        // Criar divisoes para testes
         mapa.adicionarDivisao("Entrada");
         mapa.adicionarDivisao("Objetivo");
         mapa.adicionarDivisao("Saida");
 
-        // Adicionar conexões
+        // Adicionar conexoes
         mapa.adicionarLigacao("Entrada", "Objetivo");
         mapa.adicionarLigacao("Objetivo", "Saida");
 
@@ -45,7 +45,7 @@ public class SimulacaoManualTest {
     }
 
     /**
-     * Testa a recuperação da vida restante.
+     * Testa a recuperacao da vida restante.
      */
     @Test
     void testGetVidaRestante() {
@@ -53,7 +53,7 @@ public class SimulacaoManualTest {
     }
 
     /**
-     * Testa a recuperação do caminho percorrido pelo Tó Cruz.
+     * Testa a recuperacao do caminho percorrido pelo To Cruz.
      */
     @Test
     void testGetCaminhoPercorrido() {

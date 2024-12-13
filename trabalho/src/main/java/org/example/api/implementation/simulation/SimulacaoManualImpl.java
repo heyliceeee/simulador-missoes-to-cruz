@@ -318,26 +318,26 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     public void mover() throws ElementNotFoundException {
         System.out.print("Digite o nome da divisao para onde deseja mover: ");
         String novaDivisao = scanner.nextLine().trim();
-    
+
         if (novaDivisao.isEmpty()) {
             System.out.println("Divisao invalida.");
             return;
         }
-    
+
         if (mapa.podeMover(toCruz.getPosicaoAtual().getNomeDivisao(), novaDivisao)) {
             IDivisao proximaDivisao = mapa.getDivisaoPorNome(novaDivisao);
             if (proximaDivisao != null) {
                 toCruz.moverPara(proximaDivisao);
                 caminhoPercorrido.addToRear(proximaDivisao);
                 verificarItens(proximaDivisao);
-    
-                // Se houver inimigos, Tó Cruz entrou na sala deles (cenário 1 ou 5)
+
+                // Se houver inimigos, To Cruz entrou na sala deles (cenario 1 ou 5)
                 ArrayUnorderedList<IInimigo> inimigos = proximaDivisao.getInimigosPresentes();
                 if (inimigos != null && !inimigos.isEmpty()) {
-                    // Tó Cruz ataca primeiro (inimigoEntrouAgora = false)
+                    // To Cruz ataca primeiro (inimigoEntrouAgora = false)
                     combateService.resolverCombate(toCruz, proximaDivisao, false);
                 }
-    
+
             } else {
                 System.err.println("Erro: Divisao '" + novaDivisao + "' nao encontrada.");
             }
@@ -345,7 +345,6 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             System.out.println("Movimento invalido! Divisoes nao conectadas.");
         }
     }
-    
 
     /**
      * Realiza um ataque contra os inimigos na divisao atual.
@@ -360,10 +359,11 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     private void combater(IDivisao divisao) throws ElementNotFoundException {
-        // Como o jogador acionou o combate (atacando ou entrando na sala), Tó Cruz ataca primeiro.
+        // Como o jogador acionou o combate (atacando ou entrando na sala), To Cruz
+        // ataca primeiro.
         // Portanto, inimigoEntrouAgora = false
         combateService.resolverCombate(toCruz, divisao, false);
-    
+
         ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
         while (inimigos != null && !inimigos.isEmpty()) {
             try {
@@ -376,7 +376,6 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             }
         }
     }
-    
 
     /**
      * Verifica se ha itens na divisao e pergunta ao jogador se deseja pega-los.

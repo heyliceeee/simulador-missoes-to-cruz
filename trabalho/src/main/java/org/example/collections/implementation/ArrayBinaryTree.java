@@ -5,218 +5,198 @@ import org.example.collections.interfaces.BinaryTreeADT;
 
 import java.util.Iterator;
 
-public class ArrayBinaryTree<T> implements BinaryTreeADT<T>
-{
+public class ArrayBinaryTree<T> implements BinaryTreeADT<T> {
     protected int count;
     protected T[] tree;
     private final int CAPACITY = 100;
 
-
     /**
      * cria uma arvore binaria vazia
      */
-    public ArrayBinaryTree()
-    {
+    public ArrayBinaryTree() {
         count = 0;
 
         tree = (T[]) new Object[CAPACITY];
     }
 
-
     /**
      * cria uma arvore binaria com o elemento especifico como root
+     * 
      * @param element o elemento que vai ser o root
      */
-    public ArrayBinaryTree(T element)
-    {
+    public ArrayBinaryTree(T element) {
         count = 1;
 
         tree = (T[]) new Object[CAPACITY];
         tree[0] = element;
     }
 
-
     @Override
-    public T getRoot()
-    {
-        if(size() > 0) //se a arvore nao esta vazia
+    public T getRoot() {
+        if (size() > 0) // se a arvore nao esta vazia
         {
-            return (T) tree[0]; //retorna o elemento no indice 0, que representa a root da arvore
-        }
-        else //se a arvore estiver vazia, retorna null, pois nao ha root
+            return (T) tree[0]; // retorna o elemento no indice 0, que representa a root da arvore
+        } else // se a arvore estiver vazia, retorna null, pois nao ha root
         {
-          return null;
+            return null;
         }
     }
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return (this.count == 0);
     }
 
     @Override
-    public int size()
-    {
+    public int size() {
         return this.count;
     }
 
     @Override
-    public boolean contains(T targetElement)
-    {
-        //itera sobre todos os elementos do array representando a arvore
-        for(Object element : tree)
-        {
-            if(element != null && element.equals(targetElement)) //se o elemento nao e nulo e e igual ao elemento alvo
+    public boolean contains(T targetElement) {
+        // itera sobre todos os elementos do array representando a arvore
+        for (Object element : tree) {
+            if (element != null && element.equals(targetElement)) // se o elemento nao e nulo e e igual ao elemento alvo
             {
-                return true; //se encontrar uma correspondencia, retorna verdadeiro
+                return true; // se encontrar uma correspondencia, retorna verdadeiro
             }
         }
 
-        return false;  //se percorrer todo o array e nao encontrar correspondencia, retorna falso
+        return false; // se percorrer todo o array e nao encontrar correspondencia, retorna falso
     }
 
     @Override
-    public T find(T targetElement) throws EmptyCollectionException
-    {
+    public T find(T targetElement) throws EmptyCollectionException {
         T tmp = null;
         boolean found = false;
 
-        for(int i=0; i < count && !found; i++) //percorrer os elementos da arvore em pesquisa do elemento alvo
+        for (int i = 0; i < count && !found; i++) // percorrer os elementos da arvore em pesquisa do elemento alvo
         {
-            if(targetElement.equals(tree[i])) //se o elemento alvo for igual ao valor atual da arvore
+            if (targetElement.equals(tree[i])) // se o elemento alvo for igual ao valor atual da arvore
             {
-                found = true; //encontrou o elemento alvo
-                tmp = tree[i]; //armazena o elemento alvo
+                found = true; // encontrou o elemento alvo
+                tmp = tree[i]; // armazena o elemento alvo
             }
         }
 
-        if(!found) //se nao encontrou o elemento alvo na arvore
+        if (!found) // se nao encontrou o elemento alvo na arvore
         {
             throw new EmptyCollectionException("binary tree");
         }
 
-
-        return tmp; //retorna o elemento alvo
+        return tmp; // retorna o elemento alvo
     }
 
     @Override
-    public Iterator<T> iteratorInOrder()
-    {
-        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporaria para armazenar os elementos durante a travessia inorder
-        inorder(0, tmpList); //inicia a travessia inorder a partir do node root (indice 0)
+    public Iterator<T> iteratorInOrder() {
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); // cria uma lista temporaria para armazenar os
+                                                                     // elementos durante a travessia inorder
+        inorder(0, tmpList); // inicia a travessia inorder a partir do node root (indice 0)
 
-        return tmpList.iterator(); //retorna um iterador para a lista temporaria
+        return tmpList.iterator(); // retorna um iterador para a lista temporaria
     }
-
 
     /**
      * executa uma travessia inorder recursiva
-     * @param node o node que vai ser utilizado na travessia
+     * 
+     * @param node    o node que vai ser utilizado na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void inorder(int node, ArrayUnorderedList<T> tmpList)
-    {
-        if(node < tree.length) //se o indice do node esta dentro dos limites do array da arvore.
+    protected void inorder(int node, ArrayUnorderedList<T> tmpList) {
+        if (node < tree.length) // se o indice do node esta dentro dos limites do array da arvore.
         {
-            if(tree[node] != null) //se o node atual nao e nulo
+            if (tree[node] != null) // se o node atual nao e nulo
             {
-                inorder(node*2+1, tmpList); //realiza a travessia inorder recursivamente na subarvore esquerda
-                tmpList.addToRear(tree[node]); //adiciona o elemento do node atual à lista temporaria
-                inorder((node+1)*2, tmpList); //realiza a travessia inorder recursivamente na subarvore direita
+                inorder(node * 2 + 1, tmpList); // realiza a travessia inorder recursivamente na subarvore esquerda
+                tmpList.addToRear(tree[node]); // adiciona o elemento do node atual a lista temporaria
+                inorder((node + 1) * 2, tmpList); // realiza a travessia inorder recursivamente na subarvore direita
             }
         }
     }
 
-
     @Override
-    public Iterator<T> iteratorPreOrder()
-    {
-        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporaria para armazenar os elementos durante a travessia preorder
-        preorder(0, tmpList); //inicia a travessia preorder a partir do node root (indice 0)
+    public Iterator<T> iteratorPreOrder() {
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); // cria uma lista temporaria para armazenar os
+                                                                     // elementos durante a travessia preorder
+        preorder(0, tmpList); // inicia a travessia preorder a partir do node root (indice 0)
 
-        return tmpList.iterator(); //retorna um iterador para a lista temporaria
+        return tmpList.iterator(); // retorna um iterador para a lista temporaria
     }
-
 
     /**
      * executa uma travessia preorder recursiva
-     * @param node o node que vai ser utilizado na travessia
+     * 
+     * @param node    o node que vai ser utilizado na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void preorder(int node, ArrayUnorderedList<T> tmpList)
-    {
-        if(node < tree.length) //se o indice do node esta dentro dos limites do array
+    protected void preorder(int node, ArrayUnorderedList<T> tmpList) {
+        if (node < tree.length) // se o indice do node esta dentro dos limites do array
         {
-            if(tree[node] != null) //se o node nao e nulo
+            if (tree[node] != null) // se o node nao e nulo
             {
-                tmpList.addToRear(tree[node]); //adiciona o elemento do node à lista temporaria
-                preorder(node*2+1, tmpList); //realiza a travessia pre-ordem no filho esquerdo
-                preorder((node+1)*2, tmpList); //realiza a travessia pre-ordem no filho direito
+                tmpList.addToRear(tree[node]); // adiciona o elemento do node a lista temporaria
+                preorder(node * 2 + 1, tmpList); // realiza a travessia pre-ordem no filho esquerdo
+                preorder((node + 1) * 2, tmpList); // realiza a travessia pre-ordem no filho direito
             }
         }
     }
 
-
     @Override
-    public Iterator<T> iteratorPostOrder()
-    {
-        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); //cria uma lista temporaria para armazenar os elementos durante a travessia postorder
-        postorder(0, tmpList); //inicia a travessia postorder a partir do node root (indice 0)
+    public Iterator<T> iteratorPostOrder() {
+        ArrayUnorderedList<T> tmpList = new ArrayUnorderedList<T>(); // cria uma lista temporaria para armazenar os
+                                                                     // elementos durante a travessia postorder
+        postorder(0, tmpList); // inicia a travessia postorder a partir do node root (indice 0)
 
-        return tmpList.iterator(); //retorna um iterador para a lista temporaria
+        return tmpList.iterator(); // retorna um iterador para a lista temporaria
     }
-
 
     /**
      * executa uma travessia postorder recursiva
-     * @param node o node que vai ser utilizado na travessia
+     * 
+     * @param node    o node que vai ser utilizado na travessia
      * @param tmpList uma lista temporaria que vai ser usada na travessia
      */
-    protected void postorder(int node, ArrayUnorderedList<T> tmpList)
-    {
-        if (node < tree.length) //se o indice do node esta dentro dos limites do array
+    protected void postorder(int node, ArrayUnorderedList<T> tmpList) {
+        if (node < tree.length) // se o indice do node esta dentro dos limites do array
         {
-            if (tree[node] != null) //se o node nao e nulo
+            if (tree[node] != null) // se o node nao e nulo
             {
-                postorder(node*2+1, tmpList); //realiza a travessia postorder no filho esquerdo
-                postorder((node+1)*2, tmpList); //realiza a travessia postorder no filho direito
-                tmpList.addToRear(tree[node]); //adiciona o node atual à lista apos visitar os filhos
+                postorder(node * 2 + 1, tmpList); // realiza a travessia postorder no filho esquerdo
+                postorder((node + 1) * 2, tmpList); // realiza a travessia postorder no filho direito
+                tmpList.addToRear(tree[node]); // adiciona o node atual a lista apos visitar os filhos
             }
         }
     }
 
-
     @Override
-    public Iterator<T> iteratorLevelOrder()
-    {
-        LinkedQueue<Integer> nodes = new LinkedQueue<>(); //cria uma fila para armazenar os indices dos nodes na ordem de nivelamento
-        ArrayUnorderedList<T> results = new ArrayUnorderedList<>(); //cria uma lista temporaria para armazenar os elementos na ordem de nivelamento
+    public Iterator<T> iteratorLevelOrder() {
+        LinkedQueue<Integer> nodes = new LinkedQueue<>(); // cria uma fila para armazenar os indices dos nodes na ordem
+                                                          // de nivelamento
+        ArrayUnorderedList<T> results = new ArrayUnorderedList<>(); // cria uma lista temporaria para armazenar os
+                                                                    // elementos na ordem de nivelamento
 
-        if (!isEmpty()) //se a arvore nao esta vazia antes de iniciar a travessia em largura
+        if (!isEmpty()) // se a arvore nao esta vazia antes de iniciar a travessia em largura
         {
-            nodes.enqueue(0); //coloca o indice da root na fila
+            nodes.enqueue(0); // coloca o indice da root na fila
             int current;
 
-            while (!nodes.isEmpty()) //enquanto a fila nao estiver vazia, continua a travessia em largura
+            while (!nodes.isEmpty()) // enquanto a fila nao estiver vazia, continua a travessia em largura
             {
                 current = nodes.dequeue();
-                results.addToRear(tree[current]); //adiciona o elemento atual à lista de resultados
+                results.addToRear(tree[current]); // adiciona o elemento atual a lista de resultados
 
-                //coloca na fila o indice do filho esquerdo se existir
-                if (current*2+1 < tree.length && tree[current*2+1] != null)
-                {
-                    nodes.enqueue(current*2+1);
+                // coloca na fila o indice do filho esquerdo se existir
+                if (current * 2 + 1 < tree.length && tree[current * 2 + 1] != null) {
+                    nodes.enqueue(current * 2 + 1);
                 }
 
-                //coloca na fila o indice do filho direito se existir
-                if ((current+1)*2 < tree.length && tree[(current+1)*2] != null)
-                {
-                    nodes.enqueue((current+1)*2);
+                // coloca na fila o indice do filho direito se existir
+                if ((current + 1) * 2 < tree.length && tree[(current + 1) * 2] != null) {
+                    nodes.enqueue((current + 1) * 2);
                 }
             }
         }
 
-        return results.iterator(); //retorna um iterador para a lista de resultados
+        return results.iterator(); // retorna um iterador para a lista de resultados
     }
 }

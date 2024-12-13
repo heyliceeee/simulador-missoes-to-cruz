@@ -11,7 +11,7 @@ import org.example.collections.implementation.LinkedList;
  *
  * <p>
  * O mapa e estruturado como um grafo que contem divisoes, conexoes entre elas,
- * inimigos, itens e alvos. Essa interface define as operacoes relacionadas à
+ * inimigos, itens e alvos. Essa interface define as operacoes relacionadas a
  * manipulacao e consulta do mapa.
  * </p>
  */

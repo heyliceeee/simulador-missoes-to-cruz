@@ -14,10 +14,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 /**
- * Classe de testes para validar o comportamento da classe SimulacaoAutomaticaImpl.
- * Testa cenários como execução de simulação, movimentação de Tó Cruz, cálculo de trajeto e interações.
+ * Classe de testes para validar o comportamento da classe
+ * SimulacaoAutomaticaImpl.
+ * Testa cenarios como execucao de simulacao, movimentacao de To Cruz, calculo
+ * de trajeto e interacoes.
  */
 public class SimulacaoAutomaticaTest {
     private IMapa mapa;
@@ -25,8 +26,8 @@ public class SimulacaoAutomaticaTest {
     private SimulacaoAutomaticaImpl simulacao;
 
     /**
-     * Configura o ambiente de teste antes de cada método.
-     * Cria um mapa com divisões, conexões, inimigos e itens.
+     * Configura o ambiente de teste antes de cada metodo.
+     * Cria um mapa com divisoes, conexoes, inimigos e itens.
      */
     @BeforeEach
     void setUp() {
@@ -34,12 +35,12 @@ public class SimulacaoAutomaticaTest {
         toCruz = new ToCruz("To Cruz", 100); // Nome e vida inicial
         simulacao = new SimulacaoAutomaticaImpl(mapa, toCruz);
 
-        // Criar divisões para testes
+        // Criar divisoes para testes
         mapa.adicionarDivisao("Entrada");
         mapa.adicionarDivisao("Objetivo");
         mapa.adicionarDivisao("Saida");
 
-        // Conexões
+        // Conexoes
         mapa.adicionarLigacao("Entrada", "Objetivo");
         mapa.adicionarLigacao("Objetivo", "Saida");
 
@@ -51,8 +52,9 @@ public class SimulacaoAutomaticaTest {
     }
 
     /**
-     * Testa o cenário de execução da simulação com sucesso.
-     * Verifica se o objetivo foi alcançado, os inimigos derrotados e os itens coletados.
+     * Testa o cenario de execucao da simulacao com sucesso.
+     * Verifica se o objetivo foi alcancado, os inimigos derrotados e os itens
+     * coletados.
      */
     @Test
     void testExecutarComSucesso() throws ElementNotFoundException {
@@ -60,7 +62,7 @@ public class SimulacaoAutomaticaTest {
 
         simulacao.executar(divisaoObjetivo);
 
-        // Verificar se o objetivo foi alcançado
+        // Verificar se o objetivo foi alcancado
         assertEquals("Entrada", simulacao.getDivisaoFinal().getNomeDivisao());
         assertEquals("SUCESSO", simulacao.getStatus());
         assertTrue(simulacao.getVidaRestante() > 0);
@@ -71,8 +73,8 @@ public class SimulacaoAutomaticaTest {
     }
 
     /**
-     * Testa o comportamento da simulação ao receber uma divisão de objetivo nula.
-     * Verifica se a exceção correta é lançada.
+     * Testa o comportamento da simulacao ao receber uma divisao de objetivo nula.
+     * Verifica se a excecao correta e lancada.
      */
     @Test
     void testExecutarComDivisaoObjetivoNula() {
@@ -83,29 +85,28 @@ public class SimulacaoAutomaticaTest {
     }
 
     /**
-     * Testa o cálculo de vida restante durante um trajeto simulado.
-     * Verifica se a vida restante é calculada corretamente.
+     * Testa o calculo de vida restante durante um trajeto simulado.
+     * Verifica se a vida restante e calculada corretamente.
      */
     @Test
     void testSimularTrajeto() {
         ArrayUnorderedList<IDivisao> caminhoParaObjetivo = mapa.calcularMelhorCaminho(
                 mapa.getDivisaoPorNome("Entrada"),
-                mapa.getDivisaoPorNome("Objetivo")
-        );
+                mapa.getDivisaoPorNome("Objetivo"));
         ArrayUnorderedList<IDivisao> caminhoDeVolta = mapa.calcularMelhorCaminho(
                 mapa.getDivisaoPorNome("Objetivo"),
-                mapa.getDivisaoPorNome("Saida")
-        );
+                mapa.getDivisaoPorNome("Saida"));
 
         int vidaRestante = simulacao.simularTrajeto(caminhoParaObjetivo, caminhoDeVolta);
 
-        // Verificar se a vida restante é calculada corretamente
+        // Verificar se a vida restante e calculada corretamente
         assertEquals(80, vidaRestante);
     }
 
     /**
-     * Testa o comportamento ao mover Tó Cruz para uma divisão válida.
-     * Verifica se a movimentação foi bem-sucedida e se os inimigos e itens foram processados.
+     * Testa o comportamento ao mover To Cruz para uma divisao valida.
+     * Verifica se a movimentacao foi bem-sucedida e se os inimigos e itens foram
+     * processados.
      */
     @Test
     void testMoverParaDivisao() throws ElementNotFoundException {
@@ -113,7 +114,7 @@ public class SimulacaoAutomaticaTest {
 
         simulacao.moverParaDivisao(divisao);
 
-        // Verificar se Tó Cruz foi movido corretamente
+        // Verificar se To Cruz foi movido corretamente
         assertEquals(divisao, toCruz.getPosicaoAtual());
 
         // Verificar se os inimigos foram derrotados e os itens coletados
@@ -122,8 +123,8 @@ public class SimulacaoAutomaticaTest {
     }
 
     /**
-     * Testa o comportamento ao mover Tó Cruz para uma divisão nula.
-     * Verifica se a exceção correta é lançada.
+     * Testa o comportamento ao mover To Cruz para uma divisao nula.
+     * Verifica se a excecao correta e lancada.
      */
     @Test
     void testMoverParaDivisaoInvalida() {
@@ -134,8 +135,8 @@ public class SimulacaoAutomaticaTest {
     }
 
     /**
-     * Testa o cálculo do caminho mais curto para uma saída.
-     * Verifica se o caminho encontrado está correto.
+     * Testa o calculo do caminho mais curto para uma saida.
+     * Verifica se o caminho encontrado esta correto.
      */
     @Test
     void testEncontrarCaminhoParaSaidaMaisProxima() throws ElementNotFoundException {
@@ -143,15 +144,15 @@ public class SimulacaoAutomaticaTest {
         simulacao.executar(divisaoObjetivo);
         ArrayUnorderedList<IDivisao> caminho = simulacao.encontrarCaminhoParaSaidaMaisProxima();
 
-        // Verificar se o caminho encontrado está correto
+        // Verificar se o caminho encontrado esta correto
         assertNotNull(caminho);
         assertEquals(1, caminho.size());
         assertEquals("Entrada", caminho.getElementAt(0).getNomeDivisao());
     }
 
     /**
-     * Testa o método de recuperação da vida restante.
-     * Verifica se a vida inicial é retornada corretamente.
+     * Testa o metodo de recuperacao da vida restante.
+     * Verifica se a vida inicial e retornada corretamente.
      */
     @Test
     void testGetVidaRestante() {
@@ -159,8 +160,8 @@ public class SimulacaoAutomaticaTest {
     }
 
     /**
-     * Testa o método de recuperação do status.
-     * Verifica se o status inicial é retornado corretamente.
+     * Testa o metodo de recuperacao do status.
+     * Verifica se o status inicial e retornado corretamente.
      */
     @Test
     void testGetStatus() {

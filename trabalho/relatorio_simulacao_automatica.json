@@ -1,7 +1,7 @@
 {
   "id": "AUTO-001",
   "divisaoInicial": "Base Inferior",
-  "divisaoFinal": "Sala de Controle Infernal",
+  "divisaoFinal": "Sala de Execucao",
   "status": "FALHA",
   "vidaRestante": 0,
   "trajeto": [
@@ -34,7 +34,9 @@
     "Deposito de Armas",
     "Corredor de Fogo",
     "Escada 3",
-    "Sala de Controle Infernal"
+    "Sala de Controle Infernal",
+    "Corredor de Sombra",
+    "Sala de Execucao"
   ],
   "entradasSaidas": [
     "Base Inferior"

@@ -47,41 +47,41 @@ public class Main {
         IMissao missao;
 
         System.out.println("================================================================================");
-        System.out.println("                   BEM-VINDO AO SIMULADOR DE MISSOES DE TÓ CRUZ                  ");
+        System.out.println("                   BEM-VINDO AO SIMULADOR DE MISSOES DE To CRUZ                  ");
         System.out.println("================================================================================\n");
 
         try {
-            System.out.println("Carregando missão a partir do arquivo: " + caminhoJson + " ...");
+            System.out.println("Carregando missao a partir do arquivo: " + caminhoJson + " ...");
             missao = importJson.carregarMissao(caminhoJson);
-            System.out.println("\nMissão carregada com sucesso!");
-            System.out.println("Código da Missão: " + missao.getCodMissao());
-            System.out.println("Versão da Missão: " + missao.getVersao());
+            System.out.println("\nMissao carregada com sucesso!");
+            System.out.println("Codigo da Missao: " + missao.getCodMissao());
+            System.out.println("Versao da Missao: " + missao.getVersao());
             logger.info("Missao carregada: {} - Versao {}", missao.getCodMissao(), missao.getVersao());
         } catch (InvalidJsonStructureException | InvalidFieldException | DivisionNotFoundException e) {
             logger.error("Erro ao carregar a missao: {}", e.getMessage());
-            System.err.println("Erro ao carregar a missão: " + e.getMessage());
+            System.err.println("Erro ao carregar a missao: " + e.getMessage());
             return;
         }
 
         // Verifica se o mapa contem divisoes validas.
         if (mapa.getDivisoes().isEmpty()) {
             logger.error("Erro: Nenhuma divisao carregada no mapa. Encerrando o programa.");
-            System.err.println("Erro: Nenhuma divisão carregada no mapa. Encerrando o programa.");
+            System.err.println("Erro: Nenhuma divisao carregada no mapa. Encerrando o programa.");
             return;
         }
 
         System.out.println("\n--------------------------------------------------------------------------------");
-        System.out.println("                 MAPA DO EDIFÍCIO (DIVISÕES E CONEXÕES) ");
+        System.out.println("                 MAPA DO EDIFiCIO (DIVISoES E CONEXoES) ");
         System.out.println("--------------------------------------------------------------------------------");
         mapa.mostrarMapa();
 
         // Inicializa o agente To Cruz com valores padrao.
-        logger.info("Inicializando o agente Tó Cruz...");
+        logger.info("Inicializando o agente To Cruz...");
         ToCruz toCruzOriginal = new ToCruz("To Cruz", 100);
 
         System.out.println("\n--------------------------------------------------------------------------------");
-        System.out.println("Agente Tó Cruz inicializado com vida: " + toCruzOriginal.getVida());
-        System.out.println("Inventário inicial vazio.");
+        System.out.println("Agente To Cruz inicializado com vida: " + toCruzOriginal.getVida());
+        System.out.println("Inventario inicial vazio.");
         System.out.println("--------------------------------------------------------------------------------\n");
 
         Scanner scanner = new Scanner(System.in);
@@ -92,8 +92,8 @@ public class Main {
             System.out.println("\n====================================");
             System.out.println("          MENU PRINCIPAL            ");
             System.out.println("====================================");
-            System.out.println("1. Simulação Automática");
-            System.out.println("2. Simulação Manual");
+            System.out.println("1. Simulacao Automatica");
+            System.out.println("2. Simulacao Manual");
             System.out.println("3. Sair");
             System.out.print("\nDigite sua escolha: ");
             String escolha = scanner.nextLine().trim();
@@ -102,7 +102,7 @@ public class Main {
                 case "1" -> {
                     logger.info("Iniciando a simulacao automatica...");
                     System.out.println("\n====================================");
-                    System.out.println("      SIMULAÇÃO AUTOMÁTICA          ");
+                    System.out.println("      SIMULAcaO AUTOMaTICA          ");
                     System.out.println("====================================");
 
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
@@ -110,13 +110,13 @@ public class Main {
                     // Define a divisao inicial como a primeira no mapa
                     IDivisao divisaoInicial = mapa.getDivisoes().isEmpty() ? null : mapa.getDivisoes().getElementAt(0);
                     if (divisaoInicial == null) {
-                        System.err.println("Erro: Nenhuma divisão inicial encontrada.");
+                        System.err.println("Erro: Nenhuma divisao inicial encontrada.");
                         break;
                     }
 
                     toCruz.moverPara(divisaoInicial);
                     logger.info("To Cruz posicionado na divisao inicial: {}", divisaoInicial.getNomeDivisao());
-                    System.out.println("Tó Cruz posicionado na divisão inicial: " + divisaoInicial.getNomeDivisao());
+                    System.out.println("To Cruz posicionado na divisao inicial: " + divisaoInicial.getNomeDivisao());
 
                     // Executa a simulacao automatica
                     ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
@@ -124,7 +124,7 @@ public class Main {
                         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
                     } catch (Exception e) {
                         logger.error("Erro durante a simulacao automatica: {}", e.getMessage());
-                        System.err.println("Erro na simulação automática: " + e.getMessage());
+                        System.err.println("Erro na simulacao automatica: " + e.getMessage());
                         System.err.println("Verifique os logs para mais detalhes.");
                         break;
                     }
@@ -132,7 +132,7 @@ public class Main {
                     // Exporta os resultados da simulacao automatica.
                     IDivisao divisaoFinal = simulacaoAuto.getDivisaoFinal();
                     if (divisaoFinal == null) {
-                        System.err.println("Erro: Simulação automática falhou.");
+                        System.err.println("Erro: Simulacao automatica falhou.");
                     } else {
                         IResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
                                 "AUTO-001",
@@ -151,23 +151,23 @@ public class Main {
 
                         System.out.println(
                                 "\n--------------------------------------------------------------------------------");
-                        System.out.println("Simulação automática concluída!");
-                        System.out.println("Relatório exportado para relatorio_simulacao_automatica.json\n");
+                        System.out.println("Simulacao automatica concluida!");
+                        System.out.println("Relatorio exportado para relatorio_simulacao_automatica.json\n");
                     }
                 }
                 case "2" -> {
                     logger.info("Iniciando a simulacao manual...");
                     System.out.println("\n====================================");
-                    System.out.println("       SIMULAÇÃO MANUAL             ");
+                    System.out.println("       SIMULAcaO MANUAL             ");
                     System.out.println("====================================");
 
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
 
-                    // Executa a simulação manual.
+                    // Executa a simulacao manual.
                     ISimulacaoManual simulacaoManual = new SimulacaoManualImpl(mapa, toCruz);
                     simulacaoManual.executar(mapa.getAlvo().getDivisao());
 
-                    // Exporta os resultados da simulação manual.
+                    // Exporta os resultados da simulacao manual.
                     IResultadoSimulacao resultadoManual = new ResultadoSimulacaoImpl(
                             "MANUAL-001",
                             mapa.getDivisoes().getElementAt(0).getNomeDivisao(),
@@ -185,8 +185,8 @@ public class Main {
 
                     System.out.println(
                             "\n--------------------------------------------------------------------------------");
-                    System.out.println("Simulação manual concluída!");
-                    System.out.println("Relatório exportado para relatorio_simulacao_manual.json\n");
+                    System.out.println("Simulacao manual concluida!");
+                    System.out.println("Relatorio exportado para relatorio_simulacao_manual.json\n");
                 }
 
                 case "3" -> {
@@ -196,7 +196,7 @@ public class Main {
                 }
 
                 default -> {
-                    System.out.println("Escolha inválida. Tente novamente.\n");
+                    System.out.println("Escolha invalida. Tente novamente.\n");
                 }
             }
         }
@@ -234,7 +234,7 @@ public class Main {
     }
 
     /**
-     * Filtra uma lista de divisões para remover valores nulos e retornar apenas os
+     * Filtra uma lista de divisoes para remover valores nulos e retornar apenas os
      * nomes.
      *
      * @param lista Lista original de divisoes.

@@ -170,7 +170,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      * para calcular a vida restante de To Cruz.
      */
     public int simularTrajeto(ArrayUnorderedList<IDivisao> caminhoParaObjetivo,
-                              ArrayUnorderedList<IDivisao> caminhoDeVolta) {
+            ArrayUnorderedList<IDivisao> caminhoDeVolta) {
         int vidaSimulada = toCruz.getVida();
 
         // Simular impacto do caminho para o objetivo
@@ -234,17 +234,17 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         if (divisao == null) {
             throw new IllegalArgumentException("Erro: Tentativa de mover para uma divisao nula.");
         }
-    
+
         toCruz.moverPara(divisao);
         caminhoPercorrido.addToRear(divisao);
         System.out.println("🤠 To Cruz moveu-se para a divisao: " + divisao.getNomeDivisao());
-    
+
         ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
         if (inimigos != null && !inimigos.isEmpty()) {
-            // Tó Cruz entrou na sala com inimigos: Tó Cruz ataca primeiro
-            combateService.resolverCombate(toCruz, divisao, false); 
+            // To Cruz entrou na sala com inimigos: To Cruz ataca primeiro
+            combateService.resolverCombate(toCruz, divisao, false);
         }
-    
+
         // Coletar itens se houver
         ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
@@ -262,7 +262,6 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             }
         }
     }
-    
 
     /**
      * Encontra o caminho para a divisao de saida mais proxima usando BFS.

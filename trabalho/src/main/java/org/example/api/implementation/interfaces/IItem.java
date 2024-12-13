@@ -41,14 +41,14 @@ public interface IItem {
     void setPontos(int pontos);
 
     /**
-     * Obtem a divisao à qual o item esta associado.
+     * Obtem a divisao a qual o item esta associado.
      *
      * @return A divisao do item.
      */
     IDivisao getDivisao();
 
     /**
-     * Define a divisao à qual o item esta associado.
+     * Define a divisao a qual o item esta associado.
      *
      * @param divisao A nova divisao do item.
      * @throws IllegalArgumentException Se a divisao fornecida for nula.

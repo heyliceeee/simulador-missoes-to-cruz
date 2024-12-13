@@ -136,7 +136,7 @@ public class MapaImpl implements IMapa {
 
         IDivisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
-            item.setDivisao(divisao); // Vincula o item à divisao
+            item.setDivisao(divisao); // Vincula o item a divisao
             divisao.adicionarItem(item);
         } else {
             System.err.println("Erro: Divisao '" + nomeDivisao + "' nao encontrada.");
@@ -364,7 +364,7 @@ public class MapaImpl implements IMapa {
                 IDivisao origem = divisaoAtual;
                 IDivisao destino = origem;
 
-                // Movimentar até 2 divisões aleatoriamente
+                // Movimentar ate 2 divisoes aleatoriamente
                 for (int movimentos = 0; movimentos < 2; movimentos++) {
                     LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(destino);
                     if (adjacentes.isEmpty())
@@ -383,15 +383,15 @@ public class MapaImpl implements IMapa {
                     System.out.println("Inimigo '" + inimigo.getNome() + "' movimentou de " +
                             origem.getNomeDivisao() + " para " + destino.getNomeDivisao());
 
-                    // Se inimigo entrou na sala do Tó Cruz, cenários onde inimigos atacam primeiro
+                    // Se inimigo entrou na sala do To Cruz, cenarios onde inimigos atacam primeiro
                     if (destino.equals(toCruz.getPosicaoAtual())) {
                         System.out.println(crossedSwords
-                                + " Inimigo entrou na sala de Tó Cruz! Combate iniciado (inimigos primeiro).");
+                                + " Inimigo entrou na sala de To Cruz! Combate iniciado (inimigos primeiro).");
                         combateService.resolverCombate(toCruz, destino, true); // inimigoEntrouAgora = true
 
-                        // Verificar se Tó Cruz foi derrotado
+                        // Verificar se To Cruz foi derrotado
                         if (toCruz.getVida() <= 0) {
-                            System.err.println(skull + " Tó Cruz foi derrotado durante o ataque dos inimigos!");
+                            System.err.println(skull + " To Cruz foi derrotado durante o ataque dos inimigos!");
                             return;
                         }
                     }

@@ -115,14 +115,14 @@ public interface IResultadoSimulacao {
     void setEntradasSaidas(ArrayUnorderedList<String> entradasSaidas);
 
     /**
-     * Obtem o codigo identificador da missao associada à simulacao.
+     * Obtem o codigo identificador da missao associada a simulacao.
      *
      * @return O codigo da missao.
      */
     String getCodigoMissao();
 
     /**
-     * Obtem a versao da missao associada à simulacao.
+     * Obtem a versao da missao associada a simulacao.
      *
      * @return A versao da missao.
      */

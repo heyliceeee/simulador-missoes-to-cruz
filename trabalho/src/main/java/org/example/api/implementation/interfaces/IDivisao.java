@@ -25,7 +25,7 @@ public interface IDivisao {
     void setNomeDivisao(String nomeDivisao);
 
     /**
-     * Adiciona um inimigo à divisao.
+     * Adiciona um inimigo a divisao.
      *
      * @param inimigo O inimigo a ser adicionado.
      * @throws IllegalArgumentException Se o inimigo for nulo.
@@ -43,7 +43,7 @@ public interface IDivisao {
     void removerInimigo(IInimigo inimigo) throws ElementNotFoundException;
 
     /**
-     * Adiciona um item à divisao.
+     * Adiciona um item a divisao.
      *
      * @param item O item a ser adicionado.
      * @throws IllegalArgumentException Se o item for nulo.

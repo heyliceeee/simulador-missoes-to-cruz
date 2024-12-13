@@ -138,7 +138,7 @@ public class ImportJsonImpl implements IImportJson {
                 if (divisao != null) {
                     IInimigo inimigo = new InimigoImpl(nome, poder);
                     mapa.adicionarInimigo(divisaoNome, inimigo);
-                    // logger.debug("Inimigo '{}' adicionado à divisao '{}'", nome, divisaoNome);
+                    // logger.debug("Inimigo '{}' adicionado a divisao '{}'", nome, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para inimigo nao encontrada: " + divisaoNome);
                 }
@@ -171,7 +171,7 @@ public class ImportJsonImpl implements IImportJson {
                                 divisaoNome);
                     }
                     mapa.adicionarItem(divisaoNome, item);
-                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisao '{}'", tipo,
+                    // logger.debug("Item '{}' com pontos '{}' adicionado a divisao '{}'", tipo,
                     // pontos, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para item nao encontrada: " + divisaoNome);

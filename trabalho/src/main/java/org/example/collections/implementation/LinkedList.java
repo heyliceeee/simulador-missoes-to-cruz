@@ -15,7 +15,7 @@ public class LinkedList<T> implements Iterable<T> {
         this.count = 0;
     }
 
-    // Adiciona um elemento à lista
+    // Adiciona um elemento a lista
     public void add(T data) {
         Node<T> newNode = new Node<>(data);
 
@@ -29,8 +29,8 @@ public class LinkedList<T> implements Iterable<T> {
         this.count++;
     }
 
-     // Verifica se a lista esta vazia
-     public boolean isEmpty() {
+    // Verifica se a lista esta vazia
+    public boolean isEmpty() {
         return count == 0;
     }
 
@@ -38,20 +38,21 @@ public class LinkedList<T> implements Iterable<T> {
         Node<T> newNode = new Node<>(data);
         newNode.setNext(head);
         head = newNode;
-    
+
         if (tail == null) {
             tail = newNode;
         }
-    
+
         count++;
     }
 
     /**
      * Define o valor de um elemento na posicao especificada.
      *
-     * @param index O indice do elemento a ser atualizado.
+     * @param index   O indice do elemento a ser atualizado.
      * @param element O novo valor do elemento.
-     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
+     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da
+     *                                   lista.
      */
     public void setElementAt(int index, T element) {
         if (index < 0 || index >= size()) {
@@ -78,7 +79,8 @@ public class LinkedList<T> implements Iterable<T> {
      *
      * @param index O indice do elemento desejado.
      * @return O elemento na posicao especificada.
-     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
+     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da
+     *                                   lista.
      */
     public T getElementAt(int index) {
         if (index < 0 || index >= size()) {
@@ -96,10 +98,9 @@ public class LinkedList<T> implements Iterable<T> {
             currentIndex++;
         }
 
-        // Esta linha nao deve ser alcancada devido à verificacao do indice acima
+        // Esta linha nao deve ser alcancada devido a verificacao do indice acima
         throw new IllegalStateException("Erro inesperado ao procurar o indice.");
     }
-
 
     /**
      * Verifica se a lista contem o elemento especificado.
