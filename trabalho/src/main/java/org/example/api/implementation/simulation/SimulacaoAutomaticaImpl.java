@@ -234,18 +234,18 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         if (divisao == null) {
             throw new IllegalArgumentException("Erro: Tentativa de mover para uma divisao nula.");
         }
-
-        // Atualiza a posicao de To Cruz
+    
         toCruz.moverPara(divisao);
-        caminhoPercorrido.addToRear(divisao); // Adiciona a divisao ao caminho percorrido
+        caminhoPercorrido.addToRear(divisao);
         System.out.println("🤠 To Cruz moveu-se para a divisao: " + divisao.getNomeDivisao());
-
-        // Resolve combates utilizando CombateService
-        if (divisao.getInimigosPresentes() != null && !divisao.getInimigosPresentes().isEmpty()) {
-            combateService.resolverCombate(toCruz, divisao);
+    
+        ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
+        if (inimigos != null && !inimigos.isEmpty()) {
+            // Tó Cruz entrou na sala com inimigos: Tó Cruz ataca primeiro
+            combateService.resolverCombate(toCruz, divisao, false); 
         }
-
-        // Verifica e processa itens
+    
+        // Coletar itens se houver
         ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
             System.out.println(backpack + " Itens encontrados na divisao: " + divisao.getNomeDivisao());
@@ -262,6 +262,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             }
         }
     }
+    
 
     /**
      * Encontra o caminho para a divisao de saida mais proxima usando BFS.

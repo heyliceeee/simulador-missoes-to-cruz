@@ -1,7 +1,5 @@
 package org.example.api.implementation.interfaces;
 
-import org.example.collections.implementation.ArrayUnorderedList;
-
 /**
  * Interface para exportacao de resultados e relatorios de simulacoes.
  *

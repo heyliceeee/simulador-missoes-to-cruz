@@ -364,27 +364,13 @@ public class MapaImpl implements IMapa {
                 IDivisao origem = divisaoAtual;
                 IDivisao destino = origem;
 
-                // Movimentar ate 2 divisoes aleatoriamente
+                // Movimentar até 2 divisões aleatoriamente
                 for (int movimentos = 0; movimentos < 2; movimentos++) {
-                    ArrayUnorderedList<Ligacao> ligacoes = new ArrayUnorderedList<>(); // ligacoes diretas do destino
-                    LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(destino); // todas as divisoes perto de
-                                                                                    // destino
-
-                    for (IDivisao adjacente : adjacentes) {
-                        // Adiciona a ligacao se ela ainda nao foi registada
-                        Ligacao novaLigacao = new Ligacao(destino, adjacente);
-                        if (!ligacoes.contains(novaLigacao)) {
-                            ligacoes.addToRear(novaLigacao);
-                        }
-                    }
-
-                    if (ligacoes.isEmpty())
+                    LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(destino);
+                    if (adjacentes.isEmpty())
                         break;
 
-                    IDivisao novaDivisao = ligacoes.getElementAt(random.nextInt(ligacoes.size()))
-                            .getDivisao1() == destino
-                                    ? ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao2()
-                                    : ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao1();
+                    IDivisao novaDivisao = adjacentes.getElementAt(random.nextInt(adjacentes.size()));
                     if (novaDivisao != null) {
                         destino = novaDivisao;
                     }
@@ -397,14 +383,15 @@ public class MapaImpl implements IMapa {
                     System.out.println("Inimigo '" + inimigo.getNome() + "' movimentou de " +
                             origem.getNomeDivisao() + " para " + destino.getNomeDivisao());
 
-                    // Verificar se o inimigo entrou na sala de To Cruz
+                    // Se inimigo entrou na sala do Tó Cruz, cenários onde inimigos atacam primeiro
                     if (destino.equals(toCruz.getPosicaoAtual())) {
-                        System.out.println(crossedSwords + "  Inimigo entrou na sala de To Cruz! Combate iniciado.");
-                        combateService.resolverCombate(toCruz, destino);
+                        System.out.println(crossedSwords
+                                + " Inimigo entrou na sala de Tó Cruz! Combate iniciado (inimigos primeiro).");
+                        combateService.resolverCombate(toCruz, destino, true); // inimigoEntrouAgora = true
 
-                        // Verificar se To Cruz foi derrotado
+                        // Verificar se Tó Cruz foi derrotado
                         if (toCruz.getVida() <= 0) {
-                            System.err.println(skull + " To Cruz foi derrotado durante o ataque dos inimigos!");
+                            System.err.println(skull + " Tó Cruz foi derrotado durante o ataque dos inimigos!");
                             return;
                         }
                     }
@@ -731,9 +718,9 @@ public class MapaImpl implements IMapa {
                 ArrayUnorderedList<IItem> itensDivisao = divisao.getItensPresentes();
                 for (int j = 0; j < itensDivisao.size(); j++) {
                     IItem item = itensDivisao.getElementAt(j);
-                    //if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
-                        itens.addToRear(item);
-                    //}
+                    // if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
+                    itens.addToRear(item);
+                    // }
                 }
             }
         }

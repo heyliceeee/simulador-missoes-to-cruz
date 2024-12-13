@@ -2,8 +2,8 @@
   "id": "MANUAL-001",
   "divisaoInicial": "Base Inferior",
   "divisaoFinal": "Altar Sombrio",
-  "status": "SUCESSO",
-  "vidaRestante": 50,
+  "status": "FALHA",
+  "vidaRestante": 5,
   "trajeto": [
     "Observatorio Infernal",
     "Sala de Controle Principal",
