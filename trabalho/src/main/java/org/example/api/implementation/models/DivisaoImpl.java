@@ -11,7 +11,7 @@ import org.example.collections.implementation.LinkedList;
  * Representa uma divisao do edificio.
  */
 public class DivisaoImpl implements IDivisao {
-    private String nomeDivisao;
+    private final String nomeDivisao;
     private ArrayUnorderedList<IInimigo> inimigosPresentes;
     private ArrayUnorderedList<IItem> itensPresentes;
     private boolean entradaSaida;
@@ -20,9 +20,13 @@ public class DivisaoImpl implements IDivisao {
      * Construtor da Divisao.
      *
      * @param nomeDivisao Nome da divisao.
+     * @throws IllegalArgumentException se o nome da divisao for nulo ou vazio.
      */
     public DivisaoImpl(String nomeDivisao) {
-        this.nomeDivisao = nomeDivisao;
+        if (nomeDivisao == null || nomeDivisao.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da divisao nao pode ser nulo ou vazio.");
+        }
+        this.nomeDivisao = nomeDivisao.trim();
         this.inimigosPresentes = new ArrayUnorderedList<>();
         this.itensPresentes = new ArrayUnorderedList<>();
     }
@@ -37,60 +41,74 @@ public class DivisaoImpl implements IDivisao {
         return nomeDivisao;
     }
 
-    /**
-     * Define o nome da divisao.
-     *
-     * @param nomeDivisao Nome da divisao a ser definida.
-     */
+    @Override
     public void setNomeDivisao(String nomeDivisao) {
-        this.nomeDivisao = nomeDivisao;
+
     }
 
     /**
-     * Adiciona um inimigo à divisao.
+     * Adiciona um inimigo a divisao.
      *
-     * @param inimigo Inimigo a ser adicionado.
+     * @param inimigo O inimigo a ser adicionado.
+     * @throws IllegalArgumentException se o inimigo for nulo.
      */
     @Override
     public void adicionarInimigo(IInimigo inimigo) {
+        if (inimigo == null) {
+            throw new IllegalArgumentException("O inimigo nao pode ser nulo.");
+        }
         inimigosPresentes.addToRear(inimigo);
     }
 
     /**
      * Remove um inimigo da divisao.
      *
-     * @param inimigo Inimigo a ser removido.
+     * @param inimigo O inimigo a ser removido.
+     * @throws ElementNotFoundException se o inimigo nao estiver presente na
+     *                                  divisao.
+     * @throws IllegalArgumentException se o inimigo for nulo.
      */
     @Override
     public void removerInimigo(IInimigo inimigo) throws ElementNotFoundException {
+        if (inimigo == null) {
+            throw new IllegalArgumentException("O inimigo nao pode ser nulo.");
+        }
         inimigosPresentes.remove(inimigo);
     }
 
     /**
-     * Adiciona um item à divisao.
+     * Adiciona um item a divisao.
      *
-     * @param item Item a ser adicionado.
+     * @param item O item a ser adicionado.
+     * @throws IllegalArgumentException se o item for nulo.
      */
     @Override
     public void adicionarItem(IItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException("O item nao pode ser nulo.");
+        }
         itensPresentes.addToRear(item);
     }
 
     /**
      * Remove um item da divisao.
      *
-     * @param item Item a ser removido.
+     * @param item O item a ser removido.
+     * @throws ElementNotFoundException se o item nao estiver presente na divisao.
+     * @throws IllegalArgumentException se o item for nulo.
      */
     @Override
     public void removerItem(IItem item) throws ElementNotFoundException {
+        if (item == null) {
+            throw new IllegalArgumentException("O item nao pode ser nulo.");
+        }
         itensPresentes.remove(item);
     }
 
     /**
-     * Retorna true caso a divisao seja uma entrada ou saida, caso contrario retorna
-     * false
-     * 
-     * @return true caso a divisao seja uma entrada ou saida
+     * Verifica se a divisao e uma entrada ou saida.
+     *
+     * @return true se for entrada ou saida, false caso contrario.
      */
     @Override
     public boolean isEntradaSaida() {
@@ -98,9 +116,10 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Define a Divisao como do tipo entrada ou saida
-     * 
-     * @param entradaSaida
+     * Define se a divisao e uma entrada ou saida.
+     *
+     * @param entradaSaida true para marcar como entrada/saida, false caso
+     *                     contrario.
      */
     @Override
     public void setEntradaSaida(boolean entradaSaida) {
@@ -108,9 +127,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtem os inimigos presentes na divisao.
+     * Obtem a lista de inimigos presentes na divisao.
      *
-     * @return Lista de inimigos.
+     * @return Lista de inimigos presentes.
      */
     @Override
     public ArrayUnorderedList<IInimigo> getInimigosPresentes() {
@@ -118,9 +137,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Define os inimigos presentes na divisao.
+     * Obtem a lista de itens presentes na divisao.
      *
-     * @param inimigosPresentes Lista de inimigos.
+     * @return Lista de itens presentes.
      */
     @Override
     public void setInimigosPresentes(ArrayUnorderedList<IInimigo> inimigosPresentes) {
@@ -137,7 +156,7 @@ public class DivisaoImpl implements IDivisao {
         return itensPresentes;
     }
 
-    /**
+    /*
      * Define os itens presentes na divisao.
      *
      * @param itensPresentes Lista de itens.
@@ -148,25 +167,42 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Sobrescreve o metodo equals para comparar divisões com base no nome.
+     * Representacao textual da divisao.
      *
-     * @param obj Objeto a ser comparado.
-     * @return true se os nomes forem iguais, false caso contrário.
+     * @return String representando a divisao.
      */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        IDivisao divisao = (IDivisao) obj;
-        return nomeDivisao.equals(divisao.getNomeDivisao());
+    public String toString() {
+        return "DivisaoImpl{" +
+                "nomeDivisao='" + nomeDivisao + '\'' +
+                ", inimigosPresentes=" + inimigosPresentes.size() +
+                ", itensPresentes=" + itensPresentes.size() +
+                ", entradaSaida=" + entradaSaida +
+                '}';
     }
 
     /**
-     * Sobrescreve o metodo hashCode para gerar hash baseado no nome da divisao.
+     * Verifica a igualdade entre dois objetos do tipo DivisaoImpl.
      *
-     * @return Hash code.
+     * @param o Objeto a ser comparado.
+     * @return true se os objetos forem iguais, false caso contrario.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        DivisaoImpl divisao = (DivisaoImpl) o;
+
+        return nomeDivisao.equals(divisao.nomeDivisao);
+    }
+
+    /**
+     * Retorna o hash code da divisao baseado no nome.
+     *
+     * @return Hash code da divisao.
      */
     @Override
     public int hashCode() {
@@ -174,27 +210,17 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Sobrescreve o metodo toString para representar a divisao pelo seu nome.
-     *
-     * @return Nome da divisao.
-     */
-    @Override
-    public String toString() {
-        return nomeDivisao;
-    }
-
-    /**
      * Verifica se ha um kit na divisao.
      * Um kit pode ser do tipo "kit de vida" ou "colete".
      *
-     * @return true se há um kit, false caso contrario.
+     * @return true se ha um kit, false caso contrario.
      */
     @Override
     public boolean temKit() {
         for (int i = 0; i < itensPresentes.size(); i++) {
             IItem item = itensPresentes.getElementAt(i);
-            if (item.getTipo().equalsIgnoreCase("kit de vida") ||
-                    item.getTipo().equalsIgnoreCase("colete")) {
+            if (item.getTipo().equals("kit de vida") ||
+                    item.getTipo().equals("colete")) {
                 return true;
             }
         }

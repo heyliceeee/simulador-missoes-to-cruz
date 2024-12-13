@@ -14,7 +14,7 @@ public class ArrayStack<T> implements StackADT<T> {
     protected final int DEFAULT_CAPACITY = 10;
 
     /**
-     * int que representa o número de elementos e o seguinte posicao disponivel no array
+     * int que representa o numero de elementos e o seguinte posicao disponivel no array
      */
     protected int top;
 
@@ -43,12 +43,12 @@ public class ArrayStack<T> implements StackADT<T> {
 
 
     /**
-     * adiciona um elemento especifico ao top da stack, expandindo a capacidade da stack se necessário
+     * adiciona um elemento especifico ao top da stack, expandindo a capacidade da stack se necessario
      * @param element elemento generico a ser colocado na stack
      */
     @Override
     public void push(T element) {
-        if(size() == stack.length) //se a stack já atingiu a capacidade máx.
+        if(size() == stack.length) //se a stack ja atingiu a capacidade max.
         {
             expandCapacity();
         }
@@ -112,7 +112,7 @@ public class ArrayStack<T> implements StackADT<T> {
 
     /**
      * retorna true se a stack nao conter elementos
-     * @return boolean dependendo se a stack está vazia
+     * @return boolean dependendo se a stack esta vazia
      */
     @Override
     public boolean isEmpty() {
@@ -120,8 +120,8 @@ public class ArrayStack<T> implements StackADT<T> {
     }
 
     /**
-     * retorna o número de elementos da stack
-     * @return int número de elementos da stack
+     * retorna o numero de elementos da stack
+     * @return int numero de elementos da stack
      */
     @Override
     public int size() {

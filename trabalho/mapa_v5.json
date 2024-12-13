@@ -1,45 +1,55 @@
 {
-    "cod-missao": "pata de coelho",
-    "versao": 5,
-    "edificio": ["Heliporto", "Escada 6", "Camaratas", "Armazem", "Escada 5",
-      "Laboratorio", "Escritorio 3", "Escada 4", "WC", "Corredor 2",
-      "Seguranca", "Hall", "Escada 3", "Escritorio 1", "Escritorio 2",
-      "Escada de Emergencia", "Corredor 1", "Escada 2", "Porteiro",
-      "Escada 1", "Garagem"
-    ],
-    "ligacoes": [
-      ["Garagem", "Escada 1"], ["Garagem", "Escada de Emergencia"],
-      ["Escritorio 1", "Escada de Emergencia"], ["Porteiro", "Escada 1"],
-      ["Porteiro", "Escada 2"], ["Corredor 1", "Escada 2"],
-      ["Corredor 1", "Escritorio 1"], ["Corredor 1", "Escritorio 2"],
-      ["Corredor 1", "Escada 3"], ["Hall", "Escada 3"],
-      ["Hall", "Seguranca"], ["Corredor 2", "Seguranca"],
-      ["Corredor 2", "WC"], ["Corredor 2", "Escada 4"],
-      ["Escritorio 3", "Escada 4"], ["Escritorio 3", "Escada 5"],
-      ["Laboratorio", "Escada 5"], ["Armazem", "Escada 5"],
-      ["Camaratas", "Escada 5"], ["Camaratas", "Escada 6"],
-      ["Heliporto", "Escada 6"]
-    ],
-    "inimigos": [
-      {"nome": "badguy1", "poder": 40, "divisao": "Heliporto"},
-      {"nome": "badguy2", "poder": 45, "divisao": "Escada 6"},
-      {"nome": "badguy3", "poder": 50, "divisao": "Camaratas"},
-      {"nome": "badguy4", "poder": 60, "divisao": "Seguranca"},
-      {"nome": "badguy5", "poder": 55, "divisao": "Corredor 1"},
-      {"nome": "badguy6", "poder": 65, "divisao": "Escada 5"},
-      {"nome": "badguy7", "poder": 70, "divisao": "Armazem"},
-      {"nome": "badguy8", "poder": 100, "divisao": "Laboratorio"},
-      {"nome": "badguy9", "poder": 80, "divisao": "Escritorio 3"},
-      {"nome": "badguy10", "poder": 90, "divisao": "Escada 4"},
-      {"nome": "badguy11", "poder": 85, "divisao": "Hall"},
-      {"nome": "badguy12", "poder": 100, "divisao": "Garagem"}
-    ],
-    "entradas-saidas": ["Heliporto", "Laboratorio", "Garagem", "Porteiro"],
-    "alvo": {"divisao": "Laboratorio", "tipo": "artefato"},
-    "itens": [
-      {"divisao": "WC", "pontos-recuperados": 10, "tipo": "kit de vida"},
-      {"divisao": "Escritorio 1", "pontos-recuperados": 15, "tipo": "kit de vida"},
-      {"divisao": "Escada 2", "pontos-extra": 20, "tipo": "colete"}
-    ]
-  }
-  
+  "cod-missao": "circulo infernal",
+  "versao": 1,
+  "edificio": [
+    "Base Inferior", "Escada 1", "Corredor Sombrio", "Sala de Tortura", "Escada 2",
+    "Deposito de Armas", "Corredor de Fogo", "Escada 3", "Sala de Controle Infernal", 
+    "Corredor de Sombra", "Sala de Execucao", "Escada 4", "Laboratorio Oculto", 
+    "Sala de Prisao", "Escada 5", "Armazem de Energia", "Escada 6", 
+    "Central de Monitoramento", "Sala de Operacoes", "Escada Final", 
+    "Altar Sombrio", "Sala de Controle Principal", "Observatorio Infernal"
+  ],
+  "ligacoes": [
+    ["Base Inferior", "Escada 1"],
+    ["Escada 1", "Corredor Sombrio"],
+    ["Corredor Sombrio", "Sala de Tortura"],
+    ["Sala de Tortura", "Escada 2"],
+    ["Escada 2", "Deposito de Armas"],
+    ["Deposito de Armas", "Corredor de Fogo"],
+    ["Corredor de Fogo", "Escada 3"],
+    ["Escada 3", "Sala de Controle Infernal"],
+    ["Sala de Controle Infernal", "Corredor de Sombra"],
+    ["Corredor de Sombra", "Sala de Execucao"],
+    ["Sala de Execucao", "Escada 4"],
+    ["Escada 4", "Laboratorio Oculto"],
+    ["Laboratorio Oculto", "Sala de Prisao"],
+    ["Sala de Prisao", "Escada 5"],
+    ["Escada 5", "Armazem de Energia"],
+    ["Armazem de Energia", "Escada 6"],
+    ["Escada 6", "Central de Monitoramento"],
+    ["Central de Monitoramento", "Sala de Operacoes"],
+    ["Sala de Operacoes", "Escada Final"],
+    ["Escada Final", "Altar Sombrio"],
+    ["Altar Sombrio", "Sala de Controle Principal"],
+    ["Sala de Controle Principal", "Observatorio Infernal"]
+  ],
+  "inimigos": [
+    {"nome": "demonio1", "poder": 40, "divisao": "Sala de Tortura"},
+    {"nome": "demonio2", "poder": 50, "divisao": "Deposito de Armas"},
+    {"nome": "demonio3", "poder": 60, "divisao": "Corredor de Fogo"},
+    {"nome": "demonio4", "poder": 70, "divisao": "Sala de Controle Infernal"},
+    {"nome": "demonio5", "poder": 65, "divisao": "Corredor de Sombra"},
+    {"nome": "demonio6", "poder": 75, "divisao": "Sala de Execucao"},
+    {"nome": "demonio7", "poder": 80, "divisao": "Laboratorio Oculto"},
+    {"nome": "demonio8", "poder": 85, "divisao": "Armazem de Energia"},
+    {"nome": "demonio9", "poder": 90, "divisao": "Altar Sombrio"},
+    {"nome": "demonio10", "poder": 95, "divisao": "Sala de Controle Principal"}
+  ],
+  "entradas-saidas": ["Base Inferior", "Observatorio Infernal"],
+  "alvo": {"divisao": "Altar Sombrio", "tipo": "artefato sombrio"},
+  "itens": [
+    {"divisao": "Deposito de Armas", "pontos-recuperados": 15, "tipo": "kit de vida"},
+    {"divisao": "Laboratorio Oculto", "pontos-recuperados": 10, "tipo": "kit de vida"},
+    {"divisao": "Armazem de Energia", "pontos-extra": 20, "tipo": "colete"}
+  ]
+}

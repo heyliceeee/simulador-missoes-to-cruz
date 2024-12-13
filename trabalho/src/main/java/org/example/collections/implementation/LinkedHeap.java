@@ -16,7 +16,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
 
     /**
      * adiciona o elemento especifico no heap na posicao apropriado de acordo com key
-     * nota que os elementos iguais serao adicionados á direita
+     * nota que os elementos iguais serao adicionados a direita
      * @param obj o elemento a ser adicionado ao heap
      */
     @Override
@@ -62,7 +62,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
     {
         HeapNode<T> result = lastNode;
 
-        //percorre a heap ate ao último node
+        //percorre a heap ate ao ultimo node
         while ((result != root) && (result.parent.left != result))
         {
             result = result.parent;
@@ -144,9 +144,9 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
 
 
     /**
-     * Retorna o node que será o novo último node após uma remocao
+     * Retorna o node que sera o novo ultimo node apos uma remocao
      *
-     * @return o node que será o novo último node após uma remocao
+     * @return o node que sera o novo ultimo node apos uma remocao
      */
     private HeapNode<T> getNewLastNode()
     {
@@ -172,7 +172,7 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
 
 
     /**
-     * Reordena este heap após adicionar o elemento raiz
+     * Reordena este heap apos adicionar o elemento raiz
      */
     private void heapifyAdd()
     {
@@ -191,12 +191,12 @@ public class LinkedHeap<T> extends LinkedBinaryTree<T> implements HeapADT<T>
 
 
     /**
-     * Reordena este heap após remover o elemento raiz.
+     * Reordena este heap apos remover o elemento raiz.
      */
     private void heapifyRemove()
     {
         T temp;
-        //variáveis temporárias para a raiz e filhos da árvore
+        //variaveis temporarias para a raiz e filhos da arvore
         HeapNode<T> node = (HeapNode<T>) root;
         HeapNode<T> left = (HeapNode<T>) node.left;
         HeapNode<T> right = (HeapNode<T>) node.right;

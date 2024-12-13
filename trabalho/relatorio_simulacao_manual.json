@@ -1,0 +1,16 @@
+{
+  "id": "MANUAL-001",
+  "divisaoInicial": "Base Inferior",
+  "divisaoFinal": "Escada 1",
+  "status": "FALHA",
+  "vidaRestante": 80,
+  "trajeto": [
+    "Base Inferior",
+    "Escada 1"
+  ],
+  "entradasSaidas": [
+    "Base Inferior"
+  ],
+  "codigoMissao": "circulo infernal",
+  "versaoMissao": 1
+}

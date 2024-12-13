@@ -59,8 +59,8 @@ public interface GraphADT<T>
     public boolean isEmpty();
 
     /**
-     * retorna true se o grafo está conectado, caso contrario retorna false
-     * @return true se o grafo está conectado, caso contrario retorna false
+     * retorna true se o grafo esta conectado, caso contrario retorna false
+     * @return true se o grafo esta conectado, caso contrario retorna false
      */
     public boolean isConnected();
 

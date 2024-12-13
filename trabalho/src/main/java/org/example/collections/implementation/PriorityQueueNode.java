@@ -60,9 +60,9 @@ public class PriorityQueueNode<T> implements Comparable<PriorityQueueNode>
     }
 
     /**
-     * retorna 1 se o node atual tive prioridade mais alta do que o node dado, e caso contrário, -1
+     * retorna 1 se o node atual tive prioridade mais alta do que o node dado, e caso contrario, -1
      * @param obj the object to be compared.
-     * @return 1 se o node atual tive prioridade mais alta do que o node dado, e caso contrário, -1
+     * @return 1 se o node atual tive prioridade mais alta do que o node dado, e caso contrario, -1
      */
     @Override
     public int compareTo(PriorityQueueNode obj)

@@ -9,7 +9,7 @@ public interface ISimulacao {
     void executar(IDivisao divisaoObjetivo);
 
     /**
-     * Obtem a vida restante de Tó Cruz.
+     * Obtem a vida restante de To Cruz.
      *
      * @return A quantidade de vida restante.
      */
@@ -23,7 +23,7 @@ public interface ISimulacao {
     String getStatus();
 
     /**
-     * Obtem a divisao final onde Tó Cruz está localizado após a simulacao.
+     * Obtem a divisao final onde To Cruz esta localizado apos a simulacao.
      *
      * @return A divisao final.
      */
@@ -32,7 +32,7 @@ public interface ISimulacao {
     /**
      * Obtem o caminho percorrido durante a simulacao.
      *
-     * @return Uma lista de divisões representando o caminho percorrido.
+     * @return Uma lista de divisoes representando o caminho percorrido.
      */
     ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 

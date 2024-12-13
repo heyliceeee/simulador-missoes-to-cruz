@@ -139,7 +139,7 @@ public class ArraySortingAndSearching<T> {
                 }
             }
 
-            // Se nenhum elemento foi trocado, o array está ordenado
+            // Se nenhum elemento foi trocado, o array esta ordenado
             if (!swapped) {
                 break;
             }

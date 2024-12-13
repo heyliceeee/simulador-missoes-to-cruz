@@ -3,8 +3,19 @@ package org.example.collections.implementation;
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.interfaces.UnorderedListADT;
 
+/**
+ * Implementacao de uma lista nao ordenada baseada em um array.
+ *
+ * @param <T> O tipo de elementos armazenados na lista.
+ */
 public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedListADT<T> {
 
+    /**
+     * Adiciona um elemento ao inicio da lista.
+     *
+     * @param element O elemento a ser adicionado.
+     * @throws IllegalArgumentException se o elemento for {@code null}.
+     */
     @Override
     public void addToFront(T element) {
         if (element == null) {
@@ -24,6 +35,12 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
         count++;
     }
 
+    /**
+     * Adiciona um elemento ao final da lista.
+     *
+     * @param element O elemento a ser adicionado.
+     * @throws IllegalArgumentException se o elemento for {@code null}.
+     */
     @Override
     public void addToRear(T element) {
         if (element == null) {
@@ -35,14 +52,25 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
 
         list[count] = element;
         count++;
-
     }
 
+    /**
+     * Adiciona um elemento apos um elemento alvo na lista.
+     *
+     * @param element O elemento a ser adicionado.
+     * @param target  O elemento alvo apos o qual o novo elemento sera adicionado.
+     * @throws ElementNotFoundException se o elemento alvo nao for encontrado.
+     * @throws IllegalArgumentException se o elemento a ser adicionado for
+     *                                  {@code null}.
+     */
     @Override
     public void addAfter(T element, T target) throws ElementNotFoundException {
+        if (element == null) {
+            throw new IllegalArgumentException("O valor nao pode ser null.");
+        }
 
         if (isEmpty()) {
-            throw new ElementNotFoundException("A lista está vazia.");
+            throw new ElementNotFoundException("A lista esta vazia.");
         }
 
         int index = -1;
@@ -61,15 +89,21 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
             expandCapacity();
         }
 
+        // Desloca os elementos para a direita para abrir espaco
         for (int i = count; i > index + 1; i--) {
             list[i] = list[i - 1];
         }
 
-        // Adiciona o novo elemento após o elemento alvo
+        // Adiciona o novo elemento apos o elemento alvo
         list[index + 1] = element;
         count++;
     }
 
+    /**
+     * Retorna uma representacao textual da lista.
+     *
+     * @return Uma string representando os elementos da lista.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
@@ -86,7 +120,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     @Override
     public void setElementAt(int index, T element) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("O indice está fora dos limites da lista.");
+            throw new IndexOutOfBoundsException("O indice esta fora dos limites da lista.");
         }
         if (element == null) {
             throw new IllegalArgumentException("O valor nao pode ser null.");

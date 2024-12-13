@@ -174,7 +174,7 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
 
         boolean found = false;
 
-        // 1º caso - A lista está vazia
+        // 1º caso - A lista esta vazia
         if (isEmpty()) {
             head = newnode;
             tail = newnode;
@@ -227,15 +227,15 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
     }
 
     private class BasicIterator<T> implements Iterator<T> {
-        private DoublyNode<T> current; // Ponteiro para o nó atual
+        private DoublyNode<T> current; // Ponteiro para o no atual
 
         public BasicIterator() {
-            current = (DoublyNode<T>) head; // Comeca no nó da cabeca
+            current = (DoublyNode<T>) head; // Comeca no no da cabeca
         }
 
         @Override
         public boolean hasNext() {
-            return current != null; // Verifica se há próximo nó
+            return current != null; // Verifica se ha proximo no
         }
 
         @Override
@@ -244,12 +244,12 @@ public class DoubleLinkedUnorderedList<T> extends DoublyLinkedList<T> implements
                 throw new EmptyCollectionException("double linked unordered list nao existe elementos"); // Lanca
                                                                                                          // excecao se
                                                                                                          // nao houver
-                                                                                                         // próximo
+                                                                                                         // proximo
                                                                                                          // elemento
             }
 
             T element = current.getElement(); // Obtem o elemento atual
-            current = current.getNext(); // Move para o próximo nó
+            current = current.getNext(); // Move para o proximo no
 
             return element;
         }

@@ -92,7 +92,7 @@ public class LinkedStack<T> implements StackADT<T> {
 
     /**
      * retorna true se a stack nao conter elementos
-     * @return boolean dependendo se a stack está vazia
+     * @return boolean dependendo se a stack esta vazia
      */
     @Override
     public boolean isEmpty() {
@@ -100,8 +100,8 @@ public class LinkedStack<T> implements StackADT<T> {
     }
 
     /**
-     * retorna o número de elementos da stack
-     * @return int número de elementos da stack
+     * retorna o numero de elementos da stack
+     * @return int numero de elementos da stack
      */
     @Override
     public int size() {

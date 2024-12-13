@@ -2,35 +2,32 @@ package org.example.api.implementation.models;
 
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.implementation.interfaces.*;
-import org.example.collections.implementation.ArrayUnorderedList;
-import org.example.collections.implementation.Graph;
-import org.example.collections.implementation.LinkedList;
+import org.example.collections.exceptions.EmptyCollectionException;
+import org.example.collections.implementation.*;
 
 import java.util.Iterator;
 import java.util.Random;
 
-import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.pin;
+import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.*;
 
 /**
  * Representa o mapa do edificio como um grafo.
  */
 public class MapaImpl implements IMapa {
     /**
-     * Grafo que representa o edificio e suas conexões.
+     * Grafo que representa o edificio e suas conexoes.
      */
     private Graph<IDivisao> grafo;
 
     /**
-     * Informacões sobre o alvo da missao.
+     * Informacoes sobre o alvo da missao.
      */
     private IAlvo alvo;
 
     /**
-     * Lista de divisões que sao entradas ou saidas do edificio.
+     * Lista de divisoes que sao entradas ou saidas do edificio.
      */
     private ArrayUnorderedList<IDivisao> entradasSaidas;
-
-
 
     /**
      * Construtor padrao do Mapa.
@@ -53,11 +50,10 @@ public class MapaImpl implements IMapa {
         }
         IDivisao divisao = new DivisaoImpl(nomeDivisao);
         grafo.addVertex(divisao);
-        // System.out.println("Divisao adicionada: " + nomeDivisao);
     }
 
     /**
-     * Adiciona uma ligacao entre duas divisões.
+     * Adiciona uma ligacao entre duas divisoes.
      *
      * @param nomeDivisao1 Nome da primeira divisao.
      * @param nomeDivisao2 Nome da segunda divisao.
@@ -66,7 +62,7 @@ public class MapaImpl implements IMapa {
     public void adicionarLigacao(String nomeDivisao1, String nomeDivisao2) {
         if (nomeDivisao1 == null || nomeDivisao2 == null ||
                 nomeDivisao1.trim().isEmpty() || nomeDivisao2.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nomes das divisões nao podem ser vazios ou nulos.");
+            throw new IllegalArgumentException("Nomes das divisoes nao podem ser vazios ou nulos.");
         }
 
         IDivisao divisao1 = getDivisaoPorNome(nomeDivisao1);
@@ -78,14 +74,12 @@ public class MapaImpl implements IMapa {
         }
 
         grafo.addEdge(divisao1, divisao2);
-        // System.out.println("Ligacao adicionada entre " + nomeDivisao1 + " e " +
-        // nomeDivisao2);
     }
 
     /**
-     * Obtem todas as conexões (arestas) do grafo.
+     * Obtem todas as conexoes (arestas) do grafo.
      *
-     * @return Uma lista de conexões entre divisões.
+     * @return Uma lista de conexoes entre divisoes.
      */
     @Override
     public ArrayUnorderedList<Ligacao> getLigacoes() {
@@ -122,8 +116,6 @@ public class MapaImpl implements IMapa {
         IDivisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
             divisao.adicionarInimigo(inimigo);
-            // System.out.println("Inimigo '" + inimigo.getNome() + "' adicionado à divisao:
-            // " + nomeDivisao);
         } else {
             System.err.println("Erro: Divisao '" + nomeDivisao + "' nao encontrada.");
         }
@@ -144,9 +136,8 @@ public class MapaImpl implements IMapa {
 
         IDivisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
+            item.setDivisao(divisao); // Vincula o item a divisao
             divisao.adicionarItem(item);
-            // System.out.println("Item '" + item.getTipo() + "' adicionado à divisao: " +
-            // nomeDivisao);
         } else {
             System.err.println("Erro: Divisao '" + nomeDivisao + "' nao encontrada.");
         }
@@ -188,7 +179,7 @@ public class MapaImpl implements IMapa {
         Iterator<IDivisao> iterator = grafo.iterator();
         while (iterator.hasNext()) {
             IDivisao divisao = iterator.next();
-            if (divisao.getNomeDivisao().equalsIgnoreCase(nomeDivisao.trim())) {
+            if (divisao.getNomeDivisao().equals(nomeDivisao.trim())) {
                 return divisao;
             }
         }
@@ -201,7 +192,7 @@ public class MapaImpl implements IMapa {
      *
      * @param divisao1 Nome da divisao de origem.
      * @param divisao2 Nome da divisao de destino.
-     * @return true se for possivel mover, false caso contrário.
+     * @return true se for possivel mover, false caso contrario.
      */
     @Override
     public boolean podeMover(String divisao1, String divisao2) {
@@ -218,7 +209,7 @@ public class MapaImpl implements IMapa {
     /**
      * Define o alvo da missao.
      *
-     * @param nomeDivisao Nome da divisao onde o alvo está localizado.
+     * @param nomeDivisao Nome da divisao onde o alvo esta localizado.
      * @param tipo        Tipo do alvo.
      */
     @Override
@@ -262,11 +253,11 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem todas as conexões (divisões acessiveis) a partir de uma divisao
+     * Obtem todas as conexoes (divisoes acessiveis) a partir de uma divisao
      * especifica.
      *
      * @param divisao Divisao de origem.
-     * @return Lista de divisões conectadas.
+     * @return Lista de divisoes conectadas.
      */
     @Override
     public ArrayUnorderedList<IDivisao> obterConexoes(IDivisao divisao) {
@@ -285,9 +276,9 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem todas as divisões presentes no grafo.
+     * Obtem todas as divisoes presentes no grafo.
      *
-     * @return Lista de todas as divisões.
+     * @return Lista de todas as divisoes.
      */
     @Override
     public ArrayUnorderedList<IDivisao> getDivisoes() {
@@ -303,7 +294,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem os nomes das divisões que sao entradas ou saidas.
+     * Obtem os nomes das divisoes que sao entradas ou saidas.
      *
      * @return Lista de nomes das entradas e saidas.
      */
@@ -321,7 +312,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Obtem as divisões que sao entradas ou saidas.
+     * Obtem as divisoes que sao entradas ou saidas.
      *
      * @return Lista de entradas e saidas.
      */
@@ -339,11 +330,11 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Move os inimigos aleatoriamente para divisões conectadas ate duas divisões de
-     * distância.
+     * Move os inimigos aleatoriamente para divisoes conectadas ate duas divisoes de
+     * distancia.
      */
     @Override
-    public void moverInimigos() throws ElementNotFoundException {
+    public void moverInimigos(ToCruz toCruz, ICombateService combateService) throws ElementNotFoundException {
         Random random = new Random();
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
@@ -352,11 +343,11 @@ public class MapaImpl implements IMapa {
         }
 
         for (int i = 0; i < divisoes.size(); i++) {
-            IDivisao divisao = divisoes.getElementAt(i);
-            if (divisao == null)
+            IDivisao divisaoAtual = divisoes.getElementAt(i);
+            if (divisaoAtual == null)
                 continue;
 
-            ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
+            ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
             if (inimigos == null || inimigos.isEmpty())
                 continue;
 
@@ -370,32 +361,201 @@ public class MapaImpl implements IMapa {
                 if (inimigo == null)
                     continue;
 
-                ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);
-                if (conexoes == null || conexoes.isEmpty()) {
-                    throw new IllegalStateException(
-                            "Nenhuma conexao disponivel para mover o inimigo '" + inimigo.getNome() + "'.");
+                IDivisao origem = divisaoAtual;
+                IDivisao destino = origem;
+
+                // Movimentar ate 2 divisoes aleatoriamente
+                for (int movimentos = 0; movimentos < 2; movimentos++) {
+                    LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(destino);
+                    if (adjacentes.isEmpty())
+                        break;
+
+                    IDivisao novaDivisao = adjacentes.getElementAt(random.nextInt(adjacentes.size()));
+                    if (novaDivisao != null) {
+                        destino = novaDivisao;
+                    }
                 }
 
-                IDivisao novaDivisao = conexoes.getElementAt(random.nextInt(conexoes.size()));
-                if (novaDivisao != null) {
-                    novaDivisao.adicionarInimigo(inimigo);
-                    divisao.removerInimigo(inimigo);
-                    System.out
-                            .println("Inimigo '" + inimigo.getNome() + "' movido para " + novaDivisao.getNomeDivisao());
-                } else {
-                    throw new IllegalStateException("A conexao selecionada e invalida (nula).");
+                // Mover inimigo para o destino final
+                if (!destino.equals(origem)) {
+                    destino.adicionarInimigo(inimigo);
+                    origem.removerInimigo(inimigo);
+                    System.out.println("Inimigo '" + inimigo.getNome() + "' movimentou de " +
+                            origem.getNomeDivisao() + " para " + destino.getNomeDivisao());
+
+                    // Se inimigo entrou na sala do To Cruz, cenarios onde inimigos atacam primeiro
+                    if (destino.equals(toCruz.getPosicaoAtual())) {
+                        System.out.println(crossedSwords
+                                + " Inimigo entrou na sala de To Cruz! Combate iniciado (inimigos primeiro).");
+                        combateService.resolverCombate(toCruz, destino, true); // inimigoEntrouAgora = true
+
+                        // Verificar se To Cruz foi derrotado
+                        if (toCruz.getVida() <= 0) {
+                            System.err.println(skull + " To Cruz foi derrotado durante o ataque dos inimigos!");
+                            return;
+                        }
+                    }
                 }
             }
         }
     }
 
     /**
-     * Mostra o mapa do edificio, exibindo as divisões (vertices) e suas conexões
+     * Mostra o mapa do edificio, exibindo as divisoes (vertices) e suas conexoes
      * (arestas).
      */
     @Override
+    public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino) {
+        if (origem == null || destino == null) {
+            System.err.println("Erro: Origem ou destino invalidos.");
+            return new ArrayUnorderedList<>();
+        }
+
+        // Estruturas de suporte
+        LinkedQueue<IDivisao> fila = new LinkedQueue<>();
+        ArrayUnorderedList<IDivisao> visitados = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Predecessor> predecessores = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Integer> custos = new ArrayUnorderedList<>(); // Custos paralelos aos visitados
+
+        // Inicializacao
+        fila.enqueue(origem);
+        visitados.addToRear(origem);
+        predecessores.addToRear(new Predecessor(origem, null));
+        custos.addToRear(0); // Custo inicial e zero
+
+        while (!fila.isEmpty()) {
+            // Retirar o proximo no da fila
+            IDivisao atual = fila.dequeue();
+
+            // Encontrar indice do no atual em `visitados`
+            int indiceAtual = findIndex(visitados, atual);
+            int custoAtual = custos.getElementAt(indiceAtual);
+
+            // Se chegamos ao destino, reconstruir o caminho
+            if (atual.equals(destino)) {
+                ArrayUnorderedList<IDivisao> caminho = new ArrayUnorderedList<>();
+                reconstruirCaminho(predecessores, destino, caminho);
+                return caminho;
+            }
+
+            // Obter conexoes da divisao atual
+            LinkedList<IDivisao> conexoes = grafo.getAdjacentes(atual);
+            if (conexoes == null || conexoes.isEmpty()) {
+                continue;
+            }
+
+            // Processar conexoes
+            for (int i = 0; i < conexoes.size(); i++) {
+                IDivisao vizinho = conexoes.getElementAt(i);
+                if (vizinho == null)
+                    continue;
+
+                // Calcular custo para alcancar o vizinho
+                int custoMovimento = calcularCusto(atual, vizinho);
+                int novoCusto = custoAtual + custoMovimento;
+
+                // Verificar se o vizinho ja foi visitado
+                int indiceVizinho = findIndex(visitados, vizinho);
+                if (indiceVizinho == -1) { // Nao visitado
+                    visitados.addToRear(vizinho);
+                    custos.addToRear(novoCusto);
+                    fila.enqueue(vizinho);
+                    predecessores.addToRear(new Predecessor(vizinho, atual));
+                } else if (novoCusto < custos.getElementAt(indiceVizinho)) { // Melhor custo
+                    // Atualizar custo manualmente
+                    replaceElementAt(custos, indiceVizinho, novoCusto);
+                    predecessores.addToRear(new Predecessor(vizinho, atual));
+                }
+            }
+        }
+
+        System.err
+                .println("Caminho nao encontrado entre " + origem.getNomeDivisao() + " e " + destino.getNomeDivisao());
+        return new ArrayUnorderedList<>();
+    }
+
+    private int findIndex(ArrayUnorderedList<IDivisao> list, IDivisao target) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.getElementAt(i).equals(target)) {
+                return i;
+            }
+        }
+        return -1; // Retorna -1 se nao encontrado
+    }
+
+    private void replaceElementAt(ArrayUnorderedList<Integer> list, int index, int value) {
+        try {
+            list.remove(list.getElementAt(index)); // Remove o elemento atual
+            if (index == 0) {
+                list.addToFront(value); // Adiciona na frente se for o primeiro elemento
+            } else {
+                list.addAfter(value, list.getElementAt(index - 1)); // Adiciona apos o anterior
+            }
+        } catch (ElementNotFoundException e) {
+            System.err.println("Erro ao substituir elemento na lista: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Calcula o custo de mover-se de uma divisao para outra.
+     */
+    private int calcularCusto(IDivisao atual, IDivisao vizinho) {
+        int custo = 0;
+
+        // Adicionar custo por inimigos (usando o poder dos inimigos)
+        ArrayUnorderedList<IInimigo> inimigos = vizinho.getInimigosPresentes();
+        if (inimigos != null && !inimigos.isEmpty()) {
+            for (int i = 0; i < inimigos.size(); i++) {
+                custo += inimigos.getElementAt(i).getPoder(); // Usar `getPoder()` como dano
+            }
+        }
+
+        // Subtrair custo por itens de recuperacao (usando os pontos do item)
+        ArrayUnorderedList<IItem> itens = vizinho.getItensPresentes();
+        if (itens != null && !itens.isEmpty()) {
+            for (int i = 0; i < itens.size(); i++) {
+                IItem item = itens.getElementAt(i);
+                if ("kit de vida".equalsIgnoreCase(item.getTipo())) {
+                    custo -= item.getPontos(); // Usar `getPontos()` para recuperacao
+                }
+            }
+        }
+
+        return Math.max(custo, 0); // Evitar custos negativos
+    }
+
+    private void reconstruirCaminho(ArrayUnorderedList<Predecessor> predecessores, IDivisao objetivo,
+            ArrayUnorderedList<IDivisao> caminho) {
+        LinkedStack<IDivisao> pilha = new LinkedStack<>();
+        IDivisao atual = objetivo;
+
+        while (atual != null) {
+            pilha.push(atual);
+            atual = getPredecessor(predecessores, atual.getNomeDivisao());
+        }
+
+        while (!pilha.isEmpty()) {
+            try {
+                caminho.addToRear(pilha.pop());
+            } catch (EmptyCollectionException e) {
+                System.err.println("Erro ao reconstruir o caminho: " + e.getMessage());
+            }
+        }
+    }
+
+    private IDivisao getPredecessor(ArrayUnorderedList<Predecessor> predecessores, String nomeDivisao) {
+        for (int i = 0; i < predecessores.size(); i++) {
+            Predecessor p = predecessores.getElementAt(i);
+            if (p != null && p.getAtual().getNomeDivisao().equalsIgnoreCase(nomeDivisao)) {
+                return p.getPredecessor();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void mostrarMapa() {
-        System.out.println("===== MAPA DO EDIFICIO =====");
+        System.out.println("===== MAPA DO EDIFiCIO =====");
         ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
 
         for (int i = 0; i < divisoes.size(); i++) {
@@ -403,13 +563,29 @@ public class MapaImpl implements IMapa {
             if (divisao == null)
                 continue;
 
-            // Exibir o nome da divisao principal
-            System.out.println(pin + divisao.getNomeDivisao());
+            // Obter informacoes da divisao
+            ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
+            ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
 
-            // Obter as conexões
-            ArrayUnorderedList<IDivisao> conexoes = obterConexoes(divisao);
+            // Exibir o nome da divisao com simbolos adicionais
+            System.out.print(pin + divisao.getNomeDivisao());
+
+            if (inimigos != null && !inimigos.isEmpty()) {
+                System.out.print(crossedSwords + " (" + inimigos.size() + " inimigos)");
+            }
+            if (itens != null && !itens.isEmpty()) {
+                System.out.print(" 🎒 (" + itens.size() + " itens)");
+            }
+            if (divisao.isEntradaSaida()) {
+                System.out.print(" 🚪 [Entrada/Saida]");
+            }
+
+            System.out.println();
+
+            // Obter as conexoes
+            LinkedList<IDivisao> conexoes = grafo.getAdjacentes(divisao);
             if (conexoes.isEmpty()) {
-                System.out.println("   ↳ Sem conexões");
+                System.out.println("   ↳ Sem conexoes");
             } else {
                 for (int j = 0; j < conexoes.size(); j++) {
                     IDivisao conexao = conexoes.getElementAt(j);
@@ -433,26 +609,26 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Expande as conexões de uma divisao para incluir divisões conectadas a ate
-     * duas conexões de distância.
+     * Expande as conexoes de uma divisao para incluir divisoes conectadas a ate
+     * duas conexoes de distancia.
      *
-     * @param divisaoAtual A divisao atual de onde partirá a expansao.
-     * @return Uma lista de divisões acessiveis a ate duas conexões de distância.
+     * @param divisaoAtual A divisao atual de onde partira a expansao.
+     * @return Uma lista de divisoes acessiveis a ate duas conexoes de distancia.
      */
     @Override
     public ArrayUnorderedList<IDivisao> expandirConexoes(IDivisao divisaoAtual) {
-        ArrayUnorderedList<IDivisao> conexoesDiretas = obterConexoes(divisaoAtual);
+        LinkedList<IDivisao> conexoesDiretas = grafo.getAdjacentes(divisaoAtual);
         ArrayUnorderedList<IDivisao> conexoesExpandida = new ArrayUnorderedList<>();
 
-        // Adiciona conexões de segunda distância
+        // Adiciona conexoes de segunda distancia
         for (int i = 0; i < conexoesDiretas.size(); i++) {
             IDivisao conexao = conexoesDiretas.getElementAt(i);
-            ArrayUnorderedList<IDivisao> conexoesSegundaDistancia = obterConexoes(divisaoAtual);
+            LinkedList<IDivisao> conexoesSegundaDistancia = grafo.getAdjacentes(divisaoAtual);
 
             for (int j = 0; j < conexoesSegundaDistancia.size(); j++) {
                 IDivisao segundaConexao = conexoesSegundaDistancia.getElementAt(j);
 
-                // Adiciona a conexao se ela nao estiver na lista inicial e nao for a própria
+                // Adiciona a conexao se ela nao estiver na lista inicial e nao for a propria
                 // divisao atual
                 if (!conexoesDiretas.contains(segundaConexao) && !conexoesExpandida.contains(segundaConexao)
                         && !segundaConexao.equals(divisaoAtual)) {
@@ -471,29 +647,6 @@ public class MapaImpl implements IMapa {
         }
 
         return conexoesExpandida;
-    }
-
-    /**
-     * Encontrar o melhor caminho ate o alvo
-     * 
-     * @param origem  divisao atual
-     * @param destino divisao destino
-     * @return o percurso de divisoes
-     */
-    @Override
-    public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino) {
-        if (origem == null || destino == null) {
-            throw new IllegalArgumentException("Origem ou destino invalido");
-        }
-
-        Iterator<IDivisao> caminhoIterator = grafo.iteratorShortestPath(origem, destino);
-        ArrayUnorderedList<IDivisao> caminho = new ArrayUnorderedList<>();
-
-        while (caminhoIterator.hasNext()) {
-            caminho.addToRear(caminhoIterator.next());
-        }
-
-        return caminho;
     }
 
     /**
@@ -520,7 +673,7 @@ public class MapaImpl implements IMapa {
                 return atual;
             }
 
-            ArrayUnorderedList<IDivisao> adjacentes = obterConexoes(atual);
+            LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(atual);
             for (int i = 0; i < adjacentes.size(); i++) {
                 IDivisao vizinho = adjacentes.getElementAt(i);
                 if (!divisoesVisitadas.contains(vizinho)) {
@@ -531,5 +684,47 @@ public class MapaImpl implements IMapa {
         }
 
         return null; // Caso nenhum kit seja encontrado
+    }
+
+    @Override
+    public ArrayUnorderedList<IItem> getItensPorTipo(String tipo) {
+        ArrayUnorderedList<IItem> itens = new ArrayUnorderedList<>();
+        ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
+
+        for (int i = 0; i < divisoes.size(); i++) {
+            IDivisao divisao = divisoes.getElementAt(i);
+            if (divisao != null) {
+                ArrayUnorderedList<IItem> itensDivisao = divisao.getItensPresentes();
+                for (int j = 0; j < itensDivisao.size(); j++) {
+                    IItem item = itensDivisao.getElementAt(j);
+                    if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
+                        itens.addToRear(item);
+                    }
+                }
+            }
+        }
+
+        return itens;
+    }
+
+    @Override
+    public ArrayUnorderedList<IItem> getItens() {
+        ArrayUnorderedList<IItem> itens = new ArrayUnorderedList<>();
+        ArrayUnorderedList<IDivisao> divisoes = getDivisoes();
+
+        for (int i = 0; i < divisoes.size(); i++) {
+            IDivisao divisao = divisoes.getElementAt(i);
+            if (divisao != null) {
+                ArrayUnorderedList<IItem> itensDivisao = divisao.getItensPresentes();
+                for (int j = 0; j < itensDivisao.size(); j++) {
+                    IItem item = itensDivisao.getElementAt(j);
+                    // if (item != null && item.getTipo().equalsIgnoreCase(tipo)) {
+                    itens.addToRear(item);
+                    // }
+                }
+            }
+        }
+
+        return itens;
     }
 }

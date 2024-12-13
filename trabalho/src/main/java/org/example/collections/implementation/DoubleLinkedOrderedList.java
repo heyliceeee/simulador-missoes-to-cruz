@@ -27,12 +27,12 @@ public class DoubleLinkedOrderedList<T extends Comparable> extends DoublyLinkedL
 
         } else if(temp.compareTo(tail.getElement()) >= 0) //se n tiver vazia, adiciona na tail (elemento a ser adicionado for > elemento da tail)
         {
-            tail.setNext(newNode); //elemento seguinte ao tail, terá o elemento adicionado
+            tail.setNext(newNode); //elemento seguinte ao tail, tera o elemento adicionado
 
             newNode.setPrev(tail); //elemento anterior ao elemento adicionad = tail
             newNode.setNext(null); //elemento seguinte ao elemento adicionado = vazio
 
-            tail = newNode; //tail terá o elemento adicionado
+            tail = newNode; //tail tera o elemento adicionado
 
         } else if(temp.compareTo(head.getElement()) <= 0) //adiciona no head (elemento a ser adicionado for < elemento da tail)
         {
@@ -41,7 +41,7 @@ public class DoubleLinkedOrderedList<T extends Comparable> extends DoublyLinkedL
             newNode.setNext(head); //elemento seguinte ao elemento adicionado = head
             newNode.setPrev(null); //elemento anterior ao elemento adicionado = vazio
 
-            head = newNode; //head terá o elemento adicionado
+            head = newNode; //head tera o elemento adicionado
 
         } else
         {
@@ -206,28 +206,28 @@ public class DoubleLinkedOrderedList<T extends Comparable> extends DoublyLinkedL
     }
 
     private class BasicIterator<T> implements Iterator<T> {
-        private DoublyNode<T> current; // Ponteiro para o nó atual
+        private DoublyNode<T> current; // Ponteiro para o no atual
 
         public BasicIterator()
         {
-            current = (DoublyNode<T>) head; // Comeca no nó da cabeca
+            current = (DoublyNode<T>) head; // Comeca no no da cabeca
         }
 
         @Override
         public boolean hasNext()
         {
-            return current != null; // Verifica se há próximo nó
+            return current != null; // Verifica se ha proximo no
         }
 
         @Override
         public T next() {
             if (!hasNext())
             {
-                throw new EmptyCollectionException("double linked ordered list nao existe elementos"); // Lanca excecao se nao houver próximo elemento
+                throw new EmptyCollectionException("double linked ordered list nao existe elementos"); // Lanca excecao se nao houver proximo elemento
             }
 
             T element = current.getElement(); // Obtem o elemento atual
-            current = current.getNext(); // Move para o próximo nó
+            current = current.getNext(); // Move para o proximo no
 
             return element;
         }

@@ -34,7 +34,8 @@
   {"nome": "badguy2", "poder": 15, "divisao": "Heliporto"},
   {"nome": "badguy3", "poder": 25, "divisao": "Camaratas"},
   {"nome": "badguy4", "poder": 15, "divisao": "Seguranca"},
-  {"nome": "badguy5", "poder": 15, "divisao": "Corredor 1"}
+  {"nome": "badguy5", "poder": 15, "divisao": "Corredor 1"},
+  {"nome": "badguy5", "poder": 200, "divisao": "Laboratorio"}
   ],
   "entradas-saidas": ["Escada de Emergencia", "Garagem", "Heliporto", "Porteiro"],
   "alvo": {"divisao": "Laboratorio", "tipo": "quimico"},
