@@ -6,9 +6,15 @@ import org.example.api.implementation.interfaces.IResultadoSimulacao;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Implementacao de ResultadoFormatado.
+ * Implementação da interface {@code IResultadoFormatado}.
+ * <p>
+ * Esta classe formata os dados resultantes de uma simulação para facilitar a exportação
+ * ou visualização, incluindo informações como trajeto percorrido, divisões de entrada/saída
+ * e estado final da simulação.
+ * </p>
  */
 public class ResultadoFormatadoImpl implements IResultadoFormatado {
+
     private final String id;
     private final String divisaoInicial;
     private final String divisaoFinal;
@@ -20,11 +26,10 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     private final int versaoMissao;
 
     /**
-     * Construtor que formata o resultado da simulacao com base nos dados
-     * fornecidos.
+     * Construtor que formata o resultado da simulação com base nos dados fornecidos.
      *
-     * @param resultado O resultado da simulacao.
-     * @param mapa      O mapa da simulacao.
+     * @param resultado O resultado da simulação, contendo informações básicas como trajeto e status.
+     * @param mapa      O mapa da simulação, usado para obter informações adicionais, como entradas e saídas.
      */
     public ResultadoFormatadoImpl(IResultadoSimulacao resultado, IMapa mapa) {
         this.id = resultado.getId();
@@ -33,7 +38,7 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
         this.status = resultado.getStatus();
         this.vidaRestante = resultado.getVidaRestante();
 
-        // Garante que as listas nao serao nulas
+        // Garantindo que listas não sejam nulas
         this.trajeto = resultado.getTrajeto() != null ? toJavaArray(resultado.getTrajeto()) : new String[0];
         this.entradasSaidas = mapa.getEntradasSaidasNomes() != null
                 ? filtrarEntradasSaidas(mapa.getEntradasSaidasNomes(), resultado.getTrajeto())
@@ -44,9 +49,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem o identificador unico do resultado da simulacao.
+     * Obtém o identificador único do resultado da simulação.
      *
-     * @return O identificador unico da simulacao.
+     * @return O identificador único da simulação.
      */
     @Override
     public String getId() {
@@ -54,9 +59,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem o nome da divisao inicial onde a simulacao comecou.
+     * Obtém o nome da divisão inicial onde a simulação começou.
      *
-     * @return O nome da divisao inicial.
+     * @return O nome da divisão inicial.
      */
     @Override
     public String getDivisaoInicial() {
@@ -64,9 +69,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem o nome da divisao final onde a simulacao terminou.
+     * Obtém o nome da divisão final onde a simulação terminou.
      *
-     * @return O nome da divisao final.
+     * @return O nome da divisão final.
      */
     @Override
     public String getDivisaoFinal() {
@@ -74,9 +79,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem o status da simulacao, como "SUCESSO" ou "FALHA".
+     * Obtém o status da simulação, como "SUCESSO" ou "FALHA".
      *
-     * @return O status da simulacao.
+     * @return O status da simulação.
      */
     @Override
     public String getStatus() {
@@ -84,7 +89,7 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem a quantidade de vida restante ao final da simulacao.
+     * Obtém a quantidade de vida restante ao final da simulação.
      *
      * @return O valor da vida restante.
      */
@@ -94,10 +99,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem o trajeto percorrido durante a simulacao, representado como um array de
-     * divisoes.
+     * Obtém o trajeto percorrido durante a simulação, representado como um array de divisões.
      *
-     * @return Um array de strings com os nomes das divisoes do trajeto.
+     * @return Um array de strings com os nomes das divisões do trajeto.
      */
     @Override
     public String[] getTrajeto() {
@@ -105,10 +109,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem os nomes das divisoes marcadas como entradas ou saidas no mapa da
-     * simulacao.
+     * Obtém os nomes das divisões marcadas como entradas ou saídas no mapa da simulação.
      *
-     * @return Um array de strings com os nomes das divisoes de entrada/saida.
+     * @return Um array de strings com os nomes das divisões de entrada/saída.
      */
     @Override
     public String[] getEntradasSaidas() {
@@ -116,9 +119,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem o codigo identificador da missao associada à simulacao.
+     * Obtém o código identificador da missão associada à simulação.
      *
-     * @return O codigo da missao.
+     * @return O código da missão.
      */
     @Override
     public String getCodigoMissao() {
@@ -126,9 +129,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtem a versao da missao associada à simulacao.
+     * Obtém a versão da missão associada à simulação.
      *
-     * @return A versao da missao.
+     * @return A versão da missão.
      */
     @Override
     public int getVersaoMissao() {
@@ -136,10 +139,10 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Converte uma lista desordenada para um array.
+     * Converte uma lista desordenada para um array de strings.
      *
-     * @param unorderedList A lista desordenada.
-     * @return Um array de strings.
+     * @param unorderedList A lista desordenada a ser convertida.
+     * @return Um array de strings contendo os elementos da lista.
      */
     private String[] toJavaArray(ArrayUnorderedList<String> unorderedList) {
         if (unorderedList == null || unorderedList.size() == 0) {
@@ -153,15 +156,14 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Filtra as entradas e saidas relevantes do mapa com base no trajeto da
-     * simulacao.
+     * Filtra as entradas e saídas relevantes do mapa com base no trajeto da simulação.
      *
-     * @param entradasSaidas A lista de entradas e saidas no mapa.
-     * @param trajeto        O trajeto percorrido na simulacao.
-     * @return Um array de strings com as entradas/saidas relevantes.
+     * @param entradasSaidas A lista de entradas e saídas no mapa.
+     * @param trajeto        O trajeto percorrido na simulação.
+     * @return Um array de strings com as entradas/saídas relevantes ao trajeto.
      */
     private String[] filtrarEntradasSaidas(ArrayUnorderedList<String> entradasSaidas,
-            ArrayUnorderedList<String> trajeto) {
+                                           ArrayUnorderedList<String> trajeto) {
         if (trajeto == null || trajeto.size() == 0) {
             return new String[0];
         }

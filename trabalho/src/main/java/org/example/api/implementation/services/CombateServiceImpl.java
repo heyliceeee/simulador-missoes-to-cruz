@@ -10,27 +10,37 @@ import org.example.collections.implementation.ArrayUnorderedList;
 import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.*;
 
 /**
- * Implementação do serviço de combate cobrindo todos os cenários:
- * 
- * - Se Tó Cruz entra na sala com inimigos (Cenário 1 e 5): Tó Cruz ataca primeiro simultaneamente.
- * - Se inimigos entram na sala de Tó Cruz (Cenário 3): inimigos atacam primeiro.
- * - Caso não haja inimigos (Cenário 2, 6): nenhum combate ocorre.
- * 
- * Este serviço é chamado durante a simulação (automática ou manual) após Tó Cruz ou inimigos se moverem.
+ * Implementação do serviço de combate cobrindo diferentes cenários de interação entre Tó Cruz e inimigos.
+ * <p>
+ * O combate segue as regras:
+ * <ul>
+ *     <li><b>Cenário 1 e 5:</b> Tó Cruz entra na sala com inimigos e ataca primeiro.</li>
+ *     <li><b>Cenário 3:</b> Inimigos entram na sala de Tó Cruz e atacam primeiro.</li>
+ *     <li><b>Cenário 2 e 6:</b> Sem inimigos na sala, nenhum combate ocorre.</li>
+ * </ul>
+ * Este serviço é ativado durante a simulação (manual ou automática) quando há movimentação de Tó Cruz ou inimigos.
  */
 public class CombateServiceImpl implements ICombateService {
 
+    /**
+     * Construtor padrão da classe.
+     */
     public CombateServiceImpl() {
     }
 
     /**
-     * Resolve o combate levando em conta quem ataca primeiro, determinado pelo parâmetro inimigoEntrouAgora.
+     * Resolve o combate considerando quem ataca primeiro, determinado pelo parâmetro {@code inimigoEntrouAgora}.
+     * <p>
+     * Se {@code inimigoEntrouAgora} for {@code true}, os inimigos atacam primeiro (Cenário 3).
+     * Caso contrário, Tó Cruz ataca primeiro (Cenário 1 ou 5).
+     * </p>
      *
      * @param toCruz             O agente Tó Cruz.
      * @param divisaoAtual       A divisão onde o combate ocorre.
-     * @param inimigoEntrouAgora true se os inimigos entraram na sala de Tó Cruz nesta fase (cenário 3),
-     *                           false se Tó Cruz entrou na sala dos inimigos (cenário 1 ou 5).
+     * @param inimigoEntrouAgora {@code true} se os inimigos entraram na sala de Tó Cruz nesta fase,
+     *                           {@code false} se Tó Cruz entrou na sala dos inimigos.
      * @throws ElementNotFoundException se ocorrer erro ao acessar os inimigos.
+     * @throws IllegalArgumentException se {@code toCruz} ou {@code divisaoAtual} forem nulos.
      */
     @Override
     public void resolverCombate(ToCruz toCruz, IDivisao divisaoAtual, boolean inimigoEntrouAgora) throws ElementNotFoundException {
@@ -41,69 +51,58 @@ public class CombateServiceImpl implements ICombateService {
         ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
         if (inimigos == null || inimigos.isEmpty()) {
             System.out.println("Nenhum inimigo na divisão.");
-            // Cenários 2 e 6: sem inimigos, nenhum combate.
-            return;
+            return; // Sem inimigos, nenhum combate ocorre.
         }
 
         if (inimigoEntrouAgora) {
-            // Cenário 3: Inimigos atacam primeiro
             resolverCombateInimigoPrimeiro(toCruz, divisaoAtual);
         } else {
-            // Cenário 1 e 5: Tó Cruz ataca primeiro
             resolverCombateToCruzPrimeiro(toCruz, divisaoAtual);
         }
     }
 
     /**
-     * Combate no qual Tó Cruz ataca primeiro simultaneamente todos os inimigos.
-     * 
-     * Usado quando Tó Cruz entra em uma sala com inimigos (cenário 1) ou encontra o alvo com inimigos (cenário 5).
+     * Realiza o combate onde Tó Cruz ataca primeiro.
      *
      * @param toCruz       O agente Tó Cruz.
      * @param divisaoAtual A divisão com inimigos.
-     * @throws ElementNotFoundException Se houver falha ao acessar inimigos.
+     * @throws ElementNotFoundException se houver erro ao acessar os inimigos.
      */
     private void resolverCombateToCruzPrimeiro(ToCruz toCruz, IDivisao divisaoAtual) throws ElementNotFoundException {
         ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
         System.out.println(crossedSwords + " Combate iniciado (Tó Cruz primeiro) na divisão: " + divisaoAtual.getNomeDivisao());
 
-        // Tó Cruz ataca todos os inimigos simultaneamente
         for (IInimigo inimigo : inimigos) {
             if (inimigo != null && inimigo.getPoder() > 0) {
-                inimigo.sofrerDano(10); // Dano fixo de Tó Cruz
+                inimigo.sofrerDano(10); // Dano fixo de Tó Cruz.
                 System.out.println("🟢 Tó Cruz atacou o inimigo '" + inimigo.getNome() + "'!");
             }
         }
 
         removerInimigosMortos(inimigos);
 
-        // Se todos morreram, combate acaba
         if (inimigos.isEmpty()) {
             System.out.println(trophy + " Todos os inimigos na sala foram derrotados!");
             return;
         }
 
-        // Caso restem inimigos, combate alternado
         combateCorpoACorpo(toCruz, inimigos);
     }
 
     /**
-     * Combate no qual os inimigos atacam primeiro.
-     * 
-     * Usado quando os inimigos entram na sala de Tó Cruz durante a fase dos inimigos (cenário 3).
+     * Realiza o combate onde os inimigos atacam primeiro.
      *
      * @param toCruz       O agente Tó Cruz.
      * @param divisaoAtual A divisão com inimigos.
-     * @throws ElementNotFoundException Se houver falha ao acessar inimigos.
+     * @throws ElementNotFoundException se houver erro ao acessar os inimigos.
      */
     private void resolverCombateInimigoPrimeiro(ToCruz toCruz, IDivisao divisaoAtual) throws ElementNotFoundException {
         ArrayUnorderedList<IInimigo> inimigos = divisaoAtual.getInimigosPresentes();
         System.out.println(crossedSwords + " Combate iniciado (Inimigo primeiro) na divisão: " + divisaoAtual.getNomeDivisao());
 
-        // Inimigos atacam primeiro
         for (IInimigo inimigo : inimigos) {
             if (inimigo.getPoder() > 0 && toCruz.getVida() > 0) {
-                toCruz.sofrerDano(5); // Dano fixo dos inimigos
+                toCruz.sofrerDano(5); // Dano fixo dos inimigos.
                 System.out.println(crossedSwords + " Inimigo '" + inimigo.getNome() + "' atacou Tó Cruz!");
             }
         }
@@ -113,29 +112,33 @@ public class CombateServiceImpl implements ICombateService {
             return;
         }
 
-        // Agora combate alternado
         combateCorpoACorpo(toCruz, inimigos);
     }
 
     /**
-     * Combate corpo a corpo alternado: enquanto Tó Cruz e inimigos estiverem vivos, 
-     * Tó Cruz ataca um inimigo e o inimigo contra-ataca, até um dos lados ser derrotado.
-          * @throws ElementNotFoundException 
-          */
-         private void combateCorpoACorpo(ToCruz toCruz, ArrayUnorderedList<IInimigo> inimigos) throws ElementNotFoundException {
+     * Realiza o combate corpo a corpo alternado entre Tó Cruz e os inimigos.
+     *
+     * @param toCruz   O agente Tó Cruz.
+     * @param inimigos Lista de inimigos presentes na divisão.
+     * @throws ElementNotFoundException se houver erro ao acessar os inimigos.
+     */
+    private void combateCorpoACorpo(ToCruz toCruz, ArrayUnorderedList<IInimigo> inimigos) throws ElementNotFoundException {
         while (toCruz.getVida() > 0 && existeInimigoVivo(inimigos)) {
             IInimigo alvo = getPrimeiroInimigoVivo(inimigos);
             if (alvo != null && alvo.getPoder() > 0) {
-                alvo.sofrerDano(10); // Tó Cruz ataca
+                alvo.sofrerDano(10);
                 System.out.println("🟢 Tó Cruz atacou o inimigo '" + alvo.getNome() + "'!");
             }
 
             removerInimigosMortos(inimigos);
-            if (toCruz.getVida() <= 0 || !existeInimigoVivo(inimigos)) break;
+
+            if (toCruz.getVida() <= 0 || !existeInimigoVivo(inimigos)) {
+                break;
+            }
 
             alvo = getPrimeiroInimigoVivo(inimigos);
             if (alvo != null && alvo.getPoder() > 0) {
-                toCruz.sofrerDano(5); // Inimigo contra-ataca
+                toCruz.sofrerDano(5);
                 System.out.println(crossedSwords + " Inimigo '" + alvo.getNome() + "' contra-atacou!");
             }
 
@@ -144,24 +147,23 @@ public class CombateServiceImpl implements ICombateService {
 
         if (toCruz.getVida() <= 0) {
             System.err.println(skull + " Tó Cruz foi derrotado!");
-            return;
-        }
-
-        if (!existeInimigoVivo(inimigos)) {
+        } else if (!existeInimigoVivo(inimigos)) {
             System.out.println(trophy + " Todos os inimigos na sala foram derrotados!");
         }
     }
 
     /**
      * Remove inimigos mortos (poder <= 0) da lista.
-          * @throws ElementNotFoundException 
-          */
-         private void removerInimigosMortos(ArrayUnorderedList<IInimigo> inimigos) throws ElementNotFoundException {
+     *
+     * @param inimigos Lista de inimigos.
+     * @throws ElementNotFoundException se ocorrer erro ao acessar elementos.
+     */
+    private void removerInimigosMortos(ArrayUnorderedList<IInimigo> inimigos) throws ElementNotFoundException {
         for (int i = 0; i < inimigos.size(); i++) {
-            IInimigo in = inimigos.getElementAt(i);
-            if (in != null && in.getPoder() <= 0) {
-                System.out.println(skull + " Inimigo '" + in.getNome() + "' foi derrotado!");
-                inimigos.remove(in);
+            IInimigo inimigo = inimigos.getElementAt(i);
+            if (inimigo != null && inimigo.getPoder() <= 0) {
+                System.out.println(skull + " Inimigo '" + inimigo.getNome() + "' foi derrotado!");
+                inimigos.remove(inimigo);
                 i--;
             }
         }
@@ -169,11 +171,13 @@ public class CombateServiceImpl implements ICombateService {
 
     /**
      * Verifica se existe algum inimigo vivo na lista.
+     *
+     * @param inimigos Lista de inimigos.
+     * @return {@code true} se existir algum inimigo vivo, {@code false} caso contrário.
      */
     private boolean existeInimigoVivo(ArrayUnorderedList<IInimigo> inimigos) {
-        for (int i = 0; i < inimigos.size(); i++) {
-            IInimigo in = inimigos.getElementAt(i);
-            if (in != null && in.getPoder() > 0) {
+        for (IInimigo inimigo : inimigos) {
+            if (inimigo != null && inimigo.getPoder() > 0) {
                 return true;
             }
         }
@@ -181,12 +185,16 @@ public class CombateServiceImpl implements ICombateService {
     }
 
     /**
-     * Obtém o primeiro inimigo vivo (poder > 0).
+     * Obtém o primeiro inimigo vivo (poder > 0) da lista.
+     *
+     * @param inimigos Lista de inimigos.
+     * @return O primeiro inimigo vivo ou {@code null} se todos estiverem mortos.
      */
     private IInimigo getPrimeiroInimigoVivo(ArrayUnorderedList<IInimigo> inimigos) {
-        for (int i = 0; i < inimigos.size(); i++) {
-            IInimigo in = inimigos.getElementAt(i);
-            if (in != null && in.getPoder() > 0) return in;
+        for (IInimigo inimigo : inimigos) {
+            if (inimigo != null && inimigo.getPoder() > 0) {
+                return inimigo;
+            }
         }
         return null;
     }

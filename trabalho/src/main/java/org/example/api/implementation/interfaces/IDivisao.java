@@ -2,7 +2,6 @@ package org.example.api.implementation.interfaces;
 
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.implementation.ArrayUnorderedList;
-import org.example.collections.implementation.LinkedList;
 
 /**
  * Representa uma divisao no mapa de um edificio.

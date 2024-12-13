@@ -1,21 +1,37 @@
 package org.example.collections.implementation;
 
 import java.util.Iterator;
-
 import org.example.collections.exceptions.EmptyListException;
 
+/**
+ * Implementação de uma lista encadeada genérica.
+ * <p>
+ * Esta classe fornece funcionalidades básicas para manipulação de uma lista
+ * encadeada, como adição, remoção, verificação de elementos e iteração.
+ * </p>
+ *
+ * @param <T> O tipo de dados armazenados na lista.
+ */
 public class LinkedList<T> implements Iterable<T> {
+
     private Node<T> head;
     private Node<T> tail;
     private int count;
 
+    /**
+     * Construtor padrão que inicializa uma lista encadeada vazia.
+     */
     public LinkedList() {
         this.head = null;
         this.tail = null;
         this.count = 0;
     }
 
-    // Adiciona um elemento à lista
+    /**
+     * Adiciona um elemento à lista no início.
+     *
+     * @param data O elemento a ser adicionado.
+     */
     public void add(T data) {
         Node<T> newNode = new Node<>(data);
 
@@ -29,85 +45,91 @@ public class LinkedList<T> implements Iterable<T> {
         this.count++;
     }
 
-     // Verifica se a lista esta vazia
-     public boolean isEmpty() {
-        return count == 0;
-    }
-
+    /**
+     * Adiciona um elemento no início da lista.
+     *
+     * @param data O elemento a ser adicionado.
+     */
     public void addFirst(T data) {
         Node<T> newNode = new Node<>(data);
         newNode.setNext(head);
         head = newNode;
-    
+
         if (tail == null) {
             tail = newNode;
         }
-    
+
         count++;
     }
 
     /**
-     * Define o valor de um elemento na posicao especificada.
+     * Verifica se a lista está vazia.
      *
-     * @param index O indice do elemento a ser atualizado.
+     * @return {@code true} se a lista estiver vazia, {@code false} caso contrário.
+     */
+    public boolean isEmpty() {
+        return count == 0;
+    }
+
+    /**
+     * Define o valor de um elemento na posição especificada.
+     *
+     * @param index   O índice do elemento a ser atualizado.
      * @param element O novo valor do elemento.
-     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
+     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
      */
     public void setElementAt(int index, T element) {
         if (index < 0 || index >= size()) {
-            throw new IndexOutOfBoundsException("Indice fora dos limites: " + index);
+            throw new IndexOutOfBoundsException("Índice fora dos limites: " + index);
         }
 
-        Node<T> current = head; // Comeca pelo primeiro elemento
+        Node<T> current = head;
         int currentIndex = 0;
 
         while (current != null) {
             if (currentIndex == index) {
-                current.setData(element); // Atualiza o elemento
+                current.setData(element);
                 return;
             }
-            current = current.getNext(); // Avanca para o proximo no
+            current = current.getNext();
             currentIndex++;
         }
 
-        throw new IllegalStateException("Erro inesperado ao procurar o indice.");
+        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
     }
 
     /**
-     * Obtem o elemento na posicao especificada.
+     * Obtém o elemento na posição especificada.
      *
-     * @param index O indice do elemento desejado.
-     * @return O elemento na posicao especificada.
-     * @throws IndexOutOfBoundsException Se o indice estiver fora dos limites da lista.
+     * @param index O índice do elemento desejado.
+     * @return O elemento na posição especificada.
+     * @throws IndexOutOfBoundsException Se o índice estiver fora dos limites da lista.
      */
     public T getElementAt(int index) {
         if (index < 0 || index >= size()) {
-            throw new IndexOutOfBoundsException("indice fora dos limites: " + index);
+            throw new IndexOutOfBoundsException("Índice fora dos limites: " + index);
         }
 
-        Node<T> current = head; // Comeca pelo primeiro elemento
+        Node<T> current = head;
         int currentIndex = 0;
 
         while (current != null) {
             if (currentIndex == index) {
                 return current.getData();
             }
-            current = current.getNext(); // Avanca para o proximo no
+            current = current.getNext();
             currentIndex++;
         }
 
-        // Esta linha nao deve ser alcancada devido à verificacao do indice acima
-        throw new IllegalStateException("Erro inesperado ao procurar o indice.");
+        throw new IllegalStateException("Erro inesperado ao procurar o índice.");
     }
 
-
     /**
-     * Verifica se a lista contem o elemento especificado.
+     * Verifica se a lista contém o elemento especificado.
      *
      * @param element O elemento a ser procurado.
-     * @return true se o elemento estiver presente, false caso contrario.
+     * @return {@code true} se o elemento estiver presente, {@code false} caso contrário.
      */
-    // Verifica se um elemento esta na lista
     public boolean contains(T element) {
         Node<T> current = head;
         while (current != null) {
@@ -119,7 +141,12 @@ public class LinkedList<T> implements Iterable<T> {
         return false;
     }
 
-    // Retorna o indice de um elemento, ou -1 se nao for encontrado
+    /**
+     * Retorna o índice de um elemento, ou -1 se não for encontrado.
+     *
+     * @param element O elemento a ser procurado.
+     * @return O índice do elemento, ou -1 se não for encontrado.
+     */
     public int indexOf(T element) {
         Node<T> current = head;
         int index = 0;
@@ -133,10 +160,16 @@ public class LinkedList<T> implements Iterable<T> {
         return -1;
     }
 
-    // Retorna o elemento em uma posicao especifica
+    /**
+     * Obtém o elemento em uma posição específica.
+     *
+     * @param index O índice do elemento desejado.
+     * @return O elemento na posição especificada.
+     * @throws IndexOutOfBoundsException Se o índice estiver fora do intervalo.
+     */
     public T get(int index) {
         if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Indice fora do intervalo");
+            throw new IndexOutOfBoundsException("Índice fora do intervalo");
         }
 
         Node<T> current = head;
@@ -148,10 +181,17 @@ public class LinkedList<T> implements Iterable<T> {
         return current.getData();
     }
 
-    // Remove um elemento da lista
+    /**
+     * Remove um elemento da lista.
+     *
+     * @param element O elemento a ser removido.
+     * @return O elemento removido.
+     * @throws EmptyListException Se a lista estiver vazia.
+     * @throws RuntimeException   Se o elemento não for encontrado.
+     */
     public T remove(T element) throws EmptyListException {
         if (this.head == null) {
-            throw new EmptyListException("A lista esta vazia");
+            throw new EmptyListException("A lista está vazia");
         }
 
         boolean found = false;
@@ -168,7 +208,7 @@ public class LinkedList<T> implements Iterable<T> {
         }
 
         if (!found) {
-            throw new RuntimeException("Erro: O elemento nao foi encontrado na lista.");
+            throw new RuntimeException("Erro: O elemento não foi encontrado na lista.");
         }
 
         if (current == this.head) {
@@ -185,11 +225,20 @@ public class LinkedList<T> implements Iterable<T> {
         return current.getData();
     }
 
-    // Retorna o numero de elementos na lista
+    /**
+     * Retorna o número de elementos na lista.
+     *
+     * @return O número de elementos na lista.
+     */
     public int size() {
         return count;
     }
 
+    /**
+     * Retorna uma representação em formato de string da lista.
+     *
+     * @return Uma string contendo os elementos da lista separados por espaços.
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
@@ -201,13 +250,19 @@ public class LinkedList<T> implements Iterable<T> {
         return result.toString();
     }
 
-    // Implementacao do metodo iterator()
+    /**
+     * Retorna um iterador para a lista.
+     *
+     * @return Um iterador para os elementos da lista.
+     */
     @Override
     public Iterator<T> iterator() {
         return new LinkedListIterator();
     }
 
-    // Classe interna para o iterador
+    /**
+     * Classe interna para implementação do iterador da lista encadeada.
+     */
     private class LinkedListIterator implements Iterator<T> {
         private Node<T> current;
 

@@ -1,17 +1,18 @@
 {
   "id": "MANUAL-001",
-  "divisaoInicial": "Base Inferior",
-  "divisaoFinal": "Altar Sombrio",
+  "divisaoInicial": "Plataforma Superior",
+  "divisaoFinal": "Quimicos Avancados",
   "status": "FALHA",
-  "vidaRestante": 5,
+  "vidaRestante": 95,
   "trajeto": [
-    "Observatorio Infernal",
-    "Sala de Controle Principal",
-    "Altar Sombrio"
+    "Plataforma Superior",
+    "Escada 8",
+    "Sala de Planejamento",
+    "Quimicos Avancados"
   ],
   "entradasSaidas": [
-    "Observatorio Infernal"
+    "Plataforma Superior"
   ],
-  "codigoMissao": "circulo infernal",
+  "codigoMissao": "ouro negro",
   "versaoMissao": 1
 }

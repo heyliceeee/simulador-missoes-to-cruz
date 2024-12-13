@@ -8,12 +8,9 @@ import org.example.api.exceptions.InvalidJsonStructureException;
 import org.example.api.implementation.interfaces.*;
 import org.example.api.implementation.models.*;
 import org.example.api.implementation.services.CombateServiceImpl;
-import org.example.api.implementation.simulation.SimulacaoManualImpl;
 import org.example.api.implementation.utils.ExportarResultados;
 import org.example.api.implementation.utils.ImportJsonImpl;
-import org.example.collections.implementation.ArrayOrderedList;
 import org.example.collections.implementation.ArrayUnorderedList;
-import org.example.collections.implementation.LinkedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.swing.*;
@@ -23,6 +20,15 @@ import java.awt.geom.QuadCurve2D;
 import static org.example.Main.*;
 import static org.example.api.implementation.simulation.SimulacaoAutomaticaImpl.*;
 
+
+/**
+ * Classe de interface gráfica para a simulação manual do jogo "To Cruz".
+ * <p>
+ * Essa classe implementa uma interface baseada em Swing que permite o controle manual
+ * do personagem "To Cruz" em um ambiente simulado, com ações como mover, atacar,
+ * apanhar itens e resgatar o alvo.
+ * </p>
+ */
 public class SimulacaoManualGUI extends JFrame {
 
     //#region Constantes e Atributos
@@ -50,13 +56,13 @@ public class SimulacaoManualGUI extends JFrame {
     //#endregion
 
     /**
-     * Construtor e Inicializacao
+     * Construtor da interface gráfica.
      *
-     * @param divisoes
-     * @param entradasSaidas
-     * @param ligacoes
-     * @param mapa
-     * @param toCruz
+     * @param divisoes       Lista de divisões disponíveis no mapa.
+     * @param entradasSaidas Lista de divisões marcadas como entradas/saídas.
+     * @param ligacoes       Lista de conexões entre divisões.
+     * @param mapa           O mapa do ambiente simulado.
+     * @param toCruz         O personagem controlado pelo jogador.
      */
     public SimulacaoManualGUI(ArrayUnorderedList<IDivisao> divisoes, ArrayUnorderedList<IDivisao> entradasSaidas,
             ArrayUnorderedList<Ligacao> ligacoes, IMapa mapa, ToCruz toCruz) {
@@ -224,7 +230,7 @@ public class SimulacaoManualGUI extends JFrame {
 
         if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().size() > 0) {
             try {
-                combateService.resolverCombate(toCruz, divisaoAtual);
+                combateService.resolverCombate(toCruz, divisaoAtual, false);
 
                 if (toCruz.getVida() <= 0) {
                     JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz foi derrotado.");

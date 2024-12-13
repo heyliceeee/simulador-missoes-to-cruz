@@ -4,7 +4,6 @@ import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.implementation.models.Ligacao;
 import org.example.api.implementation.models.ToCruz;
 import org.example.collections.implementation.ArrayUnorderedList;
-import org.example.collections.implementation.LinkedList;
 
 /**
  * Representa a interface para o mapa do sistema.

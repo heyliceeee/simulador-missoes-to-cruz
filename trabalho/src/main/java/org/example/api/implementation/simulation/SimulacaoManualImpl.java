@@ -223,6 +223,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
      * 
      * @return sucesso ou falha
      */
+    @SuppressWarnings("unlikely-arg-type")
     @Override
     public String getStatus() {
         if (toCruz.getVida() > 0 && toCruz.isAlvoConcluido()) {
@@ -260,30 +261,6 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     /**
-     * Sugerir o melhor caminho e localizar items em cada turno
-     */
-    private void sugerirMelhorCaminhoEDisponibilidade() throws ElementNotFoundException {
-        IDivisao alvo = mapa.getAlvo().getDivisao();
-        ArrayUnorderedList<IDivisao> caminhoParaAlvo = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), alvo);
-
-        System.out.println("Sugestao de trajeto ate o alvo:");
-        for (int i = 0; i < caminhoParaAlvo.size(); i++) {
-            System.out.print(caminhoParaAlvo.getElementAt(i).getNomeDivisao());
-            if (i < caminhoParaAlvo.size() - 1) {
-                System.out.print(" -> ");
-            }
-        }
-        System.out.println();
-
-        IDivisao kitMaisProximo = mapa.encontrarKitMaisProximo(toCruz.getPosicaoAtual());
-        if (kitMaisProximo != null) {
-            System.out.println("Kit de recuperacao mais proximo: " + kitMaisProximo.getNomeDivisao());
-        } else {
-            System.out.println("Nenhum kit de recuperacao disponivel.");
-        }
-    }
-
-    /**
      * Mostra o estado atual do jogo.
      */
     private void mostrarEstado() {
@@ -318,26 +295,26 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     private void mover() throws ElementNotFoundException {
         System.out.print("Digite o nome da divisao para onde deseja mover: ");
         String novaDivisao = scanner.nextLine().trim();
-    
+
         if (novaDivisao.isEmpty()) {
             System.out.println("Divisao invalida.");
             return;
         }
-    
+
         if (mapa.podeMover(toCruz.getPosicaoAtual().getNomeDivisao(), novaDivisao)) {
             IDivisao proximaDivisao = mapa.getDivisaoPorNome(novaDivisao);
             if (proximaDivisao != null) {
                 toCruz.moverPara(proximaDivisao);
                 caminhoPercorrido.addToRear(proximaDivisao);
                 verificarItens(proximaDivisao);
-    
+
                 // Se houver inimigos, Tó Cruz entrou na sala deles (cenário 1 ou 5)
                 ArrayUnorderedList<IInimigo> inimigos = proximaDivisao.getInimigosPresentes();
                 if (inimigos != null && !inimigos.isEmpty()) {
                     // Tó Cruz ataca primeiro (inimigoEntrouAgora = false)
                     combateService.resolverCombate(toCruz, proximaDivisao, false);
                 }
-    
+
             } else {
                 System.err.println("Erro: Divisao '" + novaDivisao + "' nao encontrada.");
             }
@@ -345,7 +322,6 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             System.out.println("Movimento invalido! Divisoes nao conectadas.");
         }
     }
-    
 
     /**
      * Realiza um ataque contra os inimigos na divisao atual.
@@ -360,10 +336,11 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     }
 
     private void combater(IDivisao divisao) throws ElementNotFoundException {
-        // Como o jogador acionou o combate (atacando ou entrando na sala), Tó Cruz ataca primeiro.
+        // Como o jogador acionou o combate (atacando ou entrando na sala), Tó Cruz
+        // ataca primeiro.
         // Portanto, inimigoEntrouAgora = false
         combateService.resolverCombate(toCruz, divisao, false);
-    
+
         ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
         while (inimigos != null && !inimigos.isEmpty()) {
             try {
@@ -376,7 +353,6 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             }
         }
     }
-    
 
     /**
      * Verifica se ha itens na divisao e pergunta ao jogador se deseja pega-los.

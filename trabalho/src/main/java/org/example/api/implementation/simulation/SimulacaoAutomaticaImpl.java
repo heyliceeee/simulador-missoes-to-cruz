@@ -2,7 +2,6 @@ package org.example.api.implementation.simulation;
 
 import org.example.api.exceptions.ElementNotFoundException;
 import org.example.api.implementation.interfaces.*;
-import org.example.api.implementation.models.MapaImpl;
 import org.example.api.implementation.models.ToCruz;
 import org.example.api.implementation.models.Predecessor;
 import org.example.api.implementation.services.CombateServiceImpl;

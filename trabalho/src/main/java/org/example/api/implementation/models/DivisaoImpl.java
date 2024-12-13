@@ -5,7 +5,6 @@ import org.example.api.implementation.interfaces.IDivisao;
 import org.example.api.implementation.interfaces.IInimigo;
 import org.example.api.implementation.interfaces.IItem;
 import org.example.collections.implementation.ArrayUnorderedList;
-import org.example.collections.implementation.LinkedList;
 
 /**
  * Representa uma divisao do edificio.
