@@ -315,7 +315,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     /**
      * Gerencia o movimento do To Cruz.
      */
-    private void mover() throws ElementNotFoundException {
+    public void mover() throws ElementNotFoundException {
         System.out.print("Digite o nome da divisao para onde deseja mover: ");
         String novaDivisao = scanner.nextLine().trim();
     
