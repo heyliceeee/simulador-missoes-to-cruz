@@ -21,20 +21,25 @@ import org.slf4j.LoggerFactory;
 import java.util.Scanner;
 
 /**
- * Classe principal que gerencia a execução do programa.
+ * Classe principal que gerencia a execucao do programa.
  * 
- * <p>O programa permite que o usuário escolha entre simular uma missão automaticamente ou manualmente.
- * Também gerencia o carregamento do mapa, inicialização do agente Tó Cruz e exportação dos resultados da simulação.</p>
+ * <p>
+ * O programa permite que o usuario escolha entre simular uma missao
+ * automaticamente ou manualmente.
+ * Tambem gerencia o carregamento do mapa, inicializacao do agente To Cruz e
+ * exportacao dos resultados da simulacao.
+ * </p>
  */
 public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     /**
-     * Método principal para executar o programa.
+     * Metodo principal para executar o programa.
      *
      * @param args Argumentos da linha de comando.
-     * @throws ElementNotFoundException Exceção lançada se algum elemento não for encontrado no mapa ou durante a simulação.
+     * @throws ElementNotFoundException Excecao lancada se algum elemento nao for
+     *                                  encontrado no mapa ou durante a simulacao.
      */
     public static void main(String[] args) throws ElementNotFoundException {
         logger.info("Iniciando o programa...");
@@ -54,7 +59,7 @@ public class Main {
             return;
         }
 
-        // Verifica se o mapa contém divisões válidas.
+        // Verifica se o mapa contem divisoes validas.
         if (mapa.getDivisoes().isEmpty()) {
             logger.error("Erro: Nenhuma divisao carregada no mapa. Encerrando o programa.");
             return;
@@ -63,51 +68,51 @@ public class Main {
         System.out.println("--------------------------------------------------------------------------------");
         mapa.mostrarMapa();
 
-        // Inicializa o agente Tó Cruz com valores padrão.
-        logger.info("Inicializando o agente Tó Cruz...");
-        ToCruz toCruzOriginal = new ToCruz("Tó Cruz", 100);
+        // Inicializa o agente To Cruz com valores padrao.
+        logger.info("Inicializando o agente To Cruz...");
+        ToCruz toCruzOriginal = new ToCruz("To Cruz", 100);
 
         Scanner scanner = new Scanner(System.in);
         boolean continuar = true;
 
-        // Menu principal para o usuário escolher o tipo de simulação.
+        // Menu principal para o usuario escolher o tipo de simulacao.
         while (continuar) {
-            System.out.println("\nEscolha o tipo de simulação:");
-            System.out.println("1. Simulação Automática");
-            System.out.println("2. Simulação Manual");
+            System.out.println("\nEscolha o tipo de simulacao:");
+            System.out.println("1. Simulacao Automatica");
+            System.out.println("2. Simulacao Manual");
             System.out.println("3. Sair");
             System.out.print("Digite sua escolha: ");
             String escolha = scanner.nextLine().trim();
 
             switch (escolha) {
                 case "1" -> {
-                    logger.info("Iniciando a simulação automática...");
+                    logger.info("Iniciando a simulacao automatica...");
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
 
                     // Define a divisao inicial como a primeira no mapa
                     IDivisao divisaoInicial = mapa.getDivisoes().getElementAt(0);
                     if (divisaoInicial == null) {
-                        System.out.println("Erro: Nenhuma divisão inicial encontrada.");
+                        System.out.println("Erro: Nenhuma divisao inicial encontrada.");
                         break;
                     }
 
                     toCruz.moverPara(divisaoInicial);
-                    logger.info("Tó Cruz posicionado na divisão inicial: {}", divisaoInicial.getNomeDivisao());
+                    logger.info("To Cruz posicionado na divisao inicial: {}", divisaoInicial.getNomeDivisao());
 
                     // Executa a simulacao automatica
                     ISimulacaoAutomatica simulacaoAuto = new SimulacaoAutomaticaImpl(mapa, toCruz);
                     try {
                         simulacaoAuto.executar(mapa.getAlvo().getDivisao());
                     } catch (Exception e) {
-                        logger.error("Erro durante a simulação automática: {}", e.getMessage());
-                        System.err.println("Erro na simulação automática. Verifique os logs para mais detalhes.");
+                        logger.error("Erro durante a simulacao automatica: {}", e.getMessage());
+                        System.err.println("Erro na simulacao automatica. Verifique os logs para mais detalhes.");
                         break;
                     }
 
                     // Exporta os resultados da simulacao automatica.
                     IDivisao divisaoFinal = simulacaoAuto.getDivisaoFinal();
                     if (divisaoFinal == null) {
-                        System.out.println("Erro: Simulação automática falhou.");
+                        System.out.println("Erro: Simulacao automatica falhou.");
                     } else {
                         IResultadoSimulacao resultadoAuto = new ResultadoSimulacaoImpl(
                                 "AUTO-001",
@@ -122,11 +127,11 @@ public class Main {
 
                         ExportarResultados exportador = new ExportarResultados();
                         exportador.exportarParaJson(resultadoAuto, "relatorio_simulacao_automatica.json", mapa);
-                        logger.info("Simulação automática concluída.");
+                        logger.info("Simulacao automatica concluida.");
                     }
                 }
                 case "2" -> {
-                    logger.info("Iniciando a simulação manual...");
+                    logger.info("Iniciando a simulacao manual...");
                     ToCruz toCruz = clonarToCruz(toCruzOriginal);
 
                     // Executa a simulacao manual.
@@ -147,13 +152,13 @@ public class Main {
 
                     ExportarResultados exportador = new ExportarResultados();
                     exportador.exportarParaJson(resultadoManual, "relatorio_simulacao_manual.json", mapa);
-                    logger.info("Simulação manual concluída.");
+                    logger.info("Simulacao manual concluida.");
                 }
                 case "3" -> {
                     continuar = false;
                     logger.info("Encerrando o programa...");
                 }
-                default -> System.out.println("Escolha inválida. Tente novamente.");
+                default -> System.out.println("Escolha invalida. Tente novamente.");
             }
         }
 
@@ -161,10 +166,10 @@ public class Main {
     }
 
     /**
-     * Cria uma cópia do agente Tó Cruz com os mesmos atributos.
+     * Cria uma copia do agente To Cruz com os mesmos atributos.
      *
-     * @param original Objeto original de Tó Cruz.
-     * @return Nova instância de Tó Cruz.
+     * @param original Objeto original de To Cruz.
+     * @return Nova instancia de To Cruz.
      */
     private static ToCruz clonarToCruz(ToCruz original) {
         return new ToCruz(original.getNome(), original.getVida());
@@ -174,7 +179,7 @@ public class Main {
      * Filtra uma lista de strings, removendo elementos nulos ou vazios.
      *
      * @param lista Lista de strings a ser filtrada.
-     * @return Nova lista contendo apenas elementos válidos.
+     * @return Nova lista contendo apenas elementos validos.
      */
     public static ArrayUnorderedList<String> filtrarLista(ArrayUnorderedList<String> lista) {
         ArrayUnorderedList<String> filtrada = new ArrayUnorderedList<>();

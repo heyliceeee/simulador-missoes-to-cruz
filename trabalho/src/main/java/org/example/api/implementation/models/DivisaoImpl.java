@@ -32,9 +32,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtém o nome da divisão.
+     * Obtem o nome da divisao.
      *
-     * @return Nome da divisão.
+     * @return Nome da divisao.
      */
     @Override
     public String getNomeDivisao() {
@@ -47,7 +47,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Adiciona um inimigo à divisão.
+     * Adiciona um inimigo à divisao.
      *
      * @param inimigo O inimigo a ser adicionado.
      * @throws IllegalArgumentException se o inimigo for nulo.
@@ -61,11 +61,11 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Remove um inimigo da divisão.
+     * Remove um inimigo da divisao.
      *
      * @param inimigo O inimigo a ser removido.
-     * @throws ElementNotFoundException se o inimigo não estiver presente na
-     *                                  divisão.
+     * @throws ElementNotFoundException se o inimigo nao estiver presente na
+     *                                  divisao.
      * @throws IllegalArgumentException se o inimigo for nulo.
      */
     @Override
@@ -77,7 +77,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Adiciona um item à divisão.
+     * Adiciona um item à divisao.
      *
      * @param item O item a ser adicionado.
      * @throws IllegalArgumentException se o item for nulo.
@@ -91,24 +91,24 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Remove um item da divisão.
+     * Remove um item da divisao.
      *
      * @param item O item a ser removido.
-     * @throws ElementNotFoundException se o item não estiver presente na divisão.
+     * @throws ElementNotFoundException se o item nao estiver presente na divisao.
      * @throws IllegalArgumentException se o item for nulo.
      */
     @Override
     public void removerItem(IItem item) throws ElementNotFoundException {
         if (item == null) {
-            throw new IllegalArgumentException("O item não pode ser nulo.");
+            throw new IllegalArgumentException("O item nao pode ser nulo.");
         }
         itensPresentes.remove(item);
     }
 
     /**
-     * Verifica se a divisão é uma entrada ou saída.
+     * Verifica se a divisao e uma entrada ou saida.
      *
-     * @return true se for entrada ou saída, false caso contrário.
+     * @return true se for entrada ou saida, false caso contrario.
      */
     @Override
     public boolean isEntradaSaida() {
@@ -116,10 +116,10 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Define se a divisão é uma entrada ou saída.
+     * Define se a divisao e uma entrada ou saida.
      *
-     * @param entradaSaida true para marcar como entrada/saída, false caso
-     *                     contrário.
+     * @param entradaSaida true para marcar como entrada/saida, false caso
+     *                     contrario.
      */
     @Override
     public void setEntradaSaida(boolean entradaSaida) {
@@ -127,7 +127,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtém a lista de inimigos presentes na divisão.
+     * Obtem a lista de inimigos presentes na divisao.
      *
      * @return Lista de inimigos presentes.
      */
@@ -137,7 +137,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Obtém a lista de itens presentes na divisão.
+     * Obtem a lista de itens presentes na divisao.
      *
      * @return Lista de itens presentes.
      */
@@ -156,7 +156,8 @@ public class DivisaoImpl implements IDivisao {
         return itensPresentes;
     }
 
-    /* Define os itens presentes na divisao.
+    /*
+     * Define os itens presentes na divisao.
      *
      * @param itensPresentes Lista de itens.
      */
@@ -166,9 +167,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Representação textual da divisão.
+     * Representacao textual da divisao.
      *
-     * @return String representando a divisão.
+     * @return String representando a divisao.
      */
     @Override
     public String toString() {
@@ -184,7 +185,7 @@ public class DivisaoImpl implements IDivisao {
      * Verifica a igualdade entre dois objetos do tipo DivisaoImpl.
      *
      * @param o Objeto a ser comparado.
-     * @return true se os objetos forem iguais, false caso contrário.
+     * @return true se os objetos forem iguais, false caso contrario.
      */
     @Override
     public boolean equals(Object o) {
@@ -199,9 +200,9 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Retorna o hash code da divisão baseado no nome.
+     * Retorna o hash code da divisao baseado no nome.
      *
-     * @return Hash code da divisão.
+     * @return Hash code da divisao.
      */
     @Override
     public int hashCode() {

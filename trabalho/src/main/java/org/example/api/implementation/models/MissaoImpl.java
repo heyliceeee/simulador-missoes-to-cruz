@@ -4,8 +4,8 @@ import org.example.api.implementation.interfaces.IMapa;
 import org.example.api.implementation.interfaces.IMissao;
 
 /**
- * Implementação de uma Missão.
- * Uma missão possui um código único, uma versão e está associada a um mapa.
+ * Implementacao de uma Missao.
+ * Uma missao possui um codigo unico, uma versao e esta associada a um mapa.
  */
 public class MissaoImpl implements IMissao {
     private String codMissao;
@@ -13,13 +13,13 @@ public class MissaoImpl implements IMissao {
     private IMapa mapa;
 
     /**
-     * Construtor da Missão.
+     * Construtor da Missao.
      *
-     * @param codMissao Código único da missão.
-     * @param versao    Versão da missão.
-     * @param mapa      Mapa associado à missão.
-     * @throws IllegalArgumentException se o código da missão for nulo ou vazio,
-     *                                  a versão for negativa ou o mapa for nulo.
+     * @param codMissao Codigo unico da missao.
+     * @param versao    Versao da missao.
+     * @param mapa      Mapa associado à missao.
+     * @throws IllegalArgumentException se o codigo da missao for nulo ou vazio,
+     *                                  a versao for negativa ou o mapa for nulo.
      */
     public MissaoImpl(String codMissao, int versao, IMapa mapa) {
         validarCodMissao(codMissao);
@@ -32,9 +32,9 @@ public class MissaoImpl implements IMissao {
     }
 
     /**
-     * Retorna o código único da missão.
+     * Retorna o codigo unico da missao.
      *
-     * @return O código da missão.
+     * @return O codigo da missao.
      */
     @Override
     public String getCodMissao() {
@@ -42,9 +42,9 @@ public class MissaoImpl implements IMissao {
     }
 
     /**
-     * Retorna a versão da missão.
+     * Retorna a versao da missao.
      *
-     * @return A versão da missão.
+     * @return A versao da missao.
      */
     @Override
     public int getVersao() {
@@ -52,7 +52,7 @@ public class MissaoImpl implements IMissao {
     }
 
     /**
-     * Retorna o mapa associado à missão.
+     * Retorna o mapa associado à missao.
      *
      * @return O mapa associado.
      */
@@ -62,45 +62,45 @@ public class MissaoImpl implements IMissao {
     }
 
     /**
-     * Valida o código da missão.
+     * Valida o codigo da missao.
      *
-     * @param codMissao Código da missão a ser validado.
-     * @throws IllegalArgumentException se o código da missão for nulo ou vazio.
+     * @param codMissao Codigo da missao a ser validado.
+     * @throws IllegalArgumentException se o codigo da missao for nulo ou vazio.
      */
     private void validarCodMissao(String codMissao) {
         if (codMissao == null || codMissao.trim().isEmpty()) {
-            throw new IllegalArgumentException("O código da missão não pode ser nulo ou vazio.");
+            throw new IllegalArgumentException("O codigo da missao nao pode ser nulo ou vazio.");
         }
     }
 
     /**
-     * Valida a versão da missão.
+     * Valida a versao da missao.
      *
-     * @param versao Versão a ser validada.
-     * @throws IllegalArgumentException se a versão for negativa.
+     * @param versao Versao a ser validada.
+     * @throws IllegalArgumentException se a versao for negativa.
      */
     private void validarVersao(int versao) {
         if (versao < 0) {
-            throw new IllegalArgumentException("A versão da missão não pode ser negativa.");
+            throw new IllegalArgumentException("A versao da missao nao pode ser negativa.");
         }
     }
 
     /**
-     * Valida o mapa associado à missão.
+     * Valida o mapa associado à missao.
      *
      * @param mapa Mapa a ser validado.
      * @throws IllegalArgumentException se o mapa for nulo.
      */
     private void validarMapa(IMapa mapa) {
         if (mapa == null) {
-            throw new IllegalArgumentException("O mapa da missão não pode ser nulo.");
+            throw new IllegalArgumentException("O mapa da missao nao pode ser nulo.");
         }
     }
 
     /**
-     * Retorna uma representação em string da missão.
+     * Retorna uma representacao em string da missao.
      *
-     * @return Representação da missão no formato string.
+     * @return Representacao da missao no formato string.
      */
     @Override
     public String toString() {
@@ -109,11 +109,11 @@ public class MissaoImpl implements IMissao {
     }
 
     /**
-     * Compara esta missão com outro objeto.
-     * Duas missões são iguais se possuem o mesmo código.
+     * Compara esta missao com outro objeto.
+     * Duas missoes sao iguais se possuem o mesmo codigo.
      *
      * @param o Objeto a ser comparado.
-     * @return true se os objetos forem iguais; false caso contrário.
+     * @return true se os objetos forem iguais; false caso contrario.
      */
     @Override
     public boolean equals(Object o) {
@@ -128,9 +128,9 @@ public class MissaoImpl implements IMissao {
     }
 
     /**
-     * Retorna o hash code baseado no código da missão.
+     * Retorna o hash code baseado no codigo da missao.
      *
-     * @return Hash code da missão.
+     * @return Hash code da missao.
      */
     @Override
     public int hashCode() {

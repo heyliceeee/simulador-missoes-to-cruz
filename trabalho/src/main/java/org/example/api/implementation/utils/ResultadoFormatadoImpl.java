@@ -20,10 +20,11 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     private final int versaoMissao;
 
     /**
-     * Construtor que formata o resultado da simulação com base nos dados fornecidos.
+     * Construtor que formata o resultado da simulacao com base nos dados
+     * fornecidos.
      *
-     * @param resultado O resultado da simulação.
-     * @param mapa      O mapa da simulação.
+     * @param resultado O resultado da simulacao.
+     * @param mapa      O mapa da simulacao.
      */
     public ResultadoFormatadoImpl(IResultadoSimulacao resultado, IMapa mapa) {
         this.id = resultado.getId();
@@ -32,7 +33,7 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
         this.status = resultado.getStatus();
         this.vidaRestante = resultado.getVidaRestante();
 
-        // Garante que as listas não serão nulas
+        // Garante que as listas nao serao nulas
         this.trajeto = resultado.getTrajeto() != null ? toJavaArray(resultado.getTrajeto()) : new String[0];
         this.entradasSaidas = mapa.getEntradasSaidasNomes() != null
                 ? filtrarEntradasSaidas(mapa.getEntradasSaidasNomes(), resultado.getTrajeto())
@@ -43,9 +44,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém o identificador único do resultado da simulação.
+     * Obtem o identificador unico do resultado da simulacao.
      *
-     * @return O identificador único da simulação.
+     * @return O identificador unico da simulacao.
      */
     @Override
     public String getId() {
@@ -53,9 +54,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém o nome da divisão inicial onde a simulação começou.
+     * Obtem o nome da divisao inicial onde a simulacao comecou.
      *
-     * @return O nome da divisão inicial.
+     * @return O nome da divisao inicial.
      */
     @Override
     public String getDivisaoInicial() {
@@ -63,9 +64,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém o nome da divisão final onde a simulação terminou.
+     * Obtem o nome da divisao final onde a simulacao terminou.
      *
-     * @return O nome da divisão final.
+     * @return O nome da divisao final.
      */
     @Override
     public String getDivisaoFinal() {
@@ -73,9 +74,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém o status da simulação, como "SUCESSO" ou "FALHA".
+     * Obtem o status da simulacao, como "SUCESSO" ou "FALHA".
      *
-     * @return O status da simulação.
+     * @return O status da simulacao.
      */
     @Override
     public String getStatus() {
@@ -83,7 +84,7 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém a quantidade de vida restante ao final da simulação.
+     * Obtem a quantidade de vida restante ao final da simulacao.
      *
      * @return O valor da vida restante.
      */
@@ -93,9 +94,10 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém o trajeto percorrido durante a simulação, representado como um array de divisões.
+     * Obtem o trajeto percorrido durante a simulacao, representado como um array de
+     * divisoes.
      *
-     * @return Um array de strings com os nomes das divisões do trajeto.
+     * @return Um array de strings com os nomes das divisoes do trajeto.
      */
     @Override
     public String[] getTrajeto() {
@@ -103,9 +105,10 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém os nomes das divisões marcadas como entradas ou saídas no mapa da simulação.
+     * Obtem os nomes das divisoes marcadas como entradas ou saidas no mapa da
+     * simulacao.
      *
-     * @return Um array de strings com os nomes das divisões de entrada/saída.
+     * @return Um array de strings com os nomes das divisoes de entrada/saida.
      */
     @Override
     public String[] getEntradasSaidas() {
@@ -113,9 +116,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém o código identificador da missão associada à simulação.
+     * Obtem o codigo identificador da missao associada à simulacao.
      *
-     * @return O código da missão.
+     * @return O codigo da missao.
      */
     @Override
     public String getCodigoMissao() {
@@ -123,9 +126,9 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Obtém a versão da missão associada à simulação.
+     * Obtem a versao da missao associada à simulacao.
      *
-     * @return A versão da missão.
+     * @return A versao da missao.
      */
     @Override
     public int getVersaoMissao() {
@@ -150,14 +153,15 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
     }
 
     /**
-     * Filtra as entradas e saídas relevantes do mapa com base no trajeto da simulação.
+     * Filtra as entradas e saidas relevantes do mapa com base no trajeto da
+     * simulacao.
      *
-     * @param entradasSaidas A lista de entradas e saídas no mapa.
-     * @param trajeto        O trajeto percorrido na simulação.
-     * @return Um array de strings com as entradas/saídas relevantes.
+     * @param entradasSaidas A lista de entradas e saidas no mapa.
+     * @param trajeto        O trajeto percorrido na simulacao.
+     * @return Um array de strings com as entradas/saidas relevantes.
      */
     private String[] filtrarEntradasSaidas(ArrayUnorderedList<String> entradasSaidas,
-                                           ArrayUnorderedList<String> trajeto) {
+            ArrayUnorderedList<String> trajeto) {
         if (trajeto == null || trajeto.size() == 0) {
             return new String[0];
         }

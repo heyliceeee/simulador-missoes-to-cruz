@@ -3,7 +3,7 @@ package org.example.api.implementation.models;
 import org.example.api.implementation.interfaces.IDivisao;
 
 /**
- * Classe auxiliar para armazenar uma divisão e seu predecessor durante a busca
+ * Classe auxiliar para armazenar uma divisao e seu predecessor durante a busca
  * de caminhos.
  */
 public class Predecessor {
@@ -13,14 +13,14 @@ public class Predecessor {
     /**
      * Construtor da classe Predecessor.
      *
-     * @param atual       A divisão atual. Não pode ser nula.
-     * @param predecessor A divisão predecessora. Pode ser nula (para o ponto de
+     * @param atual       A divisao atual. Nao pode ser nula.
+     * @param predecessor A divisao predecessora. Pode ser nula (para o ponto de
      *                    partida).
-     * @throws IllegalArgumentException se a divisão atual for nula.
+     * @throws IllegalArgumentException se a divisao atual for nula.
      */
     public Predecessor(IDivisao atual, IDivisao predecessor) {
         if (atual == null) {
-            throw new IllegalArgumentException("A divisão atual não pode ser nula.");
+            throw new IllegalArgumentException("A divisao atual nao pode ser nula.");
         }
         this.atual = atual;
         this.predecessor = predecessor;
@@ -38,14 +38,14 @@ public class Predecessor {
     /**
      * Retorna a divisao predecessora.
      *
-     * @return A divisão predecessora, ou null se não houver predecessora.
+     * @return A divisao predecessora, ou null se nao houver predecessora.
      */
     public IDivisao getPredecessor() {
         return predecessor;
     }
 
     /**
-     * Retorna uma representação em string do objeto Predecessor.
+     * Retorna uma representacao em string do objeto Predecessor.
      *
      * @return String representando o Predecessor.
      */
@@ -57,10 +57,10 @@ public class Predecessor {
     }
 
     /**
-     * Verifica se este objeto é igual a outro.
+     * Verifica se este objeto e igual a outro.
      *
      * @param o Objeto a ser comparado.
-     * @return true se os objetos forem iguais; caso contrário, false.
+     * @return true se os objetos forem iguais; caso contrario, false.
      */
     @Override
     public boolean equals(Object o) {
@@ -79,7 +79,7 @@ public class Predecessor {
     /**
      * Retorna o hash code do objeto.
      *
-     * @return O hash code calculado a partir das divisões atual e predecessora.
+     * @return O hash code calculado a partir das divisoes atual e predecessora.
      */
     @Override
     public int hashCode() {

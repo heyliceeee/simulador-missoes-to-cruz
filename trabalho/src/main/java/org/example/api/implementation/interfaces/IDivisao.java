@@ -5,27 +5,27 @@ import org.example.collections.implementation.ArrayUnorderedList;
 import org.example.collections.implementation.LinkedList;
 
 /**
- * Representa uma divisão no mapa de um edifício.
+ * Representa uma divisao no mapa de um edificio.
  *
  * <p>
- * A divisão armazena informações sobre inimigos, itens e se é uma entrada ou
- * saída.
- * Ela serve como uma unidade básica dentro do mapa, permitindo a interação com
- * inimigos e itens e indicando se é acessível como ponto de entrada ou saída.
+ * A divisao armazena informacoes sobre inimigos, itens e se e uma entrada ou
+ * saida.
+ * Ela serve como uma unidade basica dentro do mapa, permitindo a interacao com
+ * inimigos e itens e indicando se e acessivel como ponto de entrada ou saida.
  * </p>
  */
 public interface IDivisao {
     /**
-     * Obtém o nome da divisão.
+     * Obtem o nome da divisao.
      *
-     * @return O nome da divisão.
+     * @return O nome da divisao.
      */
     String getNomeDivisao();
 
     void setNomeDivisao(String nomeDivisao);
 
     /**
-     * Adiciona um inimigo à divisão.
+     * Adiciona um inimigo à divisao.
      *
      * @param inimigo O inimigo a ser adicionado.
      * @throws IllegalArgumentException Se o inimigo for nulo.
@@ -33,17 +33,17 @@ public interface IDivisao {
     void adicionarInimigo(IInimigo inimigo);
 
     /**
-     * Remove um inimigo da divisão.
+     * Remove um inimigo da divisao.
      *
      * @param inimigo O inimigo a ser removido.
-     * @throws ElementNotFoundException Se o inimigo não estiver presente na
-     *                                  divisão.
+     * @throws ElementNotFoundException Se o inimigo nao estiver presente na
+     *                                  divisao.
      * @throws IllegalArgumentException Se o inimigo for nulo.
      */
     void removerInimigo(IInimigo inimigo) throws ElementNotFoundException;
 
     /**
-     * Adiciona um item à divisão.
+     * Adiciona um item à divisao.
      *
      * @param item O item a ser adicionado.
      * @throws IllegalArgumentException Se o item for nulo.
@@ -51,43 +51,43 @@ public interface IDivisao {
     void adicionarItem(IItem item);
 
     /**
-     * Remove um item da divisão.
+     * Remove um item da divisao.
      *
      * @param item O item a ser removido.
-     * @throws ElementNotFoundException Se o item não estiver presente na divisão.
+     * @throws ElementNotFoundException Se o item nao estiver presente na divisao.
      * @throws IllegalArgumentException Se o item for nulo.
      */
     void removerItem(IItem item) throws ElementNotFoundException;
 
     /**
-     * Verifica se a divisão é uma entrada ou saída.
+     * Verifica se a divisao e uma entrada ou saida.
      *
-     * @return {@code true} se for uma entrada ou saída, {@code false} caso
-     *         contrário.
+     * @return {@code true} se for uma entrada ou saida, {@code false} caso
+     *         contrario.
      */
     boolean isEntradaSaida();
 
     /**
-     * Define se a divisão é uma entrada ou saída.
+     * Define se a divisao e uma entrada ou saida.
      *
-     * @param entradaSaida {@code true} para marcar como entrada ou saída,
-     *                     {@code false} caso contrário.
+     * @param entradaSaida {@code true} para marcar como entrada ou saida,
+     *                     {@code false} caso contrario.
      */
     void setEntradaSaida(boolean entradaSaida);
 
     /**
-     * Obtém a lista de itens presentes na divisão.
+     * Obtem a lista de itens presentes na divisao.
      *
-     * @return Uma lista de itens presentes na divisão.
+     * @return Uma lista de itens presentes na divisao.
      */
     ArrayUnorderedList<IItem> getItensPresentes();
 
     void setItensPresentes(ArrayUnorderedList<IItem> itensPresentes);
 
     /**
-     * Obtém a lista de inimigos presentes na divisão.
+     * Obtem a lista de inimigos presentes na divisao.
      *
-     * @return Uma lista de inimigos presentes na divisão.
+     * @return Uma lista de inimigos presentes na divisao.
      */
     ArrayUnorderedList<IInimigo> getInimigosPresentes();
 

@@ -15,7 +15,7 @@ public class AlvoImpl implements IAlvo {
      *
      * @param divisao Divisao onde o alvo esta localizado.
      * @param tipo    Tipo do alvo.
-     * @throws IllegalArgumentException se a divisão for nula ou o tipo for nulo ou
+     * @throws IllegalArgumentException se a divisao for nula ou o tipo for nulo ou
      *                                  vazio.
      */
     public AlvoImpl(IDivisao divisao, String tipo) {
@@ -30,9 +30,9 @@ public class AlvoImpl implements IAlvo {
     }
 
     /**
-     * Obtém a divisão onde o alvo está localizado.
+     * Obtem a divisao onde o alvo esta localizado.
      *
-     * @return Divisão do alvo.
+     * @return Divisao do alvo.
      */
     @Override
     public IDivisao getDivisao() {
@@ -40,10 +40,10 @@ public class AlvoImpl implements IAlvo {
     }
 
     /**
-     * Define a divisão do alvo.
+     * Define a divisao do alvo.
      *
-     * @param divisao Nova divisão do alvo.
-     * @throws IllegalArgumentException se a divisão for nula.
+     * @param divisao Nova divisao do alvo.
+     * @throws IllegalArgumentException se a divisao for nula.
      */
     @Override
     public void setDivisao(IDivisao divisao) {
@@ -54,7 +54,7 @@ public class AlvoImpl implements IAlvo {
     }
 
     /**
-     * Obtém o tipo do alvo.
+     * Obtem o tipo do alvo.
      *
      * @return Tipo do alvo.
      */
@@ -72,13 +72,13 @@ public class AlvoImpl implements IAlvo {
     @Override
     public void setTipo(String tipo) {
         if (tipo == null || tipo.trim().isEmpty()) {
-            throw new IllegalArgumentException("O tipo do alvo não pode ser nulo ou vazio.");
+            throw new IllegalArgumentException("O tipo do alvo nao pode ser nulo ou vazio.");
         }
         this.tipo = tipo;
     }
 
     /**
-     * Retorna uma representação em string do alvo.
+     * Retorna uma representacao em string do alvo.
      *
      * @return String representando o alvo.
      */
@@ -94,7 +94,7 @@ public class AlvoImpl implements IAlvo {
      * Verifica a igualdade entre dois objetos do tipo AlvoImpl.
      *
      * @param o Objeto a ser comparado.
-     * @return true se os objetos forem iguais, false caso contrário.
+     * @return true se os objetos forem iguais, false caso contrario.
      */
     @Override
     public boolean equals(Object o) {

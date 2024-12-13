@@ -1,34 +1,33 @@
 package org.example.api.implementation.interfaces;
 
-
 /**
- * Representa uma missão no sistema.
+ * Representa uma missao no sistema.
  *
  * <p>
- * Uma missão é composta por um código único, uma versão e um mapa associado que
- * define o ambiente da missão.
+ * Uma missao e composta por um codigo unico, uma versao e um mapa associado que
+ * define o ambiente da missao.
  * </p>
  */
 public interface IMissao {
     /**
-     * Obtém o código da missão.
+     * Obtem o codigo da missao.
      *
-     * @return O código único da missão.
+     * @return O codigo unico da missao.
      */
     String getCodMissao();
 
     /**
-     * Obtém a versão da missão.
+     * Obtem a versao da missao.
      *
-     * @return A versão da missão, que identifica alterações ou revisões.
+     * @return A versao da missao, que identifica alteracoes ou revisoes.
      */
     int getVersao();
 
     /**
-     * Obtém o mapa associado à missão.
+     * Obtem o mapa associado à missao.
      *
-     * @return O mapa que descreve as divisões, conexões, inimigos e itens da
-     *         missão.
+     * @return O mapa que descreve as divisoes, conexoes, inimigos e itens da
+     *         missao.
      */
     IMapa getMapa();
 }

@@ -7,9 +7,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Implementação de um grafo utilizando uma matriz de adjacência.
+ * Implementacao de um grafo utilizando uma matriz de adjacencia.
  *
- * @param <T> O tipo de elementos armazenados nos vértices do grafo.
+ * @param <T> O tipo de elementos armazenados nos vertices do grafo.
  */
 public class Graph<T> implements GraphADT<T>, Iterable<T> {
     protected final int DEFAULT_CAPACITY = 10;
@@ -18,7 +18,7 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     protected T[] vertices;
 
     /**
-     * Construtor padrão que inicializa o grafo com capacidade padrão.
+     * Construtor padrao que inicializa o grafo com capacidade padrao.
      */
     public Graph() {
         this.numVertices = 0;
@@ -27,11 +27,11 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Adiciona um vértice ao grafo.
+     * Adiciona um vertice ao grafo.
      *
-     * @param vertex O vértice a ser adicionado.
-     * @return true se o vértice foi adicionado com sucesso.
-     * @throws IllegalArgumentException se o vértice for nulo.
+     * @param vertex O vertice a ser adicionado.
+     * @return true se o vertice foi adicionado com sucesso.
+     * @throws IllegalArgumentException se o vertice for nulo.
      */
     @Override
     public boolean addVertex(T vertex) {
@@ -56,9 +56,9 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Retorna um iterador para os vértices do grafo.
+     * Retorna um iterador para os vertices do grafo.
      *
-     * @return Iterador dos vértices.
+     * @return Iterador dos vertices.
      */
     @Override
     public Iterator<T> iterator() {
@@ -100,11 +100,11 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Remove um vértice do grafo.
+     * Remove um vertice do grafo.
      *
-     * @param vertex O vértice a ser removido.
-     * @return true se o vértice foi removido com sucesso.
-     * @throws NoSuchElementException se o vértice não for encontrado.
+     * @param vertex O vertice a ser removido.
+     * @return true se o vertice foi removido com sucesso.
+     * @throws NoSuchElementException se o vertice nao for encontrado.
      */
     @Override
     public boolean removeVertex(T vertex) {
@@ -122,10 +122,10 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Remove um vértice do grafo pelo índice.
+     * Remove um vertice do grafo pelo indice.
      *
-     * @param index O índice do vértice a ser removido.
-     * @throws IllegalArgumentException se o índice for inválido.
+     * @param index O indice do vertice a ser removido.
+     * @throws IllegalArgumentException se o indice for invalido.
      */
     public void removeVertex(int index) {
         if (indexIsValid(index)) {
@@ -158,11 +158,11 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Adiciona uma aresta entre dois vértices.
+     * Adiciona uma aresta entre dois vertices.
      *
-     * @param vertex1 O primeiro vértice.
-     * @param vertex2 O segundo vértice.
-     * @throws IllegalArgumentException se algum dos vértices for inválido.
+     * @param vertex1 O primeiro vertice.
+     * @param vertex2 O segundo vertice.
+     * @throws IllegalArgumentException se algum dos vertices for invalido.
      */
     @Override
     public void addEdge(T vertex1, T vertex2) {
@@ -180,11 +180,11 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Adiciona uma aresta entre dois índices de vértices.
+     * Adiciona uma aresta entre dois indices de vertices.
      *
-     * @param index1 Índice do primeiro vértice.
-     * @param index2 Índice do segundo vértice.
-     * @throws IllegalArgumentException se algum dos índices for inválido.
+     * @param index1 indice do primeiro vertice.
+     * @param index2 indice do segundo vertice.
+     * @throws IllegalArgumentException se algum dos indices for invalido.
      */
     public void addEdge(int index1, int index2) {
         if (indexIsValid(index1) && indexIsValid(index2)) {
@@ -196,22 +196,22 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Verifica se o índice de um vértice é válido.
+     * Verifica se o indice de um vertice e valido.
      *
-     * @param index O índice a ser verificado.
-     * @return true se o índice for válido, false caso contrário.
+     * @param index O indice a ser verificado.
+     * @return true se o indice for valido, false caso contrario.
      */
     private boolean indexIsValid(int index) {
         return ((index < numVertices) && index >= 0);
     }
 
     /**
-     * Remove uma aresta entre dois vértices.
+     * Remove uma aresta entre dois vertices.
      *
-     * @param vertex1 O primeiro vértice.
-     * @param vertex2 O segundo vértice.
-     * @throws IllegalArgumentException se a aresta não existir ou os vértices forem
-     *                                  inválidos.
+     * @param vertex1 O primeiro vertice.
+     * @param vertex2 O segundo vertice.
+     * @throws IllegalArgumentException se a aresta nao existir ou os vertices forem
+     *                                  invalidos.
      */
     @Override
     public void removeEdge(T vertex1, T vertex2) {
@@ -219,12 +219,12 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Remove uma aresta entre dois índices de vértices.
+     * Remove uma aresta entre dois indices de vertices.
      *
-     * @param index1 Índice do primeiro vértice.
-     * @param index2 Índice do segundo vértice.
-     * @throws IllegalArgumentException se algum dos índices for inválido ou a
-     *                                  aresta não existir.
+     * @param index1 indice do primeiro vertice.
+     * @param index2 indice do segundo vertice.
+     * @throws IllegalArgumentException se algum dos indices for invalido ou a
+     *                                  aresta nao existir.
      */
     public void removeEdge(int index1, int index2) {
         if (!indexIsValid(index1)) {
@@ -246,23 +246,23 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Verifica se uma aresta existe entre dois índices de vértices.
+     * Verifica se uma aresta existe entre dois indices de vertices.
      *
-     * @param index1 Índice do primeiro vértice.
-     * @param index2 Índice do segundo vértice.
-     * @return true se a aresta existir, false caso contrário.
+     * @param index1 indice do primeiro vertice.
+     * @param index2 indice do segundo vertice.
+     * @return true se a aresta existir, false caso contrario.
      */
     private boolean edgeExists(int index1, int index2) {
         return adjMatrix[index1][index2] != 0 || adjMatrix[index2][index1] != 0;
     }
 
     /**
-     * Retorna um iterador para a travessia em largura (BFS) a partir de um vértice
+     * Retorna um iterador para a travessia em largura (BFS) a partir de um vertice
      * inicial.
      *
-     * @param startVertex O vértice inicial.
+     * @param startVertex O vertice inicial.
      * @return Iterador para a travessia em largura.
-     * @throws IllegalArgumentException se o vértice não for encontrado.
+     * @throws IllegalArgumentException se o vertice nao for encontrado.
      */
     @Override
     public Iterator<T> iteratorBFS(T startVertex) {
@@ -314,11 +314,11 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
 
     /**
      * Retorna um iterador para a travessia em profundidade (DFS) a partir de um
-     * vértice inicial.
+     * vertice inicial.
      *
-     * @param startVertex O vértice inicial.
+     * @param startVertex O vertice inicial.
      * @return Iterador para a travessia em profundidade.
-     * @throws IllegalArgumentException se o vértice não for encontrado.
+     * @throws IllegalArgumentException se o vertice nao for encontrado.
      */
     @Override
     public Iterator<T> iteratorDFS(T startVertex) {
@@ -371,10 +371,10 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Retorna um iterador para o caminho mais curto entre dois vértices.
+     * Retorna um iterador para o caminho mais curto entre dois vertices.
      *
-     * @param startVertex  O vértice de origem.
-     * @param targetVertex O vértice de destino.
+     * @param startVertex  O vertice de origem.
+     * @param targetVertex O vertice de destino.
      * @return Iterador para o caminho mais curto.
      */
     @Override
@@ -462,9 +462,9 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Verifica se o grafo está vazio.
+     * Verifica se o grafo esta vazio.
      *
-     * @return true se o grafo estiver vazio, false caso contrário.
+     * @return true se o grafo estiver vazio, false caso contrario.
      */
     @Override
     public boolean isEmpty() {
@@ -472,9 +472,9 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Verifica se o grafo é conexo.
+     * Verifica se o grafo e conexo.
      *
-     * @return true se o grafo for conexo, false caso contrário.
+     * @return true se o grafo for conexo, false caso contrario.
      */
     @Override
     public boolean isConnected() {
@@ -494,9 +494,9 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Retorna o número de vértices no grafo.
+     * Retorna o numero de vertices no grafo.
      *
-     * @return O número de vértices no grafo.
+     * @return O numero de vertices no grafo.
      */
     @Override
     public int size() {
@@ -504,11 +504,11 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Retorna os vértices adjacentes a um dado vértice.
+     * Retorna os vertices adjacentes a um dado vertice.
      *
-     * @param vertex O vértice a ser analisado.
-     * @return Uma lista de vértices adjacentes.
-     * @throws IllegalArgumentException se o vértice não for encontrado.
+     * @param vertex O vertice a ser analisado.
+     * @return Uma lista de vertices adjacentes.
+     * @throws IllegalArgumentException se o vertice nao for encontrado.
      */
     public LinkedList<T> getAdjacentes(T vertex) {
         int index = getIndex(vertex);
@@ -526,11 +526,11 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Verifica se dois vértices são adjacentes.
+     * Verifica se dois vertices sao adjacentes.
      *
-     * @param vertex1 O primeiro vértice.
-     * @param vertex2 O segundo vértice.
-     * @return true se os vértices forem adjacentes, false caso contrário.
+     * @param vertex1 O primeiro vertice.
+     * @param vertex2 O segundo vertice.
+     * @return true se os vertices forem adjacentes, false caso contrario.
      */
     public boolean isAdjacent(T vertex1, T vertex2) {
         int index1 = getIndex(vertex1);
@@ -544,7 +544,7 @@ public class Graph<T> implements GraphADT<T>, Iterable<T> {
     }
 
     /**
-     * Retorna uma representação textual do grafo.
+     * Retorna uma representacao textual do grafo.
      *
      * @return Uma string representando o grafo.
      */

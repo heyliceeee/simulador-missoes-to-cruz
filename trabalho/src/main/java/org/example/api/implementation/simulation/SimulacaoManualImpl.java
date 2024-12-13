@@ -47,57 +47,57 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
      */
     @Override
     public void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException {
-        System.out.println("Início da simulação manual!");
-    
-        // Obter entradas/saídas disponíveis
+        System.out.println("Inicio da simulacao manual!");
+
+        // Obter entradas/saidas disponiveis
         ArrayUnorderedList<String> entradasSaidas = mapa.getEntradasSaidasNomes();
         if (entradasSaidas.isEmpty()) {
-            System.err.println("Erro: Não há divisões marcadas como entrada/saída no mapa.");
+            System.err.println("Erro: Nao ha divisoes marcadas como entrada/saida no mapa.");
             return;
         }
-    
+
         // Pedir ao jogador para escolher uma entrada
         IDivisao posicaoInicial = null;
         while (posicaoInicial == null) {
-            System.out.println("Escolha uma das entradas disponíveis:");
+            System.out.println("Escolha uma das entradas disponiveis:");
             for (int i = 0; i < entradasSaidas.size(); i++) {
                 System.out.println("- " + entradasSaidas.getElementAt(i));
             }
             System.out.print("Digite o nome da entrada: ");
             String escolha = scanner.nextLine().trim();
-    
+
             try {
                 posicaoInicial = mapa.getDivisaoPorNome(escolha);
                 if (!entradasSaidas.contains(escolha)) {
-                    System.out.println("Escolha inválida. Tente novamente.");
+                    System.out.println("Escolha invalida. Tente novamente.");
                     posicaoInicial = null;
                 }
             } catch (RuntimeException e) {
-                System.out.println("Divisão não encontrada. Tente novamente.");
+                System.out.println("Divisao nao encontrada. Tente novamente.");
             }
         }
-    
+
         toCruz.moverPara(posicaoInicial);
         caminhoPercorrido.addToRear(posicaoInicial);
-    
+
         // Verificar se o objetivo foi definido
         if (divisaoObjetivo == null) {
             System.err.println("Erro: Divisao objetivo invalida.");
             return;
         }
-    
-        // Iniciar loop principal da simulação
+
+        // Iniciar loop principal da simulacao
         while (toCruz.getVida() > 0) {
             mostrarEstado();
             mostrarConexoesAdjacentes(toCruz.getPosicaoAtual());
-    
+
             String comando = obterComando();
-    
+
             if (comando.isEmpty()) {
                 System.out.println("Nenhum comando fornecido. Tente novamente.");
                 continue;
             }
-    
+
             switch (comando.toLowerCase()) {
                 case "mover" -> mover();
                 case "usar" -> toCruz.usarKitDeVida();
@@ -107,51 +107,50 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                     return;
                 }
                 default -> {
-                    System.out.println("Comando inválido. Tente novamente.");
-                    continue; // Reinicia o loop ao detectar comando inválido
+                    System.out.println("Comando invalido. Tente novamente.");
+                    continue; // Reinicia o loop ao detectar comando invalido
                 }
             }
-    
-            // Mover inimigos após a ação do jogador
+
+            // Mover inimigos apos a acao do jogador
             try {
                 mapa.moverInimigos(toCruz, combateService);
             } catch (ElementNotFoundException e) {
                 System.err.println("Erro ao mover inimigos: " + e.getMessage());
             }
-    
+
             // Mostrar o melhor caminho para o alvo
-            ArrayUnorderedList<IDivisao> caminhoParaAlvo = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), divisaoObjetivo);
+            ArrayUnorderedList<IDivisao> caminhoParaAlvo = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(),
+                    divisaoObjetivo);
             System.out.print("Melhor caminho para o alvo: ");
             mostrarCaminho(caminhoParaAlvo);
-    
-            // Mostrar o melhor caminho para o kit de recuperação mais próximo
+
+            // Mostrar o melhor caminho para o kit de recuperacao mais proximo
             ArrayUnorderedList<IItem> kitsDisponiveis = mapa.getItensPorTipo("kit de vida");
             if (!kitsDisponiveis.isEmpty()) {
                 IItem kitMaisProximo = encontrarKitMaisProximo(kitsDisponiveis);
-                ArrayUnorderedList<IDivisao> caminhoParaKit = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), kitMaisProximo.getDivisao());
-                System.out.print("Melhor caminho para o kit de recuperação: ");
+                ArrayUnorderedList<IDivisao> caminhoParaKit = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(),
+                        kitMaisProximo.getDivisao());
+                System.out.print("Melhor caminho para o kit de recuperacao: ");
                 mostrarCaminho(caminhoParaKit);
             } else {
-                System.out.println("Nenhum kit de recuperação disponível no mapa.");
+                System.out.println("Nenhum kit de recuperacao disponivel no mapa.");
             }
-    
+
             interagirComAlvo(toCruz.getPosicaoAtual());
-    
+
             if (toCruz.isAlvoConcluido()) {
                 System.out.println("Missao concluida com sucesso! To Cruz capturou o alvo.");
                 return;
             }
         }
-    
-        System.out.println("Tó Cruz foi derrotado! Simulação encerrada.");
+
+        System.out.println("To Cruz foi derrotado! Simulacao encerrada.");
     }
-    
-
-
 
     private void mostrarConexoesAdjacentes(IDivisao divisaoAtual) throws ElementNotFoundException {
         ArrayUnorderedList<IDivisao> conexoes = mapa.obterConexoes(divisaoAtual);
-        System.out.println("\n--- Divisões Adjacentes ---");
+        System.out.println("\n--- Divisoes Adjacentes ---");
         for (int i = 0; i < conexoes.size(); i++) {
             IDivisao conexao = conexoes.getElementAt(i);
             if (conexao != null) {
@@ -165,10 +164,10 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
 
     private void mostrarCaminho(ArrayUnorderedList<IDivisao> caminho) {
         if (caminho == null || caminho.isEmpty()) {
-            System.out.println("Nenhum caminho disponível.");
+            System.out.println("Nenhum caminho disponivel.");
             return;
         }
-    
+
         ArrayUnorderedList<IDivisao> caminhoFiltrado = new ArrayUnorderedList<>();
         for (int i = 0; i < caminho.size(); i++) {
             IDivisao divisao = caminho.getElementAt(i);
@@ -176,28 +175,27 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                 caminhoFiltrado.addToRear(divisao);
             }
         }
-    
+
         if (caminhoFiltrado.isEmpty()) {
-            System.out.println("Nenhum caminho disponível.");
+            System.out.println("Nenhum caminho disponivel.");
             return;
         }
-    
+
         for (int i = 0; i < caminhoFiltrado.size(); i++) {
             System.out.print(caminhoFiltrado.getElementAt(i).getNomeDivisao());
-            if (i < caminhoFiltrado.size() - 1){
+            if (i < caminhoFiltrado.size() - 1) {
                 System.out.print(" -> ");
             }
         }
         System.out.println();
     }
 
-    
-
     private IItem encontrarKitMaisProximo(ArrayUnorderedList<IItem> kits) throws ElementNotFoundException {
-        // Assume que o mapa pode retornar uma lista de itens e as divisões onde estão localizados
+        // Assume que o mapa pode retornar uma lista de itens e as divisoes onde estao
+        // localizados
         IItem kitMaisProximo = null;
         int menorDistancia = Integer.MAX_VALUE;
-    
+
         for (int i = 0; i < kits.size(); i++) {
             IItem kit = kits.getElementAt(i);
             int distancia = mapa.calcularMelhorCaminho(toCruz.getPosicaoAtual(), kit.getDivisao()).size();
@@ -208,10 +206,6 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
         }
         return kitMaisProximo;
     }
-    
-
-
-    
 
     /**
      * obter a vida restante do to cruz
@@ -324,12 +318,12 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     private void mover() throws ElementNotFoundException {
         System.out.print("Digite o nome da divisao para onde deseja mover: ");
         String novaDivisao = scanner.nextLine().trim();
-    
+
         if (novaDivisao.isEmpty()) {
             System.out.println("Divisao invalida.");
             return;
         }
-    
+
         if (mapa.podeMover(toCruz.getPosicaoAtual().getNomeDivisao(), novaDivisao)) {
             IDivisao proximaDivisao = mapa.getDivisaoPorNome(novaDivisao);
             if (proximaDivisao != null) {
@@ -344,7 +338,6 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             System.out.println("Movimento invalido! Divisoes nao conectadas.");
         }
     }
-    
 
     /**
      * Realiza um ataque contra os inimigos na divisao atual.
@@ -424,14 +417,13 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
                 toCruz.setAlvoConcluido(true);
             }
         } else if (mapa.getEntradasSaidasNomes().contains(divisao.getNomeDivisao()) && toCruz.isAlvoConcluido()) {
-            System.out.println("🏆 Missão concluída com sucesso! Tó Cruz saiu do edifício com o alvo.");
+            System.out.println("🏆 Missao concluida com sucesso! To Cruz saiu do edificio com o alvo.");
             System.exit(0);
         } else if (mapa.getEntradasSaidasNomes().contains(divisao.getNomeDivisao()) && !toCruz.isAlvoConcluido()) {
-            System.out.println("❌ Missão falhou! Tó Cruz saiu do edifício sem capturar o alvo.");
+            System.out.println("❌ Missao falhou! To Cruz saiu do edificio sem capturar o alvo.");
             System.exit(0);
         }
     }
-    
 
     @Override
     public ArrayUnorderedList<String> getCaminhoPercorridoNomes() {

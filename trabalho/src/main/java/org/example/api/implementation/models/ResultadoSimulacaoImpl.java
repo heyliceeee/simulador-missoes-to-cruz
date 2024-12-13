@@ -20,33 +20,33 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
     /**
      * Construtor completo.
      *
-     * @param id             Identificador único do resultado.
-     * @param divisaoInicial Divisão inicial da simulação.
-     * @param divisaoFinal   Divisão final da simulação.
-     * @param status         Status da simulação ("SUCESSO" ou "FALHA").
-     * @param vidaRestante   Vida restante do personagem ao final da simulação.
-     * @param trajeto        Lista de divisões percorridas na simulação.
-     * @param entradasSaidas Lista de divisões marcadas como entrada/saída.
-     * @param codigoMissao   Código identificador da missão.
-     * @param versaoMissao   Versão da missão.
-     * @throws IllegalArgumentException se algum parâmetro obrigatório for nulo ou
-     *                                  inválido.
+     * @param id             Identificador unico do resultado.
+     * @param divisaoInicial Divisao inicial da simulacao.
+     * @param divisaoFinal   Divisao final da simulacao.
+     * @param status         Status da simulacao ("SUCESSO" ou "FALHA").
+     * @param vidaRestante   Vida restante do personagem ao final da simulacao.
+     * @param trajeto        Lista de divisoes percorridas na simulacao.
+     * @param entradasSaidas Lista de divisoes marcadas como entrada/saida.
+     * @param codigoMissao   Codigo identificador da missao.
+     * @param versaoMissao   Versao da missao.
+     * @throws IllegalArgumentException se algum parametro obrigatorio for nulo ou
+     *                                  invalido.
      */
     public ResultadoSimulacaoImpl(String id, String divisaoInicial, String divisaoFinal, String status,
             int vidaRestante,
             ArrayUnorderedList<String> trajeto, ArrayUnorderedList<String> entradasSaidas,
             String codigoMissao, int versaoMissao) {
         if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("ID não pode ser nulo ou vazio.");
+            throw new IllegalArgumentException("ID nao pode ser nulo ou vazio.");
         }
         if (divisaoInicial == null || divisaoInicial.trim().isEmpty()) {
-            throw new IllegalArgumentException("Divisão inicial não pode ser nula ou vazia.");
+            throw new IllegalArgumentException("Divisao inicial nao pode ser nula ou vazia.");
         }
         if (status == null || (!status.equalsIgnoreCase("SUCESSO") && !status.equalsIgnoreCase("FALHA"))) {
-            throw new IllegalArgumentException("Status inválido. Deve ser 'SUCESSO' ou 'FALHA'.");
+            throw new IllegalArgumentException("Status invalido. Deve ser 'SUCESSO' ou 'FALHA'.");
         }
         if (vidaRestante < 0) {
-            throw new IllegalArgumentException("Vida restante não pode ser negativa.");
+            throw new IllegalArgumentException("Vida restante nao pode ser negativa.");
         }
 
         this.id = id;
@@ -61,7 +61,7 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
     }
 
     /**
-     * Obtém o identificador do resultado.
+     * Obtem o identificador do resultado.
      *
      * @return ID do resultado.
      */
@@ -77,75 +77,75 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
      */
     public void setId(String id) {
         if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("ID não pode ser nulo ou vazio.");
+            throw new IllegalArgumentException("ID nao pode ser nulo ou vazio.");
         }
         this.id = id;
     }
 
     /**
-     * Obtém a divisão inicial da simulação.
+     * Obtem a divisao inicial da simulacao.
      *
-     * @return Divisão inicial.
+     * @return Divisao inicial.
      */
     public String getDivisaoInicial() {
         return divisaoInicial;
     }
 
     /**
-     * Define a divisão inicial da simulação.
+     * Define a divisao inicial da simulacao.
      *
-     * @param divisaoInicial Nova divisão inicial.
-     * @throws IllegalArgumentException se a divisão inicial for nula ou vazia.
+     * @param divisaoInicial Nova divisao inicial.
+     * @throws IllegalArgumentException se a divisao inicial for nula ou vazia.
      */
     public void setDivisaoInicial(String divisaoInicial) {
         if (divisaoInicial == null || divisaoInicial.trim().isEmpty()) {
-            throw new IllegalArgumentException("Divisão inicial não pode ser nula ou vazia.");
+            throw new IllegalArgumentException("Divisao inicial nao pode ser nula ou vazia.");
         }
         this.divisaoInicial = divisaoInicial;
     }
 
     /**
-     * Obtém a divisão final da simulação.
+     * Obtem a divisao final da simulacao.
      *
-     * @return Divisão final.
+     * @return Divisao final.
      */
     public String getDivisaoFinal() {
         return divisaoFinal;
     }
 
     /**
-     * Define a divisão final da simulação.
+     * Define a divisao final da simulacao.
      *
-     * @param divisaoFinal Nova divisão final.
+     * @param divisaoFinal Nova divisao final.
      */
     public void setDivisaoFinal(String divisaoFinal) {
         this.divisaoFinal = divisaoFinal;
     }
 
     /**
-     * Obtém o status da simulação.
+     * Obtem o status da simulacao.
      *
-     * @return Status da simulação.
+     * @return Status da simulacao.
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     * Define o status da simulação.
+     * Define o status da simulacao.
      *
      * @param status Novo status ("SUCESSO" ou "FALHA").
-     * @throws IllegalArgumentException se o status for inválido.
+     * @throws IllegalArgumentException se o status for invalido.
      */
     public void setStatus(String status) {
         if (status == null || (!status.equalsIgnoreCase("SUCESSO") && !status.equalsIgnoreCase("FALHA"))) {
-            throw new IllegalArgumentException("Status inválido. Deve ser 'SUCESSO' ou 'FALHA'.");
+            throw new IllegalArgumentException("Status invalido. Deve ser 'SUCESSO' ou 'FALHA'.");
         }
         this.status = status;
     }
 
     /**
-     * Obtém a vida restante ao final da simulação.
+     * Obtem a vida restante ao final da simulacao.
      *
      * @return Vida restante.
      */
@@ -154,29 +154,29 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
     }
 
     /**
-     * Define a vida restante ao final da simulação.
+     * Define a vida restante ao final da simulacao.
      *
      * @param vidaRestante Nova vida restante.
      * @throws IllegalArgumentException se a vida restante for negativa.
      */
     public void setVidaRestante(int vidaRestante) {
         if (vidaRestante < 0) {
-            throw new IllegalArgumentException("Vida restante não pode ser negativa.");
+            throw new IllegalArgumentException("Vida restante nao pode ser negativa.");
         }
         this.vidaRestante = vidaRestante;
     }
 
     /**
-     * Obtém a lista de divisões percorridas na simulação.
+     * Obtem a lista de divisoes percorridas na simulacao.
      *
-     * @return Lista de divisões percorridas.
+     * @return Lista de divisoes percorridas.
      */
     public ArrayUnorderedList<String> getTrajeto() {
         return trajeto;
     }
 
     /**
-     * Define a lista de divisões percorridas na simulação.
+     * Define a lista de divisoes percorridas na simulacao.
      *
      * @param trajeto Novo trajeto.
      */
@@ -185,63 +185,63 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
     }
 
     /**
-     * Obtém a lista de divisões marcadas como entrada/saída.
+     * Obtem a lista de divisoes marcadas como entrada/saida.
      *
-     * @return Lista de divisões de entrada/saída.
+     * @return Lista de divisoes de entrada/saida.
      */
     public ArrayUnorderedList<String> getEntradasSaidas() {
         return entradasSaidas;
     }
 
     /**
-     * Define a lista de divisões marcadas como entrada/saída.
+     * Define a lista de divisoes marcadas como entrada/saida.
      *
-     * @param entradasSaidas Nova lista de divisões de entrada/saída.
+     * @param entradasSaidas Nova lista de divisoes de entrada/saida.
      */
     public void setEntradasSaidas(ArrayUnorderedList<String> entradasSaidas) {
         this.entradasSaidas = entradasSaidas != null ? entradasSaidas : new ArrayUnorderedList<>();
     }
 
     /**
-     * Obtém o código da missão.
+     * Obtem o codigo da missao.
      *
-     * @return Código da missão.
+     * @return Codigo da missao.
      */
     public String getCodigoMissao() {
         return codigoMissao;
     }
 
     /**
-     * Define o código da missão.
+     * Define o codigo da missao.
      *
-     * @param codigoMissao Novo código da missão.
+     * @param codigoMissao Novo codigo da missao.
      */
     public void setCodigoMissao(String codigoMissao) {
         this.codigoMissao = codigoMissao;
     }
 
     /**
-     * Obtém a versão da missão.
+     * Obtem a versao da missao.
      *
-     * @return Versão da missão.
+     * @return Versao da missao.
      */
     public int getVersaoMissao() {
         return versaoMissao;
     }
 
     /**
-     * Define a versão da missão.
+     * Define a versao da missao.
      *
-     * @param versaoMissao Nova versão da missão.
+     * @param versaoMissao Nova versao da missao.
      */
     public void setVersaoMissao(int versaoMissao) {
         this.versaoMissao = versaoMissao;
     }
 
     /**
-     * Retorna uma representação em string do resultado da simulação.
+     * Retorna uma representacao em string do resultado da simulacao.
      *
-     * @return String representando o resultado da simulação.
+     * @return String representando o resultado da simulacao.
      */
     @Override
     public String toString() {
@@ -250,12 +250,12 @@ public class ResultadoSimulacaoImpl implements IResultadoSimulacao {
         sb.append("  Codigo Missao: ").append(codigoMissao).append(",\n");
         sb.append("  Versao Missao: ").append(versaoMissao).append(",\n");
         sb.append("  ID: ").append(id).append(",\n");
-        sb.append("  Divisão Inicial: ").append(divisaoInicial).append(",\n");
-        sb.append("  Divisão Final: ").append(divisaoFinal != null ? divisaoFinal : "N/A").append(",\n");
+        sb.append("  Divisao Inicial: ").append(divisaoInicial).append(",\n");
+        sb.append("  Divisao Final: ").append(divisaoFinal != null ? divisaoFinal : "N/A").append(",\n");
         sb.append("  Status: ").append(status).append(",\n");
         sb.append("  Vida Restante: ").append(vidaRestante).append(",\n");
         sb.append("  Trajeto: ").append(trajeto).append(",\n");
-        sb.append("  Entradas/Saídas: ").append(entradasSaidas).append("\n");
+        sb.append("  Entradas/Saidas: ").append(entradasSaidas).append("\n");
         sb.append("}");
         return sb.toString();
     }

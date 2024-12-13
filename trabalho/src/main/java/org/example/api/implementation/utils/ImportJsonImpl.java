@@ -36,14 +36,14 @@ public class ImportJsonImpl implements IImportJson {
         try (FileReader reader = new FileReader(jsonPath)) {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            //validarEstrutura(jsonObject);
+            // validarEstrutura(jsonObject);
 
             String codMissao = validarString(jsonObject.get("cod-missao"), "cod-missao");
             int versao = validarInt(jsonObject.get("versao"), "versao");
 
             IMissao missao = new MissaoImpl(codMissao, versao, mapa);
 
-            carregarMapa(jsonPath); // Este método lança DivisionNotFoundException
+            carregarMapa(jsonPath); // Este metodo lanca DivisionNotFoundException
 
             return missao;
         } catch (IOException | ParseException e) {
@@ -70,15 +70,15 @@ public class ImportJsonImpl implements IImportJson {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
-            //validarEstrutura(jsonObject);
+            // validarEstrutura(jsonObject);
 
             // Processar divisoes
             JSONArray edificioArray = (JSONArray) jsonObject.get("edificio");
-            // logger.info("Carregando divisões...");
+            // logger.info("Carregando divisoes...");
             for (Object element : edificioArray) {
                 String divisaoNome = validarString(element, "edificio");
                 mapa.adicionarDivisao(divisaoNome);
-                // logger.debug("Divisão adicionada: {}", divisaoNome);
+                // logger.debug("Divisao adicionada: {}", divisaoNome);
             }
 
             // Verificar se as divisoes foram carregadas corretamente
@@ -87,7 +87,7 @@ public class ImportJsonImpl implements IImportJson {
 
             // Ler conexoes
             JSONArray ligacoesArray = (JSONArray) jsonObject.get("ligacoes");
-            // logger.info("Carregando conexões...");
+            // logger.info("Carregando conexoes...");
             for (Object element : ligacoesArray) {
                 JSONArray ligacao = (JSONArray) element;
                 if (ligacao.size() != 2) {
@@ -104,7 +104,7 @@ public class ImportJsonImpl implements IImportJson {
                 }
 
                 mapa.adicionarLigacao(origem, destino);
-                // logger.debug("Ligação adicionada entre '{}' e '{}'", origem, destino);
+                // logger.debug("Ligacao adicionada entre '{}' e '{}'", origem, destino);
             }
 
             // Processar entradas e saidas
@@ -113,7 +113,7 @@ public class ImportJsonImpl implements IImportJson {
             for (Object element : entradasSaidasArray) {
                 String nomeDivisao = validarString(element, "entradas-saidas");
                 mapa.adicionarEntradaSaida(nomeDivisao);
-                // logger.debug("Entrada/Saída adicionada: {}", nomeDivisao);
+                // logger.debug("Entrada/Saida adicionada: {}", nomeDivisao);
             }
 
             // Processar alvo
@@ -122,7 +122,7 @@ public class ImportJsonImpl implements IImportJson {
             String alvoDivisao = validarString(alvoObj.get("divisao"), "alvo.divisao");
             String alvoTipo = validarString(alvoObj.get("tipo"), "alvo.tipo");
             mapa.definirAlvo(alvoDivisao, alvoTipo);
-            // logger.debug("Alvo definido: Divisão '{}', Tipo '{}'", alvoDivisao,
+            // logger.debug("Alvo definido: Divisao '{}', Tipo '{}'", alvoDivisao,
             // alvoTipo);
 
             // Processar inimigos
@@ -138,7 +138,7 @@ public class ImportJsonImpl implements IImportJson {
                 if (divisao != null) {
                     IInimigo inimigo = new InimigoImpl(nome, poder);
                     mapa.adicionarInimigo(divisaoNome, inimigo);
-                    // logger.debug("Inimigo '{}' adicionado à divisão '{}'", nome, divisaoNome);
+                    // logger.debug("Inimigo '{}' adicionado à divisao '{}'", nome, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para inimigo nao encontrada: " + divisaoNome);
                 }
@@ -171,7 +171,7 @@ public class ImportJsonImpl implements IImportJson {
                                 divisaoNome);
                     }
                     mapa.adicionarItem(divisaoNome, item);
-                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisão '{}'", tipo,
+                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisao '{}'", tipo,
                     // pontos, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para item nao encontrada: " + divisaoNome);

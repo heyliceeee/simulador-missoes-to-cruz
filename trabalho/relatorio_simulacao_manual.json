@@ -5,12 +5,12 @@
   "status": "SUCESSO",
   "vidaRestante": 50,
   "trajeto": [
-    "Observatório Infernal",
+    "Observatorio Infernal",
     "Sala de Controle Principal",
     "Altar Sombrio"
   ],
   "entradasSaidas": [
-    "Observatório Infernal"
+    "Observatorio Infernal"
   ],
   "codigoMissao": "circulo infernal",
   "versaoMissao": 1

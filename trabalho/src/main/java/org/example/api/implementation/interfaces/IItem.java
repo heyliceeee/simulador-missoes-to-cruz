@@ -4,14 +4,14 @@ package org.example.api.implementation.interfaces;
  * Representa a interface para um item no sistema.
  * 
  * <p>
- * Um item pode ter um tipo, pontos associados, e estar vinculado a uma divisão
- * específica no mapa.
+ * Um item pode ter um tipo, pontos associados, e estar vinculado a uma divisao
+ * especifica no mapa.
  * </p>
  */
 public interface IItem {
 
     /**
-     * Obtém o tipo do item.
+     * Obtem o tipo do item.
      *
      * @return O tipo do item.
      */
@@ -26,7 +26,7 @@ public interface IItem {
     void setTipo(String tipo);
 
     /**
-     * Obtém os pontos associados ao item.
+     * Obtem os pontos associados ao item.
      *
      * @return Os pontos do item.
      */
@@ -41,17 +41,17 @@ public interface IItem {
     void setPontos(int pontos);
 
     /**
-     * Obtém a divisão à qual o item está associado.
+     * Obtem a divisao à qual o item esta associado.
      *
-     * @return A divisão do item.
+     * @return A divisao do item.
      */
     IDivisao getDivisao();
 
     /**
-     * Define a divisão à qual o item está associado.
+     * Define a divisao à qual o item esta associado.
      *
-     * @param divisao A nova divisão do item.
-     * @throws IllegalArgumentException Se a divisão fornecida for nula.
+     * @param divisao A nova divisao do item.
+     * @throws IllegalArgumentException Se a divisao fornecida for nula.
      */
     void setDivisao(IDivisao divisao);
 }

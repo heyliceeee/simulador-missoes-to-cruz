@@ -96,7 +96,7 @@ public class InimigoImpl implements IInimigo {
     @Override
     public void sofrerDano(int dano) {
         if (dano < 0) {
-            throw new IllegalArgumentException("O dano não pode ser negativo.");
+            throw new IllegalArgumentException("O dano nao pode ser negativo.");
         }
         this.poder = Math.max(0, this.poder - dano);
     }
@@ -109,7 +109,7 @@ public class InimigoImpl implements IInimigo {
      */
     private void validarNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do inimigo não pode ser nulo ou vazio.");
+            throw new IllegalArgumentException("O nome do inimigo nao pode ser nulo ou vazio.");
         }
     }
 
@@ -121,12 +121,12 @@ public class InimigoImpl implements IInimigo {
      */
     private void validarPoder(int poder) {
         if (poder < 0) {
-            throw new IllegalArgumentException("O poder do inimigo não pode ser negativo.");
+            throw new IllegalArgumentException("O poder do inimigo nao pode ser negativo.");
         }
     }
 
     /**
-     * Retorna uma representação em string do inimigo.
+     * Retorna uma representacao em string do inimigo.
      *
      * @return String representando o inimigo.
      */
@@ -139,7 +139,7 @@ public class InimigoImpl implements IInimigo {
      * Verifica a igualdade entre dois objetos do tipo InimigoImpl.
      *
      * @param o Objeto a ser comparado.
-     * @return true se os objetos forem iguais, false caso contrário.
+     * @return true se os objetos forem iguais, false caso contrario.
      */
     @Override
     public boolean equals(Object o) {

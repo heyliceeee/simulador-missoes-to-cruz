@@ -50,7 +50,7 @@ public class ToCruz implements IAgente {
      *
      * @param nome Nome do agente.
      * @param vida Vida inicial do agente.
-     * @throws IllegalArgumentException se o nome for inválido ou a vida for
+     * @throws IllegalArgumentException se o nome for invalido ou a vida for
      *                                  negativa.
      */
     public ToCruz(String nome, int vida) {
@@ -67,23 +67,23 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Move o agente para uma nova divisão.
+     * Move o agente para uma nova divisao.
      *
-     * @param novaDivisao A divisão para a qual o agente deve se mover.
-     * @throws IllegalArgumentException se a divisão for nula.
+     * @param novaDivisao A divisao para a qual o agente deve se mover.
+     * @throws IllegalArgumentException se a divisao for nula.
      */
     @Override
     public void moverPara(IDivisao novaDivisao) {
         if (novaDivisao == null) {
-            throw new IllegalArgumentException("Divisão para mover não pode ser nula.");
+            throw new IllegalArgumentException("Divisao para mover nao pode ser nula.");
         }
         this.posicaoAtual = novaDivisao;
     }
 
     /**
-     * Usa um kit de vida do inventário para recuperar pontos de vida.
+     * Usa um kit de vida do inventario para recuperar pontos de vida.
      *
-     * @throws IllegalStateException se o inventário estiver vazio ou se o item não
+     * @throws IllegalStateException se o inventario estiver vazio ou se o item nao
      *                               for um kit de vida.
      */
     @Override
@@ -97,10 +97,10 @@ public class ToCruz implements IAgente {
             if ("kit de vida".equalsIgnoreCase(kit.getTipo())) {
                 vida += kit.getPontos();
                 if (vida > this.vidaMaxima) {
-                    vida = this.vidaMaxima; // Limitar vida ao máximo.
+                    vida = this.vidaMaxima; // Limitar vida ao maximo.
                 }
             } else {
-                inventario.push(kit); // Recoloca o item no inventário se não for um kit de vida.
+                inventario.push(kit); // Recoloca o item no inventario se nao for um kit de vida.
                 throw new IllegalStateException("O item retirado do inventario nao e um kit de vida.");
             }
         } catch (EmptyCollectionException e) {
@@ -109,12 +109,12 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Adiciona um item ao inventário ou aplica seus efeitos imediatamente,
+     * Adiciona um item ao inventario ou aplica seus efeitos imediatamente,
      * dependendo do tipo.
      *
      * @param item O item a ser adicionado.
      * @throws IllegalArgumentException se o item for nulo.
-     * @throws IllegalStateException    se o inventário estiver cheio ao tentar
+     * @throws IllegalStateException    se o inventario estiver cheio ao tentar
      *                                  adicionar um kit de vida.
      */
     @Override
@@ -129,12 +129,12 @@ public class ToCruz implements IAgente {
                 break;
             case "kit de vida":
                 if (inventario.size() >= 5) {
-                    throw new IllegalStateException("Inventario cheio! Nao e possível carregar mais kits de vida.");
+                    throw new IllegalStateException("Inventario cheio! Nao e possivel carregar mais kits de vida.");
                 }
                 inventario.push(item);
                 break;
             default:
-                inventario.push(item); // Outros itens são adicionados diretamente.
+                inventario.push(item); // Outros itens sao adicionados diretamente.
                 break;
         }
     }
@@ -154,7 +154,7 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Obtém a vida atual do agente.
+     * Obtem a vida atual do agente.
      *
      * @return Vida do agente.
      */
@@ -178,9 +178,9 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Obtem a posição atual do agente.
+     * Obtem a posicao atual do agente.
      *
-     * @return A divisão onde o agente está atualmente.
+     * @return A divisao onde o agente esta atualmente.
      */
     @Override
     public IDivisao getPosicaoAtual() {
@@ -188,10 +188,10 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Define a posição atual do agente.
+     * Define a posicao atual do agente.
      *
-     * @param posicaoAtual A nova divisão onde o agente estará.
-     * @throws IllegalArgumentException se a divisão for nula.
+     * @param posicaoAtual A nova divisao onde o agente estara.
+     * @throws IllegalArgumentException se a divisao for nula.
      */
     @Override
     public void setPosicaoAtual(IDivisao posicaoAtual) {
@@ -202,7 +202,7 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Obtém o nome do agente.
+     * Obtem o nome do agente.
      *
      * @return Nome do agente.
      */
@@ -226,19 +226,19 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Obtém o inventário do agente.
+     * Obtem o inventario do agente.
      *
-     * @return O inventário como uma pilha de itens.
+     * @return O inventario como uma pilha de itens.
      */
     public ArrayStack<IItem> getInventario() {
         return inventario;
     }
 
     /**
-     * Define o inventário do agente.
+     * Define o inventario do agente.
      *
      * @param inventario Nova pilha de itens.
-     * @throws IllegalArgumentException se o inventário for nulo.
+     * @throws IllegalArgumentException se o inventario for nulo.
      */
     public void setInventario(ArrayStack<IItem> inventario) {
         if (inventario == null) {
@@ -248,9 +248,9 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Verifica se o objetivo do agente foi concluído.
+     * Verifica se o objetivo do agente foi concluido.
      *
-     * @return true se o objetivo foi concluído, false caso contrário.
+     * @return true se o objetivo foi concluido, false caso contrario.
      */
     public boolean isAlvoConcluido() {
         return alvoConcluido;
@@ -259,7 +259,7 @@ public class ToCruz implements IAgente {
     /**
      * Define o status do objetivo do agente.
      *
-     * @param concluido true se o objetivo foi concluído, false caso contrário.
+     * @param concluido true se o objetivo foi concluido, false caso contrario.
      */
     public void setAlvoConcluido(boolean concluido) {
         this.alvoConcluido = concluido;

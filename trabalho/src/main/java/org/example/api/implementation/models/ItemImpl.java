@@ -66,7 +66,7 @@ public class ItemImpl implements IItem {
      */
     private void validarTipo(String tipo) {
         if (tipo == null || tipo.trim().isEmpty()) {
-            throw new IllegalArgumentException("O tipo do item não pode ser nulo ou vazio.");
+            throw new IllegalArgumentException("O tipo do item nao pode ser nulo ou vazio.");
         }
     }
 
@@ -78,7 +78,7 @@ public class ItemImpl implements IItem {
      */
     private void validarPontos(int pontos) {
         if (pontos < 0) {
-            throw new IllegalArgumentException("Os pontos do item não podem ser negativos.");
+            throw new IllegalArgumentException("Os pontos do item nao podem ser negativos.");
         }
     }
 

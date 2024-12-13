@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Classe para exportar os resultados das simulações em formato JSON.
+ * Classe para exportar os resultados das simulacoes em formato JSON.
  */
 public class ExportarResultados implements IExportador {
 
@@ -23,14 +23,15 @@ public class ExportarResultados implements IExportador {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             ResultadoFormatadoImpl resultadoFormatado = new ResultadoFormatadoImpl(resultado, mapa);
             gson.toJson(resultadoFormatado, writer); // Serializa o resultado formatado para JSON
-            System.out.println("Relatório exportado com sucesso para: " + caminhoArquivo);
+            System.out.println("Relatorio exportado com sucesso para: " + caminhoArquivo);
         } catch (IOException e) {
-            System.err.println("Erro ao exportar relatório: " + e.getMessage());
+            System.err.println("Erro ao exportar relatorio: " + e.getMessage());
         }
     }
 
     @Override
-    public void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica, IResultadoSimulacao simulacaoManual, IMapa mapa, String caminhoArquivo) {
+    public void exportarRelatorioSimulacoes(IResultadoSimulacao simulacaoAutomatica,
+            IResultadoSimulacao simulacaoManual, IMapa mapa, String caminhoArquivo) {
 
     }
 }

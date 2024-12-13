@@ -1,19 +1,19 @@
 package org.example.api.implementation.interfaces;
 
 /**
- * Interface que define as operações básicas para um agente no sistema.
+ * Interface que define as operacoes basicas para um agente no sistema.
  *
  * <p>
  * Um agente representa uma entidade, como o personagem principal, que interage
  * com o mapa,
- * coleta itens, enfrenta inimigos e realiza ações como mover-se entre divisões
+ * coleta itens, enfrenta inimigos e realiza acoes como mover-se entre divisoes
  * e usar kits de vida.
  * </p>
  */
 public interface IAgente {
 
     /**
-     * Obtém o nome do agente.
+     * Obtem o nome do agente.
      *
      * @return O nome do agente.
      */
@@ -28,7 +28,7 @@ public interface IAgente {
     void setNome(String nome);
 
     /**
-     * Obtém a vida atual do agente.
+     * Obtem a vida atual do agente.
      *
      * @return A vida atual do agente.
      */
@@ -43,25 +43,25 @@ public interface IAgente {
     void setVida(int vida);
 
     /**
-     * Obtém a posição atual do agente.
+     * Obtem a posicao atual do agente.
      *
-     * @return A divisão em que o agente está atualmente.
+     * @return A divisao em que o agente esta atualmente.
      */
     IDivisao getPosicaoAtual();
 
     /**
-     * Define a posição atual do agente.
+     * Define a posicao atual do agente.
      *
-     * @param divisao A nova divisão onde o agente estará.
-     * @throws IllegalArgumentException se a divisão for nula.
+     * @param divisao A nova divisao onde o agente estara.
+     * @throws IllegalArgumentException se a divisao for nula.
      */
     void setPosicaoAtual(IDivisao divisao);
 
     /**
-     * Move o agente para uma nova divisão.
+     * Move o agente para uma nova divisao.
      *
-     * @param novaDivisao A divisão para a qual o agente deve ser movido.
-     * @throws IllegalArgumentException se a nova divisão for nula.
+     * @param novaDivisao A divisao para a qual o agente deve ser movido.
+     * @throws IllegalArgumentException se a nova divisao for nula.
      */
     void moverPara(IDivisao novaDivisao);
 
@@ -74,22 +74,22 @@ public interface IAgente {
     void sofrerDano(int dano);
 
     /**
-     * Adiciona um item ao inventário do agente.
+     * Adiciona um item ao inventario do agente.
      *
-     * @param item O item a ser adicionado ao inventário.
+     * @param item O item a ser adicionado ao inventario.
      * @throws IllegalArgumentException se o item for nulo.
      */
     void adicionarAoInventario(IItem item);
 
     /**
-     * Usa um kit de vida do inventário para recuperar a vida do agente.
+     * Usa um kit de vida do inventario para recuperar a vida do agente.
      *
      * <p>
-     * Caso o inventário esteja vazio ou não contenha kits de vida, o método não
+     * Caso o inventario esteja vazio ou nao contenha kits de vida, o metodo nao
      * altera a vida.
      * </p>
      *
-     * @throws IllegalStateException se não houver kits de vida no inventário.
+     * @throws IllegalStateException se nao houver kits de vida no inventario.
      */
     void usarKitDeVida();
 }

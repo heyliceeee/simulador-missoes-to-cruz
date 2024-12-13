@@ -70,7 +70,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
         ArrayUnorderedList<String> entradasSaidas = mapa.getEntradasSaidasNomes();
         if (entradasSaidas == null || entradasSaidas.isEmpty()) {
-            System.err.println("Erro: Nenhuma entrada ou saída encontrada no mapa.");
+            System.err.println("Erro: Nenhuma entrada ou saida encontrada no mapa.");
             return;
         }
 
@@ -85,7 +85,8 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             if (entradaAtual == null)
                 continue;
 
-            ArrayUnorderedList<IDivisao> caminhoParaObjetivo = mapa.calcularMelhorCaminho(entradaAtual, divisaoObjetivo);
+            ArrayUnorderedList<IDivisao> caminhoParaObjetivo = mapa.calcularMelhorCaminho(entradaAtual,
+                    divisaoObjetivo);
             if (caminhoParaObjetivo == null || caminhoParaObjetivo.isEmpty())
                 continue;
 
@@ -105,7 +106,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
         // Se nenhum caminho ideal foi encontrado, tentar alternativas
         if (melhorEntrada == null || melhorCaminhoParaObjetivo == null || melhorCaminhoDeVolta == null) {
-            System.err.println("Nenhum trajeto ideal encontrado. Selecionando o primeiro trajeto viável...");
+            System.err.println("Nenhum trajeto ideal encontrado. Selecionando o primeiro trajeto viavel...");
             for (int i = 0; i < entradasSaidas.size(); i++) {
                 IDivisao entradaAlternativa = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(i));
                 if (entradaAlternativa != null) {
@@ -120,9 +121,9 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
                 }
             }
 
-            // Caso ainda não encontre uma entrada válida
+            // Caso ainda nao encontre uma entrada valida
             if (melhorEntrada == null) {
-                System.err.println("Erro: Nenhuma entrada viável encontrada. Forçando início pela primeira entrada.");
+                System.err.println("Erro: Nenhuma entrada viavel encontrada. Forcando inicio pela primeira entrada.");
                 melhorEntrada = mapa.getDivisaoPorNome(entradasSaidas.getElementAt(0));
             }
         }
@@ -135,7 +136,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             }
         }
 
-        // Movendo Tó Cruz
+        // Movendo To Cruz
         System.out.println("Movendo-se para a melhor entrada: " + melhorEntrada.getNomeDivisao());
         toCruz.moverPara(melhorEntrada);
 
@@ -144,29 +145,29 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             moverParaDivisao(divisao);
 
             if (toCruz.getVida() <= 0) {
-                System.err.println("💀 Tó Cruz foi derrotado!");
+                System.err.println("💀 To Cruz foi derrotado!");
                 return;
             }
         }
 
-        System.out.println("🏁 Tó Cruz alcançou o objetivo!");
+        System.out.println("🏁 To Cruz alcancou o objetivo!");
 
         for (int i = 0; i < melhorCaminhoDeVolta.size(); i++) {
             IDivisao divisao = melhorCaminhoDeVolta.getElementAt(i);
             moverParaDivisao(divisao);
 
             if (toCruz.getVida() <= 0) {
-                System.err.println("💀 Tó Cruz foi derrotado no retorno!");
+                System.err.println("💀 To Cruz foi derrotado no retorno!");
                 return;
             }
         }
 
-        System.out.println("🏆 Missão concluída com sucesso! Tó Cruz retornou com o alvo.");
+        System.out.println("🏆 Missao concluida com sucesso! To Cruz retornou com o alvo.");
     }
 
     /**
      * Simula o trajeto de ida e volta, considerando o impacto de inimigos e itens,
-     * para calcular a vida restante de Tó Cruz.
+     * para calcular a vida restante de To Cruz.
      */
     private int simularTrajeto(ArrayUnorderedList<IDivisao> caminhoParaObjetivo,
             ArrayUnorderedList<IDivisao> caminhoDeVolta) {
@@ -178,7 +179,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             vidaSimulada -= calcularDanoInimigos(divisao);
             vidaSimulada += calcularRecuperacaoItens(divisao);
             if (vidaSimulada <= 0)
-                return Integer.MIN_VALUE; // Tó Cruz não sobrevive
+                return Integer.MIN_VALUE; // To Cruz nao sobrevive
         }
 
         // Simular impacto do caminho de volta
@@ -187,14 +188,14 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             vidaSimulada -= calcularDanoInimigos(divisao);
             vidaSimulada += calcularRecuperacaoItens(divisao);
             if (vidaSimulada <= 0)
-                return Integer.MIN_VALUE; // Tó Cruz não sobrevive
+                return Integer.MIN_VALUE; // To Cruz nao sobrevive
         }
 
         return vidaSimulada;
     }
 
     /**
-     * Calcula o dano causado pelos inimigos em uma divisão.
+     * Calcula o dano causado pelos inimigos em uma divisao.
      */
     private int calcularDanoInimigos(IDivisao divisao) {
         int dano = 0;
@@ -208,7 +209,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
     }
 
     /**
-     * Calcula a recuperação de vida proporcionada pelos itens em uma divisão.
+     * Calcula a recuperacao de vida proporcionada pelos itens em uma divisao.
      */
     private int calcularRecuperacaoItens(IDivisao divisao) {
         int recuperacao = 0;
@@ -231,13 +232,13 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      */
     private void moverParaDivisao(IDivisao divisao) throws ElementNotFoundException {
         if (divisao == null) {
-            throw new IllegalArgumentException("Erro: Tentativa de mover para uma divisão nula.");
+            throw new IllegalArgumentException("Erro: Tentativa de mover para uma divisao nula.");
         }
 
-        // Atualiza a posição de Tó Cruz
+        // Atualiza a posicao de To Cruz
         toCruz.moverPara(divisao);
-        caminhoPercorrido.addToRear(divisao); // Adiciona a divisão ao caminho percorrido
-        System.out.println("🤠 Tó Cruz moveu-se para a divisão: " + divisao.getNomeDivisao());
+        caminhoPercorrido.addToRear(divisao); // Adiciona a divisao ao caminho percorrido
+        System.out.println("🤠 To Cruz moveu-se para a divisao: " + divisao.getNomeDivisao());
 
         // Resolve combates utilizando CombateService
         if (divisao.getInimigosPresentes() != null && !divisao.getInimigosPresentes().isEmpty()) {
@@ -410,11 +411,11 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      * encontrarCaminhoParaSaidaMaisProxima();
      * 
      * if (caminhoDeVolta == null || caminhoDeVolta.isEmpty()) {
-     * System.err.println("Erro: Caminho de volta não encontrado.");
+     * System.err.println("Erro: Caminho de volta nao encontrado.");
      * return;
      * }
      * 
-     * System.out.println("🎯 Divisão de saída encontrada: "
+     * System.out.println("🎯 Divisao de saida encontrada: "
      * + caminhoDeVolta.getElementAt(caminhoDeVolta.size() - 1).getNomeDivisao());
      * 
      * for (int i = 0; i < caminhoDeVolta.size(); i++) {
@@ -422,29 +423,29 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      * if (divisao == null)
      * continue;
      * 
-     * // Combate com inimigos na divisão de volta
+     * // Combate com inimigos na divisao de volta
      * if (divisao.getInimigosPresentes() != null &&
      * !divisao.getInimigosPresentes().isEmpty()) {
-     * System.out.println("⚔️ Combate iniciado na divisão: " +
+     * System.out.println("⚔️ Combate iniciado na divisao: " +
      * divisao.getNomeDivisao());
      * combateService.resolverCombate(toCruz, divisao);
      * 
-     * // Verificar se Tó Cruz foi derrotado
+     * // Verificar se To Cruz foi derrotado
      * if (toCruz.getVida() <= 0) {
-     * System.err.println("💀 Tó Cruz foi derrotado durante o retorno!");
+     * System.err.println("💀 To Cruz foi derrotado durante o retorno!");
      * mostrarMapaInterativo(toCruz, divisao, false);
      * return;
      * }
      * }
      * 
-     * // Mover para a divisão
+     * // Mover para a divisao
      * toCruz.moverPara(divisao);
      * caminhoPercorrido.addToRear(divisao);
      * mostrarMapaInterativo(toCruz, divisao, true);
      * }
      * 
      * System.out.
-     * println("🏆 Missão concluída com sucesso! Tó Cruz retornou com o alvo.");
+     * println("🏆 Missao concluida com sucesso! To Cruz retornou com o alvo.");
      * }
      */
 

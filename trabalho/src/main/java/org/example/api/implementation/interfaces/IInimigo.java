@@ -4,7 +4,7 @@ package org.example.api.implementation.interfaces;
  * Representa a interface para um inimigo no sistema.
  * 
  * <p>
- * A interface define os métodos básicos que devem ser implementados por uma
+ * A interface define os metodos basicos que devem ser implementados por uma
  * classe de inimigos, incluindo atributos como nome, poder e a capacidade
  * de sofrer dano.
  * </p>
@@ -12,7 +12,7 @@ package org.example.api.implementation.interfaces;
 public interface IInimigo {
 
     /**
-     * Obtém o nome do inimigo.
+     * Obtem o nome do inimigo.
      *
      * @return O nome do inimigo.
      */
@@ -27,7 +27,7 @@ public interface IInimigo {
     void setNome(String nome);
 
     /**
-     * Obtém o poder do inimigo.
+     * Obtem o poder do inimigo.
      *
      * @return O poder do inimigo.
      */

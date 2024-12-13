@@ -6,132 +6,132 @@ import org.example.collections.implementation.ArrayUnorderedList;
  * Interface que representa o resultado de uma simulacao.
  *
  * <p>
- * Esta interface define os metodos necessários para acessar e modificar os
- * dados associados ao resultado de uma simulação, incluindo informações sobre o
+ * Esta interface define os metodos necessarios para acessar e modificar os
+ * dados associados ao resultado de uma simulacao, incluindo informacoes sobre o
  * trajeto percorrido, status, vida restante e outros detalhes relevantes.
  * </p>
  */
 public interface IResultadoSimulacao {
 
     /**
-     * Obtém o identificador único do resultado da simulação.
+     * Obtem o identificador unico do resultado da simulacao.
      *
-     * @return O identificador único da simulação.
+     * @return O identificador unico da simulacao.
      */
     String getId();
 
     /**
-     * Define o identificador único do resultado da simulação.
+     * Define o identificador unico do resultado da simulacao.
      *
-     * @param id O identificador único da simulação.
+     * @param id O identificador unico da simulacao.
      */
     void setId(String id);
 
     /**
-     * Obtém o nome da divisão inicial onde a simulação começou.
+     * Obtem o nome da divisao inicial onde a simulacao comecou.
      *
-     * @return O nome da divisão inicial.
+     * @return O nome da divisao inicial.
      */
     String getDivisaoInicial();
 
     /**
-     * Define o nome da divisão inicial onde a simulação começou.
+     * Define o nome da divisao inicial onde a simulacao comecou.
      *
-     * @param divisaoInicial O nome da divisão inicial.
+     * @param divisaoInicial O nome da divisao inicial.
      */
     void setDivisaoInicial(String divisaoInicial);
 
     /**
-     * Obtém o nome da divisão final onde a simulação terminou.
+     * Obtem o nome da divisao final onde a simulacao terminou.
      *
-     * @return O nome da divisão final.
+     * @return O nome da divisao final.
      */
     String getDivisaoFinal();
 
     /**
-     * Define o nome da divisão final onde a simulação terminou.
+     * Define o nome da divisao final onde a simulacao terminou.
      *
-     * @param divisaoFinal O nome da divisão final.
+     * @param divisaoFinal O nome da divisao final.
      */
     void setDivisaoFinal(String divisaoFinal);
 
     /**
-     * Obtém o status da simulação, como "SUCESSO" ou "FALHA".
+     * Obtem o status da simulacao, como "SUCESSO" ou "FALHA".
      *
-     * @return O status da simulação.
+     * @return O status da simulacao.
      */
     String getStatus();
 
     /**
-     * Define o status da simulação, como "SUCESSO" ou "FALHA".
+     * Define o status da simulacao, como "SUCESSO" ou "FALHA".
      *
-     * @param status O status da simulação.
+     * @param status O status da simulacao.
      */
     void setStatus(String status);
 
     /**
-     * Obtém a quantidade de vida restante ao final da simulação.
+     * Obtem a quantidade de vida restante ao final da simulacao.
      *
      * @return O valor da vida restante.
      */
     int getVidaRestante();
 
     /**
-     * Define a quantidade de vida restante ao final da simulação.
+     * Define a quantidade de vida restante ao final da simulacao.
      *
      * @param vidaRestante O valor da vida restante.
      */
     void setVidaRestante(int vidaRestante);
 
     /**
-     * Obtém o trajeto percorrido durante a simulação, representado como uma lista
-     * de divisões.
+     * Obtem o trajeto percorrido durante a simulacao, representado como uma lista
+     * de divisoes.
      *
-     * @return Uma lista com os nomes das divisões do trajeto.
+     * @return Uma lista com os nomes das divisoes do trajeto.
      */
     ArrayUnorderedList<String> getTrajeto();
 
     /**
-     * Define o trajeto percorrido durante a simulação.
+     * Define o trajeto percorrido durante a simulacao.
      *
-     * @param trajeto Uma lista com os nomes das divisões do trajeto.
+     * @param trajeto Uma lista com os nomes das divisoes do trajeto.
      */
     void setTrajeto(ArrayUnorderedList<String> trajeto);
 
     /**
-     * Obtém os nomes das divisões marcadas como entradas ou saídas no mapa da
-     * simulação.
+     * Obtem os nomes das divisoes marcadas como entradas ou saidas no mapa da
+     * simulacao.
      *
-     * @return Uma lista com os nomes das divisões de entrada/saída.
+     * @return Uma lista com os nomes das divisoes de entrada/saida.
      */
     ArrayUnorderedList<String> getEntradasSaidas();
 
     /**
-     * Define os nomes das divisões marcadas como entradas ou saídas no mapa da
-     * simulação.
+     * Define os nomes das divisoes marcadas como entradas ou saidas no mapa da
+     * simulacao.
      *
-     * @param entradasSaidas Uma lista com os nomes das divisões de entrada/saída.
+     * @param entradasSaidas Uma lista com os nomes das divisoes de entrada/saida.
      */
     void setEntradasSaidas(ArrayUnorderedList<String> entradasSaidas);
 
     /**
-     * Obtém o código identificador da missão associada à simulação.
+     * Obtem o codigo identificador da missao associada à simulacao.
      *
-     * @return O código da missão.
+     * @return O codigo da missao.
      */
     String getCodigoMissao();
 
     /**
-     * Obtém a versão da missão associada à simulação.
+     * Obtem a versao da missao associada à simulacao.
      *
-     * @return A versão da missão.
+     * @return A versao da missao.
      */
     int getVersaoMissao();
 
     /**
-     * Retorna uma representação em string do resultado da simulação.
+     * Retorna uma representacao em string do resultado da simulacao.
      *
-     * @return Uma string representando o resultado da simulação.
+     * @return Uma string representando o resultado da simulacao.
      */
     @Override
     String toString();

@@ -1,78 +1,78 @@
 package org.example.api.implementation.interfaces;
 
 /**
- * Interface para representar e formatar os resultados de simulações.
+ * Interface para representar e formatar os resultados de simulacoes.
  *
  * <p>
- * Essa interface define os métodos necessários para acessar os dados formatados
- * de um resultado de simulação, permitindo sua utilização de maneira simples e
+ * Essa interface define os metodos necessarios para acessar os dados formatados
+ * de um resultado de simulacao, permitindo sua utilizacao de maneira simples e
  * padronizada.
  * </p>
  */
 public interface IResultadoFormatado {
 
     /**
-     * Obtém o identificador único do resultado da simulação.
+     * Obtem o identificador unico do resultado da simulacao.
      *
-     * @return O identificador único da simulação.
+     * @return O identificador unico da simulacao.
      */
     String getId();
 
     /**
-     * Obtém o nome da divisão inicial onde a simulação começou.
+     * Obtem o nome da divisao inicial onde a simulacao comecou.
      *
-     * @return O nome da divisão inicial.
+     * @return O nome da divisao inicial.
      */
     String getDivisaoInicial();
 
     /**
-     * Obtém o nome da divisão final onde a simulação terminou.
+     * Obtem o nome da divisao final onde a simulacao terminou.
      *
-     * @return O nome da divisão final.
+     * @return O nome da divisao final.
      */
     String getDivisaoFinal();
 
     /**
-     * Obtém o status da simulação, como "SUCESSO" ou "FALHA".
+     * Obtem o status da simulacao, como "SUCESSO" ou "FALHA".
      *
-     * @return O status da simulação.
+     * @return O status da simulacao.
      */
     String getStatus();
 
     /**
-     * Obtém a quantidade de vida restante ao final da simulação.
+     * Obtem a quantidade de vida restante ao final da simulacao.
      *
      * @return O valor da vida restante.
      */
     int getVidaRestante();
 
     /**
-     * Obtém o trajeto percorrido durante a simulação, representado como um array de
-     * divisões.
+     * Obtem o trajeto percorrido durante a simulacao, representado como um array de
+     * divisoes.
      *
-     * @return Um array de strings com os nomes das divisões do trajeto.
+     * @return Um array de strings com os nomes das divisoes do trajeto.
      */
     String[] getTrajeto();
 
     /**
-     * Obtém os nomes das divisões marcadas como entradas ou saídas no mapa da
-     * simulação.
+     * Obtem os nomes das divisoes marcadas como entradas ou saidas no mapa da
+     * simulacao.
      *
-     * @return Um array de strings com os nomes das divisões de entrada/saída.
+     * @return Um array de strings com os nomes das divisoes de entrada/saida.
      */
     String[] getEntradasSaidas();
 
     /**
-     * Obtém o código identificador da missão associada à simulação.
+     * Obtem o codigo identificador da missao associada à simulacao.
      *
-     * @return O código da missão.
+     * @return O codigo da missao.
      */
     String getCodigoMissao();
 
     /**
-     * Obtém a versão da missão associada à simulação.
+     * Obtem a versao da missao associada à simulacao.
      *
-     * @return A versão da missão.
+     * @return A versao da missao.
      */
     int getVersaoMissao();
 }

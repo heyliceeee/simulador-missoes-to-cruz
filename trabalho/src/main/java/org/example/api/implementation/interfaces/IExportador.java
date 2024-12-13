@@ -3,25 +3,25 @@ package org.example.api.implementation.interfaces;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Interface para exportação de resultados e relatórios de simulações.
+ * Interface para exportacao de resultados e relatorios de simulacoes.
  *
  * <p>
- * A interface define métodos para exportar os resultados de uma simulação
- * para um arquivo JSON, além de oferecer funcionalidades auxiliares, como
+ * A interface define metodos para exportar os resultados de uma simulacao
+ * para um arquivo JSON, alem de oferecer funcionalidades auxiliares, como
  * a filtragem de listas de strings.
  * </p>
  */
 public interface IExportador {
 
     /**
-     * Exporta o resultado de uma simulação para um arquivo no formato JSON.
+     * Exporta o resultado de uma simulacao para um arquivo no formato JSON.
      *
-     * @param resultado      O resultado da simulação que será exportado.
+     * @param resultado      O resultado da simulacao que sera exportado.
      * @param caminhoArquivo O caminho completo para o arquivo de destino onde os
-     *                       dados serão salvos.
-     * @param mapa           O mapa usado na simulação, fornecendo informações
+     *                       dados serao salvos.
+     * @param mapa           O mapa usado na simulacao, fornecendo informacoes
      *                       adicionais
-     *                       para serem incluídas no arquivo exportado.
+     *                       para serem incluidas no arquivo exportado.
      * @throws IllegalArgumentException Se o resultado, caminhoArquivo ou mapa for
      *                                  nulo.
      */

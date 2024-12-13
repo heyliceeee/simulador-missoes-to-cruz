@@ -4,34 +4,34 @@ import org.example.api.implementation.models.ToCruz;
 import org.example.api.exceptions.ElementNotFoundException;
 
 /**
- * Interface para o serviço que gerencia o combate entre o agente Tó Cruz e os
+ * Interface para o servico que gerencia o combate entre o agente To Cruz e os
  * inimigos.
  *
  * <p>
- * O serviço de combate é responsável por lidar com interações entre o agente e
+ * O servico de combate e responsavel por lidar com interacoes entre o agente e
  * os
- * inimigos presentes em uma determinada divisão durante o progresso de uma
- * simulação
- * ou missão.
+ * inimigos presentes em uma determinada divisao durante o progresso de uma
+ * simulacao
+ * ou missao.
  * </p>
  */
 public interface ICombateService {
     /**
-     * Resolve o combate entre o agente Tó Cruz e os inimigos presentes na divisão
+     * Resolve o combate entre o agente To Cruz e os inimigos presentes na divisao
      * atual.
      *
      * <p>
-     * Este método gerencia toda a lógica de combate, incluindo o cálculo de danos,
-     * ataques e a remoção de inimigos derrotados. O combate termina quando todos os
-     * inimigos são derrotados ou quando Tó Cruz é eliminado.
+     * Este metodo gerencia toda a logica de combate, incluindo o calculo de danos,
+     * ataques e a remocao de inimigos derrotados. O combate termina quando todos os
+     * inimigos sao derrotados ou quando To Cruz e eliminado.
      * </p>
      *
      * @param toCruz       O agente controlado pelo jogador.
-     * @param divisaoAtual A divisão onde o combate ocorre.
-     * @throws ElementNotFoundException Se um inimigo esperado na divisão não for
+     * @param divisaoAtual A divisao onde o combate ocorre.
+     * @throws ElementNotFoundException Se um inimigo esperado na divisao nao for
      *                                  encontrado.
      * @throws IllegalArgumentException Se `toCruz` ou `divisaoAtual` forem nulos.
-     * @throws IllegalStateException    Se Tó Cruz for derrotado durante o combate.
+     * @throws IllegalStateException    Se To Cruz for derrotado durante o combate.
      */
     void resolverCombate(ToCruz toCruz, IDivisao divisaoAtual) throws ElementNotFoundException;
 }

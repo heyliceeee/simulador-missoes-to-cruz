@@ -1,31 +1,31 @@
 package org.example.api.implementation.interfaces;
 
 /**
- * Interface para encapsular os relatórios das simulações.
+ * Interface para encapsular os relatorios das simulacoes.
  *
  * <p>
- * Esta interface fornece métodos para acessar relatórios formatados de
- * simulações automáticas e manuais.
- * Os relatórios apresentam informações detalhadas sobre os resultados das
- * simulações realizadas.
+ * Esta interface fornece metodos para acessar relatorios formatados de
+ * simulacoes automaticas e manuais.
+ * Os relatorios apresentam informacoes detalhadas sobre os resultados das
+ * simulacoes realizadas.
  * </p>
  */
 public interface IRelatorioSimulacoes {
     /**
-     * Obtém o relatório formatado da simulação automática.
+     * Obtem o relatorio formatado da simulacao automatica.
      *
      * @return Um objeto {@code ResultadoFormatado} contendo os detalhes do
      *         resultado
-     *         da simulação automática.
+     *         da simulacao automatica.
      */
     IResultadoFormatado getSimulacaoAutomatica();
 
     /**
-     * Obtém o relatório formatado da simulação manual.
+     * Obtem o relatorio formatado da simulacao manual.
      *
      * @return Um objeto {@code ResultadoFormatado} contendo os detalhes do
      *         resultado
-     *         da simulação manual.
+     *         da simulacao manual.
      */
     IResultadoFormatado getSimulacaoManual();
 }

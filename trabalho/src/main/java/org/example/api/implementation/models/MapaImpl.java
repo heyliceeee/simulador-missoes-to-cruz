@@ -136,7 +136,7 @@ public class MapaImpl implements IMapa {
 
         IDivisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
-            item.setDivisao(divisao); // Vincula o item à divisão
+            item.setDivisao(divisao); // Vincula o item à divisao
             divisao.adicionarItem(item);
         } else {
             System.err.println("Erro: Divisao '" + nomeDivisao + "' nao encontrada.");
@@ -366,8 +366,9 @@ public class MapaImpl implements IMapa {
 
                 // Movimentar ate 2 divisoes aleatoriamente
                 for (int movimentos = 0; movimentos < 2; movimentos++) {
-                    ArrayUnorderedList<Ligacao> ligacoes = new ArrayUnorderedList<>(); //ligacoes diretas do destino
-                    LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(destino); //todas as divisoes perto de destino
+                    ArrayUnorderedList<Ligacao> ligacoes = new ArrayUnorderedList<>(); // ligacoes diretas do destino
+                    LinkedList<IDivisao> adjacentes = grafo.getAdjacentes(destino); // todas as divisoes perto de
+                                                                                    // destino
 
                     for (IDivisao adjacente : adjacentes) {
                         // Adiciona a ligacao se ela ainda nao foi registada
@@ -380,7 +381,10 @@ public class MapaImpl implements IMapa {
                     if (ligacoes.isEmpty())
                         break;
 
-                    IDivisao novaDivisao = ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao1() == destino ? ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao2() : ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao1();
+                    IDivisao novaDivisao = ligacoes.getElementAt(random.nextInt(ligacoes.size()))
+                            .getDivisao1() == destino
+                                    ? ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao2()
+                                    : ligacoes.getElementAt(random.nextInt(ligacoes.size())).getDivisao1();
                     if (novaDivisao != null) {
                         destino = novaDivisao;
                     }
@@ -416,7 +420,7 @@ public class MapaImpl implements IMapa {
     @Override
     public ArrayUnorderedList<IDivisao> calcularMelhorCaminho(IDivisao origem, IDivisao destino) {
         if (origem == null || destino == null) {
-            System.err.println("Erro: Origem ou destino inválidos.");
+            System.err.println("Erro: Origem ou destino invalidos.");
             return new ArrayUnorderedList<>();
         }
 
@@ -426,17 +430,17 @@ public class MapaImpl implements IMapa {
         ArrayUnorderedList<Predecessor> predecessores = new ArrayUnorderedList<>();
         ArrayUnorderedList<Integer> custos = new ArrayUnorderedList<>(); // Custos paralelos aos visitados
 
-        // Inicialização
+        // Inicializacao
         fila.enqueue(origem);
         visitados.addToRear(origem);
         predecessores.addToRear(new Predecessor(origem, null));
-        custos.addToRear(0); // Custo inicial é zero
+        custos.addToRear(0); // Custo inicial e zero
 
         while (!fila.isEmpty()) {
-            // Retirar o próximo nó da fila
+            // Retirar o proximo no da fila
             IDivisao atual = fila.dequeue();
 
-            // Encontrar índice do nó atual em `visitados`
+            // Encontrar indice do no atual em `visitados`
             int indiceAtual = findIndex(visitados, atual);
             int custoAtual = custos.getElementAt(indiceAtual);
 
@@ -447,25 +451,25 @@ public class MapaImpl implements IMapa {
                 return caminho;
             }
 
-            // Obter conexões da divisão atual
+            // Obter conexoes da divisao atual
             ArrayUnorderedList<IDivisao> conexoes = obterConexoes(atual);
             if (conexoes == null || conexoes.isEmpty()) {
                 continue;
             }
 
-            // Processar conexões
+            // Processar conexoes
             for (int i = 0; i < conexoes.size(); i++) {
                 IDivisao vizinho = conexoes.getElementAt(i);
                 if (vizinho == null)
                     continue;
 
-                // Calcular custo para alcançar o vizinho
+                // Calcular custo para alcancar o vizinho
                 int custoMovimento = calcularCusto(atual, vizinho);
                 int novoCusto = custoAtual + custoMovimento;
 
-                // Verificar se o vizinho já foi visitado
+                // Verificar se o vizinho ja foi visitado
                 int indiceVizinho = findIndex(visitados, vizinho);
-                if (indiceVizinho == -1) { // Não visitado
+                if (indiceVizinho == -1) { // Nao visitado
                     visitados.addToRear(vizinho);
                     custos.addToRear(novoCusto);
                     fila.enqueue(vizinho);
@@ -479,7 +483,7 @@ public class MapaImpl implements IMapa {
         }
 
         System.err
-                .println("Caminho não encontrado entre " + origem.getNomeDivisao() + " e " + destino.getNomeDivisao());
+                .println("Caminho nao encontrado entre " + origem.getNomeDivisao() + " e " + destino.getNomeDivisao());
         return new ArrayUnorderedList<>();
     }
 
@@ -489,7 +493,7 @@ public class MapaImpl implements IMapa {
                 return i;
             }
         }
-        return -1; // Retorna -1 se não encontrado
+        return -1; // Retorna -1 se nao encontrado
     }
 
     private void replaceElementAt(ArrayUnorderedList<Integer> list, int index, int value) {
@@ -498,7 +502,7 @@ public class MapaImpl implements IMapa {
             if (index == 0) {
                 list.addToFront(value); // Adiciona na frente se for o primeiro elemento
             } else {
-                list.addAfter(value, list.getElementAt(index - 1)); // Adiciona após o anterior
+                list.addAfter(value, list.getElementAt(index - 1)); // Adiciona apos o anterior
             }
         } catch (ElementNotFoundException e) {
             System.err.println("Erro ao substituir elemento na lista: " + e.getMessage());
@@ -506,7 +510,7 @@ public class MapaImpl implements IMapa {
     }
 
     /**
-     * Calcula o custo de mover-se de uma divisão para outra.
+     * Calcula o custo de mover-se de uma divisao para outra.
      */
     private int calcularCusto(IDivisao atual, IDivisao vizinho) {
         int custo = 0;
@@ -519,13 +523,13 @@ public class MapaImpl implements IMapa {
             }
         }
 
-        // Subtrair custo por itens de recuperação (usando os pontos do item)
+        // Subtrair custo por itens de recuperacao (usando os pontos do item)
         ArrayUnorderedList<IItem> itens = vizinho.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
             for (int i = 0; i < itens.size(); i++) {
                 IItem item = itens.getElementAt(i);
                 if ("kit de vida".equalsIgnoreCase(item.getTipo())) {
-                    custo -= item.getPontos(); // Usar `getPontos()` para recuperação
+                    custo -= item.getPontos(); // Usar `getPontos()` para recuperacao
                 }
             }
         }

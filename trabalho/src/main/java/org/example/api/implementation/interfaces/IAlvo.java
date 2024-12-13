@@ -1,36 +1,36 @@
 package org.example.api.implementation.interfaces;
 
 /**
- * Interface que define as operações básicas para um alvo no sistema.
+ * Interface que define as operacoes basicas para um alvo no sistema.
  *
  * <p>
- * Um alvo representa o objetivo principal de uma missão. Ele está associado a
+ * Um alvo representa o objetivo principal de uma missao. Ele esta associado a
  * uma
- * divisão no mapa e tem um tipo que o caracteriza.
+ * divisao no mapa e tem um tipo que o caracteriza.
  * </p>
  */
 public interface IAlvo {
 
     /**
-     * Obtém a divisão onde o alvo está localizado.
+     * Obtem a divisao onde o alvo esta localizado.
      *
-     * @return A divisão associada ao alvo.
+     * @return A divisao associada ao alvo.
      */
     IDivisao getDivisao();
 
     /**
-     * Define a divisão onde o alvo está localizado.
+     * Define a divisao onde o alvo esta localizado.
      *
-     * @param divisao A nova divisão associada ao alvo.
-     * @throws IllegalArgumentException se a divisão for nula.
+     * @param divisao A nova divisao associada ao alvo.
+     * @throws IllegalArgumentException se a divisao for nula.
      */
     void setDivisao(IDivisao divisao);
 
     /**
-     * Obtém o tipo do alvo.
+     * Obtem o tipo do alvo.
      *
      * <p>
-     * O tipo é uma string que descreve o objetivo, como "Resgate" ou "Eliminação".
+     * O tipo e uma string que descreve o objetivo, como "Resgate" ou "Eliminacao".
      * </p>
      *
      * @return O tipo do alvo.

@@ -4,14 +4,14 @@ import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.interfaces.UnorderedListADT;
 
 /**
- * Implementação de uma lista não ordenada baseada em um array.
+ * Implementacao de uma lista nao ordenada baseada em um array.
  *
  * @param <T> O tipo de elementos armazenados na lista.
  */
 public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedListADT<T> {
 
     /**
-     * Adiciona um elemento ao início da lista.
+     * Adiciona um elemento ao inicio da lista.
      *
      * @param element O elemento a ser adicionado.
      * @throws IllegalArgumentException se o elemento for {@code null}.
@@ -55,18 +55,18 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     }
 
     /**
-     * Adiciona um elemento após um elemento alvo na lista.
+     * Adiciona um elemento apos um elemento alvo na lista.
      *
      * @param element O elemento a ser adicionado.
-     * @param target  O elemento alvo após o qual o novo elemento será adicionado.
-     * @throws ElementNotFoundException se o elemento alvo não for encontrado.
+     * @param target  O elemento alvo apos o qual o novo elemento sera adicionado.
+     * @throws ElementNotFoundException se o elemento alvo nao for encontrado.
      * @throws IllegalArgumentException se o elemento a ser adicionado for
      *                                  {@code null}.
      */
     @Override
     public void addAfter(T element, T target) throws ElementNotFoundException {
         if (element == null) {
-            throw new IllegalArgumentException("O valor não pode ser null.");
+            throw new IllegalArgumentException("O valor nao pode ser null.");
         }
 
         if (isEmpty()) {
@@ -89,7 +89,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
             expandCapacity();
         }
 
-        // Desloca os elementos para a direita para abrir espaço
+        // Desloca os elementos para a direita para abrir espaco
         for (int i = count; i > index + 1; i--) {
             list[i] = list[i - 1];
         }
@@ -100,7 +100,7 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     }
 
     /**
-     * Retorna uma representação textual da lista.
+     * Retorna uma representacao textual da lista.
      *
      * @return Uma string representando os elementos da lista.
      */
