@@ -34,16 +34,16 @@
     ["Sala de Controle Principal", "Observatorio Infernal"]
   ],
   "inimigos": [
-    {"nome": "demônio1", "poder": 40, "divisao": "Sala de Tortura"},
-    {"nome": "demônio2", "poder": 50, "divisao": "Deposito de Armas"},
-    {"nome": "demônio3", "poder": 60, "divisao": "Corredor de Fogo"},
-    {"nome": "demônio4", "poder": 70, "divisao": "Sala de Controle Infernal"},
-    {"nome": "demônio5", "poder": 65, "divisao": "Corredor de Sombra"},
-    {"nome": "demônio6", "poder": 75, "divisao": "Sala de Execucao"},
-    {"nome": "demônio7", "poder": 80, "divisao": "Laboratorio Oculto"},
-    {"nome": "demônio8", "poder": 85, "divisao": "Armazem de Energia"},
-    {"nome": "demônio9", "poder": 90, "divisao": "Altar Sombrio"},
-    {"nome": "demônio10", "poder": 95, "divisao": "Sala de Controle Principal"}
+    {"nome": "demonio1", "poder": 40, "divisao": "Sala de Tortura"},
+    {"nome": "demonio2", "poder": 50, "divisao": "Deposito de Armas"},
+    {"nome": "demonio3", "poder": 60, "divisao": "Corredor de Fogo"},
+    {"nome": "demonio4", "poder": 70, "divisao": "Sala de Controle Infernal"},
+    {"nome": "demonio5", "poder": 65, "divisao": "Corredor de Sombra"},
+    {"nome": "demonio6", "poder": 75, "divisao": "Sala de Execucao"},
+    {"nome": "demonio7", "poder": 80, "divisao": "Laboratorio Oculto"},
+    {"nome": "demonio8", "poder": 85, "divisao": "Armazem de Energia"},
+    {"nome": "demonio9", "poder": 90, "divisao": "Altar Sombrio"},
+    {"nome": "demonio10", "poder": 95, "divisao": "Sala de Controle Principal"}
   ],
   "entradas-saidas": ["Base Inferior", "Observatorio Infernal"],
   "alvo": {"divisao": "Altar Sombrio", "tipo": "artefato sombrio"},

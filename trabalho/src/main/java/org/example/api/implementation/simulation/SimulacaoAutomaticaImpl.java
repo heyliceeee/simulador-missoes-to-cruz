@@ -64,13 +64,13 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
 
         if (divisaoObjetivo == null) {
             System.err.println("Erro: Divisao objetivo nao encontrada.");
-            return;
+            throw new IllegalArgumentException("Erro: Divisao objetivo nao encontrada.");
         }
 
         ArrayUnorderedList<String> entradasSaidas = mapa.getEntradasSaidasNomes();
         if (entradasSaidas == null || entradasSaidas.isEmpty()) {
             System.err.println("Erro: Nenhuma entrada ou saida encontrada no mapa.");
-            return;
+            throw new IllegalArgumentException("Erro: Nenhuma entrada ou saida encontrada no mapa.");
         }
 
         IDivisao melhorEntrada = null;
@@ -168,7 +168,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      * Simula o trajeto de ida e volta, considerando o impacto de inimigos e itens,
      * para calcular a vida restante de To Cruz.
      */
-    private int simularTrajeto(ArrayUnorderedList<IDivisao> caminhoParaObjetivo,
+    public int simularTrajeto(ArrayUnorderedList<IDivisao> caminhoParaObjetivo,
             ArrayUnorderedList<IDivisao> caminhoDeVolta) {
         int vidaSimulada = toCruz.getVida();
 
@@ -229,21 +229,21 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
      * @param divisao Divisao para onde To Cruz deve se mover.
      * @throws ElementNotFoundException
      */
-    private void moverParaDivisao(IDivisao divisao) throws ElementNotFoundException {
+    public void moverParaDivisao(IDivisao divisao) throws ElementNotFoundException {
         if (divisao == null) {
             throw new IllegalArgumentException("Erro: Tentativa de mover para uma divisao nula.");
         }
-    
+
         toCruz.moverPara(divisao);
         caminhoPercorrido.addToRear(divisao);
         System.out.println("🤠 To Cruz moveu-se para a divisao: " + divisao.getNomeDivisao());
-    
+
         ArrayUnorderedList<IInimigo> inimigos = divisao.getInimigosPresentes();
         if (inimigos != null && !inimigos.isEmpty()) {
-            // Tó Cruz entrou na sala com inimigos: Tó Cruz ataca primeiro
-            combateService.resolverCombate(toCruz, divisao, false); 
+            // To Cruz entrou na sala com inimigos: To Cruz ataca primeiro
+            combateService.resolverCombate(toCruz, divisao, false);
         }
-    
+
         // Coletar itens se houver
         ArrayUnorderedList<IItem> itens = divisao.getItensPresentes();
         if (itens != null && !itens.isEmpty()) {
@@ -261,7 +261,6 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
             }
         }
     }
-    
 
     /**
      * Encontra o caminho para a divisao de saida mais proxima usando BFS.

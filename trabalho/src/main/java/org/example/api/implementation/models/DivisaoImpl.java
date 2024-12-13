@@ -46,7 +46,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Adiciona um inimigo à divisao.
+     * Adiciona um inimigo a divisao.
      *
      * @param inimigo O inimigo a ser adicionado.
      * @throws IllegalArgumentException se o inimigo for nulo.
@@ -76,7 +76,7 @@ public class DivisaoImpl implements IDivisao {
     }
 
     /**
-     * Adiciona um item à divisao.
+     * Adiciona um item a divisao.
      *
      * @param item O item a ser adicionado.
      * @throws IllegalArgumentException se o item for nulo.

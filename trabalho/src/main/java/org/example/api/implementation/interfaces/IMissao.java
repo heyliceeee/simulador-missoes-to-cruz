@@ -24,7 +24,7 @@ public interface IMissao {
     int getVersao();
 
     /**
-     * Obtem o mapa associado à missao.
+     * Obtem o mapa associado a missao.
      *
      * @return O mapa que descreve as divisoes, conexoes, inimigos e itens da
      *         missao.
