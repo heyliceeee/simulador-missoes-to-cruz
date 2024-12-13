@@ -12,8 +12,8 @@ import org.example.collections.implementation.LinkedList;
  */
 public class DivisaoImpl implements IDivisao {
     private final String nomeDivisao;
-    private final ArrayUnorderedList<IInimigo> inimigosPresentes;
-    private final ArrayUnorderedList<IItem> itensPresentes;
+    private ArrayUnorderedList<IInimigo> inimigosPresentes;
+    private ArrayUnorderedList<IItem> itensPresentes;
     private boolean entradaSaida;
 
     /**
@@ -39,6 +39,11 @@ public class DivisaoImpl implements IDivisao {
     @Override
     public String getNomeDivisao() {
         return nomeDivisao;
+    }
+
+    @Override
+    public void setNomeDivisao(String nomeDivisao) {
+
     }
 
     /**

@@ -25,7 +25,7 @@ public class ResultadoFormatadoImpl implements IResultadoFormatado {
      * @param resultado O resultado da simulação.
      * @param mapa      O mapa da simulação.
      */
-    public ResultadoFormatadoImpl(ResultadoSimulacao resultado, Mapa mapa) {
+    public ResultadoFormatadoImpl(IResultadoSimulacao resultado, IMapa mapa) {
         this.id = resultado.getId();
         this.divisaoInicial = resultado.getDivisaoInicial();
         this.divisaoFinal = resultado.getDivisaoFinal();

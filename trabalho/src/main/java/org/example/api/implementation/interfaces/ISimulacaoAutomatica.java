@@ -4,55 +4,74 @@ import org.example.api.exceptions.ElementNotFoundException;
 import org.example.collections.implementation.ArrayUnorderedList;
 
 /**
- * Interface para a simulacao automatica de missoes.
+ * Interface para a simulação automática de missões.
+ *
+ * <p>
+ * Define os métodos necessários para gerenciar e executar uma simulação
+ * automática,
+ * permitindo acompanhar o progresso, status, itens coletados e inimigos
+ * derrotados.
+ * </p>
  */
 public interface ISimulacaoAutomatica {
 
     /**
-     * Executa a simulacao automatica ate o objetivo.
+     * Executa a simulação automática até o objetivo especificado.
      *
-     * @param divisaoObjetivo A divisao objetivo da missao.
-     * @throws ElementNotFoundException Se algum elemento nao for encontrado durante
-     *                                  a execucao.
+     * @param divisaoObjetivo A divisão objetivo da missão.
+     * @throws ElementNotFoundException Se algum elemento necessário não for
+     *                                  encontrado durante a execução.
      */
     void executar(IDivisao divisaoObjetivo) throws ElementNotFoundException;
 
+    /**
+     * Obtém a quantidade de vida restante do agente ao final da simulação.
+     *
+     * @return A vida restante do agente.
+     */
     public int getVidaRestante();
 
     /**
-     * Retorna o status da simulacao apos a execucao.
+     * Retorna o status da simulação após a execução.
      *
-     * @return "SUCESSO" ou "FALHA" com base no resultado.
+     * @return Uma string indicando o resultado, como "SUCESSO" ou "FALHA".
      */
     String getStatus();
 
     /**
-     * Obtem a divisao final onde o agente parou.
+     * Obtém a divisão final onde o agente terminou a simulação.
      *
-     * @return Divisao final.
+     * @return A divisão final.
      */
     IDivisao getDivisaoFinal();
 
     /**
-     * Obtem o caminho percorrido na simulacao.
+     * Obtém o caminho percorrido durante a simulação, representado como uma lista
+     * de divisões.
      *
-     * @return Lista de divisoes percorridas.
+     * @return Uma lista com as divisões percorridas na simulação.
      */
     ArrayUnorderedList<IDivisao> getCaminhoPercorrido();
 
+    /**
+     * Obtém o caminho percorrido durante a simulação, representado pelos nomes das
+     * divisões.
+     *
+     * @return Uma lista com os nomes das divisões percorridas.
+     */
     public ArrayUnorderedList<String> getCaminhoPercorridoNomes();
 
     /**
-     * Obtem a lista de inimigos derrotados durante a simulacao.
+     * Obtém a lista de inimigos derrotados durante a simulação.
      *
-     * @return Lista de inimigos derrotados.
+     * @return Uma lista com os inimigos derrotados.
      */
     ArrayUnorderedList<IInimigo> getInimigosDerrotados();
 
     /**
-     * Obtem a lista de itens coletados durante a simulacao.
+     * Obtém a lista de itens coletados durante a simulação.
      *
-     * @return Lista de itens coletados.
+     * @return Uma lista com os itens coletados.
      */
     ArrayUnorderedList<IItem> getItensColetados();
 }

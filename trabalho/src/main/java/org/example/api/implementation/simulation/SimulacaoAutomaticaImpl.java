@@ -130,7 +130,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         // Adiciona o caminho ao registro
         if (melhorEntrada != null && melhorCaminhoParaObjetivo != null) {
             for (int i = 0; i < melhorCaminhoParaObjetivo.size(); i++) {
-                Divisao divisao = melhorCaminhoParaObjetivo.getElementAt(i);
+                IDivisao divisao = melhorCaminhoParaObjetivo.getElementAt(i);
                 caminhoPercorrido.addToRear(divisao); // Adiciona ao caminho percorrido
             }
         }
@@ -480,7 +480,7 @@ public class SimulacaoAutomaticaImpl implements ISimulacaoAutomatica {
         ArrayUnorderedList<String> nomes = new ArrayUnorderedList<>();
         if (caminhoPercorrido != null) {
             for (int i = 0; i < caminhoPercorrido.size(); i++) {
-                Divisao divisao = caminhoPercorrido.getElementAt(i);
+                IDivisao divisao = caminhoPercorrido.getElementAt(i);
                 if (divisao != null) {
                     nomes.addToRear(divisao.getNomeDivisao());
                 }

@@ -3,6 +3,7 @@ package org.example.api.implementation.models;
 import org.example.api.implementation.interfaces.IAgente;
 import org.example.api.implementation.interfaces.IDivisao;
 import org.example.api.implementation.interfaces.IItem;
+import org.example.collections.exceptions.EmptyCollectionException;
 import org.example.collections.implementation.ArrayStack;
 
 /**

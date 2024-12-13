@@ -31,17 +31,17 @@ public class ImportJsonImpl implements IImportJson {
     }
 
     @Override
-    public Missao carregarMissao(String jsonPath)
+    public IMissao carregarMissao(String jsonPath)
             throws InvalidJsonStructureException, InvalidFieldException, DivisionNotFoundException {
         try (FileReader reader = new FileReader(jsonPath)) {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            validarEstrutura(jsonObject);
+            //validarEstrutura(jsonObject);
 
             String codMissao = validarString(jsonObject.get("cod-missao"), "cod-missao");
             int versao = validarInt(jsonObject.get("versao"), "versao");
 
-            Missao missao = new MissaoImpl(codMissao, versao, mapa);
+            IMissao missao = new MissaoImpl(codMissao, versao, mapa);
 
             carregarMapa(jsonPath); // Este método lança DivisionNotFoundException
 
@@ -70,7 +70,7 @@ public class ImportJsonImpl implements IImportJson {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
-            validarEstrutura(jsonObject);
+            //validarEstrutura(jsonObject);
 
             // Processar divisoes
             JSONArray edificioArray = (JSONArray) jsonObject.get("edificio");
