@@ -499,10 +499,11 @@ public class SimulacaoManualGUI extends JFrame {
 
                 //ver se ha ligacao da posicaoAtual para os objetivos
 
-                //for (Ligacao ligacao : ligacoes) {
-                    //if (ligacao.conecta(posicaoAtual, ligacao.getOutraDivisao(posicaoAtual))) {
+                for (Ligacao ligacao : ligacoes) {
+                    if (ligacao.conecta(posicaoAtual, ligacao.getOutraDivisao(posicaoAtual))) {
                         Point pos1 = posicoesDivisoes.getElementAt(divisoes.indexOf(posicaoAtual));
-                        Point pos2 = posicoesDivisoes.getElementAt(divisoes.indexOf(caminhoParaAlvo.getElementAt(1)));
+                        //Point pos2 = posicoesDivisoes.getElementAt(divisoes.indexOf(caminhoParaAlvo.getElementAt(1)));
+                        Point pos2 = posicoesDivisoes.getElementAt(divisoes.indexOf(ligacao.getOutraDivisao(posicaoAtual)));
 
                         boolean intersecta = verificaInterseccao(pos1, pos2);
                         g2.setColor(Color.red);
@@ -513,19 +514,19 @@ public class SimulacaoManualGUI extends JFrame {
                             g2.drawLine(pos1.x, pos1.y, pos2.x, pos2.y);
                         }
 
-                Point pos3 = posicoesDivisoes.getElementAt(divisoes.indexOf(posicaoAtual));
-                Point pos4 = posicoesDivisoes.getElementAt(divisoes.indexOf(caminhoParaKit.getElementAt(1)));
+                //Point pos3 = posicoesDivisoes.getElementAt(divisoes.indexOf(posicaoAtual));
+                //Point pos4 = posicoesDivisoes.getElementAt(divisoes.indexOf(caminhoParaKit.getElementAt(1)));
 
-                boolean intersecta1 = verificaInterseccao(pos3, pos4);
-                g2.setColor(Color.blue);
+                //boolean intersecta1 = verificaInterseccao(pos3, pos4);
+                //g2.setColor(Color.blue);
 
-                if (intersecta1) {
-                    desenharLigacaoCurva(g2, pos3, pos4);
-                } else {
-                    g2.drawLine(pos3.x, pos3.y, pos4.x, pos4.y);
-                }
-                    //}
+                //if (intersecta1) {
+                //    desenharLigacaoCurva(g2, pos3, pos4);
+                //} else {
+                //    g2.drawLine(pos3.x, pos3.y, pos4.x, pos4.y);
                 //}
+                    }
+                }
             }
 
             // Desenhar divisoes e assinalar informacoes
