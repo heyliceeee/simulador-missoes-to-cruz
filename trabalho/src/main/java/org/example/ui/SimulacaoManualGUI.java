@@ -224,7 +224,7 @@ public class SimulacaoManualGUI extends JFrame {
 
         if (divisaoAtual != null && divisaoAtual.getInimigosPresentes().size() > 0) {
             try {
-                combateService.resolverCombate(toCruz, divisaoAtual);
+                combateService.resolverCombate(toCruz, divisaoAtual, true);
 
                 if (toCruz.getVida() <= 0) {
                     JOptionPane.showMessageDialog(this, "Missao fracassada. To Cruz foi derrotado.");

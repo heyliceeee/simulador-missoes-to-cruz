@@ -1,16 +1,15 @@
 {
   "id": "MANUAL-001",
   "divisaoInicial": "Base Inferior",
-  "divisaoFinal": "Altar Sombrio",
+  "divisaoFinal": "Escada 1",
   "status": "FALHA",
-  "vidaRestante": 5,
+  "vidaRestante": 80,
   "trajeto": [
-    "Observatorio Infernal",
-    "Sala de Controle Principal",
-    "Altar Sombrio"
+    "Base Inferior",
+    "Escada 1"
   ],
   "entradasSaidas": [
-    "Observatorio Infernal"
+    "Base Inferior"
   ],
   "codigoMissao": "circulo infernal",
   "versaoMissao": 1
