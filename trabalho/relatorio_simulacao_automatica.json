@@ -2,7 +2,7 @@
   "id": "AUTO-001",
   "divisaoInicial": "Heliporto",
   "divisaoFinal": "Heliporto",
-  "status": "SUCESSO",
+  "status": "FALHA",
   "vidaRestante": 90,
   "trajeto": [
     "Heliporto",

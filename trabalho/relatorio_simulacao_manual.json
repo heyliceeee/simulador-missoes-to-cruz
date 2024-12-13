@@ -1,18 +1,19 @@
 {
   "id": "MANUAL-001",
-  "divisaoInicial": "Plataforma Superior",
-  "divisaoFinal": "Quimicos Avancados",
-  "status": "FALHA",
-  "vidaRestante": 95,
+  "divisaoInicial": "Heliporto",
+  "divisaoFinal": "Laboratorio",
+  "status": "SUCESSO",
+  "vidaRestante": 80,
   "trajeto": [
-    "Plataforma Superior",
-    "Escada 8",
-    "Sala de Planejamento",
-    "Quimicos Avancados"
+    "Heliporto",
+    "Escada 6",
+    "Camaratas",
+    "Escada 5",
+    "Laboratorio"
   ],
   "entradasSaidas": [
-    "Plataforma Superior"
+    "Heliporto"
   ],
-  "codigoMissao": "ouro negro",
-  "versaoMissao": 1
+  "codigoMissao": "pata de coelho",
+  "versaoMissao": 2
 }
