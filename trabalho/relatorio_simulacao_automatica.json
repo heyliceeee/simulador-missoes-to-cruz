@@ -3,9 +3,18 @@
   "divisaoInicial": "Base Inferior",
   "divisaoFinal": "Base Inferior",
   "status": "SUCESSO",
-  "vidaRestante": 10,
-  "trajeto": [],
-  "entradasSaidas": [],
+  "vidaRestante": 55,
+  "trajeto": [
+    "Base Inferior",
+    "Altar Sombrio",
+    "Base Inferior",
+    "Altar Sombrio",
+    "Altar Sombrio",
+    "Base Inferior"
+  ],
+  "entradasSaidas": [
+    "Base Inferior"
+  ],
   "codigoMissao": "circulo infernal",
   "versaoMissao": 1
 }

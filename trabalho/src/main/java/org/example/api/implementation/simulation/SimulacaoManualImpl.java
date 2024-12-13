@@ -324,12 +324,12 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
     private void mover() throws ElementNotFoundException {
         System.out.print("Digite o nome da divisao para onde deseja mover: ");
         String novaDivisao = scanner.nextLine().trim();
-
+    
         if (novaDivisao.isEmpty()) {
             System.out.println("Divisao invalida.");
             return;
         }
-
+    
         if (mapa.podeMover(toCruz.getPosicaoAtual().getNomeDivisao(), novaDivisao)) {
             IDivisao proximaDivisao = mapa.getDivisaoPorNome(novaDivisao);
             if (proximaDivisao != null) {
@@ -344,6 +344,7 @@ public class SimulacaoManualImpl implements ISimulacaoManual {
             System.out.println("Movimento invalido! Divisoes nao conectadas.");
         }
     }
+    
 
     /**
      * Realiza um ataque contra os inimigos na divisao atual.

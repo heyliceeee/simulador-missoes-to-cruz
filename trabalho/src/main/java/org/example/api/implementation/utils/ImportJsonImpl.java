@@ -31,22 +31,19 @@ public class ImportJsonImpl implements IImportJson {
     }
 
     @Override
-    public IMissao carregarMissao(String jsonPath)
+    public Missao carregarMissao(String jsonPath)
             throws InvalidJsonStructureException, InvalidFieldException, DivisionNotFoundException {
         try (FileReader reader = new FileReader(jsonPath)) {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            logger.info("JSON parseado com sucesso.");
-
-            // Validar estrutura do JSON
             validarEstrutura(jsonObject);
 
             String codMissao = validarString(jsonObject.get("cod-missao"), "cod-missao");
             int versao = validarInt(jsonObject.get("versao"), "versao");
 
-            IMissao missao = new MissaoImpl(codMissao, versao, mapa);
+            Missao missao = new MissaoImpl(codMissao, versao, mapa);
 
-            carregarMapa(jsonPath); // Este metodo lanca DivisionNotFoundException
+            carregarMapa(jsonPath); // Este método lança DivisionNotFoundException
 
             return missao;
         } catch (IOException | ParseException e) {
@@ -77,11 +74,11 @@ public class ImportJsonImpl implements IImportJson {
 
             // Processar divisoes
             JSONArray edificioArray = (JSONArray) jsonObject.get("edificio");
-            logger.info("Carregar divisoes:");
+            // logger.info("Carregando divisões...");
             for (Object element : edificioArray) {
                 String divisaoNome = validarString(element, "edificio");
                 mapa.adicionarDivisao(divisaoNome);
-                logger.debug("Divisao adicionada: {}", divisaoNome);
+                // logger.debug("Divisão adicionada: {}", divisaoNome);
             }
 
             // Verificar se as divisoes foram carregadas corretamente
@@ -90,7 +87,7 @@ public class ImportJsonImpl implements IImportJson {
 
             // Ler conexoes
             JSONArray ligacoesArray = (JSONArray) jsonObject.get("ligacoes");
-            logger.info("\nCarregando ligacoes:");
+            // logger.info("Carregando conexões...");
             for (Object element : ligacoesArray) {
                 JSONArray ligacao = (JSONArray) element;
                 if (ligacao.size() != 2) {
@@ -107,7 +104,7 @@ public class ImportJsonImpl implements IImportJson {
                 }
 
                 mapa.adicionarLigacao(origem, destino);
-                logger.debug("Ligacao adicionada entre '{}' e '{}'", origem, destino);
+                // logger.debug("Ligação adicionada entre '{}' e '{}'", origem, destino);
             }
 
             // Processar entradas e saidas
@@ -116,7 +113,7 @@ public class ImportJsonImpl implements IImportJson {
             for (Object element : entradasSaidasArray) {
                 String nomeDivisao = validarString(element, "entradas-saidas");
                 mapa.adicionarEntradaSaida(nomeDivisao);
-                // logger.debug("Entrada/Saida adicionada: {}", nomeDivisao);
+                // logger.debug("Entrada/Saída adicionada: {}", nomeDivisao);
             }
 
             // Processar alvo
@@ -125,12 +122,12 @@ public class ImportJsonImpl implements IImportJson {
             String alvoDivisao = validarString(alvoObj.get("divisao"), "alvo.divisao");
             String alvoTipo = validarString(alvoObj.get("tipo"), "alvo.tipo");
             mapa.definirAlvo(alvoDivisao, alvoTipo);
-            // logger.debug("Alvo definido: Divisao '{}', Tipo '{}'", alvoDivisao,
+            // logger.debug("Alvo definido: Divisão '{}', Tipo '{}'", alvoDivisao,
             // alvoTipo);
 
             // Processar inimigos
             JSONArray inimigosArray = (JSONArray) jsonObject.get("inimigos");
-            logger.info("\nCarregar inimigos:");
+            // logger.info("Carregando inimigos...");
             for (Object element : inimigosArray) {
                 JSONObject inimigoObj = (JSONObject) element;
                 String nome = validarString(inimigoObj.get("nome"), "inimigo.nome");
@@ -141,7 +138,7 @@ public class ImportJsonImpl implements IImportJson {
                 if (divisao != null) {
                     IInimigo inimigo = new InimigoImpl(nome, poder);
                     mapa.adicionarInimigo(divisaoNome, inimigo);
-                    logger.debug("Inimigo '{}' adicionado a divisao '{}'", nome, divisaoNome);
+                    // logger.debug("Inimigo '{}' adicionado à divisão '{}'", nome, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para inimigo nao encontrada: " + divisaoNome);
                 }
@@ -149,7 +146,7 @@ public class ImportJsonImpl implements IImportJson {
 
             // Processar itens
             JSONArray itensArray = (JSONArray) jsonObject.get("itens");
-            logger.info("\nCarregar itens:");
+            // logger.info("Carregando itens...");
             for (Object element : itensArray) {
                 JSONObject itemObj = (JSONObject) element;
                 String tipo = validarString(itemObj.get("tipo"), "item.tipo");
@@ -174,7 +171,7 @@ public class ImportJsonImpl implements IImportJson {
                                 divisaoNome);
                     }
                     mapa.adicionarItem(divisaoNome, item);
-                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisao '{}'", tipo,
+                    // logger.debug("Item '{}' com pontos '{}' adicionado à divisão '{}'", tipo,
                     // pontos, divisaoNome);
                 } else {
                     throw new DivisionNotFoundException("Divisao para item nao encontrada: " + divisaoNome);
@@ -221,37 +218,4 @@ public class ImportJsonImpl implements IImportJson {
         return ((Number) value).intValue();
     }
 
-    /**
-     * Valida se a estrutura basica do JSON esta presente.
-     *
-     * @param jsonObject Objeto JSON a ser validado.
-     * @throws InvalidJsonStructureException Se a estrutura basica estiver
-     *                                       incorreta.
-     */
-    private void validarEstrutura(JSONObject jsonObject) throws InvalidJsonStructureException {
-        if (!jsonObject.containsKey("edificio") || !(jsonObject.get("edificio") instanceof JSONArray)) {
-            logger.error("Campo 'edificio' esta ausente ou nao e uma lista.");
-            throw new InvalidJsonStructureException("Campo 'edificio' obrigatorio e deve ser uma lista.");
-        }
-        if (!jsonObject.containsKey("ligacoes") || !(jsonObject.get("ligacoes") instanceof JSONArray)) {
-            logger.error("Campo 'ligacoes' esta ausente ou nao e uma lista.");
-            throw new InvalidJsonStructureException("Campo 'ligacoes' obrigatorio e deve ser uma lista.");
-        }
-        if (!jsonObject.containsKey("entradas-saidas") || !(jsonObject.get("entradas-saidas") instanceof JSONArray)) {
-            logger.error("Campo 'entradas-saidas' esta ausente ou nao e uma lista.");
-            throw new InvalidJsonStructureException("Campo 'entradas-saidas' obrigatorio e deve ser uma lista.");
-        }
-        if (!jsonObject.containsKey("alvo") || !(jsonObject.get("alvo") instanceof JSONObject)) {
-            logger.error("Campo 'alvo' esta ausente ou nao e um objeto.");
-            throw new InvalidJsonStructureException("Campo 'alvo' obrigatorio e deve ser um objeto.");
-        }
-        if (!jsonObject.containsKey("itens") || !(jsonObject.get("itens") instanceof JSONArray)) {
-            logger.error("Campo 'itens' esta ausente ou nao e uma lista.");
-            throw new InvalidJsonStructureException("Campo 'itens' obrigatorio e deve ser uma lista.");
-        }
-        if (!jsonObject.containsKey("inimigos") || !(jsonObject.get("inimigos") instanceof JSONArray)) {
-            logger.error("Campo 'inimigos' esta ausente ou nao e uma lista.");
-            throw new InvalidJsonStructureException("Campo 'inimigos' obrigatorio e deve ser uma lista.");
-        }
-    }
 }

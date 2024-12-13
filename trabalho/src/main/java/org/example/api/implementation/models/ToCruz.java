@@ -49,10 +49,12 @@ public class ToCruz implements IAgente {
      *
      * @param nome Nome do agente.
      * @param vida Vida inicial do agente.
+     * @throws IllegalArgumentException se o nome for inválido ou a vida for
+     *                                  negativa.
      */
     public ToCruz(String nome, int vida) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do agente invalido.");
+            throw new IllegalArgumentException("Nome do agente nao pode ser nulo ou vazio.");
         }
         if (vida < 0) {
             throw new IllegalArgumentException("Vida nao pode ser negativa.");
@@ -64,113 +66,96 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Indica se o objetivo principal (alvo) foi concluido ou capturado.
+     * Move o agente para uma nova divisão.
      *
-     * Essa variavel e usada para rastrear o estado da missao.
-     * - true: O alvo foi capturado com sucesso.
-     * - false: O alvo ainda nao foi capturado.
+     * @param novaDivisao A divisão para a qual o agente deve se mover.
+     * @throws IllegalArgumentException se a divisão for nula.
      */
     @Override
     public void moverPara(IDivisao novaDivisao) {
         if (novaDivisao == null) {
-            System.err.println("Erro: Divisao para mover e nula.");
-            return;
+            throw new IllegalArgumentException("Divisão para mover não pode ser nula.");
         }
         this.posicaoAtual = novaDivisao;
-        // System.out.println("To Cruz moveu-se para a divisao: " +
-        // novaDivisao.getNomeDivisao());
     }
 
     /**
-     * Usa um kit de vida do inventario para recuperar pontos de vida.
+     * Usa um kit de vida do inventário para recuperar pontos de vida.
+     *
+     * @throws IllegalStateException se o inventário estiver vazio ou se o item não
+     *                               for um kit de vida.
      */
     @Override
     public void usarKitDeVida() {
         if (inventario.isEmpty()) {
-            System.out.println("Inventario vazio! Nao ha kits de vida para usar.");
-            return;
+            throw new IllegalStateException("Inventario vazio! Nao ha kits de vida para usar.");
         }
 
-        IItem item = inventario.pop(); // Retira o item do topo da pilha
-        if (item.getTipo().equals("kit de vida")) {
-            if (vida < vidaMaxima) {
-                if (vida + item.getPontos() > vidaMaxima || vida + item.getPontos() == vidaMaxima) {
-                    vida = vidaMaxima;
-                    System.out.println("Usou um kit de vida! Vida atual: " + vida);
-                } else if (vida + item.getPontos() < vidaMaxima) {
-                    vida += item.getPontos();
-                    System.out.println("Usou um kit de vida! Vida atual: " + vida);
+        try {
+            IItem kit = inventario.pop();
+            if ("kit de vida".equalsIgnoreCase(kit.getTipo())) {
+                vida += kit.getPontos();
+                if (vida > this.vidaMaxima) {
+                    vida = this.vidaMaxima; // Limitar vida ao máximo.
                 }
+            } else {
+                inventario.push(kit); // Recoloca o item no inventário se não for um kit de vida.
+                throw new IllegalStateException("O item retirado do inventario nao e um kit de vida.");
             }
-            // }
-
-            // if(item.getTipo().equalsI("colete")) {
-            // vida += item.getPontos(); // Recupera pontos de vida
-            // System.out.println("Usou um colete! Vida atual: " + vida);
-
-        } else {
-            inventario.push(item); // Recoloca o item no topo da pilha
+        } catch (EmptyCollectionException e) {
+            throw new IllegalStateException("Erro ao usar kit de vida: " + e.getMessage());
         }
     }
 
     /**
-     * Adiciona um item ao inventario do To Cruz.
+     * Adiciona um item ao inventário ou aplica seus efeitos imediatamente,
+     * dependendo do tipo.
      *
      * @param item O item a ser adicionado.
+     * @throws IllegalArgumentException se o item for nulo.
+     * @throws IllegalStateException    se o inventário estiver cheio ao tentar
+     *                                  adicionar um kit de vida.
      */
     @Override
     public void adicionarAoInventario(IItem item) {
         if (item == null) {
-            System.err.println("Erro: Item a ser adicionado e nulo.");
-            return;
+            throw new IllegalArgumentException("Item a ser adicionado nao pode ser nulo.");
         }
 
         switch (item.getTipo().toLowerCase()) {
             case "colete":
-                // Adiciona os pontos de vida do colete, permitindo ultrapassar o limite de 100
-                vida += item.getPontos();
-                System.out.println(
-                        "Consumiu um colete! Ganhou " + item.getPontos() + " pontos extras. Vida atual: " + vida);
+                vida += item.getPontos(); // Adiciona pontos de vida, ultrapassando o limite de maximo, se permitido.
                 break;
-
             case "kit de vida":
-                // Verifica o limite maximo de kits na mochila
-                if (inventario.size() >= 5) { // Considerando 5 como limite configurado
-                    System.out.println("Mochila cheia! Nao e possivel carregar mais kits de vida.");
-                } else {
-                    inventario.push(item);
-                    System.out.println("Kit de vida adicionado ao inventario.");
+                if (inventario.size() >= 5) {
+                    throw new IllegalStateException("Inventario cheio! Nao e possível carregar mais kits de vida.");
                 }
-                break;
-
-            default:
-                // Outros tipos de itens
                 inventario.push(item);
-                System.out.println("Item adicionado ao inventario: " + item.getTipo());
+                break;
+            default:
+                inventario.push(item); // Outros itens são adicionados diretamente.
                 break;
         }
     }
 
     /**
-     * Reduz os pontos de vida do To Cruz ao sofrer dano.
+     * Aplica dano ao agente, reduzindo sua vida.
      *
-     * @param dano Quantidade de dano recebido.
+     * @param dano Quantidade de dano a ser aplicada.
+     * @throws IllegalArgumentException se o dano for negativo.
      */
     @Override
     public void sofrerDano(int dano) {
-        if (dano > 0) {
-            this.vida -= dano;
-            if (this.vida < 0) {
-                this.vida = 0; // Vida não pode ser negativa
-            }
+        if (dano < 0) {
+            throw new IllegalArgumentException("Dano nao pode ser negativo.");
         }
+        vida = Math.max(vida - dano, 0); // Garante que a vida nunca fique negativa.
     }
-    
 
     /**
-     * Obtem a vida atual do To Cruz.
+     * Obtém a vida atual do agente.
      *
-     * @return Pontos de vida restantes.
+     * @return Vida do agente.
      */
     @Override
     public int getVida() {
@@ -178,9 +163,10 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Define a vida do To Cruz.
+     * Define a vida do agente.
      *
-     * @param vida Pontos de vida a serem atribuidos.
+     * @param vida Nova quantidade de vida.
+     * @throws IllegalArgumentException se a vida for negativa.
      */
     @Override
     public void setVida(int vida) {
@@ -191,9 +177,9 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Obtem a posicao atual do To Cruz.
+     * Obtem a posição atual do agente.
      *
-     * @return A divisao atual onde o To Cruz esta localizado.
+     * @return A divisão onde o agente está atualmente.
      */
     @Override
     public IDivisao getPosicaoAtual() {
@@ -201,9 +187,10 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Define a posicao atual do To Cruz.
+     * Define a posição atual do agente.
      *
-     * @param posicaoAtual A nova divisao onde o To Cruz estara.
+     * @param posicaoAtual A nova divisão onde o agente estará.
+     * @throws IllegalArgumentException se a divisão for nula.
      */
     @Override
     public void setPosicaoAtual(IDivisao posicaoAtual) {
@@ -214,9 +201,9 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Obtem o nome do agente
+     * Obtém o nome do agente.
      *
-     * @return o nome
+     * @return Nome do agente.
      */
     @Override
     public String getNome() {
@@ -224,31 +211,33 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Define o nome do agente
+     * Define o nome do agente.
      *
-     * @param nome o nome do agente
+     * @param nome Novo nome do agente.
+     * @throws IllegalArgumentException se o nome for nulo ou vazio.
      */
     @Override
     public void setNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do agente invalido.");
+            throw new IllegalArgumentException("Nome do agente nao pode ser nulo ou vazio.");
         }
         this.nome = nome;
     }
 
     /**
-     * Obtem o que o agente tem no inventario
+     * Obtém o inventário do agente.
      *
-     * @return o inventario do agente
+     * @return O inventário como uma pilha de itens.
      */
     public ArrayStack<IItem> getInventario() {
         return inventario;
     }
 
     /**
-     * Define o que o agente tem no seu inventario
+     * Define o inventário do agente.
      *
-     * @param inventario a mochila do agente
+     * @param inventario Nova pilha de itens.
+     * @throws IllegalArgumentException se o inventário for nulo.
      */
     public void setInventario(ArrayStack<IItem> inventario) {
         if (inventario == null) {
@@ -258,34 +247,20 @@ public class ToCruz implements IAgente {
     }
 
     /**
-     * Verifica se o alvo foi concluido.
+     * Verifica se o objetivo do agente foi concluído.
      *
-     * @return true se o alvo foi capturado, false caso contrario.
+     * @return true se o objetivo foi concluído, false caso contrário.
      */
     public boolean isAlvoConcluido() {
         return alvoConcluido;
     }
 
     /**
-     * Atualizar pontos de vida
-     * 
-     * @param pontos
-     */
-    public void recuperarVida(int pontos) {
-        this.vida += pontos;
-        if (this.vida > this.vidaMaxima) { // Garante que nao ultrapassa o maximo
-            this.vida = this.vidaMaxima;
-        }
-        System.out.println("Vida atual do To Cruz: " + this.vida);
-    }
-
-    /**
-     * Define se o alvo foi concluido.
+     * Define o status do objetivo do agente.
      *
-     * @param concluido true se o alvo foi capturado, false caso contrario.
+     * @param concluido true se o objetivo foi concluído, false caso contrário.
      */
     public void setAlvoConcluido(boolean concluido) {
         this.alvoConcluido = concluido;
     }
-    
 }

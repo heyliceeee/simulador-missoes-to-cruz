@@ -50,7 +50,6 @@ public class MapaImpl implements IMapa {
         }
         IDivisao divisao = new DivisaoImpl(nomeDivisao);
         grafo.addVertex(divisao);
-        // System.out.println("Divisao adicionada: " + nomeDivisao);
     }
 
     /**
@@ -75,8 +74,6 @@ public class MapaImpl implements IMapa {
         }
 
         grafo.addEdge(divisao1, divisao2);
-        // System.out.println("Ligacao adicionada entre " + nomeDivisao1 + " e " +
-        // nomeDivisao2);
     }
 
     /**
@@ -119,8 +116,6 @@ public class MapaImpl implements IMapa {
         IDivisao divisao = getDivisaoPorNome(nomeDivisao);
         if (divisao != null) {
             divisao.adicionarInimigo(inimigo);
-            // System.out.println("Inimigo '" + inimigo.getNome() + "' adicionado à divisao:
-            // " + nomeDivisao);
         } else {
             System.err.println("Erro: Divisao '" + nomeDivisao + "' nao encontrada.");
         }
